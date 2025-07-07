@@ -1,6 +1,6 @@
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { Button } from '@/components/ui/button';
+import { SellForm } from '@/components/sell-form';
 
 export default function SellPage() {
   return (
@@ -8,16 +8,16 @@ export default function SellPage() {
       <Header />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
-              Sell Your Yacht with Coast Masters
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              List your yacht with us and reach a global audience of qualified buyers. Our expert team will guide you through every step of the process, ensuring a smooth and successful sale.
-            </p>
-            <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-              Get Started
-            </Button>
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-12 text-center">
+              <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
+                Sell Your Yacht with Coast Masters
+              </h1>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Follow the steps below to create a beautiful listing for your yacht. Reach thousands of potential buyers today.
+              </p>
+            </div>
+            <SellForm />
           </div>
         </div>
       </main>
