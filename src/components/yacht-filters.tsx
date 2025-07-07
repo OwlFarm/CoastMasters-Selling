@@ -19,7 +19,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Types" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="motor">Motor</SelectItem>
                       <SelectItem value="sailing">Sailing</SelectItem>
@@ -32,7 +32,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Make</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Makes" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Make" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="beneteau">Beneteau</SelectItem>
                       <SelectItem value="jeanneau">Jeanneau</SelectItem>
@@ -47,7 +47,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Locations" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Location" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="miami">Miami, FL</SelectItem>
                       <SelectItem value="newport">Newport, RI</SelectItem>
@@ -62,7 +62,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Condition</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Conditions" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Condition" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="new">New</SelectItem>
                       <SelectItem value="used">Used</SelectItem>
@@ -103,7 +103,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Fuel Types" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Fuel Type" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="diesel">Diesel</SelectItem>
                       <SelectItem value="gas">Gasoline</SelectItem>
@@ -116,7 +116,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Hull Material</AccordionTrigger>
           <AccordionContent>
               <Select>
-                  <SelectTrigger><SelectValue placeholder="All Hull Materials" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Hull Material" /></SelectTrigger>
                   <SelectContent>
                       <SelectItem value="fiberglass">Fiberglass</SelectItem>
                       <SelectItem value="aluminum">Aluminum</SelectItem>
