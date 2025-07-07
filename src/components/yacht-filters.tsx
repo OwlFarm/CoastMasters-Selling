@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function YachtFilters() {
   const numCols = 5;
@@ -19,9 +20,11 @@ export function YachtFilters() {
     }
   }
 
+  const slugify = (text: string) => text.toLowerCase().replace(/[\s/]+/g, '-').replace(/[^\w-]+/g, '');
+
   return (
     <>
-      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics', 'make']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics', 'make', 'location']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -51,12 +54,15 @@ export function YachtFilters() {
         <AccordionItem value="location">
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
-            <Accordion type="multiple" className="w-full pt-2">
-              {locationsByRegion.map((regionData) => (
-                <AccordionItem key={regionData.region} value={regionData.region}>
-                  <AccordionTrigger className="text-sm py-3 font-medium">{regionData.region}</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2 pt-2 pl-4">
+             <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
+                <TabsList className="flex flex-wrap h-auto justify-start">
+                  {locationsByRegion.map((regionData) => (
+                    <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
+                  ))}
+                </TabsList>
+                {locationsByRegion.map((regionData) => (
+                  <TabsContent key={regionData.region} value={slugify(regionData.region)}>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 pt-4">
                       {regionData.locations.map((location) => (
                         <div key={location.id} className="flex items-center space-x-2">
                           <Checkbox id={`location-${location.id}`} />
@@ -64,10 +70,9 @@ export function YachtFilters() {
                         </div>
                       ))}
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                  </TabsContent>
+                ))}
+              </Tabs>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="condition">
