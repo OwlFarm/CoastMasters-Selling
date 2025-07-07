@@ -3,7 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, LoaderCircle, Settings2 } from 'lucide-react';
+import { Sparkles, LoaderCircle, Settings2 } from 'lucide-react';
 import { handleSmartSearch } from '@/lib/actions';
 import { useEffect, useActionState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -25,12 +25,12 @@ function SubmitButton() {
       {pending ? (
         <>
           <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-          Searching...
+          Finding...
         </>
       ) : (
         <>
-          <Search className="mr-2 h-4 w-4" />
-          Search
+          <Sparkles className="mr-2 h-4 w-4" />
+          Find
         </>
       )}
     </Button>
@@ -65,15 +65,15 @@ export function YachtSearch() {
         <SubmitButton />
       </form>
       
-      <div className="mt-4 text-center">
+      <div className="mt-4 flex justify-center">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="link" className="text-white hover:text-gray-300">
+            <Button variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm">
               <Settings2 className="mr-2 h-4 w-4" />
-              Advanced Search
+              Search
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-[400px] sm:max-w-[400px] overflow-y-auto bg-background text-foreground">
+          <SheetContent side="left" className="w-[400px] sm:max-w-[400px] overflow-y-auto bg-background text-foreground">
             <SheetHeader>
               <SheetTitle>Refine Your Search</SheetTitle>
               <SheetDescription>
