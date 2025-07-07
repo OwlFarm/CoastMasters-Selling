@@ -3,7 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Sparkles, LoaderCircle, Settings2 } from 'lucide-react';
+import { Sparkles, LoaderCircle } from 'lucide-react';
 import { handleSmartSearch } from '@/lib/actions';
 import { useEffect, useActionState } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -68,9 +68,8 @@ export function YachtSearch() {
       <div className="mt-4 flex justify-center">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm">
-              <Settings2 className="mr-2 h-4 w-4" />
-              Search
+            <Button variant="default" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              Refined Search
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[400px] sm:max-w-[400px] overflow-y-auto bg-background text-foreground">
