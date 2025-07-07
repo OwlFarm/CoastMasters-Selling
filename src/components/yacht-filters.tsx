@@ -1,8 +1,7 @@
 'use client';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
@@ -10,15 +9,11 @@ import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMateria
 export function YachtFilters() {
   return (
     <>
-      <div className="flex items-center justify-between mb-4">
-        <Button className="w-full">Save Search</Button>
-      </div>
-      
       <Accordion type="multiple" defaultValue={['boatType', 'price', 'year', 'length']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
-              <div className="space-y-2 pt-2">
+              <div className="flex flex-row gap-4 pt-2">
                 {boatTypes.map((type) => (
                   <div key={type.id} className="flex items-center space-x-2">
                     <Checkbox id={`type-${type.id}`} />
@@ -31,7 +26,7 @@ export function YachtFilters() {
         <AccordionItem value="make">
           <AccordionTrigger className="font-semibold">Make</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
+            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
               {makes.map((make) => (
                 <div key={make.id} className="flex items-center space-x-2">
                   <Checkbox id={`make-${make.id}`} />
@@ -66,7 +61,7 @@ export function YachtFilters() {
         <AccordionItem value="condition">
           <AccordionTrigger className="font-semibold">Condition</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
+            <div className="flex flex-row gap-4 pt-2">
               {conditions.map((condition) => (
                 <div key={condition.id} className="flex items-center space-x-2">
                   <Checkbox id={`condition-${condition.id}`} />
@@ -77,24 +72,33 @@ export function YachtFilters() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="length">
-          <AccordionTrigger className="font-semibold">Length</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Length (ft)</AccordionTrigger>
           <AccordionContent className="pt-4">
-              <Label>Between 20 ft and 150 ft</Label>
-              <Slider defaultValue={[20, 150]} max={200} step={5} className="mt-4" />
+              <div className="flex items-center gap-2">
+                <Input type="number" placeholder="Min" />
+                <span className="text-muted-foreground">-</span>
+                <Input type="number" placeholder="Max" />
+              </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="price">
-          <AccordionTrigger className="font-semibold">Price</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Price (USD)</AccordionTrigger>
           <AccordionContent className="pt-4">
-              <Label>Between $100,000 and $2,000,000</Label>
-              <Slider defaultValue={[100000, 2000000]} max={5000000} step={50000} className="mt-4"/>
+              <div className="flex items-center gap-2">
+                <Input type="number" placeholder="Min" />
+                <span className="text-muted-foreground">-</span>
+                <Input type="number" placeholder="Max" />
+              </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="year">
           <AccordionTrigger className="font-semibold">Year</AccordionTrigger>
           <AccordionContent className="pt-4">
-              <Label>Between 2010 and 2024</Label>
-              <Slider defaultValue={[2010, 2024]} min={1980} max={new Date().getFullYear()} step={1} className="mt-4" />
+              <div className="flex items-center gap-2">
+                <Input type="number" placeholder="Min" />
+                <span className="text-muted-foreground">-</span>
+                <Input type="number" placeholder="Max" />
+              </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="fuel">

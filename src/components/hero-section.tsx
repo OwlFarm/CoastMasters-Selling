@@ -47,7 +47,8 @@ export function HeroSection() {
                             Refine Your Search
                         </h2>
                         <YachtFilters />
-                         <div className="mt-8 flex justify-center">
+                         <div className="mt-8 flex justify-center gap-4">
+                            <Button size="lg" variant="outline">Save Search</Button>
                             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Apply Filters</Button>
                         </div>
                     </div>
