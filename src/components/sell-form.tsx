@@ -171,7 +171,7 @@ export function SellForm() {
                             </FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="make" render={({ field }) => (
-                            <FormItem><FormLabel>Make</FormLabel>
+                            <FormItem><FormLabel>Boat Maker</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl><SelectTrigger><SelectValue placeholder="Select a make" /></SelectTrigger></FormControl>
                                     <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>

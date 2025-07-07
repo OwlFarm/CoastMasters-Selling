@@ -47,7 +47,7 @@ export function YachtFilters() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="make">
-          <AccordionTrigger className="font-semibold">Make</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Boat Maker</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
               {columnSortedMakes.map((make) => (
