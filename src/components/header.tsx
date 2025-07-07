@@ -12,16 +12,16 @@ export function Header() {
           <span className="font-headline text-xl font-bold">Coast Masters</span>
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/yachts" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Yachts
           </Link>
-          <Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/brokers" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Brokers
           </Link>
-          <Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/sell" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Sell
           </Link>
-          <Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             About
           </Link>
         </nav>
