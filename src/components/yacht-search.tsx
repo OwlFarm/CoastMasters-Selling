@@ -1,11 +1,11 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, LoaderCircle } from 'lucide-react';
 import { handleSmartSearch } from '@/lib/actions';
-import { useEffect } from 'react';
+import { useEffect, useActionState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -30,7 +30,7 @@ function SubmitButton() {
 
 export function YachtSearch() {
   const initialState = { result: '', error: '' };
-  const [state, dispatch] = useFormState(handleSmartSearch, initialState);
+  const [state, dispatch] = useActionState(handleSmartSearch, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
