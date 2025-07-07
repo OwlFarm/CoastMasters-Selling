@@ -7,9 +7,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
 
 export function YachtFilters() {
+  const numCols = 5;
+  const numRows = Math.ceil(makes.length / numCols);
+  const columnSortedMakes = [];
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numCols; j++) {
+      const index = j * numRows + i;
+      if (index < makes.length) {
+        columnSortedMakes.push(makes[index]);
+      }
+    }
+  }
+
   return (
     <>
-      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics', 'make']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -27,7 +39,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Make</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
-              {makes.map((make) => (
+              {columnSortedMakes.map((make) => (
                 <div key={make.id} className="flex items-center space-x-2">
                   <Checkbox id={`make-${make.id}`} />
                   <Label htmlFor={`make-${make.id}`} className="font-normal">{make.label}</Label>
