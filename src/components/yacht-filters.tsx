@@ -9,7 +9,7 @@ import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMateria
 export function YachtFilters() {
   return (
     <>
-      <Accordion type="multiple" defaultValue={['boatType', 'price', 'year', 'length']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -71,35 +71,36 @@ export function YachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="length">
-          <AccordionTrigger className="font-semibold">Length (ft)</AccordionTrigger>
-          <AccordionContent className="pt-4">
-              <div className="flex items-center gap-2">
-                <Input type="number" placeholder="Min" />
-                <span className="text-muted-foreground">-</span>
-                <Input type="number" placeholder="Max" />
-              </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="price">
-          <AccordionTrigger className="font-semibold">Price (USD)</AccordionTrigger>
-          <AccordionContent className="pt-4">
-              <div className="flex items-center gap-2">
-                <Input type="number" placeholder="Min" />
-                <span className="text-muted-foreground">-</span>
-                <Input type="number" placeholder="Max" />
-              </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="year">
-          <AccordionTrigger className="font-semibold">Year</AccordionTrigger>
-          <AccordionContent className="pt-4">
-              <div className="flex items-center gap-2">
-                <Input type="number" placeholder="Min" />
-                <span className="text-muted-foreground">-</span>
-                <Input type="number" placeholder="Max" />
-              </div>
-          </AccordionContent>
+        <AccordionItem value="key-metrics">
+            <AccordionTrigger className="font-semibold">Length, Price & Year</AccordionTrigger>
+            <AccordionContent className="pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                        <Label>Length (ft)</Label>
+                        <div className="flex items-center gap-2">
+                            <Input type="number" placeholder="Min" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input type="number" placeholder="Max" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label>Price (USD)</Label>
+                        <div className="flex items-center gap-2">
+                            <Input type="number" placeholder="Min" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input type="number" placeholder="Max" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label>Year</Label>
+                        <div className="flex items-center gap-2">
+                            <Input type="number" placeholder="Min" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input type="number" placeholder="Max" />
+                        </div>
+                    </div>
+                </div>
+            </AccordionContent>
         </AccordionItem>
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
