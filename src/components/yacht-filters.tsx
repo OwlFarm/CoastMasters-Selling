@@ -1,11 +1,51 @@
-
 'use client';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const boatTypes = [
+  { id: 'motor', label: 'Motor' },
+  { id: 'sailing', label: 'Sailing' },
+  { id: 'catamaran', label: 'Catamaran' },
+];
+
+const makes = [
+  { id: 'beneteau', label: 'Beneteau' },
+  { id: 'jeanneau', label: 'Jeanneau' },
+  { id: 'moody', label: 'Moody' },
+  { id: 'passport', label: 'Passport' },
+  { id: 'little-harbor', label: 'Little Harbor' },
+];
+
+const locations = [
+  { id: 'miami', label: 'Miami, FL' },
+  { id: 'newport', label: 'Newport, RI' },
+  { id: 'monaco', label: 'Monaco' },
+  { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL' },
+  { id: 'annapolis', label: 'Annapolis, MD' },
+];
+
+const conditions = [
+  { id: 'new', label: 'New' },
+  { id: 'used', label: 'Used' },
+];
+
+const fuelTypes = [
+  { id: 'diesel', label: 'Diesel' },
+  { id: 'gas', label: 'Gasoline' },
+  { id: 'electric', label: 'Electric' },
+];
+
+const hullMaterials = [
+  { id: 'fiberglass', label: 'Fiberglass' },
+  { id: 'aluminum', label: 'Aluminum' },
+  { id: 'steel', label: 'Steel' },
+];
+
 
 export function YachtFilters() {
   return (
@@ -18,56 +58,53 @@ export function YachtFilters() {
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="motor">Motor</SelectItem>
-                      <SelectItem value="sailing">Sailing</SelectItem>
-                      <SelectItem value="catamaran">Catamaran</SelectItem>
-                  </SelectContent>
-              </Select>
+              <div className="space-y-2 pt-2">
+                {boatTypes.map((type) => (
+                  <div key={type.id} className="flex items-center space-x-2">
+                    <Checkbox id={`type-${type.id}`} />
+                    <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
+                  </div>
+                ))}
+              </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="make">
           <AccordionTrigger className="font-semibold">Make</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Make" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="beneteau">Beneteau</SelectItem>
-                      <SelectItem value="jeanneau">Jeanneau</SelectItem>
-                      <SelectItem value="moody">Moody</SelectItem>
-                      <SelectItem value="passport">Passport</SelectItem>
-                      <SelectItem value="little-harbor">Little Harbor</SelectItem>
-                  </SelectContent>
-              </Select>
+            <div className="space-y-2 pt-2">
+              {makes.map((make) => (
+                <div key={make.id} className="flex items-center space-x-2">
+                  <Checkbox id={`make-${make.id}`} />
+                  <Label htmlFor={`make-${make.id}`} className="font-normal">{make.label}</Label>
+                </div>
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="location">
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Location" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="miami">Miami, FL</SelectItem>
-                      <SelectItem value="newport">Newport, RI</SelectItem>
-                      <SelectItem value="monaco">Monaco</SelectItem>
-                      <SelectItem value="fort-lauderdale">Fort Lauderdale, FL</SelectItem>
-                      <SelectItem value="annapolis">Annapolis, MD</SelectItem>
-                  </SelectContent>
-              </Select>
+            <div className="space-y-2 pt-2">
+              {locations.map((location) => (
+                <div key={location.id} className="flex items-center space-x-2">
+                  <Checkbox id={`location-${location.id}`} />
+                  <Label htmlFor={`location-${location.id}`} className="font-normal">{location.label}</Label>
+                </div>
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="condition">
           <AccordionTrigger className="font-semibold">Condition</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Condition" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="new">New</SelectItem>
-                      <SelectItem value="used">Used</SelectItem>
-                  </SelectContent>
-              </Select>
+            <div className="space-y-2 pt-2">
+              {conditions.map((condition) => (
+                <div key={condition.id} className="flex items-center space-x-2">
+                  <Checkbox id={`condition-${condition.id}`} />
+                  <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+                </div>
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="length">
@@ -102,27 +139,27 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Fuel Type" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="diesel">Diesel</SelectItem>
-                      <SelectItem value="gas">Gasoline</SelectItem>
-                      <SelectItem value="electric">Electric</SelectItem>
-                  </SelectContent>
-              </Select>
+            <div className="space-y-2 pt-2">
+              {fuelTypes.map((fuel) => (
+                <div key={fuel.id} className="flex items-center space-x-2">
+                  <Checkbox id={`fuel-${fuel.id}`} />
+                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
+                </div>
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="hullMaterial">
           <AccordionTrigger className="font-semibold">Hull Material</AccordionTrigger>
           <AccordionContent>
-              <Select>
-                  <SelectTrigger><SelectValue placeholder="Hull Material" /></SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="fiberglass">Fiberglass</SelectItem>
-                      <SelectItem value="aluminum">Aluminum</SelectItem>
-                      <SelectItem value="steel">Steel</SelectItem>
-                  </SelectContent>
-              </Select>
+            <div className="space-y-2 pt-2">
+              {hullMaterials.map((material) => (
+                <div key={material.id} className="flex items-center space-x-2">
+                  <Checkbox id={`material-${material.id}`} />
+                  <Label htmlFor={`material-${material.id}`} className="font-normal">{material.label}</Label>
+                </div>
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
