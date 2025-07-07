@@ -3,11 +3,20 @@
 import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, LoaderCircle } from 'lucide-react';
+import { Search, LoaderCircle, Settings2 } from 'lucide-react';
 import { handleSmartSearch } from '@/lib/actions';
 import { useEffect, useActionState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { YachtFilters } from './yacht-filters';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -55,6 +64,28 @@ export function YachtSearch() {
         />
         <SubmitButton />
       </form>
+      
+      <div className="mt-4 text-center">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="link" className="text-white hover:text-gray-300">
+              <Settings2 className="mr-2 h-4 w-4" />
+              Advanced Search
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="w-[400px] sm:max-w-[400px] overflow-y-auto bg-background text-foreground">
+            <SheetHeader>
+              <SheetTitle>Refine Your Search</SheetTitle>
+              <SheetDescription>
+                Use the filters below to find the perfect yacht.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="py-4">
+              <YachtFilters />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
 
       {state.result && (
         <Card className="mt-8 text-left bg-white/10 backdrop-blur-lg border border-gray-200/20">

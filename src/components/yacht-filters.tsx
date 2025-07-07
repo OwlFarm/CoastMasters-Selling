@@ -3,14 +3,13 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Label } from "./ui/label";
+import { Label } from "@/components/ui/label";
 
 export function YachtFilters() {
   return (
-    <div className="sticky top-20">
+    <>
       <div className="flex items-center justify-between mb-4">
         <Button className="w-full">Save Search</Button>
       </div>
@@ -127,6 +126,6 @@ export function YachtFilters() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </div>
+    </>
   );
 }
