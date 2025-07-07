@@ -2,11 +2,9 @@
 
 import * as React from 'react';
 import { YachtSearch } from '@/components/yacht-search';
-import { YachtListings } from '@/components/yacht-listings';
-import { featuredYachts } from '@/lib/data';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { YachtFilters } from './yacht-filters';
 
 export function HeroSection() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -29,28 +27,30 @@ export function HeroSection() {
                         <YachtSearch />
                     </div>
                 </section>
-                <div className="absolute bottom-4 left-1/2 z-10 w-full -translate-x-1/2 text-center">
+                <div className="absolute -bottom-5 left-1/2 z-10 w-full -translate-x-1/2 text-center">
                     <CollapsibleTrigger asChild>
                         <Button
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full h-12 w-12 text-white hover:bg-white/10 hover:text-white"
-                            aria-label="Explore collection"
+                            variant="default"
+                            size="lg"
+                            className="bg-accent text-accent-foreground hover:bg-accent/90"
                         >
-                            <ChevronDown
-                                className={`h-6 w-6 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                            />
+                            Refined Search
                         </Button>
                     </CollapsibleTrigger>
                 </div>
             </div>
 
-            <CollapsibleContent className="w-full overflow-hidden bg-background data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                <div className="container mx-auto px-4 py-16 md:py-24">
-                    <h2 className="mb-10 text-center font-headline text-3xl font-bold tracking-tight md:text-4xl">
-                        Explore Our Collection
-                    </h2>
-                    <YachtListings yachts={featuredYachts.slice(0, 3)} />
+            <CollapsibleContent className="w-full overflow-hidden bg-background pt-16 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                <div className="container mx-auto px-4 pb-16 md:pb-24">
+                    <div className="mx-auto max-w-5xl">
+                        <h2 className="mb-10 text-center font-headline text-3xl font-bold tracking-tight md:text-4xl">
+                            Refine Your Search
+                        </h2>
+                        <YachtFilters />
+                         <div className="mt-8 flex justify-center">
+                            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Apply Filters</Button>
+                        </div>
+                    </div>
                 </div>
             </CollapsibleContent>
         </Collapsible>
