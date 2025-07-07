@@ -44,7 +44,7 @@ export function YachtSearch() {
   }, [state.error, toast]);
 
   return (
-    <div className="mx-auto mt-8 max-w-2xl">
+    <div className="mx-auto w-full max-w-2xl">
       <form action={dispatch} className="flex flex-col gap-4 sm:flex-row">
         <Input
           name="query"

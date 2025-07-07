@@ -12,32 +12,32 @@ export function HeroSection() {
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
             <div className="relative">
                 <section
-                    className="w-full bg-cover bg-center bg-no-repeat pt-24 pb-20 md:pt-32 md:pb-24 lg:pt-40 lg:pb-28"
+                    className="w-full bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: "url('https://placehold.co/1920x1080.png')" }}
                     data-ai-hint="ocean yacht"
                 >
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="container relative mx-auto px-4 text-center text-white">
-                        <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                            Your Voyage Begins Here
-                        </h1>
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-300 md:text-xl">
-                            Discover the world's most exclusive yachts. Use our AI-powered search to find the perfect vessel for your next adventure.
-                        </p>
-                        <YachtSearch />
+                        <div className="flex flex-col items-center justify-center space-y-8 py-24 md:py-32 lg:py-40">
+                            <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                                Your Voyage Begins Here
+                            </h1>
+                            <p className="mx-auto max-w-2xl text-lg text-gray-300 md:text-xl">
+                                Discover the world's most exclusive yachts. Use our AI-powered search to find the perfect vessel for your next adventure.
+                            </p>
+                            <YachtSearch />
+                            <CollapsibleTrigger asChild>
+                                <Button
+                                    variant="default"
+                                    size="lg"
+                                    className="bg-accent text-accent-foreground hover:bg-accent/90"
+                                >
+                                    Refined Search
+                                </Button>
+                            </CollapsibleTrigger>
+                        </div>
                     </div>
                 </section>
-                <div className="absolute -bottom-5 left-1/2 z-10 w-full -translate-x-1/2 text-center">
-                    <CollapsibleTrigger asChild>
-                        <Button
-                            variant="default"
-                            size="lg"
-                            className="bg-accent text-accent-foreground hover:bg-accent/90"
-                        >
-                            Refined Search
-                        </Button>
-                    </CollapsibleTrigger>
-                </div>
             </div>
 
             <CollapsibleContent className="w-full overflow-hidden bg-background pt-16 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
