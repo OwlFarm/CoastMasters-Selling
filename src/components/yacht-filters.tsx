@@ -2,7 +2,6 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,12 +20,43 @@ const makes = [
   { id: 'little-harbor', label: 'Little Harbor' },
 ];
 
-const locations = [
-  { id: 'miami', label: 'Miami, FL' },
-  { id: 'newport', label: 'Newport, RI' },
-  { id: 'monaco', label: 'Monaco' },
-  { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL' },
-  { id: 'annapolis', label: 'Annapolis, MD' },
+const locationsByRegion = [
+    {
+        region: 'USA',
+        locations: [
+            { id: 'miami', label: 'Miami, FL' },
+            { id: 'newport', label: 'Newport, RI' },
+            { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL' },
+            { id: 'annapolis', label: 'Annapolis, MD' },
+            { id: 'san-diego', label: 'San Diego, CA' },
+        ],
+    },
+    {
+        region: 'Europe',
+        locations: [
+            { id: 'monaco', label: 'Monaco' },
+            { id: 'santorini', label: 'Santorini, Greece' },
+        ],
+    },
+    {
+        region: 'Central America',
+        locations: [
+            { id: 'cancun', label: 'Cancun, Mexico' },
+        ],
+    },
+    {
+        region: 'Asia',
+        locations: [
+            { id: 'phuket', label: 'Phuket, Thailand' },
+        ],
+    },
+    {
+        region: 'Australia/NZ',
+        locations: [
+            { id: 'sydney', label: 'Sydney, Australia' },
+            { id: 'auckland', label: 'Auckland, New Zealand' },
+        ],
+    },
 ];
 
 const conditions = [
@@ -84,14 +114,23 @@ export function YachtFilters() {
         <AccordionItem value="location">
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
-              {locations.map((location) => (
-                <div key={location.id} className="flex items-center space-x-2">
-                  <Checkbox id={`location-${location.id}`} />
-                  <Label htmlFor={`location-${location.id}`} className="font-normal">{location.label}</Label>
-                </div>
+            <Accordion type="multiple" className="w-full pt-2">
+              {locationsByRegion.map((regionData) => (
+                <AccordionItem key={regionData.region} value={regionData.region}>
+                  <AccordionTrigger className="text-sm py-3 font-medium">{regionData.region}</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pt-2 pl-4">
+                      {regionData.locations.map((location) => (
+                        <div key={location.id} className="flex items-center space-x-2">
+                          <Checkbox id={`location-${location.id}`} />
+                          <Label htmlFor={`location-${location.id}`} className="font-normal">{location.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="condition">
@@ -126,14 +165,6 @@ export function YachtFilters() {
           <AccordionContent className="pt-4">
               <Label>Between 2010 and 2024</Label>
               <Slider defaultValue={[2010, 2024]} min={1980} max={new Date().getFullYear()} step={1} className="mt-4" />
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="engineDetails">
-          <AccordionTrigger className="font-semibold">Engine Details</AccordionTrigger>
-          <AccordionContent>
-              <Select disabled>
-                  <SelectTrigger><SelectValue placeholder="Coming Soon" /></SelectTrigger>
-              </Select>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="fuel">
