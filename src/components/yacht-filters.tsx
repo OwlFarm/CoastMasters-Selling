@@ -24,7 +24,20 @@ export function YachtFilters() {
 
   return (
     <>
-      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics', 'make', 'location']} className="w-full">
+      <Accordion type="multiple" defaultValue={['condition', 'boatType', 'key-metrics', 'make', 'location']} className="w-full">
+        <AccordionItem value="condition">
+          <AccordionTrigger className="font-semibold">Condition</AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-row justify-center gap-4 pt-2">
+              {conditions.map((condition) => (
+                <div key={condition.id} className="flex items-center space-x-2">
+                  <Checkbox id={`condition-${condition.id}`} />
+                  <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -73,19 +86,6 @@ export function YachtFilters() {
                   </TabsContent>
                 ))}
               </Tabs>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="condition">
-          <AccordionTrigger className="font-semibold">Condition</AccordionTrigger>
-          <AccordionContent>
-            <div className="flex flex-row gap-4 pt-2">
-              {conditions.map((condition) => (
-                <div key={condition.id} className="flex items-center space-x-2">
-                  <Checkbox id={`condition-${condition.id}`} />
-                  <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
-                </div>
-              ))}
-            </div>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="key-metrics">
