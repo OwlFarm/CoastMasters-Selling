@@ -5,77 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-
-const boatTypes = [
-  { id: 'motor', label: 'Motor' },
-  { id: 'sailing', label: 'Sailing' },
-  { id: 'catamaran', label: 'Catamaran' },
-];
-
-const makes = [
-  { id: 'beneteau', label: 'Beneteau' },
-  { id: 'jeanneau', label: 'Jeanneau' },
-  { id: 'moody', label: 'Moody' },
-  { id: 'passport', label: 'Passport' },
-  { id: 'little-harbor', label: 'Little Harbor' },
-];
-
-const locationsByRegion = [
-    {
-        region: 'USA',
-        locations: [
-            { id: 'miami', label: 'Miami, FL' },
-            { id: 'newport', label: 'Newport, RI' },
-            { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL' },
-            { id: 'annapolis', label: 'Annapolis, MD' },
-            { id: 'san-diego', label: 'San Diego, CA' },
-        ],
-    },
-    {
-        region: 'Europe',
-        locations: [
-            { id: 'monaco', label: 'Monaco' },
-            { id: 'santorini', label: 'Santorini, Greece' },
-        ],
-    },
-    {
-        region: 'Central America',
-        locations: [
-            { id: 'cancun', label: 'Cancun, Mexico' },
-        ],
-    },
-    {
-        region: 'Asia',
-        locations: [
-            { id: 'phuket', label: 'Phuket, Thailand' },
-        ],
-    },
-    {
-        region: 'Australia/NZ',
-        locations: [
-            { id: 'sydney', label: 'Sydney, Australia' },
-            { id: 'auckland', label: 'Auckland, New Zealand' },
-        ],
-    },
-];
-
-const conditions = [
-  { id: 'new', label: 'New' },
-  { id: 'used', label: 'Used' },
-];
-
-const fuelTypes = [
-  { id: 'diesel', label: 'Diesel' },
-  { id: 'gas', label: 'Gasoline' },
-  { id: 'electric', label: 'Electric' },
-];
-
-const hullMaterials = [
-  { id: 'fiberglass', label: 'Fiberglass' },
-  { id: 'aluminum', label: 'Aluminum' },
-  { id: 'steel', label: 'Steel' },
-];
-
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
 
 export function YachtFilters() {
   return (
@@ -188,6 +118,19 @@ export function YachtFilters() {
                 <div key={material.id} className="flex items-center space-x-2">
                   <Checkbox id={`material-${material.id}`} />
                   <Label htmlFor={`material-${material.id}`} className="font-normal">{material.label}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="features">
+          <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2 pt-2">
+              {featureOptions.map((feature) => (
+                <div key={feature.id} className="flex items-center space-x-2">
+                  <Checkbox id={`feature-filter-${feature.id}`} />
+                  <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                 </div>
               ))}
             </div>

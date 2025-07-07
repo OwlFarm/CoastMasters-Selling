@@ -10,11 +10,19 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Upload, Ship, X } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from '@/lib/data';
 
 const formSchema = z.object({
-  make: z.string().min(2, { message: 'Make must be at least 2 characters.' }),
+  boatType: z.string({ required_error: 'Please select a boat type.' }),
+  condition: z.string({ required_error: 'Please select the condition.' }),
+  location: z.string({ required_error: 'Please select a location.' }),
+  fuelType: z.string({ required_error: 'Please select a fuel type.' }),
+  hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
+  make: z.string({ required_error: 'Please select a make.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
     (a) => parseInt(z.string().parse(a), 10),
@@ -27,28 +35,13 @@ const formSchema = z.object({
   images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
 });
 
-const featureOptions = [
-    { id: 'gps', label: 'GPS Navigation' },
-    { id: 'autopilot', label: 'Autopilot System' },
-    { id: 'radar', label: 'Radar' },
-    { id: 'airConditioning', label: 'Air Conditioning' },
-    { id: 'heating', label: 'Heating' },
-    { id: 'generator', label: 'Generator' },
-    { id: 'bowThruster', label: 'Bow Thruster' },
-    { id: 'sternThruster', label: 'Stern Thruster' },
-    { id: 'waterMaker', label: 'Water Maker' },
-    { id: 'inverter', label: 'Inverter' },
-    { id: 'solarPanels', label: 'Solar Panels' },
-    { id: 'dinghy', label: 'Dinghy Included' },
-];
-
 export function SellForm() {
     const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            make: '',
+            make: undefined,
             model: '',
             year: new Date().getFullYear(),
             length: undefined,
@@ -56,6 +49,11 @@ export function SellForm() {
             description: '',
             features: [],
             images: [],
+            boatType: undefined,
+            condition: undefined,
+            location: undefined,
+            fuelType: undefined,
+            hullMaterial: undefined,
         },
     });
     
@@ -152,8 +150,33 @@ export function SellForm() {
                         <CardDescription>Provide the essential details about your yacht.</CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <FormField control={form.control} name="boatType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Boat Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                    {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                        <FormLabel className="font-normal">{type.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                         <FormField control={form.control} name="condition" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Condition</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                    {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={c.id} /></FormControl>
+                                        <FormLabel className="font-normal">{c.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
                         <FormField control={form.control} name="make" render={({ field }) => (
-                            <FormItem><FormLabel>Make</FormLabel><FormControl><Input placeholder="e.g., Beneteau" {...field} /></FormControl><FormMessage /></FormItem>
+                            <FormItem><FormLabel>Make</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a make" /></SelectTrigger></FormControl>
+                                    <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
+                                </Select>
+                            <FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="model" render={({ field }) => (
                             <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
@@ -164,8 +187,43 @@ export function SellForm() {
                         <FormField control={form.control} name="length" render={({ field }) => (
                             <FormItem><FormLabel>Length (ft)</FormLabel><FormControl><Input type="number" placeholder="e.g., 46" {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
+                        <FormField control={form.control} name="location" render={({ field }) => (
+                            <FormItem className="md:col-span-2"><FormLabel>Location</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
+                                    <SelectContent>
+                                        {locationsByRegion.map((region) => (
+                                            <SelectGroup key={region.region}>
+                                                <SelectLabel>{region.region}</SelectLabel>
+                                                {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
+                                            </SelectGroup>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            <FormMessage /></FormItem>
+                        )} />
                         <FormField control={form.control} name="price" render={({ field }) => (
                             <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="fuelType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Fuel Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                    {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                        <FormLabel className="font-normal">{type.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="hullMaterial" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Hull Material</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                    {hullMaterials.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={mat.id} /></FormControl>
+                                        <FormLabel className="font-normal">{mat.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
                         )} />
                     </CardContent>
                 </Card>
