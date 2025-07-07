@@ -18,7 +18,7 @@ export function HeroSection() {
                 >
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="container relative mx-auto px-4 text-center text-white">
-                        <div className="flex flex-col items-center justify-center space-y-8 py-24 md:py-32 lg:py-40">
+                        <div className="flex flex-col items-center justify-center space-y-8 py-16 md:py-20 lg:py-28">
                             <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                                 Your Voyage Begins Here
                             </h1>
