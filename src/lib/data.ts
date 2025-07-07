@@ -159,9 +159,14 @@ export const locationsByRegion = [
         ],
     },
     {
-        region: 'Australia/NZ',
+        region: 'Australia',
         locations: [
             { id: 'sydney', label: 'Sydney, Australia' },
+        ],
+    },
+    {
+        region: 'New Zealand',
+        locations: [
             { id: 'auckland', label: 'Auckland, New Zealand' },
         ],
     },
