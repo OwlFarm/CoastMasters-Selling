@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Upload, Ship } from 'lucide-react';
+import { Upload, Ship, X } from 'lucide-react';
 
 const formSchema = z.object({
   make: z.string().min(2, { message: 'Make must be at least 2 characters.' }),
@@ -24,7 +24,7 @@ const formSchema = z.object({
   price: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().positive('Must be a positive number')),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   features: z.array(z.string()).optional(),
-  images: z.any().optional(),
+  images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
 });
 
 const featureOptions = [
@@ -55,24 +55,14 @@ export function SellForm() {
             price: undefined,
             description: '',
             features: [],
+            images: [],
         },
     });
-
-    function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
-        if (event.target.files) {
-            const files = Array.from(event.target.files);
-            const newPreviews = files.map(file => URL.createObjectURL(file));
-            setImagePreviews(prev => [...prev, ...newPreviews].slice(0, 5)); // Limit to 5 previews
-            field.onChange(files);
-        }
-    }
     
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log('Form Submitted:', { ...values, images: imagePreviews });
         // In a real app, you would upload images and submit form data to a server.
     }
-
-    const { field } = form.register('images');
 
     return (
         <Form {...form}>
@@ -80,13 +70,13 @@ export function SellForm() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Yacht Photos</CardTitle>
-                        <CardDescription>Upload up to 5 high-quality images. The first image will be the main one.</CardDescription>
+                        <CardDescription>Upload a minimum of 5 and up to 10 high-quality images. The first image will be the main one.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <FormField
                             control={form.control}
                             name="images"
-                            render={() => (
+                            render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
                                         <div className="flex w-full items-center justify-center">
@@ -94,25 +84,65 @@ export function SellForm() {
                                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                     <Upload className="mb-4 h-8 w-8 text-muted-foreground" />
                                                     <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Max 5 images)</p>
+                                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Min 5, max 10 images)</p>
                                                 </div>
-                                                <Input id="dropzone-file" type="file" className="hidden" multiple accept="image/*" onChange={handleImageChange} />
+                                                <Input
+                                                  id="dropzone-file"
+                                                  type="file"
+                                                  className="hidden"
+                                                  multiple
+                                                  accept="image/*"
+                                                  onChange={(e) => {
+                                                    if (e.target.files) {
+                                                      const newFiles = Array.from(e.target.files);
+                                                      const currentFiles = field.value || [];
+                                                      const combinedFiles = [...currentFiles, ...newFiles];
+                                                      const limitedFiles = combinedFiles.slice(0, 10);
+                                                      
+                                                      field.onChange(limitedFiles);
+
+                                                      const previews = limitedFiles.map(file => {
+                                                        if (typeof file === 'string') return file;
+                                                        if (file instanceof File) {
+                                                          return URL.createObjectURL(file);
+                                                        }
+                                                        return '';
+                                                      }).filter(p => p);
+                                                      setImagePreviews(previews);
+                                                    }
+                                                  }}
+                                                />
                                             </label>
                                         </div>
                                     </FormControl>
                                     <FormMessage />
+                                    {imagePreviews.length > 0 && (
+                                        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-5">
+                                            {imagePreviews.map((src, index) => (
+                                                <div key={index} className="relative aspect-video">
+                                                    <Image src={src} alt={`Preview ${index + 1}`} fill className="rounded-md object-cover" />
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        size="icon"
+                                                        className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
+                                                        onClick={() => {
+                                                            const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+                                                            field.onChange(updatedFiles);
+
+                                                            const updatedPreviews = imagePreviews.filter((_: any, i: number) => i !== index);
+                                                            setImagePreviews(updatedPreviews);
+                                                        }}
+                                                    >
+                                                        <X className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </FormItem>
                             )}
                         />
-                        {imagePreviews.length > 0 && (
-                            <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-5">
-                                {imagePreviews.map((src, index) => (
-                                    <div key={index} className="relative aspect-video">
-                                        <Image src={src} alt={`Preview ${index + 1}`} fill objectFit="cover" className="rounded-md" />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
                     </CardContent>
                 </Card>
 
