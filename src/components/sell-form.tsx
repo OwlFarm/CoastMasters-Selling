@@ -14,7 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, belowDeckOptions } from '@/lib/data';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions } from '@/lib/data';
 import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
@@ -39,7 +39,7 @@ const formSchema = z.object({
   features: z.array(z.string()).optional(),
   usageStyles: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
-  belowDeck: z.array(z.string()).optional(),
+  cabin: z.array(z.string()).optional(),
   images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
 });
 
@@ -61,7 +61,7 @@ export function SellForm() {
             boatType: undefined,
             usageStyles: [],
             deck: [],
-            belowDeck: [],
+            cabin: [],
             condition: undefined,
             location: undefined,
             fuelType: undefined,
@@ -403,14 +403,14 @@ export function SellForm() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Below Deck Features</CardTitle>
-                        <CardDescription>Select all features included below deck.</CardDescription>
+                        <CardTitle>Cabin Features</CardTitle>
+                        <CardDescription>Select all features included in the cabin.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <FormField control={form.control} name="belowDeck" render={() => (
+                        <FormField control={form.control} name="cabin" render={() => (
                             <FormItem className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                                {belowDeckOptions.map((item) => (
-                                    <FormField key={item.id} control={form.control} name="belowDeck" render={({ field }) => (
+                                {cabinOptions.map((item) => (
+                                    <FormField key={item.id} control={form.control} name="cabin" render={({ field }) => (
                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                             <FormControl>
                                                 <Checkbox

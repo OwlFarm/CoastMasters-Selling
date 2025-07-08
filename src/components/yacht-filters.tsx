@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, belowDeckOptions } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
@@ -85,14 +85,14 @@ export function YachtFilters() {
     }
   }
 
-  const belowDeckNumCols = 5;
-  const belowDeckNumRows = Math.ceil(belowDeckOptions.length / belowDeckNumCols);
-  const columnSortedBelowDeck = [];
-  for (let i = 0; i < belowDeckNumRows; i++) {
-    for (let j = 0; j < belowDeckNumCols; j++) {
-      const index = j * belowDeckNumRows + i;
-      if (index < belowDeckOptions.length) {
-        columnSortedBelowDeck.push(belowDeckOptions[index]);
+  const cabinNumCols = 5;
+  const cabinNumRows = Math.ceil(cabinOptions.length / cabinNumCols);
+  const columnSortedCabin = [];
+  for (let i = 0; i < cabinNumRows; i++) {
+    for (let j = 0; j < cabinNumCols; j++) {
+      const index = j * cabinNumRows + i;
+      if (index < cabinOptions.length) {
+        columnSortedCabin.push(cabinOptions[index]);
       }
     }
   }
@@ -150,7 +150,7 @@ export function YachtFilters() {
           </div>
       </div>
       
-      <Accordion type="multiple" defaultValue={['boatType', 'builder', 'location']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'builder', 'hull']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -198,70 +198,6 @@ export function YachtFilters() {
                     onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
                   />
                   <Label htmlFor={`make-${make.id}`} className="font-normal">{make.label}</Label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="location">
-          <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
-          <AccordionContent>
-             <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="grid h-auto w-full grid-cols-7 justify-between">
-                  {locationsByRegion.map((regionData) => (
-                    <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
-                  ))}
-                </TabsList>
-                {locationsByRegion.map((regionData) => {
-                    const groupedLocations = regionData.locations.reduce((acc, loc) => {
-                        const sub = loc.subRegion as keyof typeof acc;
-                        acc[sub] = acc[sub] || [];
-                        acc[sub].push(loc);
-                        return acc;
-                    }, {} as Record<'North' | 'South' | 'East' | 'West', (typeof regionData.locations)>);
-
-                    const subRegions = ['North', 'South', 'East', 'West'];
-                    
-                    return (
-                        <TabsContent key={regionData.region} value={slugify(regionData.region)}>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 pt-4">
-                                {subRegions.map((subRegion) => {
-                                    const locationsInSubRegion = groupedLocations[subRegion as keyof typeof groupedLocations] || [];
-                                    return (
-                                        <div key={subRegion}>
-                                            <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
-                                            <div className="flex flex-col gap-2 mt-2">
-                                                {locationsInSubRegion.length > 0 ? (
-                                                    locationsInSubRegion.map((location) => (
-                                                        <div key={location.id} className="flex items-center space-x-2">
-                                                            <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
-                                                            <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
-                                                                {location.label}
-                                                            </Label>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-xs text-muted-foreground italic">No locations</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </TabsContent>
-                    );
-                })}
-              </Tabs>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="fuel">
-          <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2 pt-2">
-              {fuelTypes.map((fuel) => (
-                <div key={fuel.id} className="flex items-center space-x-2">
-                  <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
-                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
                 </div>
               ))}
             </div>
@@ -342,14 +278,14 @@ export function YachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="below-deck">
-          <AccordionTrigger className="font-semibold">Below Deck</AccordionTrigger>
+        <AccordionItem value="cabin">
+          <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
-              {columnSortedBelowDeck.map((feature) => (
+              {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`below-deck-filter-${feature.id}`} name="belowDeck" value={feature.id} />
-                  <Label htmlFor={`below-deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                  <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
+                  <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                 </div>
               ))}
             </div>
@@ -363,6 +299,70 @@ export function YachtFilters() {
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
                   <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+         <AccordionItem value="location">
+          <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
+          <AccordionContent>
+             <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
+                <TabsList className="grid h-auto w-full grid-cols-7 justify-between">
+                  {locationsByRegion.map((regionData) => (
+                    <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
+                  ))}
+                </TabsList>
+                {locationsByRegion.map((regionData) => {
+                    const groupedLocations = regionData.locations.reduce((acc, loc) => {
+                        const sub = loc.subRegion as keyof typeof acc;
+                        acc[sub] = acc[sub] || [];
+                        acc[sub].push(loc);
+                        return acc;
+                    }, {} as Record<'North' | 'South' | 'East' | 'West', (typeof regionData.locations)>);
+
+                    const subRegions = ['North', 'South', 'East', 'West'];
+                    
+                    return (
+                        <TabsContent key={regionData.region} value={slugify(regionData.region)}>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 pt-4">
+                                {subRegions.map((subRegion) => {
+                                    const locationsInSubRegion = groupedLocations[subRegion as keyof typeof groupedLocations] || [];
+                                    return (
+                                        <div key={subRegion}>
+                                            <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
+                                            <div className="flex flex-col gap-2 mt-2">
+                                                {locationsInSubRegion.length > 0 ? (
+                                                    locationsInSubRegion.map((location) => (
+                                                        <div key={location.id} className="flex items-center space-x-2">
+                                                            <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
+                                                            <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
+                                                                {location.label}
+                                                            </Label>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p className="text-xs text-muted-foreground italic">No locations</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </TabsContent>
+                    );
+                })}
+              </Tabs>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="fuel">
+          <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2 pt-2">
+              {fuelTypes.map((fuel) => (
+                <div key={fuel.id} className="flex items-center space-x-2">
+                  <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
+                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
                 </div>
               ))}
             </div>

@@ -277,7 +277,7 @@ export const deckOptions = [
     { id: 'swim-platform', label: 'Swim Platform' },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
-export const belowDeckOptions = [
+export const cabinOptions = [
     { id: 'nav-station', label: 'Navigation Station' },
     { id: 'galley-fridge', label: 'Refrigerator' },
     { id: 'galley-freezer', label: 'Freezer' },

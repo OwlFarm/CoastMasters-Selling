@@ -34,7 +34,7 @@ const SmartSearchInputSchema = z.object({
   propellerTypes: z.array(z.string()).optional().describe('Selected propeller types.'),
   features: z.array(z.string()).optional().describe('Selected features and equipment.'),
   deck: z.array(z.string()).optional().describe('Selected deck features.'),
-  belowDeck: z.array(z.string()).optional().describe('Selected below deck features.'),
+  cabin: z.array(z.string()).optional().describe('Selected cabin features.'),
 });
 export type SmartSearchInput = z.infer<typeof SmartSearchInputSchema>;
 
@@ -92,7 +92,7 @@ Here are the user's search criteria. A field not provided means the user has no 
 - Propeller Type: {{#if propellerTypes}}{{#each propellerTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Features: {{#if features}}{{#each features}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Deck Features: {{#if deck}}{{#each deck}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
-- Below Deck Features: {{#if belowDeck}}{{#each belowDeck}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Cabin Features: {{#if cabin}}{{#each cabin}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 
 Provide your response in the specified JSON format.`,
 });
