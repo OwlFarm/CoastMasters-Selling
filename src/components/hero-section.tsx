@@ -18,7 +18,7 @@ export function HeroSection() {
                     className="relative w-full h-[600px] overflow-hidden"
                 >
                     <Image
-                        src="https://placehold.co/1920x1080.png"
+                        src="https://placehold.co/1920x1080/34495E/FFFFFF.png"
                         alt="Luxury yacht at sunset"
                         fill
                         className="object-cover"
