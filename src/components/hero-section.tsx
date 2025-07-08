@@ -20,7 +20,7 @@ export function HeroSection() {
                 >
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="container relative mx-auto px-4 text-center text-white">
-                        <div className="flex flex-col items-center justify-center py-24 md:py-32">
+                        <div className="flex flex-col items-center justify-center pt-24 pb-16 md:pt-32 md:pb-16">
                             <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                                 Your Voyage Begins Here
                             </h1>
@@ -30,12 +30,12 @@ export function HeroSection() {
                             <div className="mt-8 w-full">
                                 <YachtSearch />
                             </div>
-                            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                            <div className="mt-16 flex flex-col gap-4 sm:flex-row">
                                 <CollapsibleTrigger asChild>
                                     <Button
                                         variant="default"
                                         size="lg"
-                                        className="bg-accent px-10 text-lg font-bold text-accent-foreground hover:bg-accent/90 md:text-xl"
+                                        className="bg-accent px-10 text-lg text-accent-foreground hover:bg-accent/90 md:text-xl"
                                     >
                                         Buy a Boat
                                     </Button>
@@ -43,7 +43,7 @@ export function HeroSection() {
                                 <Button
                                     variant="secondary"
                                     size="lg"
-                                    className="px-10 text-lg font-bold md:text-xl"
+                                    className="px-10 text-lg md:text-xl"
                                     asChild
                                 >
                                     <Link href="/sell">Sell a Boat</Link>
