@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { YachtListings } from '@/components/yacht-listings';
@@ -21,27 +20,34 @@ import {
 } from "@/components/ui/select"
 import { useToast } from '@/hooks/use-toast';
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" size="lg" disabled={pending} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-      {pending ? (
-        <>
-          <LoaderCircle className="mr-2 h-5 w-5 animate-spin" />
-          Applying Filters...
-        </>
-      ) : (
-        'Apply Filters'
-      )}
-    </Button>
-  );
-}
-
-
 export default function YachtsPage() {
   const initialState: FilteredSearchState = {};
   const [state, formAction] = useActionState(handleFilteredSearch, initialState);
   const { toast } = useToast();
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const [isFiltering, setIsFiltering] = React.useState(false);
+
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleFormChange = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    setIsFiltering(true);
+
+    timeoutRef.current = setTimeout(() => {
+      if (formRef.current) {
+        const formData = new FormData(formRef.current);
+        formAction(formData);
+      }
+    }, 750);
+  };
+  
+  React.useEffect(() => {
+    setIsFiltering(false);
+  }, [state]);
+
 
   React.useEffect(() => {
     if (state.error) {
@@ -57,14 +63,14 @@ export default function YachtsPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-1">
-        <form action={formAction}>
+        <form ref={formRef} action={formAction} onChange={handleFormChange}>
             <div className="container mx-auto px-4 py-8 md:py-12">
                 <div className="text-left mb-8">
                     <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
                         Find Your Yacht
                     </h1>
                     <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-                        Use our detailed filters and AI-powered search to discover the perfect vessel. Yachts are available in a variety of models and rigs, including racing boats, sloops, schooners, catamarans, and more.
+                        Use our detailed filters and AI-powered search to discover the perfect vessel. Your results will update automatically as you refine your search.
                     </p>
                 </div>
                 
@@ -73,16 +79,18 @@ export default function YachtsPage() {
                       <div className="sticky top-20 space-y-6">
                         <YachtFilters />
                          <div className="flex flex-col gap-2">
-                          <SubmitButton />
                           <Button size="lg" variant="outline" type="reset">Clear Filters</Button>
                         </div>
                       </div>
                     </aside>
                     <div className="lg:col-span-3">
                         <div className="flex items-center justify-between mb-6">
-                            <p className="text-sm text-muted-foreground">
-                              {state?.result ? `Showing AI recommendations` : `Showing ${featuredYachts.length} featured results`}
-                            </p>
+                             <div className="flex items-center gap-2">
+                              <p className="text-sm text-muted-foreground">
+                                {state?.result ? `Showing AI recommendations` : `Showing ${featuredYachts.length} featured results`}
+                              </p>
+                              {isFiltering && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                            </div>
                             <div className="flex items-center gap-2">
                                <span className="text-sm font-medium">Sort By:</span>
                                <Select defaultValue="recommended">
