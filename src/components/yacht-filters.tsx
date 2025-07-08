@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions, usageStyles } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
@@ -183,7 +183,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
              <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="flex h-auto w-full flex-wrap justify-evenly">
+                <TabsList className="flex h-auto w-full flex-wrap justify-between">
                   {locationsByRegion.map((regionData) => (
                     <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
                   ))}
@@ -243,16 +243,65 @@ export function YachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="hullMaterial">
-          <AccordionTrigger className="font-semibold">Hull Material</AccordionTrigger>
+        <AccordionItem value="hull">
+          <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
-              {hullMaterials.map((material) => (
-                <div key={material.id} className="flex items-center space-x-2">
-                  <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
-                  <Label htmlFor={`material-${material.id}`} className="font-normal">{material.label}</Label>
-                </div>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-4 pt-4">
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
+                  <div className="flex flex-col gap-2 mt-2">
+                    {hullMaterialOptions.map((material) => (
+                      <div key={material.id} className="flex items-center space-x-2">
+                        <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
+                        <Label htmlFor={`material-${material.id}`} className="font-normal text-sm">{material.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
+                  <div className="flex flex-col gap-2 mt-2">
+                    {hullShapeOptions.map((shape) => (
+                      <div key={shape.id} className="flex items-center space-x-2">
+                        <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
+                        <Label htmlFor={`shape-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
+                  <div className="flex flex-col gap-2 mt-2">
+                    {keelTypeOptions.map((keel) => (
+                      <div key={keel.id} className="flex items-center space-x-2">
+                        <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
+                        <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
+                  <div className="flex flex-col gap-2 mt-2">
+                    {rudderTypeOptions.map((rudder) => (
+                      <div key={rudder.id} className="flex items-center space-x-2">
+                        <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
+                        <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+               <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
+                  <div className="flex flex-col gap-2 mt-2">
+                    {propellerTypeOptions.map((prop) => (
+                      <div key={prop.id} className="flex items-center space-x-2">
+                        <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
+                        <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>

@@ -72,6 +72,10 @@ export async function handleFilteredSearch(
     locations: formData.getAll('locations').map(String).filter(Boolean),
     fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
     hullMaterials: formData.getAll('hullMaterials').map(String).filter(Boolean),
+    hullShapes: formData.getAll('hullShapes').map(String).filter(Boolean),
+    keelTypes: formData.getAll('keelTypes').map(String).filter(Boolean),
+    rudderTypes: formData.getAll('rudderTypes').map(String).filter(Boolean),
+    propellerTypes: formData.getAll('propellerTypes').map(String).filter(Boolean),
     features: formData.getAll('features').map(String).filter(Boolean),
   };
 

@@ -14,7 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions, usageStyles } from '@/lib/data';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions } from '@/lib/data';
 import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
@@ -23,6 +23,10 @@ const formSchema = z.object({
   location: z.string({ required_error: 'Please select a location.' }),
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
   hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
+  hullShape: z.string({ required_error: 'Please select a hull shape.' }),
+  keelType: z.string({ required_error: 'Please select a keel type.' }),
+  rudderType: z.string({ required_error: 'Please select a rudder type.' }),
+  propellerType: z.string({ required_error: 'Please select a propeller type.' }),
   make: z.string({ required_error: 'Please select a builder.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
@@ -58,6 +62,10 @@ export function SellForm() {
             location: undefined,
             fuelType: undefined,
             hullMaterial: undefined,
+            hullShape: undefined,
+            keelType: undefined,
+            rudderType: undefined,
+            propellerType: undefined,
         },
     });
     
@@ -254,7 +262,7 @@ export function SellForm() {
                         )} />
                         <FormField control={form.control} name="fuelType" render={({ field }) => (
                             <FormItem className="space-y-3"><FormLabel>Fuel Type</FormLabel><FormControl>
-                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
                                     {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                         <FormLabel className="font-normal">{type.label}</FormLabel>
@@ -262,12 +270,52 @@ export function SellForm() {
                                 </RadioGroup>
                             </FormControl><FormMessage /></FormItem>
                         )} />
-                        <FormField control={form.control} name="hullMaterial" render={({ field }) => (
+                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                             <FormItem className="space-y-3"><FormLabel>Hull Material</FormLabel><FormControl>
-                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
-                                    {hullMaterials.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
                                         <FormControl><RadioGroupItem value={mat.id} /></FormControl>
                                         <FormLabel className="font-normal">{mat.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="hullShape" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Hull Shape</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={shape.id} /></FormControl>
+                                        <FormLabel className="font-normal">{shape.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="keelType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Keel Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={keel.id} /></FormControl>
+                                        <FormLabel className="font-normal">{keel.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="rudderType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Rudder Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
+                                        <FormLabel className="font-normal">{rudder.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="propellerType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Propeller Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                                    {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={prop.id} /></FormControl>
+                                        <FormLabel className="font-normal">{prop.label}</FormLabel>
                                     </FormItem>))}
                                 </RadioGroup>
                             </FormControl><FormMessage /></FormItem>

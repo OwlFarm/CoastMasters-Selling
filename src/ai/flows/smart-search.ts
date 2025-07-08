@@ -28,6 +28,10 @@ const SmartSearchInputSchema = z.object({
   locations: z.array(z.string()).optional().describe('Selected locations.'),
   fuelTypes: z.array(z.string()).optional().describe('Selected fuel types.'),
   hullMaterials: z.array(z.string()).optional().describe('Selected hull materials.'),
+  hullShapes: z.array(z.string()).optional().describe('Selected hull shapes.'),
+  keelTypes: z.array(z.string()).optional().describe('Selected keel types.'),
+  rudderTypes: z.array(z.string()).optional().describe('Selected rudder types.'),
+  propellerTypes: z.array(z.string()).optional().describe('Selected propeller types.'),
   features: z.array(z.string()).optional().describe('Selected features and equipment.'),
 });
 export type SmartSearchInput = z.infer<typeof SmartSearchInputSchema>;
@@ -80,6 +84,10 @@ Here are the user's search criteria. A field not provided means the user has no 
 - Locations: {{#if locations}}{{#each locations}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Fuel Types: {{#if fuelTypes}}{{#each fuelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Hull Materials: {{#if hullMaterials}}{{#each hullMaterials}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Hull Shape: {{#if hullShapes}}{{#each hullShapes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Keel Type: {{#if keelTypes}}{{#each keelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Rudder Type: {{#if rudderTypes}}{{#each rudderTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Propeller Type: {{#if propellerTypes}}{{#each propellerTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Features: {{#if features}}{{#each features}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 
 Provide your response in the specified JSON format.`,

@@ -210,11 +210,44 @@ export const fuelTypes = [
   { id: 'electric', label: 'Electric' },
 ];
 
-export const hullMaterials = [
+export const hullMaterialOptions = [
   { id: 'fiberglass', label: 'Fiberglass' },
   { id: 'aluminum', label: 'Aluminum' },
   { id: 'steel', label: 'Steel' },
+  { id: 'wood', label: 'Wood' },
+  { id: 'composite', label: 'Composite' },
 ];
+
+export const hullShapeOptions = [
+    { id: 'displacement', label: 'Displacement' },
+    { id: 'semi-displacement', label: 'Semi-Displacement' },
+    { id: 'planing', label: 'Planing' },
+    { id: 'catamaran', label: 'Catamaran' },
+    { id: 'trimaran', label: 'Trimaran' },
+];
+
+export const keelTypeOptions = [
+    { id: 'full', label: 'Full Keel' },
+    { id: 'fin', label: 'Fin Keel' },
+    { id: 'winged', label: 'Winged Keel' },
+    { id: 'bulb', label: 'Bulb Keel' },
+    { id: 'daggerboard', label: 'Daggerboard' },
+];
+
+export const rudderTypeOptions = [
+    { id: 'skeg-hung', label: 'Skeg-Hung' },
+    { id: 'spade', label: 'Spade' },
+    { id: 'transom-hung', label: 'Transom-Hung' },
+    { id: 'keel-hung', label: 'Keel-Hung' },
+];
+
+export const propellerTypeOptions = [
+    { id: 'fixed-pitch', label: 'Fixed-Pitch' },
+    { id: 'folding', label: 'Folding' },
+    { id: 'feathering', label: 'Feathering' },
+    { id: 'controllable-pitch', label: 'Controllable-Pitch' },
+];
+
 
 export const featureOptions = [
     { id: 'gps', label: 'GPS Navigation' },
