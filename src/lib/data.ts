@@ -124,8 +124,8 @@ export const boatTypes = [
 ];
 
 export const usageStyles = [
-  { id: 'ocean', label: 'Ocean' },
-  { id: 'coast', label: 'Coast' },
+  { id: 'blue-water', label: 'Blue Water' },
+  { id: 'in-shore', label: 'In Shore' },
   { id: 'island', label: 'Island' },
   { id: 'off-grid', label: 'Off Grid' },
   { id: 'project', label: 'Project' },

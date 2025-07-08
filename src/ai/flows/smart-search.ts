@@ -24,7 +24,7 @@ const SmartSearchInputSchema = z.object({
   yearMin: z.number().optional().describe('Minimum manufacturing year.'),
   yearMax: z.number().optional().describe('Maximum manufacturing year.'),
   boatTypes: z.array(z.string()).optional().describe('Selected boat types.'),
-  usageStyles: z.array(z.string()).optional().describe('Selected usage styles (e.g., ocean, coast).'),
+  usageStyles: z.array(z.string()).optional().describe('Selected usage styles (e.g., blue-water, in-shore).'),
   builders: z.array(z.string()).optional().describe('Selected builders.'),
   hullMaterials: z.array(z.string()).optional().describe('Selected hull materials.'),
   hullShapes: z.array(z.string()).optional().describe('Selected hull shapes.'),
