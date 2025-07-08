@@ -18,10 +18,15 @@ export function YachtFilters() {
     const value = event.target.value;
     setBuilderSearch(value);
 
+    if (value.trim() === '') {
+        setSelectedBuilders([]);
+        return;
+    }
+
     const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
 
     const matchedMakeIds = allMakes
-      .filter(make => searchTerms.includes(make.label.toLowerCase()))
+      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
       .map(make => make.id);
 
     setSelectedBuilders(matchedMakeIds);
@@ -30,11 +35,17 @@ export function YachtFilters() {
   const handleBuilderCheckboxChange = (makeId: string, checked: boolean | 'indeterminate') => {
       setSelectedBuilders(prevSelected => {
           const isChecked = checked === true;
-          if (isChecked) {
-              return Array.from(new Set([...prevSelected, makeId]));
-          } else {
-              return prevSelected.filter(id => id !== makeId);
-          }
+          const newSelection = isChecked 
+            ? Array.from(new Set([...prevSelected, makeId]))
+            : prevSelected.filter(id => id !== makeId);
+          
+          const newSearchText = allMakes
+            .filter(make => newSelection.includes(make.id))
+            .map(make => make.label)
+            .join(', ');
+
+          setBuilderSearch(newSearchText);
+          return newSelection;
       });
   };
 
@@ -66,22 +77,24 @@ export function YachtFilters() {
 
   return (
     <>
+      <input type="hidden" name="lengthUnit" value={lengthUnit} />
+
       <div className="flex flex-row justify-center gap-4 pb-8">
         {conditions.map((condition) => (
           <div key={condition.id} className="flex items-center space-x-2">
-            <Checkbox id={`condition-${condition.id}`} />
+            <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
             <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
+      <div className="grid grid-cols-1 gap-4 pb-8">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" className="w-full" />
+                  <Input name="priceMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" className="w-full" />
+                  <Input name="priceMax" type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
           <div className="space-y-2">
@@ -98,17 +111,17 @@ export function YachtFilters() {
                   </div>
               </div>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" className="w-full" />
+                  <Input name="lengthMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" className="w-full" />
+                  <Input name="lengthMax" type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
           <div className="space-y-2">
               <Label>Year</Label>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" className="w-full" />
+                  <Input name="yearMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" className="w-full" />
+                  <Input name="yearMax" type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
       </div>
@@ -120,7 +133,7 @@ export function YachtFilters() {
               <div className="flex flex-row gap-4 pt-2">
                 {boatTypes.map((type) => (
                   <div key={type.id} className="flex items-center space-x-2">
-                    <Checkbox id={`type-${type.id}`} />
+                    <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
                     <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
                   </div>
                 ))}
@@ -134,6 +147,7 @@ export function YachtFilters() {
               <div className="col-span-2">
                 <Input 
                   id="builder-search"
+                  name="builderSearch"
                   placeholder="Search Builders (comma-separated)"
                   value={builderSearch}
                   onChange={handleBuilderSearchChange}
@@ -144,6 +158,8 @@ export function YachtFilters() {
                 <div key={make.id} className="flex items-center space-x-2">
                   <Checkbox
                     id={`make-${make.id}`}
+                    name="builders"
+                    value={make.id}
                     checked={selectedBuilders.includes(make.id)}
                     onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
                   />
@@ -167,7 +183,7 @@ export function YachtFilters() {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2 pt-4">
                       {regionData.locations.map((location) => (
                         <div key={location.id} className="flex items-center space-x-2">
-                          <Checkbox id={`location-${location.id}`} />
+                          <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
                           <Label htmlFor={`location-${location.id}`} className="font-normal">{location.label}</Label>
                         </div>
                       ))}
@@ -183,7 +199,7 @@ export function YachtFilters() {
             <div className="space-y-2 pt-2">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
-                  <Checkbox id={`fuel-${fuel.id}`} />
+                  <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
                   <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
                 </div>
               ))}
@@ -196,7 +212,7 @@ export function YachtFilters() {
             <div className="space-y-2 pt-2">
               {hullMaterials.map((material) => (
                 <div key={material.id} className="flex items-center space-x-2">
-                  <Checkbox id={`material-${material.id}`} />
+                  <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
                   <Label htmlFor={`material-${material.id}`} className="font-normal">{material.label}</Label>
                 </div>
               ))}
@@ -209,7 +225,7 @@ export function YachtFilters() {
             <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`feature-filter-${feature.id}`} />
+                  <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
                   <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                 </div>
               ))}
