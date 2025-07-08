@@ -183,7 +183,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
              <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="flex flex-wrap h-auto justify-center gap-4">
+                <TabsList className="flex h-auto w-full flex-wrap justify-evenly">
                   {locationsByRegion.map((regionData) => (
                     <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
                   ))}
