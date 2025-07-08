@@ -21,7 +21,7 @@ export function HeroSection() {
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="container relative mx-auto px-4 text-center text-white">
                         <div className="flex flex-col items-center justify-center pt-24 pb-16 md:pt-32 md:pb-16">
-                            <h1 className="max-w-2xl font-headline text-6xl font-bold tracking-tight whitespace-nowrap md:text-7xl">
+                            <h1 className="max-w-2xl font-headline text-5xl font-bold tracking-tight md:text-6xl">
                                 Your Voyage Begins Here
                             </h1>
                             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
