@@ -69,6 +69,12 @@ export const featuredYachts: Yacht[] = [
   },
 ];
 
+export const priceValues = [
+    10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
+    150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000,
+    750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000
+];
+
 export const boatTypes = [
   { id: 'motor', label: 'Motor' },
   { id: 'sailing', label: 'Sailing' },

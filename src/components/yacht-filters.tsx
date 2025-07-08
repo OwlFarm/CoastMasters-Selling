@@ -6,37 +6,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const priceValues = [
-    10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
-    150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000,
-    750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000
-];
-
-const formatPrice = (value: number) => {
-    if (value >= 1000000) return `$${value / 1000000}M`;
-    return `$${value / 1000}k`;
-};
-
-const minPriceOptions = priceValues.map(value => ({ value: String(value), label: formatPrice(value) }));
-
-const maxPriceOptions = [
-    { value: '10000', label: '< $10k' },
-    ...minPriceOptions
-];
-
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
   const [builderSearch, setBuilderSearch] = React.useState('');
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
-  const [priceMin, setPriceMin] = React.useState<string | undefined>();
-  const [priceMax, setPriceMax] = React.useState<string | undefined>();
-
 
   const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -125,6 +102,9 @@ export function YachtFilters() {
 
   return (
     <>
+      <datalist id="price-list">
+        {priceValues.map(value => <option key={value} value={value} />)}
+      </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
       <div className="flex flex-row justify-center gap-8 pb-8">
@@ -140,33 +120,9 @@ export function YachtFilters() {
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
-                  <input type="hidden" name="priceMin" value={priceMin || ''} />
-                  <Select value={priceMin} onValueChange={setPriceMin}>
-                      <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Min" />
-                      </SelectTrigger>
-                      <SelectContent>
-                          {minPriceOptions.map(option => (
-                              <SelectItem key={`min-${option.value}`} value={option.value}>
-                                  {option.label}
-                              </SelectItem>
-                          ))}
-                      </SelectContent>
-                  </Select>
+                  <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
                   <span className="text-muted-foreground">-</span>
-                  <input type="hidden" name="priceMax" value={priceMax || ''} />
-                  <Select value={priceMax} onValueChange={setPriceMax}>
-                      <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Max" />
-                      </SelectTrigger>
-                      <SelectContent>
-                          {maxPriceOptions.map(option => (
-                              <SelectItem key={`max-${option.value}`} value={option.value}>
-                                  {option.label}
-                              </SelectItem>
-                          ))}
-                      </SelectContent>
-                  </Select>
+                  <Input name="priceMax" type="number" placeholder="Max" className="w-full" list="price-list" />
               </div>
           </div>
           <div className="space-y-2">
