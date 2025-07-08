@@ -15,6 +15,7 @@ import {z} from 'genkit';
 const SmartSearchInputSchema = z.object({
   query: z.string().optional().describe('The natural language query to search for yachts.'),
   conditions: z.array(z.string()).optional().describe('Selected conditions (e.g., new, used).'),
+  listingTypes: z.array(z.string()).optional().describe('Selected listing types (e.g., private, broker).'),
   priceMin: z.number().optional().describe('Minimum price.'),
   priceMax: z.number().optional().describe('Maximum price.'),
   lengthMin: z.number().optional().describe('Minimum length.'),
@@ -25,8 +26,6 @@ const SmartSearchInputSchema = z.object({
   boatTypes: z.array(z.string()).optional().describe('Selected boat types.'),
   usageStyles: z.array(z.string()).optional().describe('Selected usage styles (e.g., ocean, coast).'),
   builders: z.array(z.string()).optional().describe('Selected builders.'),
-  locations: z.array(z.string()).optional().describe('Selected locations.'),
-  fuelTypes: z.array(z.string()).optional().describe('Selected fuel types.'),
   hullMaterials: z.array(z.string()).optional().describe('Selected hull materials.'),
   hullShapes: z.array(z.string()).optional().describe('Selected hull shapes.'),
   keelTypes: z.array(z.string()).optional().describe('Selected keel types.'),
@@ -35,6 +34,8 @@ const SmartSearchInputSchema = z.object({
   features: z.array(z.string()).optional().describe('Selected features and equipment.'),
   deck: z.array(z.string()).optional().describe('Selected deck features.'),
   cabin: z.array(z.string()).optional().describe('Selected cabin features.'),
+  fuelTypes: z.array(z.string()).optional().describe('Selected fuel types.'),
+  locations: z.array(z.string()).optional().describe('Selected locations.'),
 });
 export type SmartSearchInput = z.infer<typeof SmartSearchInputSchema>;
 
@@ -77,14 +78,13 @@ If, after relaxing criteria, you still cannot find any relevant yachts, return a
 Here are the user's search criteria. A field not provided means the user has no preference for it.
 - Natural Language Query: {{{query}}}
 - Condition: {{#if conditions}}{{#each conditions}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Listing Type: {{#if listingTypes}}{{#each listingTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Price Range: {{#if priceMin}}{{priceMin}}{{else}}any{{/if}} - {{#if priceMax}}{{priceMax}}{{else}}any{{/if}} USD
 - Length Range: {{#if lengthMin}}{{lengthMin}}{{else}}any{{/if}} - {{#if lengthMax}}{{lengthMax}}{{else}}any{{/if}} {{#if lengthUnit}}{{lengthUnit}}{{/if}}
 - Year Range: {{#if yearMin}}{{yearMin}}{{else}}any{{/if}} - {{#if yearMax}}{{yearMax}}{{else}}any{{/if}}
 - Boat Types: {{#if boatTypes}}{{#each boatTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Usage Styles: {{#if usageStyles}}{{#each usageStyles}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Builders: {{#if builders}}{{#each builders}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
-- Locations: {{#if locations}}{{#each locations}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
-- Fuel Types: {{#if fuelTypes}}{{#each fuelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Hull Materials: {{#if hullMaterials}}{{#each hullMaterials}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Hull Shape: {{#if hullShapes}}{{#each hullShapes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Keel Type: {{#if keelTypes}}{{#each keelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
@@ -93,6 +93,8 @@ Here are the user's search criteria. A field not provided means the user has no 
 - Features: {{#if features}}{{#each features}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Deck Features: {{#if deck}}{{#each deck}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Cabin Features: {{#if cabin}}{{#each cabin}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Fuel Types: {{#if fuelTypes}}{{#each fuelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Locations: {{#if locations}}{{#each locations}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 
 Provide your response in the specified JSON format.`,
 });

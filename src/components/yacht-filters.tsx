@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
@@ -108,13 +108,24 @@ export function YachtFilters() {
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
       <div className="flex flex-row justify-center gap-8 pb-8">
-        {conditions.map((condition) => (
-          <div key={condition.id} className="flex items-center space-x-2">
-            <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
-            <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
-          </div>
-        ))}
+        <div className="flex items-center gap-8">
+            {conditions.map((condition) => (
+            <div key={condition.id} className="flex items-center space-x-2">
+                <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
+                <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+            </div>
+            ))}
+        </div>
+        <div className="flex items-center gap-8 border-l pl-8">
+            {listingTypes.map((type) => (
+            <div key={type.id} className="flex items-center space-x-2">
+                <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
+                <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
+            </div>
+            ))}
+        </div>
       </div>
+
 
       <div className="grid grid-cols-1 gap-x-8 gap-y-4 pb-8 md:grid-cols-3">
           <div className="space-y-2">

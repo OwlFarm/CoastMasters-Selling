@@ -5,6 +5,7 @@ export const featuredYachts: Yacht[] = [
     id: 1,
     name: 'Serenity Cruiser',
     type: 'Motor',
+    listingType: 'Broker',
     price: 1250000,
     year: 2022,
     length: 75,
@@ -16,6 +17,7 @@ export const featuredYachts: Yacht[] = [
     id: 2,
     name: 'Ocean Voyager',
     type: 'Sailing',
+    listingType: 'Private',
     price: 850000,
     year: 2020,
     length: 60,
@@ -27,6 +29,7 @@ export const featuredYachts: Yacht[] = [
     id: 3,
     name: 'Twin Hull Drifter',
     type: 'Catamaran',
+    listingType: 'Broker',
     price: 975000,
     year: 2023,
     length: 55,
@@ -38,6 +41,7 @@ export const featuredYachts: Yacht[] = [
     id: 4,
     name: 'Azure Dream',
     type: 'Motor',
+    listingType: 'Broker',
     price: 2500000,
     year: 2021,
     length: 90,
@@ -49,6 +53,7 @@ export const featuredYachts: Yacht[] = [
     id: 5,
     name: 'Wind Whisperer',
     type: 'Sailing',
+    listingType: 'Private',
     price: 480000,
     year: 2019,
     length: 45,
@@ -60,6 +65,7 @@ export const featuredYachts: Yacht[] = [
     id: 6,
     name: 'Coastal Runner',
     type: 'Motor',
+    listingType: 'Broker',
     price: 720000,
     year: 2022,
     length: 50,
@@ -70,9 +76,9 @@ export const featuredYachts: Yacht[] = [
 ];
 
 export const priceValues = [
-    10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
-    150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000,
-    750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000
+    '10000', '20000', '30000', '40000', '50000', '60000', '70000', '80000', '90000', '100000',
+    '150000', '200000', '250000', '300000', '350000', '400000', '450000', '500000',
+    '750000', '1000000', '1500000', '2000000', '3000000', '5000000', '10000000'
 ];
 
 export const boatTypes = [
@@ -208,6 +214,11 @@ export const locationsByRegion = [
 export const conditions = [
   { id: 'new', label: 'New' },
   { id: 'used', label: 'Used' },
+];
+
+export const listingTypes = [
+  { id: 'private', label: 'Private' },
+  { id: 'broker', label: 'Broker' },
 ];
 
 export const fuelTypes = [

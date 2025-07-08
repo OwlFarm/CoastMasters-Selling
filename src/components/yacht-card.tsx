@@ -32,7 +32,10 @@ export function YachtCard({ yacht }: YachtCardProps) {
               <span className="sr-only">Compare</span>
             </Button>
           </div>
-          <Badge variant="secondary" className="absolute bottom-3 left-3">{yacht.type}</Badge>
+          <div className="absolute bottom-3 left-3 flex items-center gap-2">
+            <Badge variant="secondary">{yacht.type}</Badge>
+            <Badge variant={yacht.listingType === 'Broker' ? 'default' : 'outline'}>{yacht.listingType}</Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="p-4">

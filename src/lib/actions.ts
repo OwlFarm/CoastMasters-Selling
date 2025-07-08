@@ -59,6 +59,7 @@ export async function handleFilteredSearch(
   
   const input: SmartSearchInput = {
     conditions: formData.getAll('conditions').map(String).filter(Boolean),
+    listingTypes: formData.getAll('listingTypes').map(String).filter(Boolean),
     priceMin: getNumber('priceMin'),
     priceMax: getNumber('priceMax'),
     lengthMin: getNumber('lengthMin'),
@@ -69,8 +70,6 @@ export async function handleFilteredSearch(
     boatTypes: formData.getAll('boatTypes').map(String).filter(Boolean),
     usageStyles: formData.getAll('usageStyles').map(String).filter(Boolean),
     builders: formData.getAll('builders').map(String).filter(Boolean),
-    locations: formData.getAll('locations').map(String).filter(Boolean),
-    fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
     hullMaterials: formData.getAll('hullMaterials').map(String).filter(Boolean),
     hullShapes: formData.getAll('hullShapes').map(String).filter(Boolean),
     keelTypes: formData.getAll('keelTypes').map(String).filter(Boolean),
@@ -79,6 +78,8 @@ export async function handleFilteredSearch(
     features: formData.getAll('features').map(String).filter(Boolean),
     deck: formData.getAll('deck').map(String).filter(Boolean),
     cabin: formData.getAll('cabin').map(String).filter(Boolean),
+    fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
+    locations: formData.getAll('locations').map(String).filter(Boolean),
   };
 
   try {

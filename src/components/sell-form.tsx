@@ -14,10 +14,11 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions } from '@/lib/data';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes } from '@/lib/data';
 import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
+  listingType: z.string({ required_error: 'Please select a listing type.' }),
   boatType: z.string({ required_error: 'Please select a boat type.' }),
   condition: z.string({ required_error: 'Please select the condition.' }),
   location: z.string({ required_error: 'Please select a location.' }),
@@ -58,6 +59,7 @@ export function SellForm() {
             description: '',
             features: [],
             images: [],
+            listingType: undefined,
             boatType: undefined,
             usageStyles: [],
             deck: [],
@@ -166,6 +168,16 @@ export function SellForm() {
                         <CardDescription>Provide the essential details about your yacht.</CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <FormField control={form.control} name="listingType" render={({ field }) => (
+                            <FormItem className="space-y-3"><FormLabel>Listing Type</FormLabel><FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
+                                    {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                        <FormLabel className="font-normal">{type.label}</FormLabel>
+                                    </FormItem>))}
+                                </RadioGroup>
+                            </FormControl><FormMessage /></FormItem>
+                        )} />
                         <FormField control={form.control} name="boatType" render={({ field }) => (
                             <FormItem className="space-y-3"><FormLabel>Boat Type</FormLabel><FormControl>
                                 <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4">
