@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -19,20 +20,22 @@ export function HeroSection() {
                 >
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="container relative mx-auto px-4 text-center text-white">
-                        <div className="flex flex-col items-center justify-center space-y-8 py-16 md:py-20 lg:py-28">
+                        <div className="flex flex-col items-center justify-center py-24 md:py-32">
                             <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                                 Your Voyage Begins Here
                             </h1>
-                            <p className="mx-auto max-w-2xl text-lg text-gray-300 md:text-xl">
+                            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-300 md:text-xl">
                                 Discover the world's most exclusive yachts. Use our AI-powered search to find the perfect vessel for your next adventure.
                             </p>
-                            <YachtSearch />
-                            <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="mt-8 w-full">
+                                <YachtSearch />
+                            </div>
+                            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                                 <CollapsibleTrigger asChild>
                                     <Button
                                         variant="default"
                                         size="lg"
-                                        className="bg-accent text-accent-foreground hover:bg-accent/90"
+                                        className="bg-accent px-10 text-lg font-bold text-accent-foreground hover:bg-accent/90 md:text-xl"
                                     >
                                         Buy a Boat
                                     </Button>
@@ -40,6 +43,7 @@ export function HeroSection() {
                                 <Button
                                     variant="secondary"
                                     size="lg"
+                                    className="px-10 text-lg font-bold md:text-xl"
                                     asChild
                                 >
                                     <Link href="/sell">Sell a Boat</Link>
