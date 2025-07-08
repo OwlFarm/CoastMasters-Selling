@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -43,7 +42,7 @@ export function HeroSection() {
                                         variant="default"
                                         className="h-24 px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
                                     >
-                                        Buy
+                                        Buy a Boat
                                     </Button>
                                 </CollapsibleTrigger>
                                 <Button
@@ -51,7 +50,7 @@ export function HeroSection() {
                                     className="h-24 px-10 text-xl"
                                     asChild
                                 >
-                                    <Link href="/sell">Sell</Link>
+                                    <Link href="/sell">Sell a Boat</Link>
                                 </Button>
                             </div>
                         </div>
