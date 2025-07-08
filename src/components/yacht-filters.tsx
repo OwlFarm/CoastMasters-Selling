@@ -1,13 +1,16 @@
 'use client';
 
+import * as React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from '@/components/ui/switch';
 
 export function YachtFilters() {
+  const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
   const numCols = 5;
   const numRows = Math.ceil(makes.length / numCols);
   const columnSortedMakes = [];
@@ -88,7 +91,18 @@ export function YachtFilters() {
             <AccordionContent className="pt-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
-                        <Label>Length (ft)</Label>
+                        <div className="flex items-center justify-between">
+                            <Label>Length ({lengthUnit})</Label>
+                             <div className="flex items-center gap-2 text-sm">
+                                <span className="text-muted-foreground">Ft</span>
+                                <Switch
+                                    checked={lengthUnit === 'm'}
+                                    onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                                    id="length-unit-switch-filter"
+                                />
+                                <span className="text-muted-foreground">M</span>
+                            </div>
+                        </div>
                         <div className="flex items-center gap-2">
                             <Input type="number" placeholder="Min" />
                             <span className="text-muted-foreground">-</span>

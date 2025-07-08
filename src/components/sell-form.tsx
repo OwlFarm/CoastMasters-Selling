@@ -15,6 +15,7 @@ import { Upload, Ship, X } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from '@/lib/data';
+import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
   boatType: z.string({ required_error: 'Please select a boat type.' }),
@@ -22,7 +23,7 @@ const formSchema = z.object({
   location: z.string({ required_error: 'Please select a location.' }),
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
   hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
-  make: z.string({ required_error: 'Please select a make.' }),
+  make: z.string({ required_error: 'Please select a builder.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
     (a) => parseInt(z.string().parse(a), 10),
@@ -37,6 +38,7 @@ const formSchema = z.object({
 
 export function SellForm() {
     const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
+    const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -58,7 +60,7 @@ export function SellForm() {
     });
     
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log('Form Submitted:', { ...values, images: imagePreviews });
+        console.log('Form Submitted:', { ...values, images: imagePreviews, lengthUnit });
         // In a real app, you would upload images and submit form data to a server.
     }
 
@@ -185,7 +187,22 @@ export function SellForm() {
                             <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="length" render={({ field }) => (
-                            <FormItem><FormLabel>Length (ft)</FormLabel><FormControl><Input type="number" placeholder="e.g., 46" {...field} /></FormControl><FormMessage /></FormItem>
+                           <FormItem>
+                                <div className="flex items-center justify-between">
+                                    <FormLabel>Length ({lengthUnit})</FormLabel>
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span className="text-muted-foreground">Ft</span>
+                                        <Switch
+                                            checked={lengthUnit === 'm'}
+                                            onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                                            id="length-unit-switch-form"
+                                        />
+                                        <span className="text-muted-foreground">M</span>
+                                    </div>
+                                </div>
+                                <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
                         )} />
                         <FormField control={form.control} name="location" render={({ field }) => (
                             <FormItem className="md:col-span-2"><FormLabel>Location</FormLabel>
