@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import { YachtSearch } from '@/components/yacht-search';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -26,15 +27,24 @@ export function HeroSection() {
                                 Discover the world's most exclusive yachts. Use our AI-powered search to find the perfect vessel for your next adventure.
                             </p>
                             <YachtSearch />
-                            <CollapsibleTrigger asChild>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <CollapsibleTrigger asChild>
+                                    <Button
+                                        variant="default"
+                                        size="lg"
+                                        className="bg-accent text-accent-foreground hover:bg-accent/90"
+                                    >
+                                        Buy a Boat
+                                    </Button>
+                                </CollapsibleTrigger>
                                 <Button
-                                    variant="default"
+                                    variant="secondary"
                                     size="lg"
-                                    className="bg-accent text-accent-foreground hover:bg-accent/90"
+                                    asChild
                                 >
-                                    Refined Search
+                                    <Link href="/sell">Sell a Boat</Link>
                                 </Button>
-                            </CollapsibleTrigger>
+                            </div>
                         </div>
                     </div>
                 </section>
