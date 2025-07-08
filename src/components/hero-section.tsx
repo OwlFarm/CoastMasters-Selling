@@ -15,7 +15,7 @@ export function HeroSection() {
             <div className="relative">
                 <section
                     className="w-full bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: "url('https://placehold.co/1920x1080.png')" }}
+                    style={{ backgroundImage: "url('https://placehold.co/1920x1080/023047/8ECAE6.png')" }}
                     data-ai-hint="ocean yacht"
                 >
                     <div className="absolute inset-0 bg-black/50" />

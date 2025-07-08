@@ -10,7 +10,7 @@ export const featuredYachts: Yacht[] = [
     year: 2022,
     length: 75,
     location: 'Miami, FL',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/A2B9D1/34495E.png',
     imageHint: 'modern yacht',
   },
   {
@@ -22,7 +22,7 @@ export const featuredYachts: Yacht[] = [
     year: 2020,
     length: 60,
     location: 'Newport, RI',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/34495E/FFFFFF.png',
     imageHint: 'sailing yacht',
   },
   {
@@ -34,7 +34,7 @@ export const featuredYachts: Yacht[] = [
     year: 2023,
     length: 55,
     location: 'Fort Lauderdale, FL',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/4ECCA3/232931.png',
     imageHint: 'catamaran boat',
   },
   {
@@ -46,7 +46,7 @@ export const featuredYachts: Yacht[] = [
     year: 2021,
     length: 90,
     location: 'Monaco',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/00BFFF/FFFFFF.png',
     imageHint: 'luxury yacht',
   },
   {
@@ -58,7 +58,7 @@ export const featuredYachts: Yacht[] = [
     year: 2019,
     length: 45,
     location: 'Santorini, Greece',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/E0E0E0/363636.png',
     imageHint: 'sailboat sunset',
   },
   {
@@ -70,7 +70,7 @@ export const featuredYachts: Yacht[] = [
     year: 2022,
     length: 50,
     location: 'San Diego, CA',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/F5DEB3/8B4513.png',
     imageHint: 'fast yacht',
   },
 ];
