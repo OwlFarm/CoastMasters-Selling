@@ -77,6 +77,8 @@ export async function handleFilteredSearch(
     rudderTypes: formData.getAll('rudderTypes').map(String).filter(Boolean),
     propellerTypes: formData.getAll('propellerTypes').map(String).filter(Boolean),
     features: formData.getAll('features').map(String).filter(Boolean),
+    deck: formData.getAll('deck').map(String).filter(Boolean),
+    belowDeck: formData.getAll('belowDeck').map(String).filter(Boolean),
   };
 
   try {

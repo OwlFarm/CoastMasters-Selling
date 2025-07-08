@@ -263,3 +263,29 @@ export const featureOptions = [
     { id: 'solarPanels', label: 'Solar Panels' },
     { id: 'dinghy', label: 'Dinghy Included' },
 ].sort((a, b) => a.label.localeCompare(b.label));
+
+export const deckOptions = [
+    { id: 'teak-deck', label: 'Teak Deck' },
+    { id: 'dodger', label: 'Dodger' },
+    { id: 'bimini', label: 'Bimini Top' },
+    { id: 'cockpit-table', label: 'Cockpit Table' },
+    { id: 'cockpit-shower', label: 'Cockpit Shower' },
+    { id: 'electric-winch', label: 'Electric Winch' },
+    { id: 'wheel-steering', label: 'Wheel Steering' },
+    { id: 'tiller-steering', label: 'Tiller Steering' },
+    { id: 'windlass', label: 'Electric Windlass' },
+    { id: 'swim-platform', label: 'Swim Platform' },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+export const belowDeckOptions = [
+    { id: 'nav-station', label: 'Navigation Station' },
+    { id: 'galley-fridge', label: 'Refrigerator' },
+    { id: 'galley-freezer', label: 'Freezer' },
+    { id: 'galley-oven', label: 'Oven' },
+    { id: 'microwave', label: 'Microwave' },
+    { id: 'cabin-fans', label: 'Cabin Fans' },
+    { id: 'electric-head', label: 'Electric Head' },
+    { id: 'manual-head', label: 'Manual Head' },
+    { id: 'hot-water', label: 'Hot Water System' },
+    { id: 'tv-set', label: 'TV Set' },
+].sort((a, b) => a.label.localeCompare(b.label));

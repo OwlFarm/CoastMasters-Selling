@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, belowDeckOptions } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
@@ -69,6 +69,30 @@ export function YachtFilters() {
       const index = j * featureNumRows + i;
       if (index < featureOptions.length) {
         columnSortedFeatures.push(featureOptions[index]);
+      }
+    }
+  }
+  
+  const deckNumCols = 5;
+  const deckNumRows = Math.ceil(deckOptions.length / deckNumCols);
+  const columnSortedDeck = [];
+  for (let i = 0; i < deckNumRows; i++) {
+    for (let j = 0; j < deckNumCols; j++) {
+      const index = j * deckNumRows + i;
+      if (index < deckOptions.length) {
+        columnSortedDeck.push(deckOptions[index]);
+      }
+    }
+  }
+
+  const belowDeckNumCols = 5;
+  const belowDeckNumRows = Math.ceil(belowDeckOptions.length / belowDeckNumCols);
+  const columnSortedBelowDeck = [];
+  for (let i = 0; i < belowDeckNumRows; i++) {
+    for (let j = 0; j < belowDeckNumCols; j++) {
+      const index = j * belowDeckNumRows + i;
+      if (index < belowDeckOptions.length) {
+        columnSortedBelowDeck.push(belowDeckOptions[index]);
       }
     }
   }
@@ -183,7 +207,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
              <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="flex h-auto w-full flex-wrap justify-between">
+                <TabsList className="grid h-auto w-full grid-cols-7 justify-between">
                   {locationsByRegion.map((regionData) => (
                     <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
                   ))}
@@ -302,6 +326,32 @@ export function YachtFilters() {
                     ))}
                   </div>
               </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="deck">
+          <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+              {columnSortedDeck.map((feature) => (
+                <div key={feature.id} className="flex items-center space-x-2">
+                  <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
+                  <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="below-deck">
+          <AccordionTrigger className="font-semibold">Below Deck</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+              {columnSortedBelowDeck.map((feature) => (
+                <div key={feature.id} className="flex items-center space-x-2">
+                  <Checkbox id={`below-deck-filter-${feature.id}`} name="belowDeck" value={feature.id} />
+                  <Label htmlFor={`below-deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                </div>
+              ))}
             </div>
           </AccordionContent>
         </AccordionItem>
