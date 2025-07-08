@@ -113,7 +113,7 @@ export function YachtFilters() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-8 pb-8 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-4 pb-8 md:grid-cols-3">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
@@ -308,7 +308,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-4 pt-2">
+            <div className="flex flex-col gap-4 pt-2">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
