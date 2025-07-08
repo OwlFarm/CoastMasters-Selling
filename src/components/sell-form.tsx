@@ -14,7 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from '@/lib/data';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions, usageStyles } from '@/lib/data';
 import { Switch } from '@/components/ui/switch';
 
 const formSchema = z.object({
@@ -33,6 +33,7 @@ const formSchema = z.object({
   price: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().positive('Must be a positive number')),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   features: z.array(z.string()).optional(),
+  usageStyles: z.array(z.string()).optional(),
   images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
 });
 
@@ -52,6 +53,7 @@ export function SellForm() {
             features: [],
             images: [],
             boatType: undefined,
+            usageStyles: [],
             condition: undefined,
             location: undefined,
             fuelType: undefined,
@@ -171,6 +173,34 @@ export function SellForm() {
                                     </FormItem>))}
                                 </RadioGroup>
                             </FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="usageStyles" render={() => (
+                            <FormItem className="space-y-3 md:col-span-2">
+                                <FormLabel>Usage Styles</FormLabel>
+                                <FormControl>
+                                    <div className="flex flex-row items-center flex-wrap gap-x-4 gap-y-2">
+                                        {usageStyles.map((item) => (
+                                            <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
+                                                <FormItem className="flex flex-row items-start space-x-2 space-y-0">
+                                                    <FormControl>
+                                                        <Checkbox
+                                                            checked={field.value?.includes(item.id)}
+                                                            onCheckedChange={(checked) => {
+                                                                const currentValue = field.value || [];
+                                                                return checked
+                                                                    ? field.onChange([...currentValue, item.id])
+                                                                    : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                    <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                </FormItem>
+                                            )} />
+                                        ))}
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
                         )} />
                         <FormField control={form.control} name="make" render={({ field }) => (
                             <FormItem><FormLabel>Builder</FormLabel>

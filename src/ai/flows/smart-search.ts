@@ -23,6 +23,7 @@ const SmartSearchInputSchema = z.object({
   yearMin: z.number().optional().describe('Minimum manufacturing year.'),
   yearMax: z.number().optional().describe('Maximum manufacturing year.'),
   boatTypes: z.array(z.string()).optional().describe('Selected boat types.'),
+  usageStyles: z.array(z.string()).optional().describe('Selected usage styles (e.g., ocean, coast).'),
   builders: z.array(z.string()).optional().describe('Selected builders.'),
   locations: z.array(z.string()).optional().describe('Selected locations.'),
   fuelTypes: z.array(z.string()).optional().describe('Selected fuel types.'),
@@ -74,6 +75,7 @@ Here are the user's search criteria. A field not provided means the user has no 
 - Length Range: {{#if lengthMin}}{{lengthMin}}{{else}}any{{/if}} - {{#if lengthMax}}{{lengthMax}}{{else}}any{{/if}} {{#if lengthUnit}}{{lengthUnit}}{{/if}}
 - Year Range: {{#if yearMin}}{{yearMin}}{{else}}any{{/if}} - {{#if yearMax}}{{yearMax}}{{else}}any{{/if}}
 - Boat Types: {{#if boatTypes}}{{#each boatTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Usage Styles: {{#if usageStyles}}{{#each usageStyles}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Builders: {{#if builders}}{{#each builders}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Locations: {{#if locations}}{{#each locations}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Fuel Types: {{#if fuelTypes}}{{#each fuelTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}

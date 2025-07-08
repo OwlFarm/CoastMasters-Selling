@@ -5,7 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions, usageStyles } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
@@ -26,7 +26,7 @@ export function YachtFilters() {
     const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
 
     const matchedMakeIds = allMakes
-      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
+      .filter(make => searchTerms.some(term => make.label.toLowerCase() === term))
       .map(make => make.id);
 
     setSelectedBuilders(matchedMakeIds);
@@ -88,7 +88,7 @@ export function YachtFilters() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 pb-8">
+      <div className="grid grid-cols-1 gap-4 pb-8 md:grid-cols-3">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
@@ -130,13 +130,23 @@ export function YachtFilters() {
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
-              <div className="flex flex-row gap-4 pt-2">
-                {boatTypes.map((type) => (
-                  <div key={type.id} className="flex items-center space-x-2">
-                    <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
-                    <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
-                  </div>
-                ))}
+              <div className="flex flex-col gap-4 pt-2">
+                <div className="flex flex-row gap-4">
+                  {boatTypes.map((type) => (
+                    <div key={type.id} className="flex items-center space-x-2">
+                      <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
+                      <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-row gap-4">
+                    {usageStyles.map((style) => (
+                      <div key={style.id} className="flex items-center space-x-2">
+                        <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                        <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                      </div>
+                    ))}
+                </div>
               </div>
           </AccordionContent>
         </AccordionItem>

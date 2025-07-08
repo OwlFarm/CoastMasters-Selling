@@ -75,6 +75,14 @@ export const boatTypes = [
   { id: 'catamaran', label: 'Catamaran' },
 ];
 
+export const usageStyles = [
+  { id: 'ocean', label: 'Ocean' },
+  { id: 'coast', label: 'Coast' },
+  { id: 'island', label: 'Island' },
+  { id: 'off-grid', label: 'Off Grid' },
+  { id: 'project', label: 'Project' },
+];
+
 export const makes = [
   { id: 'absolute', label: 'Absolute' },
   { id: 'admiral', label: 'Admiral' },

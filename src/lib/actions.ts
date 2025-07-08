@@ -67,6 +67,7 @@ export async function handleFilteredSearch(
     yearMin: getNumber('yearMin'),
     yearMax: getNumber('yearMax'),
     boatTypes: formData.getAll('boatTypes').map(String).filter(Boolean),
+    usageStyles: formData.getAll('usageStyles').map(String).filter(Boolean),
     builders: formData.getAll('builders').map(String).filter(Boolean),
     locations: formData.getAll('locations').map(String).filter(Boolean),
     fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
