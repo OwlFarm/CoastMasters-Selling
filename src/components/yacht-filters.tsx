@@ -112,7 +112,7 @@ export function YachtFilters() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 pb-8 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 pb-8 md:grid-cols-3 md:gap-x-8">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
