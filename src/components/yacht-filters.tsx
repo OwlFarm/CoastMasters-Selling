@@ -20,20 +20,11 @@ export function YachtFilters() {
 
     const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
 
-    if (searchTerms.length === 0) {
-      return;
-    }
-    
     const matchedMakeIds = allMakes
-      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
+      .filter(make => searchTerms.includes(make.label.toLowerCase()))
       .map(make => make.id);
 
-    if (matchedMakeIds.length > 0) {
-        setSelectedBuilders(prevSelected => {
-            const newSelected = new Set([...prevSelected, ...matchedMakeIds]);
-            return Array.from(newSelected);
-        });
-    }
+    setSelectedBuilders(matchedMakeIds);
   };
 
   const handleBuilderCheckboxChange = (makeId: string, checked: boolean | 'indeterminate') => {
