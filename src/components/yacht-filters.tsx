@@ -210,7 +210,7 @@ export function YachtFilters() {
             <div className="grid grid-cols-1 md:grid-cols-5 gap-x-4 gap-y-4 pt-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
-                  <div className="flex flex-col gap-4 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {hullMaterialOptions.map((material) => (
                       <div key={material.id} className="flex items-center space-x-2">
                         <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
@@ -221,7 +221,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
-                  <div className="flex flex-col gap-4 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {hullShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
                         <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
@@ -232,7 +232,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
-                  <div className="flex flex-col gap-4 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {keelTypeOptions.map((keel) => (
                       <div key={keel.id} className="flex items-center space-x-2">
                         <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
@@ -243,7 +243,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
-                  <div className="flex flex-col gap-4 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {rudderTypeOptions.map((rudder) => (
                       <div key={rudder.id} className="flex items-center space-x-2">
                         <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
@@ -254,7 +254,7 @@ export function YachtFilters() {
               </div>
                <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
-                  <div className="flex flex-col gap-4 mt-2">
+                  <div className="flex flex-col gap-2 mt-2">
                     {propellerTypeOptions.map((prop) => (
                       <div key={prop.id} className="flex items-center space-x-2">
                         <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
@@ -308,7 +308,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="flex flex-col gap-4 pt-2">
+            <div className="flex flex-row gap-8 pt-2">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
@@ -345,7 +345,7 @@ export function YachtFilters() {
                                     return (
                                         <div key={subRegion}>
                                             <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
-                                            <div className="flex flex-col gap-4 mt-2">
+                                            <div className="flex flex-col gap-2 mt-2">
                                                 {locationsInSubRegion.length > 0 ? (
                                                     locationsInSubRegion.map((location) => (
                                                         <div key={location.id} className="flex items-center space-x-2">
