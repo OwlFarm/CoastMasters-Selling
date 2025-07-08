@@ -28,7 +28,7 @@ export function HeroSection() {
                     <div className="absolute inset-0 bg-black/50" />
                     <div className="relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4 text-center text-white">
                         <div className="flex flex-col items-center">
-                            <h1 className="text-6xl font-medium tracking-tight">
+                            <h1 className="text-5xl font-medium tracking-tight whitespace-nowrap">
                                 Your Voyage Begins Here
                             </h1>
                             <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-300 md:text-xl">
@@ -41,17 +41,17 @@ export function HeroSection() {
                                 <CollapsibleTrigger asChild>
                                     <Button
                                         variant="default"
-                                        className="h-20 px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
+                                        className="h-24 px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
                                     >
-                                        Buy a Boat
+                                        Buy
                                     </Button>
                                 </CollapsibleTrigger>
                                 <Button
                                     variant="secondary"
-                                    className="h-20 px-10 text-xl"
+                                    className="h-24 px-10 text-xl"
                                     asChild
                                 >
-                                    <Link href="/sell">Sell a Boat</Link>
+                                    <Link href="/sell">Sell</Link>
                                 </Button>
                             </div>
                         </div>
