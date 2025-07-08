@@ -36,7 +36,15 @@ export function YachtFilters() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8">
+          <div className="space-y-2">
+              <Label>Price (USD)</Label>
+              <div className="flex items-center gap-2">
+                  <Input type="number" placeholder="Min" />
+                  <span className="text-muted-foreground">-</span>
+                  <Input type="number" placeholder="Max" />
+              </div>
+          </div>
           <div className="space-y-2">
               <div className="flex items-center justify-between">
                   <Label>Length ({lengthUnit})</Label>
@@ -57,14 +65,6 @@ export function YachtFilters() {
               </div>
           </div>
           <div className="space-y-2">
-              <Label>Price (USD)</Label>
-              <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" />
-                  <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" />
-              </div>
-          </div>
-          <div className="space-y-2">
               <Label>Year</Label>
               <div className="flex items-center gap-2">
                   <Input type="number" placeholder="Min" />
@@ -74,7 +74,7 @@ export function YachtFilters() {
           </div>
       </div>
       
-      <Accordion type="multiple" defaultValue={['boatType', 'make', 'location']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'builder', 'location']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -88,7 +88,7 @@ export function YachtFilters() {
               </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="make">
+        <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
