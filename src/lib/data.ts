@@ -162,6 +162,10 @@ export const locationsByRegion = [
         ],
     },
     {
+        region: 'Africa',
+        locations: [],
+    },
+    {
         region: 'South America',
         locations: [
             { id: 'cancun', label: 'Cancun, Mexico', subRegion: 'North' },
