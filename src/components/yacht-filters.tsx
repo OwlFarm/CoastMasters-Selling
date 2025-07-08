@@ -35,7 +35,46 @@ export function YachtFilters() {
           </div>
         ))}
       </div>
-      <Accordion type="multiple" defaultValue={['boatType', 'key-metrics', 'make', 'location']} className="w-full">
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-8">
+          <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                  <Label>Length ({lengthUnit})</Label>
+                   <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground">Ft</span>
+                      <Switch
+                          checked={lengthUnit === 'm'}
+                          onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                          id="length-unit-switch-filter"
+                      />
+                      <span className="text-muted-foreground">M</span>
+                  </div>
+              </div>
+              <div className="flex items-center gap-2">
+                  <Input type="number" placeholder="Min" />
+                  <span className="text-muted-foreground">-</span>
+                  <Input type="number" placeholder="Max" />
+              </div>
+          </div>
+          <div className="space-y-2">
+              <Label>Price (USD)</Label>
+              <div className="flex items-center gap-2">
+                  <Input type="number" placeholder="Min" />
+                  <span className="text-muted-foreground">-</span>
+                  <Input type="number" placeholder="Max" />
+              </div>
+          </div>
+          <div className="space-y-2">
+              <Label>Year</Label>
+              <div className="flex items-center gap-2">
+                  <Input type="number" placeholder="Min" />
+                  <span className="text-muted-foreground">-</span>
+                  <Input type="number" placeholder="Max" />
+              </div>
+          </div>
+      </div>
+      
+      <Accordion type="multiple" defaultValue={['boatType', 'make', 'location']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
@@ -85,48 +124,6 @@ export function YachtFilters() {
                 ))}
               </Tabs>
           </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="key-metrics">
-            <AccordionTrigger className="font-semibold">Length, Price & Year</AccordionTrigger>
-            <AccordionContent className="pt-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                            <Label>Length ({lengthUnit})</Label>
-                             <div className="flex items-center gap-2 text-sm">
-                                <span className="text-muted-foreground">Ft</span>
-                                <Switch
-                                    checked={lengthUnit === 'm'}
-                                    onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                                    id="length-unit-switch-filter"
-                                />
-                                <span className="text-muted-foreground">M</span>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Input type="number" placeholder="Min" />
-                            <span className="text-muted-foreground">-</span>
-                            <Input type="number" placeholder="Max" />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <Label>Price (USD)</Label>
-                        <div className="flex items-center gap-2">
-                            <Input type="number" placeholder="Min" />
-                            <span className="text-muted-foreground">-</span>
-                            <Input type="number" placeholder="Max" />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <Label>Year</Label>
-                        <div className="flex items-center gap-2">
-                            <Input type="number" placeholder="Min" />
-                            <span className="text-muted-foreground">-</span>
-                            <Input type="number" placeholder="Max" />
-                        </div>
-                    </div>
-                </div>
-            </AccordionContent>
         </AccordionItem>
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
