@@ -11,7 +11,7 @@ type YachtCardProps = {
 
 export function YachtCard({ yacht }: YachtCardProps) {
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-md">
       <CardHeader className="p-0">
         <div className="relative">
           <Image
