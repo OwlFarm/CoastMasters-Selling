@@ -5,13 +5,27 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterials, featureOptions } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
+  const [builderSearch, setBuilderSearch] = React.useState('');
   
+  const makes = React.useMemo(() => {
+    if (!builderSearch.trim()) {
+      return allMakes;
+    }
+    const searchTerms = builderSearch.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
+    if (searchTerms.length === 0) {
+        return allMakes;
+    }
+    return allMakes.filter(make => 
+        searchTerms.some(term => make.label.toLowerCase().includes(term))
+    );
+  }, [builderSearch]);
+
   const numCols = 5;
   const numRows = Math.ceil(makes.length / numCols);
   const columnSortedMakes = [];
@@ -104,7 +118,16 @@ export function YachtFilters() {
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+            <div className="grid grid-cols-5 gap-x-4 gap-y-4 pt-2">
+              <div className="col-span-2">
+                <Input 
+                  id="builder-search"
+                  placeholder="Search Builders (comma-separated)"
+                  value={builderSearch}
+                  onChange={(e) => setBuilderSearch(e.target.value)}
+                />
+              </div>
+              <div className="col-span-3" />
               {columnSortedMakes.map((make) => (
                 <div key={make.id} className="flex items-center space-x-2">
                   <Checkbox id={`make-${make.id}`} />
