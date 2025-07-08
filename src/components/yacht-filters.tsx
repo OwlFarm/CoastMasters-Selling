@@ -12,28 +12,49 @@ import { Switch } from '@/components/ui/switch';
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
   const [builderSearch, setBuilderSearch] = React.useState('');
-  
-  const makes = React.useMemo(() => {
-    if (!builderSearch.trim()) {
-      return allMakes;
-    }
-    const searchTerms = builderSearch.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
+  const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
+
+  const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setBuilderSearch(value);
+
+    const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
+
     if (searchTerms.length === 0) {
-        return allMakes;
+      return;
     }
-    return allMakes.filter(make => 
-        searchTerms.some(term => make.label.toLowerCase().includes(term))
-    );
-  }, [builderSearch]);
+    
+    const matchedMakeIds = allMakes
+      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
+      .map(make => make.id);
+
+    if (matchedMakeIds.length > 0) {
+        setSelectedBuilders(prevSelected => {
+            const newSelected = new Set([...prevSelected, ...matchedMakeIds]);
+            return Array.from(newSelected);
+        });
+    }
+  };
+
+  const handleBuilderCheckboxChange = (makeId: string, checked: boolean | 'indeterminate') => {
+      setSelectedBuilders(prevSelected => {
+          const isChecked = checked === true;
+          if (isChecked) {
+              return Array.from(new Set([...prevSelected, makeId]));
+          } else {
+              return prevSelected.filter(id => id !== makeId);
+          }
+      });
+  };
 
   const numCols = 5;
-  const numRows = Math.ceil(makes.length / numCols);
+  const numRows = Math.ceil(allMakes.length / numCols);
   const columnSortedMakes = [];
   for (let i = 0; i < numRows; i++) {
     for (let j = 0; j < numCols; j++) {
       const index = j * numRows + i;
-      if (index < makes.length) {
-        columnSortedMakes.push(makes[index]);
+      if (index < allMakes.length) {
+        columnSortedMakes.push(allMakes[index]);
       }
     }
   }
@@ -124,13 +145,17 @@ export function YachtFilters() {
                   id="builder-search"
                   placeholder="Search Builders (comma-separated)"
                   value={builderSearch}
-                  onChange={(e) => setBuilderSearch(e.target.value)}
+                  onChange={handleBuilderSearchChange}
                 />
               </div>
               <div className="col-span-3" />
               {columnSortedMakes.map((make) => (
                 <div key={make.id} className="flex items-center space-x-2">
-                  <Checkbox id={`make-${make.id}`} />
+                  <Checkbox
+                    id={`make-${make.id}`}
+                    checked={selectedBuilders.includes(make.id)}
+                    onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
+                  />
                   <Label htmlFor={`make-${make.id}`} className="font-normal">{make.label}</Label>
                 </div>
               ))}
