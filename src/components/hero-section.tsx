@@ -34,16 +34,14 @@ export function HeroSection() {
                                 <CollapsibleTrigger asChild>
                                     <Button
                                         variant="default"
-                                        size="lg"
-                                        className="bg-accent px-10 text-xl text-accent-foreground hover:bg-accent/90"
+                                        className="h-14 px-10 text-xl text-accent-foreground hover:bg-accent/90"
                                     >
                                         Buy a Boat
                                     </Button>
                                 </CollapsibleTrigger>
                                 <Button
                                     variant="secondary"
-                                    size="lg"
-                                    className="px-10 text-xl"
+                                    className="h-14 px-10 text-xl"
                                     asChild
                                 >
                                     <Link href="/sell">Sell a Boat</Link>
