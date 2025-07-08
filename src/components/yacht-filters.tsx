@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -18,12 +19,12 @@ export function YachtFilters() {
     const value = event.target.value;
     setBuilderSearch(value);
 
-    if (value.trim() === '') {
+    const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
+
+    if (searchTerms.length === 0) {
         setSelectedBuilders([]);
         return;
     }
-
-    const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
 
     const matchedMakeIds = allMakes
       .filter(make => searchTerms.some(term => make.label.toLowerCase() === term))
@@ -112,7 +113,7 @@ export function YachtFilters() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 pb-8 md:grid-cols-3 md:gap-x-8">
+      <div className="grid grid-cols-1 gap-8 pb-8 md:grid-cols-3">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
@@ -206,10 +207,10 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-x-6 gap-y-4 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-x-4 gap-y-4 pt-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex flex-col gap-4 mt-2">
                     {hullMaterialOptions.map((material) => (
                       <div key={material.id} className="flex items-center space-x-2">
                         <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
@@ -220,7 +221,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex flex-col gap-4 mt-2">
                     {hullShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
                         <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
@@ -231,7 +232,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex flex-col gap-4 mt-2">
                     {keelTypeOptions.map((keel) => (
                       <div key={keel.id} className="flex items-center space-x-2">
                         <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
@@ -242,7 +243,7 @@ export function YachtFilters() {
               </div>
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex flex-col gap-4 mt-2">
                     {rudderTypeOptions.map((rudder) => (
                       <div key={rudder.id} className="flex items-center space-x-2">
                         <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
@@ -253,7 +254,7 @@ export function YachtFilters() {
               </div>
                <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex flex-col gap-4 mt-2">
                     {propellerTypeOptions.map((prop) => (
                       <div key={prop.id} className="flex items-center space-x-2">
                         <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
@@ -268,7 +269,7 @@ export function YachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+            <div className="grid grid-cols-5 gap-x-4 gap-y-4 pt-2">
               {columnSortedDeck.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
@@ -281,7 +282,7 @@ export function YachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+            <div className="grid grid-cols-5 gap-x-4 gap-y-4 pt-2">
               {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
@@ -294,7 +295,7 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+            <div className="grid grid-cols-5 gap-x-4 gap-y-4 pt-2">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
@@ -307,7 +308,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
+            <div className="space-y-4 pt-2">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
@@ -338,13 +339,13 @@ export function YachtFilters() {
                     
                     return (
                         <TabsContent key={regionData.region} value={slugify(regionData.region)}>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 pt-4">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-4 pt-4">
                                 {subRegions.map((subRegion) => {
                                     const locationsInSubRegion = groupedLocations[subRegion as keyof typeof groupedLocations] || [];
                                     return (
                                         <div key={subRegion}>
                                             <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
-                                            <div className="flex flex-col gap-2 mt-2">
+                                            <div className="flex flex-col gap-4 mt-2">
                                                 {locationsInSubRegion.length > 0 ? (
                                                     locationsInSubRegion.map((location) => (
                                                         <div key={location.id} className="flex items-center space-x-2">
