@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
+  
   const numCols = 5;
   const numRows = Math.ceil(makes.length / numCols);
   const columnSortedMakes = [];
@@ -19,6 +20,18 @@ export function YachtFilters() {
       const index = j * numRows + i;
       if (index < makes.length) {
         columnSortedMakes.push(makes[index]);
+      }
+    }
+  }
+
+  const featureNumCols = 5;
+  const featureNumRows = Math.ceil(featureOptions.length / featureNumCols);
+  const columnSortedFeatures = [];
+  for (let i = 0; i < featureNumRows; i++) {
+    for (let j = 0; j < featureNumCols; j++) {
+      const index = j * featureNumRows + i;
+      if (index < featureOptions.length) {
+        columnSortedFeatures.push(featureOptions[index]);
       }
     }
   }
@@ -40,9 +53,9 @@ export function YachtFilters() {
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" />
+                  <Input type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" />
+                  <Input type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
           <div className="space-y-2">
@@ -59,17 +72,17 @@ export function YachtFilters() {
                   </div>
               </div>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" />
+                  <Input type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" />
+                  <Input type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
           <div className="space-y-2">
               <Label>Year</Label>
               <div className="flex items-center gap-2">
-                  <Input type="number" placeholder="Min" />
+                  <Input type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
-                  <Input type="number" placeholder="Max" />
+                  <Input type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
       </div>
@@ -154,8 +167,8 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-2 pt-2">
-              {featureOptions.map((feature) => (
+            <div className="grid grid-cols-5 gap-x-4 gap-y-2 pt-2">
+              {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} />
                   <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>

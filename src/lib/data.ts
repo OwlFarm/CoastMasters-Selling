@@ -202,4 +202,4 @@ export const featureOptions = [
     { id: 'inverter', label: 'Inverter' },
     { id: 'solarPanels', label: 'Solar Panels' },
     { id: 'dinghy', label: 'Dinghy Included' },
-];
+].sort((a, b) => a.label.localeCompare(b.label));
