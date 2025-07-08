@@ -304,6 +304,19 @@ export function YachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem value="fuel">
+          <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2 pt-2">
+              {fuelTypes.map((fuel) => (
+                <div key={fuel.id} className="flex items-center space-x-2">
+                  <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
+                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
          <AccordionItem value="location">
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
@@ -353,19 +366,6 @@ export function YachtFilters() {
                     );
                 })}
               </Tabs>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="fuel">
-          <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2 pt-2">
-              {fuelTypes.map((fuel) => (
-                <div key={fuel.id} className="flex items-center space-x-2">
-                  <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
-                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
-                </div>
-              ))}
-            </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
