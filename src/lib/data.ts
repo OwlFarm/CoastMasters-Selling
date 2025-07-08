@@ -138,44 +138,57 @@ export const makes = [
 
 export const locationsByRegion = [
     {
-        region: 'USA',
+        region: 'North America',
         locations: [
-            { id: 'miami', label: 'Miami, FL' },
-            { id: 'newport', label: 'Newport, RI' },
-            { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL' },
-            { id: 'annapolis', label: 'Annapolis, MD' },
-            { id: 'san-diego', label: 'San Diego, CA' },
+            { id: 'seattle', label: 'Seattle, WA', subRegion: 'North' },
+            { id: 'vancouver', label: 'Vancouver, BC', subRegion: 'North' },
+            { id: 'san-diego', label: 'San Diego, CA', subRegion: 'West' },
+            { id: 'los-angeles', label: 'Los Angeles, CA', subRegion: 'West' },
+            { id: 'miami', label: 'Miami, FL', subRegion: 'East' },
+            { id: 'newport', label: 'Newport, RI', subRegion: 'East' },
+            { id: 'fort-lauderdale', label: 'Fort Lauderdale, FL', subRegion: 'East' },
+            { id: 'annapolis', label: 'Annapolis, MD', subRegion: 'East' },
         ],
     },
     {
         region: 'Europe',
         locations: [
-            { id: 'monaco', label: 'Monaco' },
-            { id: 'santorini', label: 'Santorini, Greece' },
+            { id: 'oslo', label: 'Oslo, Norway', subRegion: 'North' },
+            { id: 'london', label: 'London, UK', subRegion: 'North' },
+            { id: 'monaco', label: 'Monaco', subRegion: 'South' },
+            { id: 'santorini', label: 'Santorini, Greece', subRegion: 'South' },
+            { id: 'palma', label: 'Palma de Mallorca', subRegion: 'South' },
+            { id: 'lisbon', label: 'Lisbon, Portugal', subRegion: 'West' },
         ],
     },
     {
-        region: 'Central America',
+        region: 'South America',
         locations: [
-            { id: 'cancun', label: 'Cancun, Mexico' },
+            { id: 'cancun', label: 'Cancun, Mexico', subRegion: 'North' },
+            { id: 'cartagena', label: 'Cartagena, Colombia', subRegion: 'North' },
+            { id: 'rio', label: 'Rio de Janeiro, Brazil', subRegion: 'East' },
         ],
     },
     {
         region: 'Asia',
         locations: [
-            { id: 'phuket', label: 'Phuket, Thailand' },
+            { id: 'dubai', label: 'Dubai, UAE', subRegion: 'West' },
+            { id: 'phuket', label: 'Phuket, Thailand', subRegion: 'East' },
+            { id: 'singapore', label: 'Singapore', subRegion: 'East' },
         ],
     },
     {
         region: 'Australia',
         locations: [
-            { id: 'sydney', label: 'Sydney, Australia' },
+            { id: 'sydney', label: 'Sydney', subRegion: 'East' },
+            { id: 'perth', label: 'Perth', subRegion: 'West' },
         ],
     },
     {
         region: 'New Zealand',
         locations: [
-            { id: 'auckland', label: 'Auckland, New Zealand' },
+            { id: 'auckland', label: 'Auckland', subRegion: 'North' },
+            { id: 'wellington', label: 'Wellington', subRegion: 'South' },
         ],
     },
 ];

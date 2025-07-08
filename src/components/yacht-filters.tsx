@@ -183,23 +183,50 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
              <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="flex flex-wrap h-auto justify-start">
+                <TabsList className="flex flex-wrap h-auto justify-start gap-2">
                   {locationsByRegion.map((regionData) => (
                     <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
                   ))}
                 </TabsList>
-                {locationsByRegion.map((regionData) => (
-                  <TabsContent key={regionData.region} value={slugify(regionData.region)}>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 pt-4">
-                      {regionData.locations.map((location) => (
-                        <div key={location.id} className="flex items-center space-x-2">
-                          <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
-                          <Label htmlFor={`location-${location.id}`} className="font-normal">{location.label}</Label>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                ))}
+                {locationsByRegion.map((regionData) => {
+                    const groupedLocations = regionData.locations.reduce((acc, loc) => {
+                        const sub = loc.subRegion as keyof typeof acc;
+                        acc[sub] = acc[sub] || [];
+                        acc[sub].push(loc);
+                        return acc;
+                    }, {} as Record<'North' | 'South' | 'East' | 'West', (typeof regionData.locations)>);
+
+                    const subRegions = ['North', 'South', 'East', 'West'];
+                    
+                    return (
+                        <TabsContent key={regionData.region} value={slugify(regionData.region)}>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-4 pt-4">
+                                {subRegions.map((subRegion) => {
+                                    const locationsInSubRegion = groupedLocations[subRegion as keyof typeof groupedLocations] || [];
+                                    return (
+                                        <div key={subRegion}>
+                                            <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
+                                            <div className="flex flex-col gap-2 mt-2">
+                                                {locationsInSubRegion.length > 0 ? (
+                                                    locationsInSubRegion.map((location) => (
+                                                        <div key={location.id} className="flex items-center space-x-2">
+                                                            <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
+                                                            <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
+                                                                {location.label}
+                                                            </Label>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p className="text-xs text-muted-foreground italic">No locations</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </TabsContent>
+                    );
+                })}
               </Tabs>
           </AccordionContent>
         </AccordionItem>
