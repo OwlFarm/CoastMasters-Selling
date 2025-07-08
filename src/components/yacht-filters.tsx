@@ -103,7 +103,7 @@ export function YachtFilters() {
     <>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="flex flex-row justify-center gap-4 pb-8">
+      <div className="flex flex-row justify-center gap-8 pb-8">
         {conditions.map((condition) => (
           <div key={condition.id} className="flex items-center space-x-2">
             <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
@@ -155,7 +155,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
           <AccordionContent>
               <div className="flex flex-col gap-4 pt-2">
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-8">
                   {boatTypes.map((type) => (
                     <div key={type.id} className="flex items-center space-x-2">
                       <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
@@ -163,7 +163,7 @@ export function YachtFilters() {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-8">
                     {usageStyles.map((style) => (
                       <div key={style.id} className="flex items-center space-x-2">
                         <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
