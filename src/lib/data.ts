@@ -180,6 +180,8 @@ export const locationsByRegion = [
     {
         region: 'Australia',
         locations: [
+            { id: 'cairns', label: 'Cairns', subRegion: 'North' },
+            { id: 'hobart', label: 'Hobart', subRegion: 'South' },
             { id: 'sydney', label: 'Sydney', subRegion: 'East' },
             { id: 'perth', label: 'Perth', subRegion: 'West' },
         ],
