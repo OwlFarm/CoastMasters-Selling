@@ -21,6 +21,7 @@ import {
   fuelTypes
 } from '@/lib/data';
 import type { Yacht } from '@/lib/types';
+import { Card } from '@/components/ui/card';
 
 const findLabel = (id: string | undefined, options: { id: string; label: string }[]) => {
   if (!id) return null;
@@ -79,37 +80,36 @@ export default async function YachtDetailPage({ params }: { params: { id: string
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8 md:py-12">
           
-          <section className="mb-8 w-full">
-            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
-              <Image
-                src={yacht.imageUrl}
-                alt={`Image of ${yacht.name}`}
-                fill
-                className="object-cover"
-                data-ai-hint={yacht.imageHint}
-                priority
-              />
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+            {/* Left Column: Image Gallery */}
+            <div className="lg:col-span-2">
+              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-4">
+                <Image
+                  src={yacht.imageUrl}
+                  alt={`Image of ${yacht.name}`}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={yacht.imageHint}
+                  priority
+                />
+              </div>
+              <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
+                  {(yacht.images || []).slice(0, 6).map((img, i) => (
+                    <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
+                        <Image
+                          src={img}
+                          alt={`Image ${i + 1} of ${yacht.name}`}
+                          fill
+                          className="object-cover transition-transform duration-300 hover:scale-110 cursor-pointer"
+                        />
+                    </div>
+                  ))}
+              </div>
             </div>
-          </section>
-          
-          <div className="mb-8">
-            <div className="grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
-                {(yacht.images || []).slice(0, 8).map((img, i) => (
-                  <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
-                      <Image
-                        src={img}
-                        alt={`Image ${i + 1} of ${yacht.name}`}
-                        fill
-                        className="object-cover transition-transform duration-300 hover:scale-110"
-                      />
-                  </div>
-                ))}
-            </div>
-          </div>
 
-           <section>
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-              <div className="md:col-span-2">
+            {/* Right Column: Key Information */}
+            <div className="lg:col-span-1">
+               <Card className="sticky top-24 rounded-lg border bg-card p-6 shadow-sm">
                   <div className="flex items-center justify-between">
                     <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
                      <div className="flex gap-2">
@@ -123,96 +123,99 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                         </Button>
                       </div>
                   </div>
+
                   <h1 className="mt-4 font-headline text-3xl font-bold tracking-tight md:text-4xl">
                     {yacht.name}
                   </h1>
-                   <div className="mt-8">
-                     <h2 className="text-xl font-semibold border-b pb-2">Description</h2>
-                      <div className="mt-4 text-muted-foreground space-y-4">
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </p>
-                        <p>
-                          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
-                        <p>
-                          Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.
-                        </p>
-                        <p>
-                          Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
-                        </p>
-                        <p>
-                          Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Praesent sed nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
-                        </p>
-                      </div>
-                  </div>
-                  <div className="mt-12">
-                    <h2 className="text-xl font-semibold border-b pb-2 mb-6">Full Details</h2>
-                    <Tabs defaultValue="specifications" className="w-full">
-                      <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
-                        <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
-                        <TabsTrigger value="usage">Usage</TabsTrigger>
-                        <TabsTrigger value="features">Equipment</TabsTrigger>
-                        <TabsTrigger value="deck">Deck</TabsTrigger>
-                        <TabsTrigger value="cabin">Cabin</TabsTrigger>
-                      </TabsList>
 
-                      <TabsContent value="specifications" className="mt-6">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                          {hullAndEngineSpecs.map(spec => (
-                            <div key={spec.label}>
-                              <p className="text-sm font-medium text-muted-foreground">{spec.label}</p>
-                              <p className="text-md font-semibold">{spec.value}</p>
-                            </div>
-                          ))}
-                        </div>
-                        {yacht.otherSpecifications && (
-                           <div className="mt-6 pt-4 border-t">
-                              <p className="text-sm font-medium text-muted-foreground">Other Specifications</p>
-                              <p className="text-md font-semibold whitespace-pre-line">{yacht.otherSpecifications}</p>
+                  <p className="mt-4 text-3xl font-bold text-primary">${yacht.price.toLocaleString()}</p>
+                  
+                  <div className="mt-6">
+                     <h2 className="text-xl font-semibold border-b pb-2 mb-4">Key Specifications</h2>
+                     <div className="space-y-3">
+                      {specifications.map(({ label, value, icon: Icon }) => (
+                        value && <div key={label} className="flex items-center gap-3">
+                          <Icon className="h-5 w-5 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">{label}</p>
+                            <p className="text-md font-semibold">{value}</p>
                           </div>
-                        )}
-                      </TabsContent>
-
-                      <TabsContent value="usage" className="mt-6">
-                        {renderFeatureList(yacht.usageStyles, usageStyles)}
-                      </TabsContent>
-
-                      <TabsContent value="features" className="mt-6">
-                        {renderFeatureList(yacht.features, featureOptions)}
-                      </TabsContent>
-
-                      <TabsContent value="deck" className="mt-6">
-                        {renderFeatureList(yacht.deck, deckOptions)}
-                      </TabsContent>
-
-                      <TabsContent value="cabin" className="mt-6">
-                        {renderFeatureList(yacht.cabin, cabinOptions)}
-                      </TabsContent>
-                    </Tabs>
+                        </div>
+                      ))}
+                     </div>
                   </div>
-              </div>
+               </Card>
+            </div>
+          </section>
 
-              <div className="md:col-span-1">
-                 <div className="sticky top-24 rounded-lg border bg-card p-6 shadow-sm">
-                    <p className="text-3xl font-bold text-primary">${yacht.price.toLocaleString()}</p>
-                    <div className="mt-6">
-                       <h2 className="text-xl font-semibold border-b pb-2 mb-4">Specifications</h2>
-                       <div className="space-y-3">
-                        {specifications.map(({ label, value, icon: Icon }) => (
-                          value && <div key={label} className="flex items-center gap-3">
-                            <Icon className="h-5 w-5 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm font-medium text-muted-foreground">{label}</p>
-                              <p className="text-md font-semibold">{value}</p>
-                            </div>
+           <section>
+              <div className="max-w-4xl mx-auto">
+                 <div className="mb-12">
+                   <h2 className="text-2xl font-semibold border-b pb-2">Description</h2>
+                    <div className="mt-4 text-muted-foreground space-y-4">
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                      </p>
+                      <p>
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                      </p>
+                      <p>
+                        Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.
+                      </p>
+                      <p>
+                        Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
+                      </p>
+                      <p>
+                        Maecenas fermentum, sem in pharetra pellentesque, velit turpis volutpat ante, in pharetra metus odio a lectus. Praesent sed nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+                      </p>
+                    </div>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
+                  <Tabs defaultValue="specifications" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
+                      <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
+                      <TabsTrigger value="usage">Usage</TabsTrigger>
+                      <TabsTrigger value="features">Equipment</TabsTrigger>
+                      <TabsTrigger value="deck">Deck</TabsTrigger>
+                      <TabsTrigger value="cabin">Cabin</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="specifications" className="mt-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        {hullAndEngineSpecs.map(spec => (
+                          <div key={spec.label}>
+                            <p className="text-sm font-medium text-muted-foreground">{spec.label}</p>
+                            <p className="text-md font-semibold">{spec.value}</p>
                           </div>
                         ))}
-                       </div>
-                    </div>
-                 </div>
+                      </div>
+                      {yacht.otherSpecifications && (
+                         <div className="mt-6 pt-4 border-t">
+                            <p className="text-sm font-medium text-muted-foreground">Other Specifications</p>
+                            <p className="text-md font-semibold whitespace-pre-line">{yacht.otherSpecifications}</p>
+                        </div>
+                      )}
+                    </TabsContent>
+
+                    <TabsContent value="usage" className="mt-6">
+                      {renderFeatureList(yacht.usageStyles, usageStyles)}
+                    </TabsContent>
+
+                    <TabsContent value="features" className="mt-6">
+                      {renderFeatureList(yacht.features, featureOptions)}
+                    </TabsContent>
+
+                    <TabsContent value="deck" className="mt-6">
+                      {renderFeatureList(yacht.deck, deckOptions)}
+                    </TabsContent>
+
+                    <TabsContent value="cabin" className="mt-6">
+                      {renderFeatureList(yacht.cabin, cabinOptions)}
+                    </TabsContent>
+                  </Tabs>
+                </div>
               </div>
-            </div>
           </section>
         </div>
       </main>
