@@ -70,7 +70,7 @@ If you find yachts that are an exact match, list them under 'yachtRecommendation
 **If you cannot find any yachts that match all the specified criteria**, you must then find the CLOSEST possible matches by relaxing ONE or TWO criteria.
 When you do this, you MUST:
 1. Set 'hasExactResults' to false.
-2. Populate the 'explanation' field to clearly state which specific criteria you relaxed to find the results. For example: "No exact matches were found. I have expanded the price range to find these similar options." or "No yachts were available in Monaco. Here are some options in nearby locations in the Mediterranean."
+2. Populate the 'explanation' field with a friendly message that starts with a phrase like "We couldn't find an exact match, but here are some comparable options:" followed by a brief, one-sentence explanation of which criteria you relaxed. For example: "We couldn't find an exact match, but here are some comparable options: I expanded the price range to find these similar yachts."
 3. List the closest matching yachts you found in the 'yachtRecommendations' field.
 
 If, after relaxing criteria, you still cannot find any relevant yachts, return an empty 'yachtRecommendations' list, set 'hasExactResults' to false, and provide an explanation saying no close matches could be found.

@@ -51,27 +51,91 @@ export type FilteredSearchState = {
   error?: string;
 };
 
+const getNumber = (value: FormDataEntryValue | null) => {
+    if (value === null || value === '') return undefined;
+    const num = Number(value);
+    return isNaN(num) ? undefined : num;
+};
+
+type Filters = {
+    conditions: string[];
+    listingTypes: string[];
+    priceMin?: number;
+    priceMax?: number;
+    lengthMin?: number;
+    lengthMax?: number;
+    lengthUnit: 'ft' | 'm';
+    yearMin?: number;
+    yearMax?: number;
+    boatTypes: string[];
+    usageStyles: string[];
+    builders: string[];
+    hullMaterials: string[];
+    hullShapes: string[];
+    keelTypes: string[];
+    rudderTypes: string[];
+    propellerTypes: string[];
+    features: string[];
+    deck: string[];
+    cabin: string[];
+    fuelTypes: string[];
+    locations: string[];
+};
+
+function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
+    return yachts.filter(yacht => {
+        // Price
+        if (f.priceMin !== undefined && yacht.price < f.priceMin) return false;
+        if (f.priceMax !== undefined && yacht.price > f.priceMax) return false;
+        
+        // Year
+        if (f.yearMin !== undefined && yacht.year < f.yearMin) return false;
+        if (f.yearMax !== undefined && yacht.year > f.yearMax) return false;
+
+        // Length (assuming all data is in ft for now)
+        if (f.lengthMin !== undefined && yacht.length < f.lengthMin) return false;
+        if (f.lengthMax !== undefined && yacht.length > f.lengthMax) return false;
+
+        // Array checks for string properties (case-insensitive)
+        if (f.conditions.length > 0 && !f.conditions.some(c => c.toLowerCase() === yacht.condition.toLowerCase())) return false;
+        if (f.listingTypes.length > 0 && !f.listingTypes.some(t => t.toLowerCase() === yacht.listingType.toLowerCase())) return false;
+        if (f.boatTypes.length > 0 && !f.boatTypes.some(bt => bt.toLowerCase() === yacht.boatType.toLowerCase())) return false;
+        if (f.builders.length > 0 && !f.builders.some(b => b.toLowerCase() === yacht.make.toLowerCase())) return false;
+
+        // Array checks for ID properties
+        if (f.hullMaterials.length > 0 && yacht.hullMaterial && !f.hullMaterials.includes(yacht.hullMaterial)) return false;
+        if (f.fuelTypes.length > 0 && yacht.fuelType && !f.fuelTypes.includes(yacht.fuelType)) return false;
+        if (f.locations.length > 0 && yacht.locationId && !f.locations.includes(yacht.locationId)) return false;
+
+        // Check for feature intersection (yacht must have ALL selected features)
+        const allYachtFeatures = [
+            ...(yacht.usageStyles || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
+        ];
+        const allFilterFeatures = [
+            ...f.usageStyles, ...f.features, ...f.deck, ...f.cabin
+        ];
+        if (allFilterFeatures.length > 0 && !allFilterFeatures.every(feat => allYachtFeatures.includes(feat))) return false;
+
+        return true;
+    });
+}
+
+
 export async function handleFilteredSearch(
   prevState: FilteredSearchState,
   formData: FormData
 ): Promise<FilteredSearchState> {
-  const getNumber = (name: string) => {
-    const value = formData.get(name);
-    if (value === null || value === '') return undefined;
-    const num = Number(value);
-    return isNaN(num) ? undefined : num;
-  };
-
-  const filters = {
+  
+  const filters: Filters = {
     conditions: formData.getAll('conditions').map(String).filter(Boolean),
     listingTypes: formData.getAll('listingTypes').map(String).filter(Boolean),
-    priceMin: getNumber('priceMin'),
-    priceMax: getNumber('priceMax'),
-    lengthMin: getNumber('lengthMin'),
-    lengthMax: getNumber('lengthMax'),
+    priceMin: getNumber(formData.get('priceMin')),
+    priceMax: getNumber(formData.get('priceMax')),
+    lengthMin: getNumber(formData.get('lengthMin')),
+    lengthMax: getNumber(formData.get('lengthMax')),
     lengthUnit: (formData.get('lengthUnit') as 'ft' | 'm' | null) || 'ft',
-    yearMin: getNumber('yearMin'),
-    yearMax: getNumber('yearMax'),
+    yearMin: getNumber(formData.get('yearMin')),
+    yearMax: getNumber(formData.get('yearMax')),
     boatTypes: formData.getAll('boatTypes').map(String).filter(Boolean),
     usageStyles: formData.getAll('usageStyles').map(String).filter(Boolean),
     builders: formData.getAll('builders').map(String).filter(Boolean),
@@ -87,48 +151,38 @@ export async function handleFilteredSearch(
     locations: formData.getAll('locations').map(String).filter(Boolean),
   };
 
-  // This is a temporary solution for the prototype stage.
-  // In a real app, this filtering would happen in the database query.
   try {
     const allYachts = await getFeaturedYachts();
-    const filteredYachts = allYachts.filter(yacht => {
-      // Price
-      if (filters.priceMin !== undefined && yacht.price < filters.priceMin) return false;
-      if (filters.priceMax !== undefined && yacht.price > filters.priceMax) return false;
-      
-      // Year
-      if (filters.yearMin !== undefined && yacht.year < filters.yearMin) return false;
-      if (filters.yearMax !== undefined && yacht.year > filters.yearMax) return false;
+    
+    // 1. Try with strict filters first
+    let filteredYachts = applyFilters(allYachts, filters);
+    
+    if (filteredYachts.length > 0) {
+        const message = `Showing ${filteredYachts.length} matching yachts.`;
+        return { result: { yachts: filteredYachts, message } };
+    }
 
-      // Length - for now, we assume all lengths are in feet and don't convert.
-      if (filters.lengthMin !== undefined && yacht.length < filters.lengthMin) return false;
-      if (filters.lengthMax !== undefined && yacht.length > filters.lengthMax) return false;
+    // 2. If no results, try relaxing some criteria (e.g., price and location)
+    const hasPriceFilter = filters.priceMin !== undefined || filters.priceMax !== undefined;
+    const hasLocationFilter = filters.locations.length > 0;
+    
+    if (hasPriceFilter || hasLocationFilter) {
+        const relaxedFilters = { ...filters, priceMin: undefined, priceMax: undefined, locations: [] };
+        const relaxedYachts = applyFilters(allYachts, relaxedFilters);
 
-      // Array checks for string properties (case-insensitive)
-      if (filters.conditions.length > 0 && !filters.conditions.some(c => c.toLowerCase() === yacht.condition.toLowerCase())) return false;
-      if (filters.listingTypes.length > 0 && !filters.listingTypes.some(t => t.toLowerCase() === yacht.listingType.toLowerCase())) return false;
-      if (filters.boatTypes.length > 0 && !filters.boatTypes.some(bt => bt.toLowerCase() === yacht.boatType.toLowerCase())) return false;
-      if (filters.builders.length > 0 && !filters.builders.some(b => b.toLowerCase() === yacht.make.toLowerCase())) return false;
+        if (relaxedYachts.length > 0) {
+            let relaxedCriteria: string[] = [];
+            if (hasPriceFilter) relaxedCriteria.push('price');
+            if (hasLocationFilter) relaxedCriteria.push('location');
+            
+            const message = `No exact matches. Showing ${relaxedYachts.length} comparable yachts by expanding ${relaxedCriteria.join(' and ')}.`;
+            return { result: { yachts: relaxedYachts, message } };
+        }
+    }
 
-      // Array checks for ID properties
-      if (filters.hullMaterials.length > 0 && yacht.hullMaterial && !filters.hullMaterials.includes(yacht.hullMaterial)) return false;
-      if (filters.fuelTypes.length > 0 && yacht.fuelType && !filters.fuelTypes.includes(yacht.fuelType)) return false;
-      if (filters.locations.length > 0 && yacht.locationId && !filters.locations.includes(yacht.locationId)) return false;
-
-      // Check for feature intersection (yacht must have ALL selected features)
-      const allYachtFeatures = [
-          ...(yacht.usageStyles || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
-      ];
-      const allFilterFeatures = [
-          ...filters.usageStyles, ...filters.features, ...filters.deck, ...filters.cabin
-      ];
-      if (allFilterFeatures.length > 0 && !allFilterFeatures.every(f => allYachtFeatures.includes(f))) return false;
-
-      return true;
-    });
-
-    const message = `Showing ${filteredYachts.length} matching yachts.`;
-    return { result: { yachts: filteredYachts, message } };
+    // 3. If still no results after relaxation, return empty with a clear message
+    const message = 'No matching yachts found. Try broadening your search filters.';
+    return { result: { yachts: [], message } };
 
   } catch (error) {
     console.error('Filtered search failed:', error);
