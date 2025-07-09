@@ -16,7 +16,7 @@ export const GenerateListingDetailsInputSchema = z.object({
   length: z.number().describe('The length of the yacht in feet.'),
   condition: z.string().describe('The condition of the yacht (e.g., new, used).'),
   boatType: z.string().describe('The type of boat (e.g., Motor, Sailing, Catamaran).'),
-  features: z.array(z.string()).optional().describe('A list of key features or equipment.'),
+  features: z.array(z.string()).optional().describe('A list of key features or equipment already selected by the user.'),
 });
 export type GenerateListingDetailsInput = z.infer<typeof GenerateListingDetailsInputSchema>;
 
@@ -29,5 +29,15 @@ export const GenerateListingDetailsOutputSchema = z.object({
     .describe(
       'A detailed, engaging, and SEO-optimized description of the yacht. It should be written in paragraph form, highlighting the key features, condition, and ideal use cases. It should naturally incorporate keywords that potential buyers would search for.'
     ),
+  detectedUsageStyles: z.array(z.string()).optional().describe('An array of usage style IDs detected from the yacht details (e.g., ["blue-water", "island"]).'),
+  detectedHullMaterial: z.string().optional().describe('The hull material ID detected from the yacht details (e.g., "fiberglass").'),
+  detectedHullShape: z.string().optional().describe('The hull shape ID detected from the yacht details (e.g., "displacement").'),
+  detectedKeelType: z.string().optional().describe('The keel type ID detected from the yacht details (e.g., "fin").'),
+  detectedRudderType: z.string().optional().describe('The rudder type ID detected from the yacht details (e.g., "spade").'),
+  detectedPropellerType: z.string().optional().describe('The propeller type ID detected from the yacht details (e.g., "folding").'),
+  detectedFuelType: z.string().optional().describe('The fuel type ID detected from the yacht details (e.g., "diesel").'),
+  detectedFeatures: z.array(z.string()).optional().describe('An array of general feature IDs detected from the yacht details (e.g., ["gps", "autopilot"]).'),
+  detectedDeck: z.array(z.string()).optional().describe('An array of deck feature IDs detected from the yacht details (e.g., ["teak-deck", "bimini"]).'),
+  detectedCabin: z.array(z.string()).optional().describe('An array of cabin feature IDs detected from the yacht details (e.g., ["nav-station", "galley-fridge"]).'),
 });
 export type GenerateListingDetailsOutput = z.infer<typeof GenerateListingDetailsOutputSchema>;

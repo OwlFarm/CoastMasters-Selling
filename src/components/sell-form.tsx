@@ -111,11 +111,28 @@ export function SellForm() {
             });
         }
         if (aiState.result) {
+            // Set title and description
             form.setValue('title', aiState.result.title, { shouldValidate: true });
             form.setValue('description', aiState.result.description, { shouldValidate: true });
+            
+            // Set detected single-value items
+            if (aiState.result.detectedHullMaterial) form.setValue('hullMaterial', aiState.result.detectedHullMaterial, { shouldValidate: true });
+            if (aiState.result.detectedHullShape) form.setValue('hullShape', aiState.result.detectedHullShape, { shouldValidate: true });
+            if (aiState.result.detectedKeelType) form.setValue('keelType', aiState.result.detectedKeelType, { shouldValidate: true });
+            if (aiState.result.detectedRudderType) form.setValue('rudderType', aiState.result.detectedRudderType, { shouldValidate: true });
+            if (aiState.result.detectedPropellerType) form.setValue('propellerType', aiState.result.detectedPropellerType, { shouldValidate: true });
+            if (aiState.result.detectedFuelType) form.setValue('fuelType', aiState.result.detectedFuelType, { shouldValidate: true });
+
+            // Set detected multi-value items (checkboxes)
+            if (aiState.result.detectedUsageStyles) form.setValue('usageStyles', aiState.result.detectedUsageStyles, { shouldValidate: true });
+            if (aiState.result.detectedFeatures) form.setValue('features', aiState.result.detectedFeatures, { shouldValidate: true });
+            if (aiState.result.detectedDeck) form.setValue('deck', aiState.result.detectedDeck, { shouldValidate: true });
+            if (aiState.result.detectedCabin) form.setValue('cabin', aiState.result.detectedCabin, { shouldValidate: true });
+
+
             toast({
                 title: 'AI Magic Complete!',
-                description: 'Your title and description have been generated.',
+                description: 'Your title and description have been generated, and we\'ve pre-selected some features for you.',
             });
         }
     }, [aiState, form, toast]);
@@ -322,7 +339,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                         <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={mat.id} /></FormControl>
                                                     <FormLabel className="font-normal">{mat.label}</FormLabel>
@@ -332,7 +349,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="hullShape" render={({ field }) => (
                                         <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                     <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -342,7 +359,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="bowShape" render={({ field }) => (
                                         <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                     <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -352,7 +369,7 @@ export function SellForm() {
                                     )} />
                                      <FormField control={form.control} name="keelType" render={({ field }) => (
                                         <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={keel.id} /></FormControl>
                                                     <FormLabel className="font-normal">{keel.label}</FormLabel>
@@ -362,7 +379,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="rudderType" render={({ field }) => (
                                         <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
                                                     <FormLabel className="font-normal">{rudder.label}</FormLabel>
@@ -372,7 +389,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="propellerType" render={({ field }) => (
                                         <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={prop.id} /></FormControl>
                                                     <FormLabel className="font-normal">{prop.label}</FormLabel>
@@ -382,7 +399,7 @@ export function SellForm() {
                                     )} />
                                     <FormField control={form.control} name="fuelType" render={({ field }) => (
                                         <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
                                                 {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                     <FormLabel className="font-normal">{type.label}</FormLabel>
