@@ -83,7 +83,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                   </p>
               </div>
               
-              <div className="mb-8 text-center">
+              <div className="mb-8">
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button
