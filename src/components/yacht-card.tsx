@@ -1,10 +1,11 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Yacht } from '@/lib/types';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, GitCompareArrows, MapPin, Calendar, Sailboat, Ruler } from 'lucide-react';
+import { Heart, GitCompareArrows, MapPin, Calendar, Ruler } from 'lucide-react';
 
 type YachtCardProps = {
   yacht: Yacht;
@@ -12,25 +13,26 @@ type YachtCardProps = {
 
 export function YachtCard({ yacht }: YachtCardProps) {
   return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-md">
+    <Card className="group relative overflow-hidden rounded-md border transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <Link href={`/yachts/${yacht.id}`} className="absolute inset-0 z-10" aria-label={`View details for ${yacht.name}`}>
+        <span className="sr-only">View Details</span>
+      </Link>
       <CardHeader className="p-0">
         <div className="relative">
-          <Link href={`/yachts/${yacht.id}`} aria-label={`View details for ${yacht.name}`}>
-            <Image
-              src={yacht.imageUrl}
-              alt={`Image of ${yacht.name}`}
-              width={600}
-              height={400}
-              className="h-56 w-full object-cover"
-              data-ai-hint={yacht.imageHint}
-            />
-          </Link>
+          <Image
+            src={yacht.imageUrl}
+            alt={`Image of ${yacht.name}`}
+            width={600}
+            height={400}
+            className="h-56 w-full object-cover"
+            data-ai-hint={yacht.imageHint}
+          />
           <div className="absolute top-3 right-3 flex gap-2">
-             <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border-none text-white hover:bg-white/30">
+             <Button size="icon" variant="secondary" className="relative z-20 h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border-none text-white hover:bg-white/30">
               <Heart className="h-4 w-4" />
               <span className="sr-only">Favorite</span>
             </Button>
-             <Button size="icon" variant="secondary" className="h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border-none text-white hover:bg-white/30">
+             <Button size="icon" variant="secondary" className="relative z-20 h-8 w-8 rounded-full bg-white/20 backdrop-blur-md border-none text-white hover:bg-white/30">
               <GitCompareArrows className="h-4 w-4" />
               <span className="sr-only">Compare</span>
             </Button>
@@ -42,9 +44,7 @@ export function YachtCard({ yacht }: YachtCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4">
-        <Link href={`/yachts/${yacht.id}`}>
-          <CardTitle className="mb-2 text-xl font-bold hover:text-primary transition-colors">{yacht.name}</CardTitle>
-        </Link>
+        <CardTitle className="mb-2 text-xl font-bold transition-colors group-hover:text-primary">{yacht.name}</CardTitle>
         <div className="text-muted-foreground">
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 shrink-0" /> <span>{yacht.location}</span>
@@ -64,11 +64,6 @@ export function YachtCard({ yacht }: YachtCardProps) {
           ${yacht.price.toLocaleString()}
         </p>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full" variant="outline">
-          <Link href={`/yachts/${yacht.id}`}>View Details</Link>
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
