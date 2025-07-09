@@ -72,25 +72,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
 
   return (
     <SidebarProvider defaultOpen={false}>
-      <Sidebar>
-        <SidebarHeader>
-            <h2 className="text-lg font-semibold text-foreground">Search</h2>
-            <p className="text-sm text-muted-foreground">
-                Apply filters to find the perfect yacht. Results will update automatically.
-            </p>
-        </SidebarHeader>
-        <SidebarContent>
-            <form ref={formRef} onChange={handleFormChange} className="p-4 pt-0">
-                <YachtFilters />
-            </form>
-        </SidebarContent>
-        <SheetFooter className="p-4 pt-2 bg-card border-t">
-            <Button size="lg" variant="outline" type="reset" onClick={() => formRef.current?.reset()} className="w-full">Clear All Filters</Button>
-        </SheetFooter>
-      </Sidebar>
-
-      <SidebarInset>
-        <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-8 md:py-12">
             
             <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
               <div className="md:col-span-1">
@@ -128,17 +110,37 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
               </div>
             </div>
             
-            {yachtsToShow.length > 0 ? (
-              <YachtListings yachts={yachtsToShow} />
-            ) : (
-                <div className="text-center py-16 border rounded-lg bg-card">
-                  <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
-                  <p className="font-semibold mt-4">No Yachts Found</p>
-                  <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
-                </div>
-            )}
+            <div className="flex gap-4 items-start">
+              <Sidebar>
+                <SidebarHeader>
+                    <h2 className="text-lg font-semibold text-foreground">Search</h2>
+                    <p className="text-sm text-muted-foreground">
+                        Apply filters to find the perfect yacht. Results will update automatically.
+                    </p>
+                </SidebarHeader>
+                <SidebarContent>
+                    <form ref={formRef} onChange={handleFormChange} className="p-4 pt-0">
+                        <YachtFilters />
+                    </form>
+                </SidebarContent>
+                <SheetFooter className="p-4 pt-2 bg-card border-t">
+                    <Button size="lg" variant="outline" type="reset" onClick={() => formRef.current?.reset()} className="w-full">Clear All Filters</Button>
+                </SheetFooter>
+              </Sidebar>
+
+              <SidebarInset>
+                {yachtsToShow.length > 0 ? (
+                  <YachtListings yachts={yachtsToShow} />
+                ) : (
+                    <div className="text-center py-16 border rounded-lg bg-card">
+                      <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
+                      <p className="font-semibold mt-4">No Yachts Found</p>
+                      <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
+                    </div>
+                )}
+              </SidebarInset>
+            </div>
         </div>
-      </SidebarInset>
     </SidebarProvider>
   );
 }

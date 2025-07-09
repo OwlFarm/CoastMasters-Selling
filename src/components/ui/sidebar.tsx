@@ -143,7 +143,7 @@ const SidebarProvider = React.forwardRef<
             }
             data-state={state}
             className={cn(
-              "group/sidebar-wrapper flex min-h-svh w-full",
+              "group/sidebar-wrapper w-full",
               className
             )}
             ref={ref}
@@ -201,14 +201,14 @@ const Sidebar = React.forwardRef<
         data-state={state}
         data-side={side}
         className={cn(
-            "hidden md:flex flex-col bg-card text-card-foreground border-r transition-[width] duration-300 ease-in-out",
-            "w-[--sidebar-width]",
-            state === 'collapsed' && "w-0",
+            "hidden md:block transition-all duration-300 ease-in-out overflow-hidden",
+            "data-[state=expanded]:w-[var(--sidebar-width)]",
+            "data-[state=collapsed]:w-0",
             className
         )}
         {...props}
       >
-        <div className="flex h-full w-[--sidebar-width] flex-col">
+        <div className="w-[var(--sidebar-width)] h-full flex flex-col bg-card text-card-foreground border rounded-lg">
           {children}
         </div>
       </div>
@@ -253,7 +253,7 @@ const SidebarInset = React.forwardRef<
     <main
       ref={ref}
       className={cn(
-        "relative flex min-h-svh flex-1 flex-col bg-background",
+        "relative flex-1 flex-col",
         className
       )}
       {...props}
