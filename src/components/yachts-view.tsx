@@ -25,7 +25,6 @@ import {
   SidebarProvider,
   SidebarTrigger
 } from '@/components/ui/sidebar';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { SheetFooter } from '@/components/ui/sheet';
 
 
@@ -80,14 +79,12 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                 Apply filters to find the perfect yacht. Results will update automatically.
             </p>
         </SidebarHeader>
-        <ScrollArea className="flex-1">
-          <SidebarContent>
-            <form ref={formRef} onChange={handleFormChange} className="p-6 pt-0">
+        <SidebarContent>
+            <form ref={formRef} onChange={handleFormChange} className="p-4 pt-0">
                 <YachtFilters />
             </form>
-          </SidebarContent>
-        </ScrollArea>
-        <SheetFooter className="p-6 pt-4 bg-background border-t">
+        </SidebarContent>
+        <SheetFooter className="p-4 pt-2 bg-card border-t">
             <Button size="lg" variant="outline" type="reset" onClick={() => formRef.current?.reset()} className="w-full">Clear All Filters</Button>
         </SheetFooter>
       </Sidebar>
