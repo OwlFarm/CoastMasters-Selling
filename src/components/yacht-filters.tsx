@@ -105,19 +105,24 @@ export function YachtFilters() {
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="grid grid-cols-2 gap-x-2 gap-y-4 pb-8">
-        {conditions.map((condition) => (
-          <div key={condition.id} className="flex items-center space-x-2">
-            <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
-            <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
-          </div>
-        ))}
-        {listingTypes.map((type) => (
-          <div key={type.id} className="flex items-center space-x-2">
-            <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
-            <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
-          </div>
-        ))}
+      <div className="space-y-4 pb-8">
+        <div className="grid grid-cols-2 gap-x-2">
+          {conditions.map((condition) => (
+            <div key={condition.id} className="flex items-center space-x-2">
+              <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
+              <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+            </div>
+          ))}
+        </div>
+        <Separator />
+        <div className="grid grid-cols-2 gap-x-2">
+          {listingTypes.map((type) => (
+            <div key={type.id} className="flex items-center space-x-2">
+              <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
+              <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
+            </div>
+          ))}
+        </div>
       </div>
       
       <Separator className="mb-8"/>
@@ -350,7 +355,7 @@ export function YachtFilters() {
                         {regionData.region}
                       </AccordionTrigger>
                       <AccordionContent className="pl-4">
-                        <div className="flex flex-col gap-2 pt-2">
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-2 pt-2">
                           {regionData.locations.map((location) => (
                             <div key={location.id} className="flex items-center space-x-2">
                               <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
