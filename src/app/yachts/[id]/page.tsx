@@ -1,3 +1,4 @@
+
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getFeaturedYachts } from '@/services/yacht-service';
@@ -80,11 +81,11 @@ export default async function YachtDetailPage({ params }: { params: { id: string
       <main className="flex-1">
         <div className="container mx-auto px-4 pt-4 pb-8 md:pt-4 md:pb-12">
           
-          <section className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-4 mb-12">
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12">
             
             {/* Left Column: Image Gallery */}
-            <div>
-              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-4">
+            <div className="space-y-4 lg:col-span-2">
+              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
                 <Image
                   src={yacht.imageUrl}
                   alt={`Image of ${yacht.name}`}
@@ -109,7 +110,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
             </div>
 
             {/* Right Column: Key Information */}
-            <div className="flex">
+            <div className="flex lg:col-span-1">
                <Card className="rounded-lg border bg-card p-6 shadow-sm h-full flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
