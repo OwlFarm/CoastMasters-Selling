@@ -48,7 +48,7 @@ Your primary task is to create a compelling and search-engine-optimized title an
     *   Start with a strong opening statement.
     *   Highlight the yacht's key selling points, condition, and type.
     *   Weave in the provided key features naturally.
-    *   Mention the ideal usage (e.g., "perfect for blue-water cruising," "ideal for weekend getaways").
+    *   Mention the ideal usage (e.g., "perfect for off-shore cruising," "ideal for weekend getaways").
     *   Maintain a professional and luxurious tone.
 
 **Yacht Details:**
@@ -98,7 +98,7 @@ For single-choice categories (like Hull Material), return only the one most like
 **Available Cabin Features:**
 {{{cabinOptions}}}
 
-**Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "blue-water" in the \`detectedUsageStyles\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
+**Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "off-shore" in the \`detectedUsageStyles\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
 
 Generate the final JSON output with all fields: \`title\`, \`description\`, and all \`detected...\` fields.`,
 });

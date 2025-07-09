@@ -106,7 +106,7 @@ export function YachtFilters() {
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
       <div className="space-y-4 pb-8">
-        <div className="grid grid-cols-2 gap-x-2">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-4">
           {conditions.map((condition) => (
             <div key={condition.id} className="flex items-center space-x-2">
               <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
@@ -115,7 +115,7 @@ export function YachtFilters() {
           ))}
         </div>
         <Separator />
-        <div className="grid grid-cols-2 gap-x-2">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4">
           {listingTypes.map((type) => (
             <div key={type.id} className="flex items-center space-x-2">
               <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
@@ -168,9 +168,9 @@ export function YachtFilters() {
       <Accordion type="multiple" defaultValue={['boatType', 'builder', 'hull']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
-          <AccordionContent>
-              <div className="flex flex-col gap-4 pt-2">
-                <div className="flex flex-row gap-8">
+            <AccordionContent>
+              <div className="space-y-4 pt-2">
+                <div className="flex flex-row flex-wrap gap-x-8 gap-y-2">
                   {boatTypes.map((type) => (
                     <div key={type.id} className="flex items-center space-x-2">
                       <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
@@ -178,26 +178,17 @@ export function YachtFilters() {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-row gap-8">
-                        {usageStyles.slice(0, 2).map((style) => (
-                        <div key={style.id} className="flex items-center space-x-2">
-                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
-                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
-                        </div>
-                        ))}
+                <Separator />
+                <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                  {usageStyles.map((style) => (
+                    <div key={style.id} className="flex items-center space-x-2">
+                      <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                      <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
                     </div>
-                    <div className="flex flex-row gap-8">
-                        {usageStyles.slice(2).map((style) => (
-                        <div key={style.id} className="flex items-center space-x-2">
-                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
-                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
-                        </div>
-                        ))}
-                    </div>
+                  ))}
                 </div>
               </div>
-          </AccordionContent>
+            </AccordionContent>
         </AccordionItem>
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>

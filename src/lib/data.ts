@@ -203,7 +203,7 @@ export const boatTypes = [
 ];
 
 export const usageStyles = [
-  { id: 'blue-water', label: 'Blue Water' },
+  { id: 'off-shore', label: 'Off Shore' },
   { id: 'in-shore', label: 'In Shore' },
   { id: 'island', label: 'Island' },
   { id: 'off-grid', label: 'Off Grid' },
