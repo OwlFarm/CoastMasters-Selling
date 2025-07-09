@@ -119,7 +119,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                           <Select defaultValue="recommended">
                             <SelectTrigger className="w-[180px]">
                               <SelectValue placeholder="Sort by" />
-                            </Trigger>
+                            </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="recommended">Recommended</SelectItem>
                               <SelectItem value="price-asc">Price: Low to High</SelectItem>
