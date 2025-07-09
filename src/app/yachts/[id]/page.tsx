@@ -77,8 +77,10 @@ export default async function YachtDetailPage({ params }: { params: { id: string
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
       <main className="flex-1">
-        <section className="w-full">
-            <div className="relative aspect-[3/2] w-full">
+        <div className="container mx-auto px-4 py-8 md:py-12">
+          
+          <section className="mb-8 w-full">
+            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg">
               <Image
                 src={yacht.imageUrl}
                 alt={`Image of ${yacht.name}`}
@@ -88,25 +90,24 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                 priority
               />
             </div>
-        </section>
-
-        <div className="container mx-auto px-4">
-            <div className="py-4">
-              <div className="grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
-                  {(yacht.images || []).slice(0, 8).map((img, i) => (
-                    <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
-                       <Image
-                          src={img}
-                          alt={`Image ${i + 1} of ${yacht.name}`}
-                          fill
-                          className="object-cover transition-transform duration-300 hover:scale-110"
-                        />
-                    </div>
-                  ))}
-              </div>
+          </section>
+          
+          <div className="mb-8">
+            <div className="grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
+                {(yacht.images || []).slice(0, 8).map((img, i) => (
+                  <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
+                      <Image
+                        src={img}
+                        alt={`Image ${i + 1} of ${yacht.name}`}
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-110"
+                      />
+                  </div>
+                ))}
             </div>
+          </div>
 
-           <section className="py-8 md:py-12">
+           <section>
             <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
               <div className="md:col-span-2">
                   <div className="flex items-center justify-between">
