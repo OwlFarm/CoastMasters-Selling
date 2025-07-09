@@ -110,7 +110,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
               </div>
             </div>
             
-            <div className="flex gap-4 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
               <Sidebar>
                 <SidebarHeader>
                     <h2 className="text-lg font-semibold text-foreground">Search</h2>
@@ -128,7 +128,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                 </SheetFooter>
               </Sidebar>
 
-              <SidebarInset>
+              <SidebarInset className="lg:col-span-3 group-data-[state=expanded]/sidebar-wrapper:lg:col-span-2">
                 {yachtsToShow.length > 0 ? (
                   <YachtListings yachts={yachtsToShow} />
                 ) : (
