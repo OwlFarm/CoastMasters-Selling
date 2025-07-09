@@ -1,6 +1,7 @@
 'use server';
 
 import { smartSearch, type SmartSearchInput, type SmartSearchOutput } from '@/ai/flows/smart-search';
+import { generateListingDetails, GenerateListingDetailsInputSchema, type GenerateListingDetailsOutput } from '@/ai/flows/generate-listing-details';
 import { z } from 'zod';
 
 const searchSchema = z.object({
@@ -88,5 +89,40 @@ export async function handleFilteredSearch(
   } catch (error) {
     console.error('Filtered search failed:', error);
     return { error: 'An error occurred during the search. Please try again.' };
+  }
+}
+
+// New AI Action for the Sell Form
+type GenerateDetailsState = {
+  result?: GenerateListingDetailsOutput;
+  error?: string;
+}
+
+export async function handleGenerateListingDetails(
+  prevState: GenerateDetailsState,
+  formData: FormData
+): Promise<GenerateDetailsState> {
+   const validatedFields = GenerateListingDetailsInputSchema.safeParse({
+    make: formData.get('make'),
+    model: formData.get('model'),
+    year: Number(formData.get('year')),
+    length: Number(formData.get('length')),
+    condition: formData.get('condition'),
+    boatType: formData.get('boatType'),
+    keyFeatures: formData.getAll('keyFeatures').map(String),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      error: 'Missing required details to generate listing. Please fill out the yacht details first.',
+    };
+  }
+
+  try {
+    const output = await generateListingDetails(validatedFields.data);
+    return { result: output };
+  } catch (error) {
+    console.error('Generate details failed:', error);
+    return { error: 'An error occurred while generating details. Please try again.' };
   }
 }
