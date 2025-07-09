@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Anchor, ShipWheel } from 'lucide-react';
+import { ShipWheel } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
 
@@ -11,6 +11,20 @@ export function Header() {
           <ShipWheel className="h-8 w-8 text-primary" />
           <span className="font-headline text-xl font-bold">Coast Masters</span>
         </Link>
+        <nav className="hidden md:flex items-center gap-1">
+           <Button variant="ghost" asChild>
+            <Link href="/yachts">Listings</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/brokers">Brokers</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/charters">Charters</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/crew">Crew</Link>
+          </Button>
+        </nav>
         <div className="flex items-center gap-2">
           <Button variant="ghost">Log In</Button>
           <Button variant="default" className="bg-accent text-accent-foreground hover:bg-accent/90">Sign Up</Button>
