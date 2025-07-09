@@ -83,7 +83,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
           <section className="grid grid-cols-1 lg:grid-cols-[1fr_22rem] lg:items-end gap-8 mb-8">
             {/* Left Column: Image Gallery */}
             <div>
-              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-4">
+              <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-8">
                 <Image
                   src={yacht.imageUrl}
                   alt={`Image of ${yacht.name}`}
@@ -95,7 +95,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
               </div>
               <div className="grid grid-cols-6 gap-2">
                   {(yacht.images || []).slice(0, 6).map((img, i) => (
-                    <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
+                    <div key={i} className="relative aspect-[3/2] w-full overflow-hidden rounded-md">
                         <Image
                           src={img}
                           alt={`Image ${i + 1} of ${yacht.name}`}
@@ -109,26 +109,28 @@ export default async function YachtDetailPage({ params }: { params: { id: string
 
             {/* Right Column: Key Information */}
             <div>
-               <Card className="rounded-lg border bg-card p-6 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
-                     <div className="flex gap-2">
-                        <Button size="icon" variant="outline" className="h-9 w-9 rounded-full">
-                          <Heart className="h-4 w-4" />
-                          <span className="sr-only">Favorite</span>
-                        </Button>
-                        <Button size="icon" variant="outline" className="h-9 w-9 rounded-full">
-                          <GitCompareArrows className="h-4 w-4" />
-                          <span className="sr-only">Compare</span>
-                        </Button>
-                      </div>
+               <Card className="rounded-lg border bg-card p-6 shadow-sm h-full flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
+                       <div className="flex gap-2">
+                          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full">
+                            <Heart className="h-4 w-4" />
+                            <span className="sr-only">Favorite</span>
+                          </Button>
+                          <Button size="icon" variant="outline" className="h-9 w-9 rounded-full">
+                            <GitCompareArrows className="h-4 w-4" />
+                            <span className="sr-only">Compare</span>
+                          </Button>
+                        </div>
+                    </div>
+
+                    <h1 className="mt-4 font-headline text-3xl font-bold tracking-tight md:text-4xl">
+                      {yacht.name}
+                    </h1>
+
+                    <p className="mt-4 text-3xl font-bold text-primary">${yacht.price.toLocaleString()}</p>
                   </div>
-
-                  <h1 className="mt-4 font-headline text-3xl font-bold tracking-tight md:text-4xl">
-                    {yacht.name}
-                  </h1>
-
-                  <p className="mt-4 text-3xl font-bold text-primary">${yacht.price.toLocaleString()}</p>
                   
                   <div className="mt-6">
                      <h2 className="text-xl font-semibold border-b pb-2 mb-4">Key Specifications</h2>
