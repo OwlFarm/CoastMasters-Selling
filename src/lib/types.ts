@@ -1,12 +1,29 @@
 export type Yacht = {
   id: string;
   name: string;
-  type: 'Motor' | 'Sailing' | 'Catamaran';
-  listingType: 'Private' | 'Broker';
   price: number;
   year: number;
   length: number; // in feet
   location: string;
   imageUrl: string;
   imageHint: string;
+  images?: string[];
+  make: string;
+  model: string;
+  listingType: 'Private' | 'Broker';
+  boatType: 'Motor' | 'Sailing' | 'Catamaran' | string;
+  condition: 'New' | 'Used' | string;
+  description?: string;
+  fuelType?: string;
+  hullMaterial?: string;
+  hullShape?: string;
+  bowShape?: string;
+  keelType?: string;
+  rudderType?: string;
+  propellerType?: string;
+  usageStyles?: string[];
+  features?: string[];
+  deck?: string[];
+  cabin?: string[];
+  otherSpecifications?: string;
 };

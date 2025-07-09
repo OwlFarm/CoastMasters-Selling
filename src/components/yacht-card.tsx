@@ -33,7 +33,7 @@ export function YachtCard({ yacht }: YachtCardProps) {
             </Button>
           </div>
           <div className="absolute bottom-3 left-3 flex items-center gap-2">
-            <Badge variant="secondary">{yacht.type}</Badge>
+            <Badge variant="secondary">{yacht.boatType}</Badge>
             <Badge variant={yacht.listingType === 'Broker' ? 'default' : 'outline'}>{yacht.listingType}</Badge>
           </div>
         </div>
