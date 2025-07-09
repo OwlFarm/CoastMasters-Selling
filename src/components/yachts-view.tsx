@@ -72,7 +72,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
   const message = state?.result?.message ?? `Showing ${initialYachts.length} featured results.`;
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <Sidebar>
         <SidebarHeader>
             <h2 className="text-lg font-semibold text-foreground">Search</h2>
