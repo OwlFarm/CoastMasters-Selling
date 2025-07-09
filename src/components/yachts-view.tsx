@@ -90,12 +90,12 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                       variant="default"
                       className="h-16 px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
                     >
-                      Define Search
+                      Search
                     </Button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[clamp(500px,50vw,600px)] flex flex-col p-0">
                     <SheetHeader className="p-6 pb-4">
-                      <SheetTitle>Define Your Search</SheetTitle>
+                      <SheetTitle>Search</SheetTitle>
                       <SheetDescription>
                         Apply filters to find the perfect yacht. Results will update automatically.
                       </SheetDescription>
