@@ -80,9 +80,9 @@ export default async function YachtDetailPage({ params }: { params: { id: string
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8 md:py-12">
           
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+          <section className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
             {/* Left Column: Image Gallery */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-3">
               <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-4">
                 <Image
                   src={yacht.imageUrl}
