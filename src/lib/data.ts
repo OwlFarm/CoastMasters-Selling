@@ -2,7 +2,7 @@ import type { Yacht } from './types';
 
 export const featuredYachts: Yacht[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Serenity Cruiser',
     type: 'Motor',
     listingType: 'Broker',
@@ -14,7 +14,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'modern yacht',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Ocean Voyager',
     type: 'Sailing',
     listingType: 'Private',
@@ -26,7 +26,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'sailing yacht',
   },
   {
-    id: 3,
+    id: '3',
     name: 'Twin Hull Drifter',
     type: 'Catamaran',
     listingType: 'Broker',
@@ -38,7 +38,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'catamaran boat',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Azure Dream',
     type: 'Motor',
     listingType: 'Broker',
@@ -50,7 +50,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'luxury yacht',
   },
   {
-    id: 5,
+    id: '5',
     name: 'Wind Whisperer',
     type: 'Sailing',
     listingType: 'Private',
@@ -62,7 +62,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'sailboat sunset',
   },
   {
-    id: 6,
+    id: '6',
     name: 'Coastal Runner',
     type: 'Motor',
     listingType: 'Broker',
@@ -74,7 +74,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'fast yacht',
   },
   {
-    id: 7,
+    id: '7',
     name: 'Sun Chaser',
     type: 'Catamaran',
     listingType: 'Private',
@@ -86,7 +86,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'catamaran caribbean',
   },
   {
-    id: 8,
+    id: '8',
     name: 'Starlight Express',
     type: 'Motor',
     listingType: 'Broker',
@@ -98,7 +98,7 @@ export const featuredYachts: Yacht[] = [
     imageHint: 'superyacht night',
   },
   {
-    id: 9,
+    id: '9',
     name: 'Gale Force',
     type: 'Sailing',
     listingType: 'Broker',

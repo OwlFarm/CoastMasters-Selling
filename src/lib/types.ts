@@ -1,5 +1,5 @@
 export type Yacht = {
-  id: number;
+  id: string;
   name: string;
   type: 'Motor' | 'Sailing' | 'Catamaran';
   listingType: 'Private' | 'Broker';

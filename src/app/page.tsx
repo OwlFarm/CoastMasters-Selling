@@ -1,10 +1,12 @@
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { YachtListings } from '@/components/yacht-listings';
-import { featuredYachts } from '@/lib/data';
+import { getFeaturedYachts } from '@/services/yacht-service';
 import { HeroSection } from '@/components/hero-section';
 
-export default function Home() {
+export default async function Home() {
+  const featuredYachts = await getFeaturedYachts();
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
