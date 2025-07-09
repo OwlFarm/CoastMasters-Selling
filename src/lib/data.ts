@@ -279,6 +279,14 @@ export const hullShapeOptions = [
     { id: 'trimaran', label: 'Trimaran' },
 ];
 
+export const bowShapeOptions = [
+    { id: 'plumb', label: 'Plumb' },
+    { id: 'raked', label: 'Raked' },
+    { id: 'spoon', label: 'Spoon' },
+    { id: 'clipper', label: 'Clipper' },
+    { id: 'reverse', label: 'Reverse/Wave-Piercing' },
+];
+
 export const keelTypeOptions = [
     { id: 'full', label: 'Full Keel' },
     { id: 'fin', label: 'Fin Keel' },

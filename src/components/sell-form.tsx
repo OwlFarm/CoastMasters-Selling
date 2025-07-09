@@ -14,7 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes } from '@/lib/data';
+import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes, bowShapeOptions } from '@/lib/data';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,6 +32,7 @@ const formSchema = z.object({
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
   hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
   hullShape: z.string({ required_error: 'Please select a hull shape.' }),
+  bowShape: z.string({ required_error: 'Please select a bow shape.' }),
   keelType: z.string({ required_error: 'Please select a keel type.' }),
   rudderType: z.string({ required_error: 'Please select a rudder type.' }),
   propellerType: z.string({ required_error: 'Please select a propeller type.' }),
@@ -49,13 +50,14 @@ const formSchema = z.object({
   deck: z.array(z.string()).optional(),
   cabin: z.array(z.string()).optional(),
   images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
+  otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'Step 1', name: 'Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price'] },
-  { id: 'Step 2', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles'] },
+  { id: 'Step 2', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
   { id: 'Step 3', name: 'Features', fields: ['features', 'deck', 'cabin'] },
   { id: 'Step 4', name: 'Listing Details', fields: ['title', 'description', 'location'] },
   { id: 'Step 5', name: 'Photos', fields: ['images'] },
@@ -91,9 +93,11 @@ export function SellForm() {
             fuelType: undefined,
             hullMaterial: undefined,
             hullShape: undefined,
+            bowShape: undefined,
             keelType: undefined,
             rudderType: undefined,
             propellerType: undefined,
+            otherSpecifications: '',
         },
     });
 
@@ -287,6 +291,16 @@ export function SellForm() {
                                             </RadioGroup>
                                         </FormControl><FormMessage /></FormItem>
                                     )} />
+                                    <FormField control={form.control} name="bowShape" render={({ field }) => (
+                                        <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
+                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                    <FormControl><RadioGroupItem value={shape.id} /></FormControl>
+                                                    <FormLabel className="font-normal">{shape.label}</FormLabel>
+                                                </FormItem>))}
+                                            </RadioGroup>
+                                        </FormControl><FormMessage /></FormItem>
+                                    )} />
                                      <FormField control={form.control} name="keelType" render={({ field }) => (
                                         <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
                                             <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
@@ -326,6 +340,22 @@ export function SellForm() {
                                                 </FormItem>))}
                                             </RadioGroup>
                                         </FormControl><FormMessage /></FormItem>
+                                    )} />
+                                    <FormField control={form.control} name="otherSpecifications" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Other Specifications (Optional)</FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="e.g., Custom rigging, specific navigation equipment not listed, etc."
+                                                    className="min-h-[100px]"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Use this field to list any other important specifications not covered above.
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
                                     )} />
                                 </CardContent>
                             </Card>
