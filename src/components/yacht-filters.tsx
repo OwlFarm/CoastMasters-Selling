@@ -105,23 +105,19 @@ export function YachtFilters() {
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="flex flex-col gap-4 pb-8">
-        <div className="flex items-center gap-8">
-            {conditions.map((condition) => (
-            <div key={condition.id} className="flex items-center space-x-2">
-                <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
-                <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
-            </div>
-            ))}
-        </div>
-        <div className="flex items-center gap-8">
-            {listingTypes.map((type) => (
-            <div key={type.id} className="flex items-center space-x-2">
-                <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
-                <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
-            </div>
-            ))}
-        </div>
+      <div className="grid grid-cols-2 gap-x-2 gap-y-4 pb-8">
+        {conditions.map((condition) => (
+          <div key={condition.id} className="flex items-center space-x-2">
+            <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
+            <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+          </div>
+        ))}
+        {listingTypes.map((type) => (
+          <div key={type.id} className="flex items-center space-x-2">
+            <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
+            <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
+          </div>
+        ))}
       </div>
       
       <Separator className="mb-8"/>
@@ -201,8 +197,8 @@ export function YachtFilters() {
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 pt-2">
-              <div className="md:col-span-2">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
+              <div className="col-span-2">
                 <Input 
                   id="builder-search"
                   name="builderSearch"
@@ -229,7 +225,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-6 pt-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-6 pt-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-2 mt-2">
@@ -291,7 +287,7 @@ export function YachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
               {columnSortedDeck.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
@@ -304,7 +300,7 @@ export function YachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
               {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
@@ -317,7 +313,7 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
