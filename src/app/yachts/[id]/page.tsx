@@ -109,7 +109,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
 
             {/* Right Column: Key Information */}
             <div>
-               <Card className="sticky top-24 rounded-lg border bg-card p-6 shadow-sm">
+               <Card className="rounded-lg border bg-card p-6 shadow-sm">
                   <div className="flex items-center justify-between">
                     <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
                      <div className="flex gap-2">
