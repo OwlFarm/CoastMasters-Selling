@@ -83,57 +83,58 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                   </p>
               </div>
               
-              <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button
-                      variant="default"
-                      className="h-16 w-full px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
-                    >
-                      Search
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-[clamp(500px,50vw,600px)] flex flex-col p-0">
-                    <SheetHeader className="p-6 pb-4">
-                      <SheetTitle>Search</SheetTitle>
-                      <SheetDescription>
-                        Apply filters to find the perfect yacht. Results will update automatically.
-                      </SheetDescription>
-                    </SheetHeader>
-                    <ScrollArea className="flex-1">
-                      <div className="px-6 pb-6">
-                        <YachtFilters />
-                      </div>
-                    </ScrollArea>
-                    <SheetFooter className="p-6 pt-4 bg-background border-t">
-                      <Button size="lg" variant="outline" type="reset" className="w-full">Clear All Filters</Button>
-                    </SheetFooter>
-                  </SheetContent>
-                </Sheet>
-              </div>
+              <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                <div className="md:col-span-1">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button
+                        variant="default"
+                        className="h-12 w-full text-base bg-accent text-accent-foreground hover:bg-accent/90"
+                      >
+                        Search
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-[clamp(500px,50vw,600px)] flex flex-col p-0">
+                      <SheetHeader className="p-6 pb-4">
+                        <SheetTitle>Search</SheetTitle>
+                        <SheetDescription>
+                          Apply filters to find the perfect yacht. Results will update automatically.
+                        </SheetDescription>
+                      </SheetHeader>
+                      <ScrollArea className="flex-1">
+                        <div className="px-6 pb-6">
+                          <YachtFilters />
+                        </div>
+                      </ScrollArea>
+                      <SheetFooter className="p-6 pt-4 bg-background border-t">
+                        <Button size="lg" variant="outline" type="reset" className="w-full">Clear All Filters</Button>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                </div>
 
-              <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm text-muted-foreground">
-                      {message}
-                    </p>
-                    {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                  </div>
-                  <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">Sort By:</span>
-                      <Select defaultValue="recommended">
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Sort by" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="recommended">Recommended</SelectItem>
-                          <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                          <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                          <SelectItem value="year-desc">Year: Newest</SelectItem>
-                          <SelectItem value="year-asc">Year: Oldest</SelectItem>
-                        </SelectContent>
-                      </Select>
-                  </div>
+                <div className="flex items-center gap-2 justify-start md:justify-center">
+                  <p className="text-sm text-muted-foreground">
+                    {message}
+                  </p>
+                  {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                </div>
+
+                <div className="flex items-center gap-2 justify-start md:justify-end">
+                  <span className="text-sm font-medium">Sort By:</span>
+                  <Select defaultValue="recommended">
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="recommended">Recommended</SelectItem>
+                      <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                      <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                      <SelectItem value="year-desc">Year: Newest</SelectItem>
+                      <SelectItem value="year-asc">Year: Oldest</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               {yachtsToShow.length > 0 ? (
