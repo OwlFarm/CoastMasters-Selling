@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes } from "@/lib/data";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 
@@ -99,8 +98,6 @@ export function YachtFilters() {
     }
   }
 
-  const slugify = (text: string) => text.toLowerCase().replace(/[\s/]+/g, '-').replace(/[^\w-]+/g, '');
-
   return (
     <>
       <datalist id="price-list">
@@ -129,7 +126,7 @@ export function YachtFilters() {
       
       <Separator className="mb-8"/>
 
-      <div className="flex flex-col gap-4 pb-8">
+      <div className="flex flex-col gap-8 pb-8">
           <div className="space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
@@ -232,7 +229,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-6 pt-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-2 mt-2">
@@ -346,52 +343,32 @@ export function YachtFilters() {
          <AccordionItem value="location">
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
-             <Tabs defaultValue={slugify(locationsByRegion[0].region)} className="w-full pt-2">
-                <TabsList className="grid h-auto w-full grid-cols-3 md:grid-cols-7 justify-between">
-                  {locationsByRegion.map((regionData) => (
-                    <TabsTrigger key={regionData.region} value={slugify(regionData.region)}>{regionData.region}</TabsTrigger>
-                  ))}
-                </TabsList>
+             <Accordion type="multiple" className="w-full pt-2">
                 {locationsByRegion.map((regionData) => {
-                    const groupedLocations = regionData.locations.reduce((acc, loc) => {
-                        const sub = loc.subRegion as keyof typeof acc;
-                        acc[sub] = acc[sub] || [];
-                        acc[sub].push(loc);
-                        return acc;
-                    }, {} as Record<'North' | 'South' | 'East' | 'West', (typeof regionData.locations)>);
-
-                    const subRegions = ['North', 'South', 'East', 'West'];
-                    
-                    return (
-                        <TabsContent key={regionData.region} value={slugify(regionData.region)}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6 pt-4">
-                                {subRegions.map((subRegion) => {
-                                    const locationsInSubRegion = groupedLocations[subRegion as keyof typeof groupedLocations] || [];
-                                    return (
-                                        <div key={subRegion}>
-                                            <h4 className="font-medium mb-2 pb-1 border-b">{subRegion}</h4>
-                                            <div className="flex flex-col gap-2 mt-2">
-                                                {locationsInSubRegion.length > 0 ? (
-                                                    locationsInSubRegion.map((location) => (
-                                                        <div key={location.id} className="flex items-center space-x-2">
-                                                            <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
-                                                            <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
-                                                                {location.label}
-                                                            </Label>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-xs text-muted-foreground italic">No locations</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                  if (regionData.locations.length === 0) {
+                    return null;
+                  }
+                  return (
+                    <AccordionItem key={regionData.region} value={regionData.region}>
+                      <AccordionTrigger className="text-sm py-3">
+                        {regionData.region}
+                      </AccordionTrigger>
+                      <AccordionContent className="pl-4">
+                        <div className="flex flex-col gap-2 pt-2">
+                          {regionData.locations.map((location) => (
+                            <div key={location.id} className="flex items-center space-x-2">
+                              <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
+                              <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
+                                {location.label}
+                              </Label>
                             </div>
-                        </TabsContent>
-                    );
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
                 })}
-              </Tabs>
+              </Accordion>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
