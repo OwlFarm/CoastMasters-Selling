@@ -83,12 +83,12 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                   </p>
               </div>
               
-              <div className="mb-8">
+              <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button
                       variant="default"
-                      className="h-16 px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
+                      className="h-16 w-full px-10 text-xl bg-accent text-accent-foreground hover:bg-accent/90"
                     >
                       Search
                     </Button>
