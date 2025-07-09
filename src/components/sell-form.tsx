@@ -479,24 +479,14 @@ export function SellForm() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                           <FormLabel>Listing Title</FormLabel>
-                                          <form action={aiFormAction}>
-                                            {/* Hidden inputs to pass data to server action */}
-                                            <input type="hidden" name="make" value={form.getValues('make')} />
-                                            <input type="hidden" name="model" value={form.getValues('model')} />
-                                            <input type="hidden" name="year" value={form.getValues('year')} />
-                                            <input type="hidden" name="length" value={form.getValues('length')} />
-                                            <input type="hidden" name="condition" value={form.getValues('condition')} />
-                                            <input type="hidden" name="boatType" value={form.getValues('boatType')} />
-                                            {form.getValues('features')?.map(f => <input key={f} type="hidden" name="keyFeatures" value={f} />)}
-                                            <Button type="submit" variant="outline" size="sm" disabled={isAiPending}>
-                                                {isAiPending ? (
-                                                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                                ) : (
-                                                    <Sparkles className="mr-2 h-4 w-4" />
-                                                )}
-                                                Generate with AI
-                                            </Button>
-                                          </form>
+                                          <Button type="submit" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
+                                              {isAiPending ? (
+                                                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                              ) : (
+                                                  <Sparkles className="mr-2 h-4 w-4" />
+                                              )}
+                                              Generate with AI
+                                          </Button>
                                         </div>
                                         <FormField control={form.control} name="title" render={({ field }) => (
                                             <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>

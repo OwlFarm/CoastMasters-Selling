@@ -108,7 +108,7 @@ export async function handleGenerateListingDetails(
     length: Number(formData.get('length')),
     condition: formData.get('condition'),
     boatType: formData.get('boatType'),
-    keyFeatures: formData.getAll('keyFeatures').map(String),
+    features: formData.getAll('features').map(String),
   });
 
   if (!validatedFields.success) {

@@ -16,7 +16,7 @@ export const GenerateListingDetailsInputSchema = z.object({
   length: z.number().describe('The length of the yacht in feet.'),
   condition: z.string().describe('The condition of the yacht (e.g., new, used).'),
   boatType: z.string().describe('The type of boat (e.g., Motor, Sailing, Catamaran).'),
-  keyFeatures: z.array(z.string()).optional().describe('A list of key features or equipment.'),
+  features: z.array(z.string()).optional().describe('A list of key features or equipment.'),
 });
 export type GenerateListingDetailsInput = z.infer<typeof GenerateListingDetailsInputSchema>;
 

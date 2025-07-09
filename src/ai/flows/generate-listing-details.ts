@@ -40,7 +40,7 @@ const prompt = ai.definePrompt({
 -   **Length:** {{{length}}} ft
 -   **Condition:** {{{condition}}}
 -   **Boat Type:** {{{boatType}}}
--   **Key Features:** {{#if keyFeatures}}{{#each keyFeatures}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}Not specified.{{/if}}
+-   **Key Features:** {{#if features}}{{#each features}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}Not specified.{{/if}}
 
 Generate the JSON output with the 'title' and 'description' fields.`,
 });
