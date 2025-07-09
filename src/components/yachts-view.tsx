@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -71,7 +70,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
   const message = state?.result?.message ?? `Showing ${initialYachts.length} featured results.`;
 
   return (
-    <main className="flex-1">
+    <>
       <form ref={formRef} onChange={handleFormChange}>
           <div className="container mx-auto px-4 py-8 md:py-12">
               <div className="text-left mb-8">
@@ -144,6 +143,6 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
               )}
           </div>
       </form>
-    </main>
+    </>
   );
 }
