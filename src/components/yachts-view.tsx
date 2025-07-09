@@ -26,7 +26,7 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { SheetDescription, SheetFooter, SheetTitle } from '@/components/ui/sheet';
+import { SheetFooter } from '@/components/ui/sheet';
 
 
 type YachtsViewProps = {
@@ -75,10 +75,10 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <SheetTitle>Search</SheetTitle>
-          <SheetDescription>
+          <h2 className="text-lg font-semibold text-foreground">Search</h2>
+          <p className="text-sm text-muted-foreground">
             Apply filters to find the perfect yacht. Results will update automatically.
-          </SheetDescription>
+          </p>
         </SidebarHeader>
         <ScrollArea className="flex-1">
           <SidebarContent>
@@ -94,24 +94,16 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
 
       <SidebarInset>
         <div className="container mx-auto px-4 py-8 md:py-12">
-            <div className="text-left mb-8">
-                <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
-                    Find Your Yacht
-                </h1>
-                <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-                    Use our detailed filters to discover the perfect vessel. Your results will update automatically as you refine your search.
-                </p>
-            </div>
             
             <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
               <div className="md:col-span-1">
                 <SidebarTrigger asChild>
-                  <Button
-                    variant="default"
-                    className="h-12 w-full text-base bg-accent text-accent-foreground hover:bg-accent/90"
-                  >
-                    Search
-                  </Button>
+                    <Button
+                        variant="default"
+                        className="h-12 w-full text-base bg-accent text-accent-foreground hover:bg-accent/90"
+                    >
+                        Search
+                    </Button>
                 </SidebarTrigger>
               </div>
 
@@ -138,7 +130,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                 </Select>
               </div>
             </div>
-
+            
             {yachtsToShow.length > 0 ? (
               <YachtListings yachts={yachtsToShow} />
             ) : (
