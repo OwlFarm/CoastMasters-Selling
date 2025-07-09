@@ -6,7 +6,7 @@ import type { Yacht } from '@/lib/types';
 import { YachtListings } from '@/components/yacht-listings';
 import { YachtFilters } from '@/components/yacht-filters';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle, SearchX } from 'lucide-react';
+import { LoaderCircle, SearchX, SlidersHorizontal } from 'lucide-react';
 import { handleFilteredSearch, FilteredSearchState } from '@/lib/actions';
 import {
   Select,
@@ -16,6 +16,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from '@/hooks/use-toast';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 type YachtsViewProps = {
   initialYachts: Yacht[];
@@ -72,51 +82,65 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                   </p>
               </div>
               
-              <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-                  <aside className="lg:col-span-1">
-                    <div className="sticky top-20 space-y-6">
-                      <YachtFilters />
-                       <div className="flex flex-col gap-2">
-                        <Button size="lg" variant="outline" type="reset">Clear Filters</Button>
+              <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      {message}
+                    </p>
+                    {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                  </div>
+                  <div className="flex items-center gap-4">
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="outline">
+                            <SlidersHorizontal className="mr-2 h-4 w-4" />
+                            Refine Search
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-[clamp(500px,50vw,600px)] flex flex-col p-0">
+                          <SheetHeader className="p-6 pb-4">
+                            <SheetTitle>Refine Your Search</SheetTitle>
+                            <SheetDescription>
+                              Apply filters to find the perfect yacht. Results will update automatically.
+                            </SheetDescription>
+                          </SheetHeader>
+                          <ScrollArea className="flex-1">
+                            <div className="px-6 pb-6">
+                              <YachtFilters />
+                            </div>
+                          </ScrollArea>
+                          <SheetFooter className="p-6 pt-4 bg-background border-t">
+                            <Button size="lg" variant="outline" type="reset" className="w-full">Clear All Filters</Button>
+                          </SheetFooter>
+                        </SheetContent>
+                      </Sheet>
+                      <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium">Sort By:</span>
+                          <Select defaultValue="recommended">
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="Sort by" />
+                            </Trigger>
+                            <SelectContent>
+                              <SelectItem value="recommended">Recommended</SelectItem>
+                              <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                              <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                              <SelectItem value="year-desc">Year: Newest</SelectItem>
+                              <SelectItem value="year-asc">Year: Oldest</SelectItem>
+                            </SelectContent>
+                          </Select>
                       </div>
-                    </div>
-                  </aside>
-                  <div className="lg:col-span-3">
-                      <div className="flex items-center justify-between mb-6">
-                           <div className="flex items-center gap-2">
-                            <p className="text-sm text-muted-foreground">
-                              {message}
-                            </p>
-                            {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                          </div>
-                          <div className="flex items-center gap-2">
-                             <span className="text-sm font-medium">Sort By:</span>
-                             <Select defaultValue="recommended">
-                               <SelectTrigger className="w-[180px]">
-                                 <SelectValue placeholder="Sort by" />
-                               </SelectTrigger>
-                               <SelectContent>
-                                 <SelectItem value="recommended">Recommended</SelectItem>
-                                 <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                                 <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                                 <SelectItem value="year-desc">Year: Newest</SelectItem>
-                                 <SelectItem value="year-asc">Year: Oldest</SelectItem>
-                               </SelectContent>
-                             </Select>
-                          </div>
-                      </div>
-
-                      {yachtsToShow.length > 0 ? (
-                        <YachtListings yachts={yachtsToShow} />
-                      ) : (
-                         <div className="text-center py-16 border rounded-lg bg-card">
-                            <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <p className="font-semibold mt-4">No Yachts Found</p>
-                            <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
-                         </div>
-                      )}
                   </div>
               </div>
+
+              {yachtsToShow.length > 0 ? (
+                <YachtListings yachts={yachtsToShow} />
+              ) : (
+                  <div className="text-center py-16 border rounded-lg bg-card">
+                    <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <p className="font-semibold mt-4">No Yachts Found</p>
+                    <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
+                  </div>
+              )}
           </div>
       </form>
     </main>
