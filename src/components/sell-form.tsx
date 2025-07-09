@@ -50,7 +50,7 @@ const formSchema = z.object({
   usageStyles: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
   cabin: z.array(z.string()).optional(),
-  images: z.array(z.any()).min(5, { message: 'At least 5 high-quality images are required.' }).max(10, { message: 'You can upload a maximum of 10 images.' }),
+  images: z.array(z.any()).min(10, { message: 'At least 10 high-quality images are required.' }).max(50, { message: 'You can upload a maximum of 50 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
 });
 
@@ -524,7 +524,7 @@ export function SellForm() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Yacht Photos</CardTitle>
-                                    <CardDescription>Upload a minimum of 5 and up to 10 high-quality images. The first image will be the main one.</CardDescription>
+                                    <CardDescription>Upload a minimum of 10 and up to 50 high-quality images. These will be analyzed for clarity and quality to help buyers. The first image will be the main one.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <FormField
@@ -538,7 +538,7 @@ export function SellForm() {
                                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                                 <Upload className="mb-4 h-8 w-8 text-muted-foreground" />
                                                                 <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Min 5, max 10 images)</p>
+                                                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Min 10, max 50 images)</p>
                                                             </div>
                                                             <Input
                                                               id="dropzone-file"
@@ -551,7 +551,7 @@ export function SellForm() {
                                                                   const newFiles = Array.from(e.target.files);
                                                                   const currentFiles = field.value || [];
                                                                   const combinedFiles = [...currentFiles, ...newFiles];
-                                                                  const limitedFiles = combinedFiles.slice(0, 10);
+                                                                  const limitedFiles = combinedFiles.slice(0, 50);
                                                                   
                                                                   field.onChange(limitedFiles);
 
