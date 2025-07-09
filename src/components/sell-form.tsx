@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -57,9 +58,9 @@ type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'Step 1', name: 'Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price'] },
-  { id: 'Step 2', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
-  { id: 'Step 3', name: 'Features', fields: ['features', 'deck', 'cabin'] },
-  { id: 'Step 4', name: 'Listing Details', fields: ['title', 'description', 'location'] },
+  { id: 'Step 2', name: 'Listing Details', fields: ['title', 'description', 'location'] },
+  { id: 'Step 3', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
+  { id: 'Step 4', name: 'Features', fields: ['features', 'deck', 'cabin'] },
   { id: 'Step 5', name: 'Photos', fields: ['images'] },
 ];
 
@@ -239,6 +240,54 @@ export function SellForm() {
                             </Card>
                         )}
                         {currentStep === 1 && (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Listing Details</CardTitle>
+                                    <CardDescription>Create a title and description that will attract buyers. Use our AI assistant for an SEO-optimized result!</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-6">
+                                     <FormField control={form.control} name="location" render={({ field }) => (
+                                        <FormItem><FormLabel>Location</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
+                                                <SelectContent>
+                                                    {locationsByRegion.map((region) => (
+                                                        <SelectGroup key={region.region}>
+                                                            <SelectLabel>{region.region}</SelectLabel>
+                                                            {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
+                                                        </SelectGroup>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        <FormMessage /></FormItem>
+                                    )} />
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                          <FormLabel>Listing Title</FormLabel>
+                                          <Button type="button" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
+                                              {isAiPending ? (
+                                                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                              ) : (
+                                                  <Sparkles className="mr-2 h-4 w-4" />
+                                              )}
+                                              Generate with AI
+                                          </Button>
+                                        </div>
+                                        <FormField control={form.control} name="title" render={({ field }) => (
+                                            <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                        )} />
+                                    </div>
+                                     <FormField control={form.control} name="description" render={({ field }) => (
+                                        <FormItem><FormLabel>Description</FormLabel>
+                                        <FormControl><Textarea placeholder="Describe your yacht's condition, history, and unique features..." className="min-h-[200px]" {...field} /></FormControl>
+                                        <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
+                                        <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                </CardContent>
+                            </Card>
+                        )}
+                        {currentStep === 2 && (
                              <Card>
                                 <CardHeader>
                                     <CardTitle>Specifications</CardTitle>
@@ -360,7 +409,7 @@ export function SellForm() {
                                 </CardContent>
                             </Card>
                         )}
-                        {currentStep === 2 && (
+                        {currentStep === 3 && (
                             <div className="space-y-8">
                                 <Card>
                                     <CardHeader>
@@ -453,54 +502,6 @@ export function SellForm() {
                                     </CardContent>
                                 </Card>
                             </div>
-                        )}
-                        {currentStep === 3 && (
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Listing Details</CardTitle>
-                                    <CardDescription>Create a title and description that will attract buyers. Use our AI assistant for an SEO-optimized result!</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                     <FormField control={form.control} name="location" render={({ field }) => (
-                                        <FormItem><FormLabel>Location</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
-                                                <SelectContent>
-                                                    {locationsByRegion.map((region) => (
-                                                        <SelectGroup key={region.region}>
-                                                            <SelectLabel>{region.region}</SelectLabel>
-                                                            {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
-                                                        </SelectGroup>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        <FormMessage /></FormItem>
-                                    )} />
-                                    <div className="space-y-2">
-                                        <div className="flex items-center justify-between">
-                                          <FormLabel>Listing Title</FormLabel>
-                                          <Button type="submit" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
-                                              {isAiPending ? (
-                                                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                              ) : (
-                                                  <Sparkles className="mr-2 h-4 w-4" />
-                                              )}
-                                              Generate with AI
-                                          </Button>
-                                        </div>
-                                        <FormField control={form.control} name="title" render={({ field }) => (
-                                            <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
-                                        )} />
-                                    </div>
-                                     <FormField control={form.control} name="description" render={({ field }) => (
-                                        <FormItem><FormLabel>Description</FormLabel>
-                                        <FormControl><Textarea placeholder="Describe your yacht's condition, history, and unique features..." className="min-h-[200px]" {...field} /></FormControl>
-                                        <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                </CardContent>
-                            </Card>
                         )}
                         {currentStep === 4 && (
                             <Card>
