@@ -42,8 +42,10 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                 priority
               />
             </div>
-            
-            <div className="container mx-auto px-4 py-4">
+        </section>
+
+        <div className="container mx-auto px-4">
+            <div className="py-4">
               <div className="grid grid-cols-4 gap-2 md:grid-cols-6 lg:grid-cols-8">
                   {(yacht.images || []).slice(0, 8).map((img, i) => (
                     <div key={i} className="relative aspect-video w-full overflow-hidden rounded-md">
@@ -57,9 +59,8 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                   ))}
               </div>
             </div>
-          </section>
 
-           <section className="container mx-auto px-4 py-8 md:py-12">
+           <section className="py-8 md:py-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
               <div className="md:col-span-2">
                   <div className="flex items-center justify-between">
@@ -105,6 +106,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
               </div>
             </div>
           </section>
+        </div>
       </main>
       <Footer />
     </div>
