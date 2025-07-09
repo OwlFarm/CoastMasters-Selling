@@ -80,9 +80,9 @@ export default async function YachtDetailPage({ params }: { params: { id: string
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8 md:py-12">
           
-          <section className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+          <section className="grid grid-cols-1 lg:grid-cols-[1fr_28rem] gap-4 mb-8">
             {/* Left Column: Image Gallery */}
-            <div className="lg:col-span-3">
+            <div>
               <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg mb-4">
                 <Image
                   src={yacht.imageUrl}
@@ -108,7 +108,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
             </div>
 
             {/* Right Column: Key Information */}
-            <div className="lg:col-span-1">
+            <div>
                <Card className="sticky top-24 rounded-lg border bg-card p-6 shadow-sm">
                   <div className="flex items-center justify-between">
                     <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
