@@ -75,10 +75,10 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <h2 className="text-lg font-semibold text-foreground">Search</h2>
-          <p className="text-sm text-muted-foreground">
-            Apply filters to find the perfect yacht. Results will update automatically.
-          </p>
+            <h2 className="text-lg font-semibold text-foreground">Search</h2>
+            <p className="text-sm text-muted-foreground">
+                Apply filters to find the perfect yacht. Results will update automatically.
+            </p>
         </SidebarHeader>
         <ScrollArea className="flex-1">
           <SidebarContent>
