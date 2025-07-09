@@ -5,6 +5,7 @@ export type Yacht = {
   year: number;
   length: number; // in feet
   location: string;
+  locationId?: string;
   imageUrl: string;
   imageHint: string;
   images?: string[];

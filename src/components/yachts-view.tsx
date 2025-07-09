@@ -6,9 +6,8 @@ import type { Yacht } from '@/lib/types';
 import { YachtListings } from '@/components/yacht-listings';
 import { YachtFilters } from '@/components/yacht-filters';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle, TriangleAlert } from 'lucide-react';
+import { LoaderCircle, SearchX } from 'lucide-react';
 import { handleFilteredSearch, FilteredSearchState } from '@/lib/actions';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -23,11 +22,11 @@ type YachtsViewProps = {
 };
 
 export function YachtsView({ initialYachts }: YachtsViewProps) {
-  const initialState: FilteredSearchState = {};
-  const [state, formAction] = useActionState(handleFilteredSearch, initialState);
+  const initialState: FilteredSearchState = { result: { yachts: initialYachts, message: `Showing ${initialYachts.length} featured results.` } };
+  const [state, formAction, isPending] = useActionState(handleFilteredSearch, initialState);
   const { toast } = useToast();
   const formRef = React.useRef<HTMLFormElement>(null);
-  const [isFiltering, setIsFiltering] = React.useState(false);
+  const [isDebouncing, setIsDebouncing] = React.useState(false);
 
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -36,21 +35,17 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
       clearTimeout(timeoutRef.current);
     }
     
-    setIsFiltering(true);
+    setIsDebouncing(true);
 
     timeoutRef.current = setTimeout(() => {
       if (formRef.current) {
         const formData = new FormData(formRef.current);
         formAction(formData);
       }
+      setIsDebouncing(false);
     }, 750);
   };
   
-  React.useEffect(() => {
-    setIsFiltering(false);
-  }, [state]);
-
-
   React.useEffect(() => {
     if (state.error) {
       toast({
@@ -61,16 +56,19 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
     }
   }, [state.error, toast]);
 
+  const yachtsToShow = state?.result?.yachts ?? initialYachts;
+  const message = state?.result?.message ?? `Showing ${initialYachts.length} featured results.`;
+
   return (
     <main className="flex-1">
-      <form ref={formRef} action={formAction} onChange={handleFormChange}>
+      <form ref={formRef} onChange={handleFormChange}>
           <div className="container mx-auto px-4 py-8 md:py-12">
               <div className="text-left mb-8">
                   <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
                       Find Your Yacht
                   </h1>
                   <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-                      Use our detailed filters and AI-powered search to discover the perfect vessel. Your results will update automatically as you refine your search.
+                      Use our detailed filters to discover the perfect vessel. Your results will update automatically as you refine your search.
                   </p>
               </div>
               
@@ -87,9 +85,9 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                       <div className="flex items-center justify-between mb-6">
                            <div className="flex items-center gap-2">
                             <p className="text-sm text-muted-foreground">
-                              {state?.result ? `Showing AI recommendations` : `Showing ${initialYachts.length} featured results`}
+                              {message}
                             </p>
-                            {isFiltering && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                            {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
                           </div>
                           <div className="flex items-center gap-2">
                              <span className="text-sm font-medium">Sort By:</span>
@@ -108,30 +106,14 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                           </div>
                       </div>
 
-                      {state?.result ? (
-                        <div className="space-y-4">
-                          {!state.result.hasExactResults && state.result.explanation && (
-                            <Alert>
-                              <TriangleAlert className="h-4 w-4" />
-                              <AlertTitle>Could not find exact matches</AlertTitle>
-                              <AlertDescription>
-                                {state.result.explanation}
-                              </AlertDescription>
-                            </Alert>
-                          )}
-                          {state.result.yachtRecommendations ? (
-                            <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap rounded-md border bg-card p-6 text-card-foreground shadow-sm">
-                              {state.result.yachtRecommendations}
-                            </div>
-                          ) : (
-                             <div className="text-center py-16 border rounded-lg bg-card">
-                                <p className="font-semibold">No Recommendations Found</p>
-                                <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
-                             </div>
-                          )}
-                        </div>
+                      {yachtsToShow.length > 0 ? (
+                        <YachtListings yachts={yachtsToShow} />
                       ) : (
-                        <YachtListings yachts={initialYachts} />
+                         <div className="text-center py-16 border rounded-lg bg-card">
+                            <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
+                            <p className="font-semibold mt-4">No Yachts Found</p>
+                            <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
+                         </div>
                       )}
                   </div>
               </div>

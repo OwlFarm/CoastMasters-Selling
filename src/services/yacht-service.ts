@@ -13,6 +13,7 @@ function toYacht(doc: QueryDocumentSnapshot<DocumentData>): Yacht {
     year: data.year || new Date().getFullYear(),
     length: data.length || 0,
     location: data.location || 'Unknown',
+    locationId: data.locationId || undefined,
     imageUrl: data.imageUrl || 'https://placehold.co/600x400.png',
     imageHint: data.imageHint || 'yacht',
     images: data.images || [],
