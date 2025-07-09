@@ -1,7 +1,8 @@
 'use server';
 
 import { smartSearch, type SmartSearchInput, type SmartSearchOutput } from '@/ai/flows/smart-search';
-import { generateListingDetails, GenerateListingDetailsInputSchema, type GenerateListingDetailsOutput } from '@/ai/flows/generate-listing-details';
+import { generateListingDetails, type GenerateListingDetailsOutput } from '@/ai/flows/generate-listing-details';
+import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
 
 const searchSchema = z.object({
@@ -63,8 +64,6 @@ export async function handleFilteredSearch(
     listingTypes: formData.getAll('listingTypes').map(String).filter(Boolean),
     priceMin: getNumber('priceMin'),
     priceMax: getNumber('priceMax'),
-    lengthMin: getNumber('lengthMin'),
-    lengthMax: getNumber('lengthMax'),
     lengthUnit: (formData.get('lengthUnit') as 'ft' | 'm' | null) || undefined,
     yearMin: getNumber('yearMin'),
     yearMax: getNumber('yearMax'),
