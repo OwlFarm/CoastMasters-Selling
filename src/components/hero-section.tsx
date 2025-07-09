@@ -25,7 +25,7 @@ export function HeroSection() {
                         priority
                     />
                     <div className="absolute inset-0 bg-black/50" />
-                    <div className="relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4 text-center text-white">
+                    <div className="relative z-10 container mx-auto flex h-full flex-col items-center justify-center px-4 text-center text-white">
                         <div className="flex flex-col items-center">
                             <h1 className="text-5xl font-medium tracking-tight">
                                 Your Voyage Begins Here
