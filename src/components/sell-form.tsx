@@ -245,7 +245,7 @@ export function SellForm() {
                                         <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                             <FormField control={form.control} name="listingType" render={({ field }) => (
                                                 <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
                                                     <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
