@@ -23,6 +23,7 @@ import { useActionState, useEffect } from 'react';
 import { handleGenerateListingDetails } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { ListingPreview } from './listing-preview';
+import { Combobox } from './ui/combobox';
 
 // Updated schema to include a title and make some fields optional for multi-step validation
 const formSchema = z.object({
@@ -38,7 +39,7 @@ const formSchema = z.object({
   keelType: z.string({ required_error: 'Please select a keel type.' }),
   rudderType: z.string({ required_error: 'Please select a rudder type.' }),
   propellerType: z.string({ required_error: 'Please select a propeller type.' }),
-  make: z.string({ required_error: 'Please select a builder.' }),
+  make: z.string({ required_error: 'Please select or enter a builder.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
     (a) => parseInt(z.string().parse(a), 10),
@@ -276,12 +277,18 @@ export function SellForm() {
                                             </FormControl><FormMessage /></FormItem>
                                             )} />
                                             <FormField control={form.control} name="make" render={({ field }) => (
-                                                <FormItem><FormLabel>Builder</FormLabel>
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select a builder" /></SelectTrigger></FormControl>
-                                                        <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
-                                                    </Select>
-                                                <FormMessage /></FormItem>
+                                                <FormItem className="flex flex-col">
+                                                    <FormLabel>Builder</FormLabel>
+                                                    <Combobox
+                                                        options={makes}
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        placeholder="Select a builder..."
+                                                        searchPlaceholder="Search builders..."
+                                                        notFoundText="No builder found."
+                                                    />
+                                                    <FormMessage />
+                                                </FormItem>
                                             )} />
                                             <FormField control={form.control} name="model" render={({ field }) => (
                                                 <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
