@@ -570,15 +570,15 @@ export function SellForm() {
                                     <CardDescription>Upload one hero image and at least 9 gallery images. The hero image is the first photo buyers see.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="flex flex-col md:flex-row gap-8">
+                                    <div className="flex flex-col md:flex-row gap-8 items-stretch">
                                         <FormField
                                             control={form.control}
                                             name="heroImage"
                                             render={({ field }) => (
-                                                <FormItem className="flex-none w-full md:w-1/3">
+                                                <FormItem className="flex-none w-full md:w-1/3 flex flex-col">
                                                     <FormLabel>Hero Image (Required)</FormLabel>
-                                                    <FormControl>
-                                                         <label htmlFor="hero-dropzone-file" className="flex aspect-square w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted relative">
+                                                    <FormControl className="flex-grow">
+                                                         <label htmlFor="hero-dropzone-file" className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted relative">
                                                             {heroImagePreview ? (
                                                                 <>
                                                                     <Image src={heroImagePreview} alt="Hero Preview" fill className="rounded-md object-cover" />
@@ -597,7 +597,7 @@ export function SellForm() {
                                                                     </Button>
                                                                 </>
                                                             ) : (
-                                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                <div className="flex flex-col items-center justify-center text-center p-4">
                                                                     <ImageIcon className="mb-4 h-8 w-8 text-muted-foreground" />
                                                                     <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span></p>
                                                                     <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP</p>
@@ -622,77 +622,77 @@ export function SellForm() {
                                                 </FormItem>
                                             )}
                                         />
-                                        <div className="flex-1 space-y-2">
-                                            <FormField
-                                                control={form.control}
-                                                name="galleryImages"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Gallery Images (Min 9, Max 49)</FormLabel>
-                                                        <FormControl>
-                                                             <label htmlFor="gallery-dropzone-file" className="flex h-full min-h-[16rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted">
-                                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                                    <Upload className="mb-4 h-8 w-8 text-muted-foreground" />
-                                                                    <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP</p>
+                                        <FormField
+                                            control={form.control}
+                                            name="galleryImages"
+                                            render={({ field }) => (
+                                                <FormItem className="flex-1 flex flex-col">
+                                                    <FormLabel>Gallery Images (Min 9, Max 49)</FormLabel>
+                                                    <FormControl className="flex-grow">
+                                                         <div className="h-full">
+                                                          <label htmlFor="gallery-dropzone-file" className="flex h-full min-h-[16rem] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted">
+                                                              <div className="flex flex-col items-center justify-center text-center p-4">
+                                                                  <Upload className="mb-4 h-8 w-8 text-muted-foreground" />
+                                                                  <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                                  <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP</p>
+                                                              </div>
+                                                              <Input
+                                                              id="gallery-dropzone-file"
+                                                              type="file"
+                                                              className="hidden"
+                                                              multiple
+                                                              accept="image/*"
+                                                              onChange={(e) => {
+                                                                  if (e.target.files) {
+                                                                      const newFiles = Array.from(e.target.files);
+                                                                      const currentFiles = field.value || [];
+                                                                      const combinedFiles = [...currentFiles, ...newFiles];
+                                                                      const limitedFiles = combinedFiles.slice(0, 49);
+                                                                      
+                                                                      field.onChange(limitedFiles);
+
+                                                                      const previews = limitedFiles.map(file => {
+                                                                      if (typeof file === 'string') return file;
+                                                                      if (file instanceof File) {
+                                                                          return URL.createObjectURL(file);
+                                                                      }
+                                                                      return '';
+                                                                      }).filter(p => p);
+                                                                      setGalleryImagePreviews(previews);
+                                                                  }
+                                                              }}
+                                                              />
+                                                          </label>
+                                                        </div>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                    {galleryImagePreviews.length > 0 && (
+                                                        <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                                            {galleryImagePreviews.map((src, index) => (
+                                                                <div key={index} className="relative aspect-video">
+                                                                    <Image src={src} alt={`Preview ${index + 1}`} fill className="rounded-md object-cover" />
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="destructive"
+                                                                        size="icon"
+                                                                        className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
+                                                                        onClick={() => {
+                                                                            const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+                                                                            field.onChange(updatedFiles);
+
+                                                                            const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
+                                                                            setGalleryImagePreviews(updatedPreviews);
+                                                                        }}
+                                                                    >
+                                                                        <X className="h-4 w-4" />
+                                                                    </Button>
                                                                 </div>
-                                                                <Input
-                                                                id="gallery-dropzone-file"
-                                                                type="file"
-                                                                className="hidden"
-                                                                multiple
-                                                                accept="image/*"
-                                                                onChange={(e) => {
-                                                                    if (e.target.files) {
-                                                                        const newFiles = Array.from(e.target.files);
-                                                                        const currentFiles = field.value || [];
-                                                                        const combinedFiles = [...currentFiles, ...newFiles];
-                                                                        const limitedFiles = combinedFiles.slice(0, 49);
-                                                                        
-                                                                        field.onChange(limitedFiles);
-
-                                                                        const previews = limitedFiles.map(file => {
-                                                                        if (typeof file === 'string') return file;
-                                                                        if (file instanceof File) {
-                                                                            return URL.createObjectURL(file);
-                                                                        }
-                                                                        return '';
-                                                                        }).filter(p => p);
-                                                                        setGalleryImagePreviews(previews);
-                                                                    }
-                                                                }}
-                                                                />
-                                                            </label>
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                        {galleryImagePreviews.length > 0 && (
-                                                            <div className="mt-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                                                {galleryImagePreviews.map((src, index) => (
-                                                                    <div key={index} className="relative aspect-video">
-                                                                        <Image src={src} alt={`Preview ${index + 1}`} fill className="rounded-md object-cover" />
-                                                                        <Button
-                                                                            type="button"
-                                                                            variant="destructive"
-                                                                            size="icon"
-                                                                            className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
-                                                                            onClick={() => {
-                                                                                const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
-                                                                                field.onChange(updatedFiles);
-
-                                                                                const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
-                                                                                setGalleryImagePreviews(updatedPreviews);
-                                                                            }}
-                                                                        >
-                                                                            <X className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        )}
-                                                    </FormItem>
-                                                )}
-                                            />
-                                        </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </FormItem>
+                                            )}
+                                        />
                                     </div>
                                 </CardContent>
                             </Card>
