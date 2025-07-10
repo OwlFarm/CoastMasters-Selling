@@ -105,23 +105,25 @@ export function YachtFilters() {
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="space-y-4 pb-8">
-        <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-          {conditions.map((condition) => (
-            <div key={condition.id} className="flex items-center space-x-2">
-              <Checkbox id={`condition-${condition.id}`} name="conditions" value={condition.id} />
-              <Label htmlFor={`condition-${condition.id}`} className="font-normal">{condition.label}</Label>
+      <div className="pb-8">
+        <div className="flex w-full items-center justify-around">
+            <div className="flex items-center space-x-2">
+                <Checkbox id="condition-new" name="conditions" value="new" />
+                <Label htmlFor="condition-new" className="font-normal">New</Label>
             </div>
-          ))}
-        </div>
-        <Separator />
-        <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4">
-          {listingTypes.map((type) => (
-            <div key={type.id} className="flex items-center space-x-2">
-              <Checkbox id={`listing-type-${type.id}`} name="listingTypes" value={type.id} />
-              <Label htmlFor={`listing-type-${type.id}`} className="font-normal">{type.label}</Label>
+            <div className="flex items-center space-x-2">
+                <Checkbox id="condition-used" name="conditions" value="used" />
+                <Label htmlFor="condition-used" className="font-normal">Used</Label>
             </div>
-          ))}
+            <Separator orientation="vertical" className="h-6" />
+            <div className="flex items-center space-x-2">
+                <Checkbox id="listing-type-private" name="listingTypes" value="private" />
+                <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+                <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
+                <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
+            </div>
         </div>
       </div>
       
