@@ -1,7 +1,9 @@
+
 'use server';
 
 import { smartSearch, type SmartSearchInput, type SmartSearchOutput } from '@/ai/flows/smart-search';
 import { generateListingDetails, type GenerateListingDetailsOutput } from '@/ai/flows/generate-listing-details';
+import { polishDescription } from '@/ai/flows/polish-description';
 import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
 import { getFeaturedYachts } from '@/services/yacht-service';
@@ -84,30 +86,20 @@ type Filters = {
 
 function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
     return yachts.filter(yacht => {
-        // Price
         if (f.priceMin !== undefined && yacht.price < f.priceMin) return false;
         if (f.priceMax !== undefined && yacht.price > f.priceMax) return false;
-        
-        // Year
         if (f.yearMin !== undefined && yacht.year < f.yearMin) return false;
         if (f.yearMax !== undefined && yacht.year > f.yearMax) return false;
-
-        // Length (assuming all data is in ft for now)
         if (f.lengthMin !== undefined && yacht.length < f.lengthMin) return false;
         if (f.lengthMax !== undefined && yacht.length > f.lengthMax) return false;
-
-        // Array checks for string properties (case-insensitive)
         if (f.conditions.length > 0 && !f.conditions.some(c => c.toLowerCase() === yacht.condition.toLowerCase())) return false;
         if (f.listingTypes.length > 0 && !f.listingTypes.some(t => t.toLowerCase() === yacht.listingType.toLowerCase())) return false;
         if (f.boatTypes.length > 0 && !f.boatTypes.some(bt => bt.toLowerCase() === yacht.boatType.toLowerCase())) return false;
         if (f.builders.length > 0 && !f.builders.some(b => b.toLowerCase() === yacht.make.toLowerCase())) return false;
-
-        // Array checks for ID properties
         if (f.hullMaterials.length > 0 && yacht.hullMaterial && !f.hullMaterials.includes(yacht.hullMaterial)) return false;
         if (f.fuelTypes.length > 0 && yacht.fuelType && !f.fuelTypes.includes(yacht.fuelType)) return false;
         if (f.locations.length > 0 && yacht.locationId && !f.locations.includes(yacht.locationId)) return false;
 
-        // Check for feature intersection (yacht must have ALL selected features)
         const allYachtFeatures = [
             ...(yacht.usageStyles || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
         ];
@@ -119,7 +111,6 @@ function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
         return true;
     });
 }
-
 
 export async function handleFilteredSearch(
   prevState: FilteredSearchState,
@@ -154,7 +145,6 @@ export async function handleFilteredSearch(
   try {
     const allYachts = await getFeaturedYachts();
     
-    // 1. Try with strict filters first
     let filteredYachts = applyFilters(allYachts, filters);
     
     if (filteredYachts.length > 0) {
@@ -162,7 +152,6 @@ export async function handleFilteredSearch(
         return { result: { yachts: filteredYachts, message } };
     }
 
-    // 2. If no results, try relaxing some criteria (e.g., price and location)
     const hasPriceFilter = filters.priceMin !== undefined || filters.priceMax !== undefined;
     const hasLocationFilter = filters.locations.length > 0;
     
@@ -180,7 +169,6 @@ export async function handleFilteredSearch(
         }
     }
 
-    // 3. If still no results after relaxation, return empty with a clear message
     const message = 'No matching yachts found. Try broadening your search filters.';
     return { result: { yachts: [], message } };
 
@@ -222,5 +210,38 @@ export async function handleGenerateListingDetails(
   } catch (error) {
     console.error('Generate details failed:', error);
     return { error: 'An error occurred while generating details. Please try again.' };
+  }
+}
+
+// AI Action to Polish Description
+const polishDescriptionSchema = z.object({
+  description: z.string().min(10, 'Description must be at least 10 characters long.'),
+});
+
+type PolishDescriptionState = {
+  result?: string;
+  error?: string;
+};
+
+export async function handlePolishDescription(
+  prevState: PolishDescriptionState,
+  formData: FormData
+): Promise<PolishDescriptionState> {
+  const validatedFields = polishDescriptionSchema.safeParse({
+    description: formData.get('description'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      error: 'Description is too short to polish.',
+    };
+  }
+
+  try {
+    const polishedText = await polishDescription(validatedFields.data);
+    return { result: polishedText };
+  } catch (error) {
+    console.error('Polish description failed:', error);
+    return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }

@@ -8,7 +8,6 @@ import * as z from 'zod';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -20,10 +19,12 @@ import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useActionState, useEffect } from 'react';
-import { handleGenerateListingDetails } from '@/lib/actions';
+import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { ListingPreview } from './listing-preview';
 import { Combobox } from './ui/combobox';
+import { TextEditor } from './ui/text-editor';
+import { Textarea } from './ui/textarea';
 
 // Updated schema to include a title and make some fields optional for multi-step validation
 const formSchema = z.object({
@@ -81,6 +82,7 @@ export function SellForm() {
     const { toast } = useToast();
 
     const [aiState, aiFormAction, isAiPending] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
+    const [polishState, polishFormAction, isPolishPending] = useActionState(handlePolishDescription, { result: undefined, error: undefined });
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -122,31 +124,41 @@ export function SellForm() {
             });
         }
         if (aiState.result) {
-            // Set title and description
             form.setValue('title', aiState.result.title, { shouldValidate: true });
             form.setValue('description', aiState.result.description, { shouldValidate: true });
-            
-            // Set detected single-value items
             if (aiState.result.detectedHullMaterial) form.setValue('hullMaterial', aiState.result.detectedHullMaterial, { shouldValidate: true });
             if (aiState.result.detectedHullShape) form.setValue('hullShape', aiState.result.detectedHullShape, { shouldValidate: true });
             if (aiState.result.detectedKeelType) form.setValue('keelType', aiState.result.detectedKeelType, { shouldValidate: true });
             if (aiState.result.detectedRudderType) form.setValue('rudderType', aiState.result.detectedRudderType, { shouldValidate: true });
             if (aiState.result.detectedPropellerType) form.setValue('propellerType', aiState.result.detectedPropellerType, { shouldValidate: true });
             if (aiState.result.detectedFuelType) form.setValue('fuelType', aiState.result.detectedFuelType, { shouldValidate: true });
-
-            // Set detected multi-value items (checkboxes)
             if (aiState.result.detectedUsageStyles) form.setValue('usageStyles', aiState.result.detectedUsageStyles, { shouldValidate: true });
             if (aiState.result.detectedFeatures) form.setValue('features', aiState.result.detectedFeatures, { shouldValidate: true });
             if (aiState.result.detectedDeck) form.setValue('deck', aiState.result.detectedDeck, { shouldValidate: true });
             if (aiState.result.detectedCabin) form.setValue('cabin', aiState.result.detectedCabin, { shouldValidate: true });
-
-
             toast({
                 title: 'AI Magic Complete!',
                 description: 'Your title and description have been generated, and we\'ve pre-selected some features for you.',
             });
         }
     }, [aiState, form, toast]);
+
+    useEffect(() => {
+        if (polishState.error) {
+            toast({
+                variant: 'destructive',
+                title: 'AI Polish Failed',
+                description: polishState.error,
+            });
+        }
+        if (polishState.result) {
+            form.setValue('description', polishState.result, { shouldValidate: true });
+            toast({
+                title: 'Description Polished!',
+                description: 'The AI has refined your description.',
+            });
+        }
+    }, [polishState, form, toast]);
 
     const next = async () => {
         const fields = steps[currentStep].fields as FieldName<FormValues>[];
@@ -157,7 +169,6 @@ export function SellForm() {
         if (currentStep < steps.length - 1) {
             setCurrentStep(step => step + 1);
         } else {
-            // Last step, trigger preview
             setIsPreview(true);
         }
     };
@@ -167,7 +178,6 @@ export function SellForm() {
             setIsPreview(false);
             return;
         }
-
         if (currentStep > 0) {
             setCurrentStep(step => step - 1);
         }
@@ -175,13 +185,10 @@ export function SellForm() {
     
     function onSubmit(values: FormValues) {
         console.log('Form Submitted:', { ...values, lengthUnit });
-        // In a real app, you would upload images and submit form data to a server.
-        // This is where you would call your server action to save to Firestore.
         toast({
             title: "Listing Submitted!",
             description: "Your yacht is now ready for review.",
         });
-        // Potentially reset form or redirect user
     }
 
     if (isPreview) {
@@ -201,13 +208,11 @@ export function SellForm() {
                       </Button>
                    </div>
                 </div>
-
                 <ListingPreview
                     data={formData}
                     heroImagePreview={heroImagePreview!}
                     galleryImagePreviews={galleryImagePreviews}
                 />
-
                 <div className="mt-8 flex justify-end gap-2">
                     <Button variant="outline">Save as Draft</Button>
                     <Button type="button" onClick={form.handleSubmit(onSubmit)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -219,11 +224,9 @@ export function SellForm() {
         );
     }
 
-
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Progress Bar */}
+            <form className="space-y-8">
                 <div className="space-y-2">
                   <Progress value={((currentStep + 1) / (steps.length + 1)) * 100} />
                   <p className="text-sm text-muted-foreground">Step {currentStep + 1} of {steps.length}: {steps[currentStep].name}</p>
@@ -338,24 +341,47 @@ export function SellForm() {
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
                                               <FormLabel>Listing Title</FormLabel>
-                                              <Button type="button" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
-                                                  {isAiPending ? (
-                                                      <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                                  ) : (
-                                                      <Sparkles className="mr-2 h-4 w-4" />
-                                                  )}
-                                                  Generate with AI
-                                              </Button>
+                                              <form action={aiFormAction}>
+                                                <Button type="submit" variant="outline" size="sm" disabled={isAiPending}>
+                                                    {isAiPending ? (
+                                                        <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                    ) : (
+                                                        <Sparkles className="mr-2 h-4 w-4" />
+                                                    )}
+                                                    Generate with AI
+                                                </Button>
+                                              </form>
                                             </div>
                                             <FormField control={form.control} name="title" render={({ field }) => (
                                                 <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
                                         </div>
                                          <FormField control={form.control} name="description" render={({ field }) => (
-                                            <FormItem><FormLabel>Description</FormLabel>
-                                            <FormControl><Textarea placeholder="Describe your yacht's condition, history, and unique features..." className="min-h-[200px]" {...field} /></FormControl>
-                                            <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
-                                            <FormMessage />
+                                            <FormItem>
+                                                <div className="flex items-center justify-between">
+                                                    <FormLabel>Description</FormLabel>
+                                                    <form action={polishFormAction}>
+                                                        {/* Pass current description as hidden input */}
+                                                        <input type="hidden" name="description" value={form.watch('description')} />
+                                                        <Button type="submit" variant="outline" size="sm" disabled={isPolishPending || !field.value}>
+                                                            {isPolishPending ? (
+                                                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                            ) : (
+                                                                <Sparkles className="mr-2 h-4 w-4" />
+                                                            )}
+                                                            Polish with AI
+                                                        </Button>
+                                                    </form>
+                                                </div>
+                                                <FormControl>
+                                                    <TextEditor
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        placeholder="Describe your yacht's condition, history, and unique features..."
+                                                    />
+                                                </FormControl>
+                                                <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
+                                                <FormMessage />
                                             </FormItem>
                                         )} />
                                     </CardContent>
@@ -661,21 +687,19 @@ export function SellForm() {
                                                                       field.onChange(limitedFiles);
 
                                                                       const previews = limitedFiles.map(file => {
-                                                                          // This handles the case where the file object might be from a previous state and needs a URL created.
                                                                           if (file instanceof File) {
                                                                               return URL.createObjectURL(file);
                                                                           }
-                                                                          return file; // Should already be a URL string if persisted
+                                                                          return file; 
                                                                       }).filter(p => typeof p === 'string');
                                                                       
-                                                                      // Clean up old object URLs to prevent memory leaks
                                                                       galleryImagePreviews.forEach(url => {
                                                                           if (url.startsWith('blob:')) {
                                                                             URL.revokeObjectURL(url);
                                                                           }
                                                                       });
 
-                                                                      setGalleryImagePreviews(previews);
+                                                                      setGalleryImagePreviews(previews as string[]);
                                                                   }
                                                               }}
                                                               />
@@ -699,7 +723,6 @@ export function SellForm() {
 
                                                                             const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
                                                                             
-                                                                            // Clean up the specific object URL we are removing
                                                                             const urlToRevoke = galleryImagePreviews[index];
                                                                             if (urlToRevoke && urlToRevoke.startsWith('blob:')) {
                                                                                 URL.revokeObjectURL(urlToRevoke);
@@ -724,7 +747,6 @@ export function SellForm() {
                     </motion.div>
                 </AnimatePresence>
                 
-                {/* Navigation Buttons */}
                 <div className="mt-8 flex justify-between">
                     <Button
                         type="button"
