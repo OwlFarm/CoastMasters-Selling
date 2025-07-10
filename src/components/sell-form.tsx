@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle } from 'lucide-react';
+import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle, Eye } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes, bowShapeOptions } from '@/lib/data';
@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useActionState, useEffect } from 'react';
 import { handleGenerateListingDetails } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
+import { ListingPreview } from './listing-preview';
 
 // Updated schema to include a title and make some fields optional for multi-step validation
 const formSchema = z.object({
@@ -53,7 +54,7 @@ const formSchema = z.object({
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
   { id: 'Step 1', name: 'Listing Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description'] },
@@ -65,6 +66,7 @@ export function SellForm() {
     const [currentStep, setCurrentStep] = React.useState(0);
     const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
     const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
+    const [isPreview, setIsPreview] = React.useState(false);
     const { toast } = useToast();
 
     const [aiState, aiFormAction, isAiPending] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
@@ -142,10 +144,18 @@ export function SellForm() {
 
         if (currentStep < steps.length - 1) {
             setCurrentStep(step => step + 1);
+        } else {
+            // Last step, trigger preview
+            setIsPreview(true);
         }
     };
 
     const prev = () => {
+        if (isPreview) {
+            setIsPreview(false);
+            return;
+        }
+
         if (currentStep > 0) {
             setCurrentStep(step => step - 1);
         }
@@ -159,7 +169,43 @@ export function SellForm() {
             title: "Listing Submitted!",
             description: "Your yacht is now ready for review.",
         });
+        // Potentially reset form or redirect user
     }
+
+    if (isPreview) {
+        const formData = form.getValues();
+        return (
+            <div>
+                <div className="mb-8 flex justify-between items-center">
+                   <div>
+                     <h2 className="text-2xl font-bold">Review Your Listing</h2>
+                     <p className="text-muted-foreground">This is how your listing will appear to potential buyers.</p>
+                   </div>
+                   <div className="flex gap-2">
+                      <Button variant="outline" onClick={prev}><ArrowLeft className="mr-2 h-4 w-4" /> Edit Listing</Button>
+                      <Button type="button" onClick={form.handleSubmit(onSubmit)} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                          <Ship className="mr-2 h-5 w-5" />
+                          List My Yacht
+                      </Button>
+                   </div>
+                </div>
+
+                <ListingPreview
+                    data={formData}
+                    imagePreviews={imagePreviews}
+                />
+
+                <div className="mt-8 flex justify-end gap-2">
+                    <Button variant="outline">Save as Draft</Button>
+                    <Button type="button" onClick={form.handleSubmit(onSubmit)} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                        <Ship className="mr-2 h-5 w-5" />
+                        List My Yacht
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <Form {...form}>
@@ -605,9 +651,9 @@ export function SellForm() {
                             Next Step
                         </Button>
                     ) : (
-                        <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                            <Ship className="mr-2 h-5 w-5" />
-                            List My Yacht
+                        <Button type="button" onClick={next} size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                           <Eye className="mr-2 h-5 w-5" />
+                            Review Listing
                         </Button>
                     )}
                 </div>
