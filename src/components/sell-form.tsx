@@ -395,7 +395,7 @@ export function SellForm() {
                                          <FormField control={form.control} name="usageStyles" render={() => (
                                             <FormItem>
                                                 <FormLabel>Usage Styles</FormLabel>
-                                                <div className="flex flex-row items-center flex-wrap gap-x-4 gap-y-2 pt-2">
+                                                <div className="flex w-full flex-row items-center justify-between pt-2">
                                                     {usageStyles.map((item) => (
                                                         <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
                                                             <FormItem className="flex flex-row items-start space-x-2 space-y-0">
@@ -420,7 +420,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={mat.id} /></FormControl>
                                                         <FormLabel className="font-normal">{mat.label}</FormLabel>
@@ -430,7 +430,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="hullShape" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -440,7 +440,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="bowShape" render={({ field }) => (
                                             <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -450,7 +450,7 @@ export function SellForm() {
                                         )} />
                                          <FormField control={form.control} name="keelType" render={({ field }) => (
                                             <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={keel.id} /></FormControl>
                                                         <FormLabel className="font-normal">{keel.label}</FormLabel>
@@ -460,7 +460,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="rudderType" render={({ field }) => (
                                             <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
                                                         <FormLabel className="font-normal">{rudder.label}</FormLabel>
@@ -470,7 +470,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="propellerType" render={({ field }) => (
                                             <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={prop.id} /></FormControl>
                                                         <FormLabel className="font-normal">{prop.label}</FormLabel>
@@ -480,7 +480,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="fuelType" render={({ field }) => (
                                             <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex w-full flex-wrap items-center justify-between pt-2">
                                                     {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                         <FormLabel className="font-normal">{type.label}</FormLabel>
@@ -513,7 +513,7 @@ export function SellForm() {
                                     </CardHeader>
                                     <CardContent>
                                         <FormField control={form.control} name="features" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
                                                 {featureOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="features" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
@@ -543,7 +543,7 @@ export function SellForm() {
                                     </CardHeader>
                                     <CardContent>
                                         <FormField control={form.control} name="deck" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
                                                 {deckOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="deck" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
@@ -573,7 +573,7 @@ export function SellForm() {
                                     </CardHeader>
                                     <CardContent>
                                         <FormField control={form.control} name="cabin" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
                                                 {cabinOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="cabin" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
