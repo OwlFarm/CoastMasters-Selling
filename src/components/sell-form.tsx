@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -57,9 +58,16 @@ const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
-  { id: 'Step 1', name: 'Listing Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description'] },
-  { id: 'Step 2', name: 'Specifications & Features', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications', 'features', 'deck', 'cabin'] },
-  { id: 'Step 3', name: 'Photos', fields: ['images'] },
+  { 
+    id: 'Step 1', 
+    name: 'Listing Details', 
+    fields: [
+        'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
+        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 
+        'otherSpecifications', 'features', 'deck', 'cabin'
+    ] 
+  },
+  { id: 'Step 2', name: 'Photos', fields: ['images'] },
 ];
 
 export function SellForm() {
@@ -225,122 +233,120 @@ export function SellForm() {
                         transition={{ duration: 0.3 }}
                     >
                         {currentStep === 0 && (
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Listing Essentials</CardTitle>
-                                    <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                        <FormField control={form.control} name="listingType" render={({ field }) => (
-                                            <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                            <div className="space-y-8">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Listing Essentials</CardTitle>
+                                        <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                            <FormField control={form.control} name="listingType" render={({ field }) => (
+                                                <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                        {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                            <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                                            <FormLabel className="font-normal">{type.label}</FormLabel>
+                                                        </FormItem>))}
+                                                    </RadioGroup>
+                                                </FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="condition" render={({ field }) => (
+                                                <FormItem><FormLabel>Condition</FormLabel><FormControl>
+                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                        {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                                            <FormControl><RadioGroupItem value={c.id} /></FormControl>
+                                                            <FormLabel className="font-normal">{c.label}</FormLabel>
+                                                        </FormItem>))}
+                                                    </RadioGroup>
+                                                </FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="boatType" render={({ field }) => (
+                                            <FormItem className="md:col-span-2"><FormLabel>Boat Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                    {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                    {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                         <FormLabel className="font-normal">{type.label}</FormLabel>
                                                     </FormItem>))}
                                                 </RadioGroup>
                                             </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="condition" render={({ field }) => (
-                                            <FormItem><FormLabel>Condition</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                    {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={c.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{c.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="boatType" render={({ field }) => (
-                                        <FormItem className="md:col-span-2"><FormLabel>Boat Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{type.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="make" render={({ field }) => (
-                                            <FormItem><FormLabel>Builder</FormLabel>
+                                            )} />
+                                            <FormField control={form.control} name="make" render={({ field }) => (
+                                                <FormItem><FormLabel>Builder</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select a builder" /></SelectTrigger></FormControl>
+                                                        <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="model" render={({ field }) => (
+                                                <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="year" render={({ field }) => (
+                                                <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="length" render={({ field }) => (
+                                            <FormItem>
+                                                <div className="flex items-center justify-between">
+                                                    <FormLabel>LOA ({lengthUnit})</FormLabel>
+                                                    <div className="flex items-center gap-2 text-sm">
+                                                        <span className="text-muted-foreground">Ft</span>
+                                                        <Switch
+                                                            checked={lengthUnit === 'm'}
+                                                            onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                                                            id="length-unit-switch-form"
+                                                        />
+                                                        <span className="text-muted-foreground">M</span>
+                                                    </div>
+                                                </div>
+                                                <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="price" render={({ field }) => (
+                                                <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                        </div>
+                                        <FormField control={form.control} name="location" render={({ field }) => (
+                                            <FormItem><FormLabel>Location</FormLabel>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a builder" /></SelectTrigger></FormControl>
-                                                    <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
+                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
+                                                    <SelectContent>
+                                                        {locationsByRegion.map((region) => (
+                                                            <SelectGroup key={region.region}>
+                                                                <SelectLabel>{region.region}</SelectLabel>
+                                                                {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
+                                                            </SelectGroup>
+                                                        ))}
+                                                    </SelectContent>
                                                 </Select>
                                             <FormMessage /></FormItem>
                                         )} />
-                                        <FormField control={form.control} name="model" render={({ field }) => (
-                                            <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="year" render={({ field }) => (
-                                            <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="length" render={({ field }) => (
-                                        <FormItem>
+                                        <div className="space-y-2">
                                             <div className="flex items-center justify-between">
-                                                <FormLabel>LOA ({lengthUnit})</FormLabel>
-                                                <div className="flex items-center gap-2 text-sm">
-                                                    <span className="text-muted-foreground">Ft</span>
-                                                    <Switch
-                                                        checked={lengthUnit === 'm'}
-                                                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                                                        id="length-unit-switch-form"
-                                                    />
-                                                    <span className="text-muted-foreground">M</span>
-                                                </div>
+                                              <FormLabel>Listing Title</FormLabel>
+                                              <Button type="button" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
+                                                  {isAiPending ? (
+                                                      <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                  ) : (
+                                                      <Sparkles className="mr-2 h-4 w-4" />
+                                                  )}
+                                                  Generate with AI
+                                              </Button>
                                             </div>
-                                            <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="price" render={({ field }) => (
-                                            <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
-                                        )} />
-                                    </div>
-                                    <FormField control={form.control} name="location" render={({ field }) => (
-                                        <FormItem><FormLabel>Location</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
-                                                <SelectContent>
-                                                    {locationsByRegion.map((region) => (
-                                                        <SelectGroup key={region.region}>
-                                                            <SelectLabel>{region.region}</SelectLabel>
-                                                            {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
-                                                        </SelectGroup>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        <FormMessage /></FormItem>
-                                    )} />
-                                    <div className="space-y-2">
-                                        <div className="flex items-center justify-between">
-                                          <FormLabel>Listing Title</FormLabel>
-                                          <Button type="button" formAction={aiFormAction} variant="outline" size="sm" disabled={isAiPending}>
-                                              {isAiPending ? (
-                                                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                              ) : (
-                                                  <Sparkles className="mr-2 h-4 w-4" />
-                                              )}
-                                              Generate with AI
-                                          </Button>
+                                            <FormField control={form.control} name="title" render={({ field }) => (
+                                                <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
                                         </div>
-                                        <FormField control={form.control} name="title" render={({ field }) => (
-                                            <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                         <FormField control={form.control} name="description" render={({ field }) => (
+                                            <FormItem><FormLabel>Description</FormLabel>
+                                            <FormControl><Textarea placeholder="Describe your yacht's condition, history, and unique features..." className="min-h-[200px]" {...field} /></FormControl>
+                                            <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
+                                            <FormMessage />
+                                            </FormItem>
                                         )} />
-                                    </div>
-                                     <FormField control={form.control} name="description" render={({ field }) => (
-                                        <FormItem><FormLabel>Description</FormLabel>
-                                        <FormControl><Textarea placeholder="Describe your yacht's condition, history, and unique features..." className="min-h-[200px]" {...field} /></FormControl>
-                                        <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
-                                        <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                </CardContent>
-                            </Card>
-                        )}
-                        {currentStep === 1 && (
-                            <div className="space-y-8">
+                                    </CardContent>
+                                </Card>
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Specifications</CardTitle>
@@ -553,7 +559,7 @@ export function SellForm() {
                                 </Card>
                             </div>
                         )}
-                        {currentStep === 2 && (
+                        {currentStep === 1 && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Yacht Photos</CardTitle>
