@@ -129,8 +129,8 @@ export function YachtFilters() {
       
       <Separator className="mb-8"/>
 
-      <div className="flex flex-col gap-8 pb-8">
-          <div className="space-y-2">
+      <div className="flex flex-col md:flex-row gap-8 pb-8">
+          <div className="flex-1 space-y-2">
               <Label>Price (USD)</Label>
               <div className="flex items-center gap-2">
                   <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
@@ -138,7 +138,7 @@ export function YachtFilters() {
                   <Input name="priceMax" type="number" placeholder="Max" className="w-full" list="price-list" />
               </div>
           </div>
-          <div className="space-y-2">
+          <div className="flex-1 space-y-2">
               <div className="flex items-center justify-between">
                   <Label>Length ({lengthUnit})</Label>
                    <div className="flex items-center gap-2 text-sm">
@@ -157,7 +157,7 @@ export function YachtFilters() {
                   <Input name="lengthMax" type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
-          <div className="space-y-2">
+          <div className="flex-1 space-y-2">
               <Label>Year</Label>
               <div className="flex items-center gap-2">
                   <Input name="yearMin" type="number" placeholder="Min" className="w-full" />
