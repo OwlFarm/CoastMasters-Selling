@@ -52,7 +52,7 @@ export function YachtFilters() {
 
   // Function to sort items into columns for vertical alphabetical order
   const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
-    if (items.length === 0) return [];
+    if (!items || items.length === 0) return [];
     const numRows = Math.ceil(items.length / numCols);
     const sortedColumns: {id: string; label: string}[] = [];
     for (let i = 0; i < numRows; i++) {
@@ -67,9 +67,9 @@ export function YachtFilters() {
   };
 
   const columnSortedMakes = sortIntoColumns(allMakes, 5);
-  const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
-  const columnSortedDeck = sortIntoColumns(deckOptions, 2);
-  const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
+  const columnSortedFeatures = sortIntoColumns(featureOptions, 5);
+  const columnSortedDeck = sortIntoColumns(deckOptions, 5);
+  const columnSortedCabin = sortIntoColumns(cabinOptions, 5);
 
 
   return (
@@ -199,7 +199,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-6 pt-4">
+            <div className="grid grid-cols-5 gap-x-6 gap-y-6 pt-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-2 mt-2">
@@ -261,7 +261,7 @@ export function YachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-2">
               {columnSortedDeck.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
@@ -274,7 +274,7 @@ export function YachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-2">
               {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
@@ -287,7 +287,7 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-2">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
@@ -345,3 +345,5 @@ export function YachtFilters() {
     </>
   );
 }
+
+    
