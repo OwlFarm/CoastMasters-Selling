@@ -277,7 +277,7 @@ export function SellForm() {
                                             </FormControl><FormMessage /></FormItem>
                                             )} />
                                             <FormField control={form.control} name="make" render={({ field }) => (
-                                                <FormItem className="flex flex-col">
+                                                <FormItem>
                                                     <FormLabel>Builder</FormLabel>
                                                     <Combobox
                                                         options={makes.map(m => ({ label: m.label, value: m.value }))}
