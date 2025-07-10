@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
+  const [selectedCurrency, setSelectedCurrency] = React.useState('usd');
   const [builderSearch, setBuilderSearch] = React.useState('');
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
 
@@ -104,7 +105,7 @@ export function YachtFilters() {
             <Separator orientation="vertical" className="h-6" />
             <div className="flex items-center space-x-2">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
-                 <Select name="currency" defaultValue="usd">
+                 <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
                      <SelectTrigger id="currency-select" className="w-[90px]">
                          <SelectValue placeholder="Currency" />
                      </SelectTrigger>
@@ -134,7 +135,7 @@ export function YachtFilters() {
 
       <div className="flex flex-col md:flex-row gap-8 pb-8">
           <div className="flex-1 space-y-2">
-              <Label>Price (USD)</Label>
+              <Label>Price ({selectedCurrency.toUpperCase()})</Label>
               <div className="flex items-center gap-2">
                   <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
                   <span className="text-muted-foreground">-</span>
@@ -394,7 +395,3 @@ export function YachtFilters() {
     </>
   );
 }
-
-    
-
-    
