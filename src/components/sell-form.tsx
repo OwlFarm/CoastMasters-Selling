@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle, Eye } from 'lucide-react';
+import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle, Eye, Image as ImageIcon } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes, bowShapeOptions } from '@/lib/data';
@@ -51,7 +51,8 @@ const formSchema = z.object({
   usageStyles: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
   cabin: z.array(z.string()).optional(),
-  images: z.array(z.any()).min(10, { message: 'At least 10 high-quality images are required.' }).max(50, { message: 'You can upload a maximum of 50 images.' }),
+  heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
+  galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
 });
 
@@ -67,12 +68,13 @@ const steps = [
         'otherSpecifications', 'features', 'deck', 'cabin'
     ] 
   },
-  { id: 'Step 2', name: 'Photos', fields: ['images'] },
+  { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
 ];
 
 export function SellForm() {
     const [currentStep, setCurrentStep] = React.useState(0);
-    const [imagePreviews, setImagePreviews] = React.useState<string[]>([]);
+    const [heroImagePreview, setHeroImagePreview] = React.useState<string | null>(null);
+    const [galleryImagePreviews, setGalleryImagePreviews] = React.useState<string[]>([]);
     const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
     const [isPreview, setIsPreview] = React.useState(false);
     const { toast } = useToast();
@@ -90,7 +92,8 @@ export function SellForm() {
             price: undefined,
             description: '',
             features: [],
-            images: [],
+            heroImage: undefined,
+            galleryImages: [],
             listingType: undefined,
             boatType: undefined,
             usageStyles: [],
@@ -170,7 +173,7 @@ export function SellForm() {
     };
     
     function onSubmit(values: FormValues) {
-        console.log('Form Submitted:', { ...values, images: imagePreviews, lengthUnit });
+        console.log('Form Submitted:', { ...values, lengthUnit });
         // In a real app, you would upload images and submit form data to a server.
         // This is where you would call your server action to save to Firestore.
         toast({
@@ -200,7 +203,8 @@ export function SellForm() {
 
                 <ListingPreview
                     data={formData}
-                    imagePreviews={imagePreviews}
+                    heroImagePreview={heroImagePreview!}
+                    galleryImagePreviews={galleryImagePreviews}
                 />
 
                 <div className="mt-8 flex justify-end gap-2">
@@ -220,7 +224,7 @@ export function SellForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 {/* Progress Bar */}
                 <div className="space-y-2">
-                  <Progress value={((currentStep + 1) / steps.length) * 100} />
+                  <Progress value={((currentStep + 1) / (steps.length + 1)) * 100} />
                   <p className="text-sm text-muted-foreground">Step {currentStep + 1} of {steps.length}: {steps[currentStep].name}</p>
                 </div>
                 
@@ -563,55 +567,109 @@ export function SellForm() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Yacht Photos</CardTitle>
-                                    <CardDescription>Upload a minimum of 10 and up to 50 high-quality images. These will be analyzed for clarity and quality to help buyers. The first image will be the main one.</CardDescription>
+                                    <CardDescription>Upload one hero image and at least 9 gallery images. The hero image is the first photo buyers see.</CardDescription>
                                 </CardHeader>
-                                <CardContent>
+                                <CardContent className="space-y-8">
                                     <FormField
                                         control={form.control}
-                                        name="images"
+                                        name="heroImage"
                                         render={({ field }) => (
                                             <FormItem>
+                                                <FormLabel>Hero Image (Required)</FormLabel>
                                                 <FormControl>
                                                     <div className="flex w-full items-center justify-center">
-                                                        <label htmlFor="dropzone-file" className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted">
+                                                        <label htmlFor="hero-dropzone-file" className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted relative">
+                                                            {heroImagePreview ? (
+                                                                <>
+                                                                    <Image src={heroImagePreview} alt="Hero Preview" fill className="rounded-md object-cover" />
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="destructive"
+                                                                        size="icon"
+                                                                        className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            field.onChange(null);
+                                                                            setHeroImagePreview(null);
+                                                                        }}
+                                                                    >
+                                                                        <X className="h-4 w-4" />
+                                                                    </Button>
+                                                                </>
+                                                            ) : (
+                                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                    <ImageIcon className="mb-4 h-8 w-8 text-muted-foreground" />
+                                                                    <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (1 image)</p>
+                                                                </div>
+                                                            )}
+                                                            <Input
+                                                                id="hero-dropzone-file"
+                                                                type="file"
+                                                                className="hidden"
+                                                                accept="image/*"
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files?.[0];
+                                                                    if (file) {
+                                                                        field.onChange(file);
+                                                                        setHeroImagePreview(URL.createObjectURL(file));
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="galleryImages"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Gallery Images (Min 9, Max 49)</FormLabel>
+                                                <FormControl>
+                                                    <div className="flex w-full items-center justify-center">
+                                                        <label htmlFor="gallery-dropzone-file" className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted">
                                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                                 <Upload className="mb-4 h-8 w-8 text-muted-foreground" />
                                                                 <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (Min 10, max 50 images)</p>
+                                                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP</p>
                                                             </div>
                                                             <Input
-                                                              id="dropzone-file"
+                                                              id="gallery-dropzone-file"
                                                               type="file"
                                                               className="hidden"
                                                               multiple
                                                               accept="image/*"
                                                               onChange={(e) => {
-                                                                if (e.target.files) {
-                                                                  const newFiles = Array.from(e.target.files);
-                                                                  const currentFiles = field.value || [];
-                                                                  const combinedFiles = [...currentFiles, ...newFiles];
-                                                                  const limitedFiles = combinedFiles.slice(0, 50);
-                                                                  
-                                                                  field.onChange(limitedFiles);
+                                                                  if (e.target.files) {
+                                                                      const newFiles = Array.from(e.target.files);
+                                                                      const currentFiles = field.value || [];
+                                                                      const combinedFiles = [...currentFiles, ...newFiles];
+                                                                      const limitedFiles = combinedFiles.slice(0, 49);
+                                                                      
+                                                                      field.onChange(limitedFiles);
 
-                                                                  const previews = limitedFiles.map(file => {
-                                                                    if (typeof file === 'string') return file;
-                                                                    if (file instanceof File) {
-                                                                      return URL.createObjectURL(file);
-                                                                    }
-                                                                    return '';
-                                                                  }).filter(p => p);
-                                                                  setImagePreviews(previews);
-                                                                }
+                                                                      const previews = limitedFiles.map(file => {
+                                                                        if (typeof file === 'string') return file;
+                                                                        if (file instanceof File) {
+                                                                          return URL.createObjectURL(file);
+                                                                        }
+                                                                        return '';
+                                                                      }).filter(p => p);
+                                                                      setGalleryImagePreviews(previews);
+                                                                  }
                                                               }}
                                                             />
                                                         </label>
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />
-                                                {imagePreviews.length > 0 && (
+                                                {galleryImagePreviews.length > 0 && (
                                                     <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-5">
-                                                        {imagePreviews.map((src, index) => (
+                                                        {galleryImagePreviews.map((src, index) => (
                                                             <div key={index} className="relative aspect-video">
                                                                 <Image src={src} alt={`Preview ${index + 1}`} fill className="rounded-md object-cover" />
                                                                 <Button
@@ -623,8 +681,8 @@ export function SellForm() {
                                                                         const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
                                                                         field.onChange(updatedFiles);
 
-                                                                        const updatedPreviews = imagePreviews.filter((_: any, i: number) => i !== index);
-                                                                        setImagePreviews(updatedPreviews);
+                                                                        const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
+                                                                        setGalleryImagePreviews(updatedPreviews);
                                                                     }}
                                                                 >
                                                                     <X className="h-4 w-4" />

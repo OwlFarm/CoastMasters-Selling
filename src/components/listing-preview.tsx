@@ -30,7 +30,8 @@ import { Card } from '@/components/ui/card';
 
 type ListingPreviewProps = {
     data: FormValues;
-    imagePreviews: string[];
+    heroImagePreview: string;
+    galleryImagePreviews: string[];
 }
 
 const findLabel = (id: string | undefined, options: { id: string; label: string }[]) => {
@@ -55,15 +56,15 @@ const renderFeatureList = (ids: string[] | undefined, options: { id: string; lab
   );
 };
 
-export function ListingPreview({ data, imagePreviews }: ListingPreviewProps) {
+export function ListingPreview({ data, heroImagePreview, galleryImagePreviews }: ListingPreviewProps) {
   const yacht = {
       name: data.title || `${data.year} ${findLabel(data.make, makes)} ${data.model}`,
       price: data.price || 0,
       year: data.year,
       length: data.length,
       location: findLabel(data.location, locationsByRegion.flatMap(r => r.locations)) || 'N/A',
-      imageUrl: imagePreviews[0] || 'https://placehold.co/600x400.png',
-      images: imagePreviews.slice(1),
+      imageUrl: heroImagePreview || 'https://placehold.co/600x400.png',
+      images: galleryImagePreviews,
       make: findLabel(data.make, makes) || 'N/A',
       model: data.model,
       listingType: findLabel(data.listingType, listingTypes) || 'N/A',
