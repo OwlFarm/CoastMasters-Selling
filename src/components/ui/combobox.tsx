@@ -39,6 +39,8 @@ export function Combobox({
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
 
+  const selectedLabel = options.find((option) => option.value.toLowerCase() === value?.toLowerCase())?.label;
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -48,24 +50,27 @@ export function Combobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? options.find((option) => option.value === value)?.label
-            : placeholder || "Select option..."}
+          {value ? (selectedLabel || value) : (placeholder || "Select option...")}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
-          <CommandInput placeholder={searchPlaceholder || "Search..."} />
+          <CommandInput 
+            placeholder={searchPlaceholder || "Search..."} 
+            value={value}
+            onValueChange={onChange}
+          />
           <CommandList>
             <CommandEmpty>{notFoundText || "No option found."}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue === value ? "" : currentValue)
+                  value={option.label} // Use label for display and filtering
+                  onSelect={(currentLabel) => {
+                    const selectedOption = options.find(opt => opt.label.toLowerCase() === currentLabel.toLowerCase());
+                    onChange(selectedOption ? selectedOption.value : currentLabel)
                     setOpen(false)
                   }}
                 >

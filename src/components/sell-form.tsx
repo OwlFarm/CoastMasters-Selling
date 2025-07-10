@@ -279,14 +279,16 @@ export function SellForm() {
                                             <FormField control={form.control} name="make" render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Builder</FormLabel>
-                                                    <Combobox
-                                                        options={makes.map(m => ({ label: m.label, value: m.value }))}
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        placeholder="Select a builder..."
-                                                        searchPlaceholder="Search builders..."
-                                                        notFoundText="No builder found."
-                                                    />
+                                                    <FormControl>
+                                                        <Combobox
+                                                            options={makes.map(m => ({ label: m.label, value: m.value }))}
+                                                            value={field.value}
+                                                            onChange={field.onChange}
+                                                            placeholder="Select a builder..."
+                                                            searchPlaceholder="Search builders..."
+                                                            notFoundText="No builder found. You can add a new one."
+                                                        />
+                                                    </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
                                             )} />
