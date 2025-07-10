@@ -57,11 +57,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
-  { id: 'Step 1', name: 'Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price'] },
-  { id: 'Step 2', name: 'Listing Details', fields: ['title', 'description', 'location'] },
-  { id: 'Step 3', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
-  { id: 'Step 4', name: 'Features', fields: ['features', 'deck', 'cabin'] },
-  { id: 'Step 5', name: 'Photos', fields: ['images'] },
+  { id: 'Step 1', name: 'Listing Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'title', 'description', 'location'] },
+  { id: 'Step 2', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
+  { id: 'Step 3', name: 'Features', fields: ['features', 'deck', 'cabin'] },
+  { id: 'Step 4', name: 'Photos', fields: ['images'] },
 ];
 
 export function SellForm() {
@@ -184,86 +183,78 @@ export function SellForm() {
                         {currentStep === 0 && (
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Yacht Essentials</CardTitle>
-                                    <CardDescription>Start with the most important details.</CardDescription>
+                                    <CardTitle>Listing Essentials</CardTitle>
+                                    <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
                                 </CardHeader>
-                                <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                    <FormField control={form.control} name="listingType" render={({ field }) => (
-                                        <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                                <CardContent className="space-y-6">
+                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                        <FormField control={form.control} name="listingType" render={({ field }) => (
+                                            <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                    {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{type.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="condition" render={({ field }) => (
+                                            <FormItem><FormLabel>Condition</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                    {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={c.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{c.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="boatType" render={({ field }) => (
+                                        <FormItem className="md:col-span-2"><FormLabel>Boat Type</FormLabel><FormControl>
                                             <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                     <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                     <FormLabel className="font-normal">{type.label}</FormLabel>
                                                 </FormItem>))}
                                             </RadioGroup>
                                         </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="condition" render={({ field }) => (
-                                        <FormItem><FormLabel>Condition</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={c.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{c.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="boatType" render={({ field }) => (
-                                      <FormItem className="md:col-span-2"><FormLabel>Boat Type</FormLabel><FormControl>
-                                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                              {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                  <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                  <FormLabel className="font-normal">{type.label}</FormLabel>
-                                              </FormItem>))}
-                                          </RadioGroup>
-                                      </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="make" render={({ field }) => (
-                                        <FormItem><FormLabel>Builder</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl><SelectTrigger><SelectValue placeholder="Select a builder" /></SelectTrigger></FormControl>
-                                                <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
-                                            </Select>
-                                        <FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="model" render={({ field }) => (
-                                        <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="year" render={({ field }) => (
-                                        <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="length" render={({ field }) => (
-                                      <FormItem>
-                                          <div className="flex items-center justify-between">
-                                              <FormLabel>LOA ({lengthUnit})</FormLabel>
-                                              <div className="flex items-center gap-2 text-sm">
-                                                  <span className="text-muted-foreground">Ft</span>
-                                                  <Switch
-                                                      checked={lengthUnit === 'm'}
-                                                      onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                                                      id="length-unit-switch-form"
-                                                  />
-                                                  <span className="text-muted-foreground">M</span>
-                                              </div>
-                                          </div>
-                                          <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
-                                          <FormMessage />
-                                      </FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="price" render={({ field }) => (
-                                        <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
-                                    )} />
-                                </CardContent>
-                            </Card>
-                        )}
-                        {currentStep === 1 && (
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Listing Details</CardTitle>
-                                    <CardDescription>Create a title and description that will attract buyers. Use our AI assistant for an SEO-optimized result!</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                     <FormField control={form.control} name="location" render={({ field }) => (
+                                        )} />
+                                        <FormField control={form.control} name="make" render={({ field }) => (
+                                            <FormItem><FormLabel>Builder</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a builder" /></SelectTrigger></FormControl>
+                                                    <SelectContent>{makes.map(make => <SelectItem key={make.id} value={make.id}>{make.label}</SelectItem>)}</SelectContent>
+                                                </Select>
+                                            <FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="model" render={({ field }) => (
+                                            <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="year" render={({ field }) => (
+                                            <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="length" render={({ field }) => (
+                                        <FormItem>
+                                            <div className="flex items-center justify-between">
+                                                <FormLabel>LOA ({lengthUnit})</FormLabel>
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <span className="text-muted-foreground">Ft</span>
+                                                    <Switch
+                                                        checked={lengthUnit === 'm'}
+                                                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                                                        id="length-unit-switch-form"
+                                                    />
+                                                    <span className="text-muted-foreground">M</span>
+                                                </div>
+                                            </div>
+                                            <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="price" render={({ field }) => (
+                                            <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
+                                        )} />
+                                    </div>
+                                    <FormField control={form.control} name="location" render={({ field }) => (
                                         <FormItem><FormLabel>Location</FormLabel>
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
@@ -304,7 +295,7 @@ export function SellForm() {
                                 </CardContent>
                             </Card>
                         )}
-                        {currentStep === 2 && (
+                        {currentStep === 1 && (
                              <Card>
                                 <CardHeader>
                                     <CardTitle>Specifications</CardTitle>
@@ -426,7 +417,7 @@ export function SellForm() {
                                 </CardContent>
                             </Card>
                         )}
-                        {currentStep === 3 && (
+                        {currentStep === 2 && (
                             <div className="space-y-8">
                                 <Card>
                                     <CardHeader>
@@ -520,7 +511,7 @@ export function SellForm() {
                                 </Card>
                             </div>
                         )}
-                        {currentStep === 4 && (
+                        {currentStep === 3 && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Yacht Photos</CardTitle>
