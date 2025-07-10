@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes } from "@/lib/data";
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
@@ -99,6 +100,30 @@ export function YachtFilters() {
             <div className="flex items-center space-x-2">
                 <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
                 <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
+            </div>
+            <Separator orientation="vertical" className="h-6" />
+            <div className="flex items-center space-x-2">
+                 <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
+                 <Select name="currency" defaultValue="usd">
+                     <SelectTrigger id="currency-select" className="w-[80px]">
+                         <SelectValue placeholder="Currency" />
+                     </SelectTrigger>
+                     <SelectContent>
+                         <SelectItem value="usd">USD</SelectItem>
+                         <SelectItem value="eur">EUR</SelectItem>
+                         <SelectItem value="gbp">GBP</SelectItem>
+                     </SelectContent>
+                 </Select>
+            </div>
+            <Separator orientation="vertical" className="h-6" />
+             <div className="flex items-center gap-2 text-sm">
+                <span className="text-muted-foreground">Ft</span>
+                <Switch
+                    checked={lengthUnit === 'm'}
+                    onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                    id="length-unit-switch-filter-top"
+                />
+                <span className="text-muted-foreground">M</span>
             </div>
         </div>
       </div>
