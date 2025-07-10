@@ -245,7 +245,7 @@ export function SellForm() {
                                         <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <FormField control={form.control} name="listingType" render={({ field }) => (
                                                 <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
                                                     <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
@@ -280,7 +280,7 @@ export function SellForm() {
                                                 <FormItem className="flex flex-col">
                                                     <FormLabel>Builder</FormLabel>
                                                     <Combobox
-                                                        options={makes}
+                                                        options={makes.map(m => ({ label: m.label, value: m.value }))}
                                                         value={field.value}
                                                         onChange={field.onChange}
                                                         placeholder="Select a builder..."
@@ -596,7 +596,7 @@ export function SellForm() {
                                                                         className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
                                                                         onClick={(e) => {
                                                                             e.preventDefault();
-                                                                            field.onChange(null);
+                                                                            form.setValue('heroImage', undefined, { shouldValidate: true });
                                                                             setHeroImagePreview(null);
                                                                         }}
                                                                     >
@@ -659,12 +659,20 @@ export function SellForm() {
                                                                       field.onChange(limitedFiles);
 
                                                                       const previews = limitedFiles.map(file => {
-                                                                      if (typeof file === 'string') return file;
-                                                                      if (file instanceof File) {
-                                                                          return URL.createObjectURL(file);
-                                                                      }
-                                                                      return '';
-                                                                      }).filter(p => p);
+                                                                          // This handles the case where the file object might be from a previous state and needs a URL created.
+                                                                          if (file instanceof File) {
+                                                                              return URL.createObjectURL(file);
+                                                                          }
+                                                                          return file; // Should already be a URL string if persisted
+                                                                      }).filter(p => typeof p === 'string');
+                                                                      
+                                                                      // Clean up old object URLs to prevent memory leaks
+                                                                      galleryImagePreviews.forEach(url => {
+                                                                          if (url.startsWith('blob:')) {
+                                                                            URL.revokeObjectURL(url);
+                                                                          }
+                                                                      });
+
                                                                       setGalleryImagePreviews(previews);
                                                                   }
                                                               }}
@@ -688,6 +696,13 @@ export function SellForm() {
                                                                             field.onChange(updatedFiles);
 
                                                                             const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
+                                                                            
+                                                                            // Clean up the specific object URL we are removing
+                                                                            const urlToRevoke = galleryImagePreviews[index];
+                                                                            if (urlToRevoke && urlToRevoke.startsWith('blob:')) {
+                                                                                URL.revokeObjectURL(urlToRevoke);
+                                                                            }
+
                                                                             setGalleryImagePreviews(updatedPreviews);
                                                                         }}
                                                                     >
