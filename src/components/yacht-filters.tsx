@@ -50,53 +50,27 @@ export function YachtFilters() {
       });
   };
 
-  const numCols = 2;
-  const numRows = Math.ceil(allMakes.length / numCols);
-  const columnSortedMakes = [];
-  for (let i = 0; i < numRows; i++) {
-    for (let j = 0; j < numCols; j++) {
-      const index = j * numRows + i;
-      if (index < allMakes.length) {
-        columnSortedMakes.push(allMakes[index]);
+  // Function to sort items into columns for vertical alphabetical order
+  const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
+    if (items.length === 0) return [];
+    const numRows = Math.ceil(items.length / numCols);
+    const sortedColumns: {id: string; label: string}[] = [];
+    for (let i = 0; i < numRows; i++) {
+      for (let j = 0; j < numCols; j++) {
+        const index = j * numRows + i;
+        if (index < items.length) {
+          sortedColumns.push(items[index]);
+        }
       }
     }
-  }
+    return sortedColumns;
+  };
 
-  const featureNumCols = 2;
-  const featureNumRows = Math.ceil(featureOptions.length / featureNumCols);
-  const columnSortedFeatures = [];
-  for (let i = 0; i < featureNumRows; i++) {
-    for (let j = 0; j < featureNumCols; j++) {
-      const index = j * featureNumRows + i;
-      if (index < featureOptions.length) {
-        columnSortedFeatures.push(featureOptions[index]);
-      }
-    }
-  }
-  
-  const deckNumCols = 2;
-  const deckNumRows = Math.ceil(deckOptions.length / deckNumCols);
-  const columnSortedDeck = [];
-  for (let i = 0; i < deckNumRows; i++) {
-    for (let j = 0; j < deckNumCols; j++) {
-      const index = j * deckNumRows + i;
-      if (index < deckOptions.length) {
-        columnSortedDeck.push(deckOptions[index]);
-      }
-    }
-  }
+  const columnSortedMakes = sortIntoColumns(allMakes, 5);
+  const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
+  const columnSortedDeck = sortIntoColumns(deckOptions, 2);
+  const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
 
-  const cabinNumCols = 2;
-  const cabinNumRows = Math.ceil(cabinOptions.length / cabinNumCols);
-  const columnSortedCabin = [];
-  for (let i = 0; i < cabinNumRows; i++) {
-    for (let j = 0; j < cabinNumCols; j++) {
-      const index = j * cabinNumRows + i;
-      if (index < cabinOptions.length) {
-        columnSortedCabin.push(cabinOptions[index]);
-      }
-    }
-  }
 
   return (
     <>
@@ -195,8 +169,8 @@ export function YachtFilters() {
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-2">
-              <div className="col-span-2">
+            <div className="pt-2">
+              <div className="col-span-full mb-4">
                 <Input 
                   id="builder-search"
                   name="builderSearch"
@@ -205,18 +179,20 @@ export function YachtFilters() {
                   onChange={handleBuilderSearchChange}
                 />
               </div>
-              {columnSortedMakes.map((make) => (
-                <div key={make.id} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`make-${make.id}`}
-                    name="builders"
-                    value={make.id}
-                    checked={selectedBuilders.includes(make.id)}
-                    onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
-                  />
-                  <Label htmlFor={`make-${make.id}`} className="font-normal">{make.label}</Label>
-                </div>
-              ))}
+              <div className="grid grid-cols-5 gap-x-2 gap-y-4">
+                {columnSortedMakes.map((make) => (
+                  <div key={make.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`make-${make.id}`}
+                      name="builders"
+                      value={make.id}
+                      checked={selectedBuilders.includes(make.id)}
+                      onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
+                    />
+                    <Label htmlFor={`make-${make.id}`} className="font-normal text-sm">{make.label}</Label>
+                  </div>
+                ))}
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
