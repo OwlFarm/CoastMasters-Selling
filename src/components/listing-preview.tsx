@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -23,6 +24,7 @@ import {
   conditions,
   makes,
   locationsByRegion,
+  boatTypes,
 } from '@/lib/data';
 import { Card } from '@/components/ui/card';
 
