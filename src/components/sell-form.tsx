@@ -235,7 +235,7 @@ export function SellForm() {
                                     <FormField control={form.control} name="length" render={({ field }) => (
                                       <FormItem>
                                           <div className="flex items-center justify-between">
-                                              <FormLabel>Length ({lengthUnit})</FormLabel>
+                                              <FormLabel>LOA ({lengthUnit})</FormLabel>
                                               <div className="flex items-center gap-2 text-sm">
                                                   <span className="text-muted-foreground">Ft</span>
                                                   <Switch

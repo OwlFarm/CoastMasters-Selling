@@ -1,4 +1,5 @@
 
+
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getFeaturedYachts } from '@/services/yacht-service';
@@ -58,7 +59,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
 
   const specifications = [
     { label: 'Year', value: yacht.year, icon: Calendar },
-    { label: 'Length', value: `${yacht.length} ft`, icon: Ruler },
+    { label: 'LOA', value: `${yacht.length} ft`, icon: Ruler },
     { label: 'Type', value: yacht.boatType, icon: Ship },
     { label: 'Condition', value: yacht.condition, icon: Anchor },
     { label: 'Location', value: yacht.location, icon: MapPin },

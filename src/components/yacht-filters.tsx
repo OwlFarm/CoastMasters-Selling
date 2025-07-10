@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -54,16 +55,16 @@ export function YachtFilters() {
   const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
     if (!items || items.length === 0) return [];
     const numRows = Math.ceil(items.length / numCols);
-    const sortedColumns: {id: string; label: string}[] = [];
-    for (let i = 0; i < numRows; i++) {
-      for (let j = 0; j < numCols; j++) {
-        const index = j * numRows + i;
-        if (index < items.length) {
-          sortedColumns.push(items[index]);
+    const sortedColumns: {id: string; label: string}[][] = Array.from({ length: numCols }, () => []);
+    
+    items.forEach((item, index) => {
+        const colIndex = Math.floor(index / numRows);
+        if(sortedColumns[colIndex]) {
+            sortedColumns[colIndex].push(item);
         }
-      }
-    }
-    return sortedColumns;
+    });
+
+    return sortedColumns.flat();
   };
 
   const columnSortedMakes = sortIntoColumns(allMakes, 5);
@@ -114,7 +115,7 @@ export function YachtFilters() {
           </div>
           <div className="flex-1 space-y-2">
               <div className="flex items-center justify-between">
-                  <Label>Length ({lengthUnit})</Label>
+                  <Label>LOA ({lengthUnit})</Label>
                    <div className="flex items-center gap-2 text-sm">
                       <span className="text-muted-foreground">Ft</span>
                       <Switch
