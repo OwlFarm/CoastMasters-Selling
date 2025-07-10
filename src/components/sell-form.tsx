@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -57,10 +56,9 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const steps = [
-  { id: 'Step 1', name: 'Listing Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'title', 'description', 'location'] },
-  { id: 'Step 2', name: 'Specifications', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications'] },
-  { id: 'Step 3', name: 'Features', fields: ['features', 'deck', 'cabin'] },
-  { id: 'Step 4', name: 'Photos', fields: ['images'] },
+  { id: 'Step 1', name: 'Listing Essentials', fields: ['listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description'] },
+  { id: 'Step 2', name: 'Specifications & Features', fields: ['hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 'otherSpecifications', 'features', 'deck', 'cabin'] },
+  { id: 'Step 3', name: 'Photos', fields: ['images'] },
 ];
 
 export function SellForm() {
@@ -296,129 +294,127 @@ export function SellForm() {
                             </Card>
                         )}
                         {currentStep === 1 && (
-                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Specifications</CardTitle>
-                                    <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                     <FormField control={form.control} name="usageStyles" render={() => (
-                                        <FormItem>
-                                            <FormLabel>Usage Styles</FormLabel>
-                                            <div className="flex flex-row items-center flex-wrap gap-x-4 gap-y-2 pt-2">
-                                                {usageStyles.map((item) => (
-                                                    <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
-                                                        <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                                                            <FormControl>
-                                                                <Checkbox
-                                                                    checked={field.value?.includes(item.id)}
-                                                                    onCheckedChange={(checked) => {
-                                                                        const currentValue = field.value || [];
-                                                                        return checked
-                                                                            ? field.onChange([...currentValue, item.id])
-                                                                            : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                    }}
-                                                                />
-                                                            </FormControl>
-                                                            <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                        </FormItem>
-                                                    )} />
-                                                ))}
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="hullMaterial" render={({ field }) => (
-                                        <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={mat.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{mat.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="hullShape" render={({ field }) => (
-                                        <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={shape.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{shape.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="bowShape" render={({ field }) => (
-                                        <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={shape.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{shape.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                     <FormField control={form.control} name="keelType" render={({ field }) => (
-                                        <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={keel.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{keel.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="rudderType" render={({ field }) => (
-                                        <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{rudder.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="propellerType" render={({ field }) => (
-                                        <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={prop.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{prop.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="fuelType" render={({ field }) => (
-                                        <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
-                                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
-                                                {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                    <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                    <FormLabel className="font-normal">{type.label}</FormLabel>
-                                                </FormItem>))}
-                                            </RadioGroup>
-                                        </FormControl><FormMessage /></FormItem>
-                                    )} />
-                                    <FormField control={form.control} name="otherSpecifications" render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Other Specifications (Optional)</FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                    placeholder="e.g., Custom rigging, specific navigation equipment not listed, etc."
-                                                    className="min-h-[100px]"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Use this field to list any other important specifications not covered above.
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                </CardContent>
-                            </Card>
-                        )}
-                        {currentStep === 2 && (
                             <div className="space-y-8">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Specifications</CardTitle>
+                                        <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                         <FormField control={form.control} name="usageStyles" render={() => (
+                                            <FormItem>
+                                                <FormLabel>Usage Styles</FormLabel>
+                                                <div className="flex flex-row items-center flex-wrap gap-x-4 gap-y-2 pt-2">
+                                                    {usageStyles.map((item) => (
+                                                        <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
+                                                            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
+                                                                <FormControl>
+                                                                    <Checkbox
+                                                                        checked={field.value?.includes(item.id)}
+                                                                        onCheckedChange={(checked) => {
+                                                                            const currentValue = field.value || [];
+                                                                            return checked
+                                                                                ? field.onChange([...currentValue, item.id])
+                                                                                : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                        }}
+                                                                    />
+                                                                </FormControl>
+                                                                <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                            </FormItem>
+                                                        )} />
+                                                    ))}
+                                                </div>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="hullMaterial" render={({ field }) => (
+                                            <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={mat.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{mat.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="hullShape" render={({ field }) => (
+                                            <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={shape.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{shape.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="bowShape" render={({ field }) => (
+                                            <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={shape.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{shape.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                         <FormField control={form.control} name="keelType" render={({ field }) => (
+                                            <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={keel.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{keel.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="rudderType" render={({ field }) => (
+                                            <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{rudder.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="propellerType" render={({ field }) => (
+                                            <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={prop.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{prop.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="fuelType" render={({ field }) => (
+                                            <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                                                    {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{type.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="otherSpecifications" render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Other Specifications (Optional)</FormLabel>
+                                                <FormControl>
+                                                    <Textarea
+                                                        placeholder="e.g., Custom rigging, specific navigation equipment not listed, etc."
+                                                        className="min-h-[100px]"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Use this field to list any other important specifications not covered above.
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                    </CardContent>
+                                </Card>
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Features & Equipment</CardTitle>
@@ -511,7 +507,7 @@ export function SellForm() {
                                 </Card>
                             </div>
                         )}
-                        {currentStep === 3 && (
+                        {currentStep === 2 && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Yacht Photos</CardTitle>
