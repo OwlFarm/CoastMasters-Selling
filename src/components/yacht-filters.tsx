@@ -105,13 +105,15 @@ export function YachtFilters() {
             <div className="flex items-center space-x-2">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
                  <Select name="currency" defaultValue="usd">
-                     <SelectTrigger id="currency-select" className="w-[80px]">
+                     <SelectTrigger id="currency-select" className="w-[90px]">
                          <SelectValue placeholder="Currency" />
                      </SelectTrigger>
                      <SelectContent>
                          <SelectItem value="usd">USD</SelectItem>
                          <SelectItem value="eur">EUR</SelectItem>
                          <SelectItem value="gbp">GBP</SelectItem>
+                         <SelectItem value="aud">AUD</SelectItem>
+                         <SelectItem value="nzd">NZD</SelectItem>
                      </SelectContent>
                  </Select>
             </div>
@@ -392,5 +394,7 @@ export function YachtFilters() {
     </>
   );
 }
+
+    
 
     
