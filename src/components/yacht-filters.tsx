@@ -55,16 +55,17 @@ export function YachtFilters() {
   const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
     if (!items || items.length === 0) return [];
     const numRows = Math.ceil(items.length / numCols);
-    const sortedColumns: {id: string; label: string}[][] = Array.from({ length: numCols }, () => []);
+    const sortedItems = [...items].sort((a, b) => a.label.localeCompare(b.label));
+    const columns: {id: string; label: string}[][] = Array.from({ length: numCols }, () => []);
     
-    items.forEach((item, index) => {
+    sortedItems.forEach((item, index) => {
         const colIndex = Math.floor(index / numRows);
-        if(sortedColumns[colIndex]) {
-            sortedColumns[colIndex].push(item);
+        if(columns[colIndex]) {
+            columns[colIndex].push(item);
         }
     });
 
-    return sortedColumns.flat();
+    return columns.flat();
   };
 
   const columnSortedMakes = sortIntoColumns(allMakes, 5);
@@ -161,7 +162,7 @@ export function YachtFilters() {
                             <Label htmlFor={`type-catamaran`} className="font-normal">Catamaran</Label>
                         </div>
                     </div>
-                    <Separator />
+                    <Separator className="my-4 bg-border/50" />
                     <div className="grid grid-cols-5 gap-x-2">
                         <div className="flex items-center space-x-2">
                             <Checkbox id={`style-off-shore`} name="usageStyles" value="off-shore" />
