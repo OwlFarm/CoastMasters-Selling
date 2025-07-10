@@ -391,7 +391,7 @@ export function SellForm() {
                                         <CardTitle>Specifications</CardTitle>
                                         <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
                                     </CardHeader>
-                                    <CardContent className="space-y-6">
+                                    <CardContent className="space-y-8">
                                          <FormField control={form.control} name="usageStyles" render={() => (
                                             <FormItem>
                                                 <FormLabel>Usage Styles</FormLabel>
