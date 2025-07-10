@@ -156,7 +156,7 @@ export function YachtFilters() {
                   ))}
                 </div>
                 <Separator />
-                <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                <div className="grid grid-cols-5 gap-x-2 gap-y-4">
                   {usageStyles.map((style) => (
                     <div key={style.id} className="flex items-center space-x-2">
                       <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
