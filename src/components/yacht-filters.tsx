@@ -17,6 +17,7 @@ export function YachtFilters() {
   const [selectedCurrency, setSelectedCurrency] = React.useState('usd');
   const [builderSearch, setBuilderSearch] = React.useState('');
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
+  const [isSailingChecked, setIsSailingChecked] = React.useState(false);
 
   const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -89,7 +90,7 @@ export function YachtFilters() {
                 <Checkbox id="condition-new" name="conditions" value="new" />
                 <Label htmlFor="condition-new" className="font-normal">New</Label>
             </div>
-            <div className="flex items-center space-x-2">
+             <div className="flex items-center space-x-2">
                 <Checkbox id="condition-used" name="conditions" value="used" />
                 <Label htmlFor="condition-used" className="font-normal">Used</Label>
             </div>
@@ -102,7 +103,7 @@ export function YachtFilters() {
                 <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
                 <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
             </div>
-
+            
             <div className="flex items-center space-x-2">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
@@ -118,7 +119,8 @@ export function YachtFilters() {
                      </SelectContent>
                  </Select>
             </div>
-            <div className="flex items-center gap-2 text-sm">
+
+            <div className="flex items-center gap-2 text-sm justify-self-start">
                 <span className="text-muted-foreground">Ft</span>
                 <Switch
                     checked={lengthUnit === 'm'}
@@ -165,22 +167,33 @@ export function YachtFilters() {
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                       {boatTypes.map(type => (
-                         <div key={type.id} className="flex items-center space-x-2">
-                            <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
-                            <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
+                       <div className="flex items-center space-x-2">
+                            <Checkbox id="type-power" name="boatTypes" value="power" />
+                            <Label htmlFor="type-power" className="font-normal">Power</Label>
                         </div>
-                       ))}
-                    </div>
-                    <Separator className="bg-border/50" />
-                    <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                      {usageStyles.map(style => (
-                        <div key={style.id} className="flex items-center space-x-2">
-                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
-                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox 
+                                id="type-sailing" 
+                                name="boatTypes" 
+                                value="sailing" 
+                                onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
+                            />
+                            <Label htmlFor="type-sailing" className="font-normal">Sailing</Label>
                         </div>
-                      ))}
                     </div>
+                    {isSailingChecked && (
+                        <>
+                            <Separator className="bg-border/50" />
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                              {usageStyles.map(style => (
+                                <div key={style.id} className="flex items-center space-x-2">
+                                    <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                                    <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                                </div>
+                              ))}
+                            </div>
+                        </>
+                    )}
                 </div>
             </AccordionContent>
         </AccordionItem>
