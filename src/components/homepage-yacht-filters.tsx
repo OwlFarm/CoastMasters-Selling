@@ -68,9 +68,9 @@ export function HomepageYachtFilters() {
   };
 
   const columnSortedMakes = sortIntoColumns(allMakes, 5);
-  const columnSortedFeatures = sortIntoColumns(featureOptions, 3);
-  const columnSortedDeck = sortIntoColumns(deckOptions, 3);
-  const columnSortedCabin = sortIntoColumns(cabinOptions, 3);
+  const columnSortedFeatures = sortIntoColumns(featureOptions, 5);
+  const columnSortedDeck = sortIntoColumns(deckOptions, 5);
+  const columnSortedCabin = sortIntoColumns(cabinOptions, 5);
   const columnSortedPowerSubTypes = sortIntoColumns(powerBoatSubTypes, 3);
   const columnSortedUsageStyles = sortIntoColumns(usageStyles, 3);
 
@@ -321,12 +321,16 @@ export function HomepageYachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedDeck.flat().map((feature) => (
-                <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
-                  <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
-                </div>
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+              {columnSortedDeck.map((column, colIndex) => (
+                  <div key={colIndex} className="flex flex-col space-y-4">
+                      {column.map((feature) => (
+                          <div key={feature.value} className="flex items-center space-x-2">
+                              <Checkbox id={`deck-filter-${feature.value}`} name="deck" value={feature.value} />
+                              <Label htmlFor={`deck-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          </div>
+                      ))}
+                  </div>
               ))}
             </div>
           </AccordionContent>
@@ -334,12 +338,16 @@ export function HomepageYachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedCabin.flat().map((feature) => (
-                <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
-                  <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
-                </div>
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+              {columnSortedCabin.map((column, colIndex) => (
+                  <div key={colIndex} className="flex flex-col space-y-4">
+                      {column.map((feature) => (
+                          <div key={feature.value} className="flex items-center space-x-2">
+                              <Checkbox id={`cabin-filter-${feature.value}`} name="cabin" value={feature.value} />
+                              <Label htmlFor={`cabin-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          </div>
+                      ))}
+                  </div>
               ))}
             </div>
           </AccordionContent>
@@ -347,12 +355,16 @@ export function HomepageYachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedFeatures.flat().map((feature) => (
-                <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
-                  <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
-                </div>
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+              {columnSortedFeatures.map((column, colIndex) => (
+                  <div key={colIndex} className="flex flex-col space-y-4">
+                      {column.map((feature) => (
+                          <div key={feature.value} className="flex items-center space-x-2">
+                              <Checkbox id={`feature-filter-${feature.value}`} name="features" value={feature.value} />
+                              <Label htmlFor={`feature-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          </div>
+                      ))}
+                  </div>
               ))}
             </div>
           </AccordionContent>
