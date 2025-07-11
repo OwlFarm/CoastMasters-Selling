@@ -10,6 +10,7 @@ import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes,
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Combobox } from './ui/combobox';
 
 export function HomepageYachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
@@ -19,8 +20,7 @@ export function HomepageYachtFilters() {
   const [isSailingChecked, setIsSailingChecked] = React.useState(false);
   const [isPowerChecked, setIsPowerChecked] = React.useState(false);
 
-  const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const handleBuilderSearchChange = (value: string) => {
     setBuilderSearch(value);
 
     const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
@@ -31,7 +31,7 @@ export function HomepageYachtFilters() {
     }
 
     const matchedMakeIds = allMakes
-      .filter(make => searchTerms.some(term => make.label.toLowerCase() === term))
+      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
       .map(make => make.id);
 
     setSelectedBuilders(matchedMakeIds);
@@ -221,13 +221,14 @@ export function HomepageYachtFilters() {
           <AccordionContent>
             <div className="pt-2 pb-4">
               <div className="col-span-full mb-4">
-                <Input 
-                  id="builder-search"
-                  name="builderSearch"
-                  placeholder="Search Builders (comma-separated)"
-                  value={builderSearch}
-                  onChange={handleBuilderSearchChange}
-                />
+                 <Combobox
+                    options={allMakes.map(m => ({ label: m.label, value: m.value }))}
+                    value={builderSearch}
+                    onChange={handleBuilderSearchChange}
+                    placeholder="Select or enter builders..."
+                    searchPlaceholder="Search builders (comma-separated)..."
+                    notFoundText="No builder found."
+                 />
               </div>
               <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                 {columnSortedMakes.map((make) => (

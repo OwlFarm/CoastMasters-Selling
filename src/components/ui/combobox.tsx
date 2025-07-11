@@ -57,7 +57,7 @@ export function Combobox({
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
           <CommandInput 
-            placeholder={searchPlaceholder || "Search..."} 
+            placeholder={searchPlaceholder || "Search..."}
             value={value}
             onValueChange={onChange}
           />
