@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
-export function YachtFilters() {
+export function HomepageYachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
   const [selectedCurrency, setSelectedCurrency] = React.useState('usd');
   const [builderSearch, setBuilderSearch] = React.useState('');
@@ -54,6 +54,7 @@ export function YachtFilters() {
       });
   };
 
+  // Function to sort items into columns for vertical alphabetical order
   const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
     if (!items || items.length === 0) return [];
     const numRows = Math.ceil(items.length / numCols);
@@ -70,12 +71,12 @@ export function YachtFilters() {
     return columns.flat();
   };
 
-  const columnSortedMakes = sortIntoColumns(allMakes, 2);
-  const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
-  const columnSortedDeck = sortIntoColumns(deckOptions, 2);
-  const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
-  const columnSortedPowerSubTypes = sortIntoColumns(powerBoatSubTypes, 2);
-  const columnSortedUsageStyles = sortIntoColumns(usageStyles, 2);
+  const columnSortedMakes = sortIntoColumns(allMakes, 3);
+  const columnSortedFeatures = sortIntoColumns(featureOptions, 3);
+  const columnSortedDeck = sortIntoColumns(deckOptions, 3);
+  const columnSortedCabin = sortIntoColumns(cabinOptions, 3);
+  const columnSortedPowerSubTypes = sortIntoColumns(powerBoatSubTypes, 3);
+  const columnSortedUsageStyles = sortIntoColumns(usageStyles, 3);
 
 
   return (
@@ -85,27 +86,27 @@ export function YachtFilters() {
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="space-y-4 pb-8">
-         <div className="grid grid-cols-2 gap-x-4 gap-y-4">
-            <div className="flex items-center space-x-2">
-                <Checkbox id="condition-new" name="conditions" value="new" />
-                <Label htmlFor="condition-new" className="font-normal">New</Label>
+      <div className="space-y-6 pb-8">
+        <div className="flex justify-between items-center gap-4">
+            <div className="flex gap-8">
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="condition-new" name="conditions" value="new" />
+                    <Label htmlFor="condition-new" className="font-normal">New</Label>
+                </div>
+                 <div className="flex items-center space-x-2">
+                    <Checkbox id="condition-used" name="conditions" value="used" />
+                    <Label htmlFor="condition-used" className="font-normal">Used</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="listing-type-private" name="listingTypes" value="private" />
+                    <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
+                    <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
+                </div>
             </div>
-             <div className="flex items-center space-x-2">
-                <Checkbox id="condition-used" name="conditions" value="used" />
-                <Label htmlFor="condition-used" className="font-normal">Used</Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-                <Checkbox id="listing-type-private" name="listingTypes" value="private" />
-                <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-                <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
-                <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-4">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
                      <SelectTrigger id="currency-select" className="w-[90px]">
@@ -119,23 +120,22 @@ export function YachtFilters() {
                          <SelectItem value="nzd">NZD</SelectItem>
                      </SelectContent>
                  </Select>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm justify-self-start">
-                <span className="text-muted-foreground">Ft</span>
-                <Switch
-                    checked={lengthUnit === 'm'}
-                    onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                    id="length-unit-switch-filter-top"
-                />
-                <span className="text-muted-foreground">M</span>
+                 <div className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground">Ft</span>
+                    <Switch
+                        checked={lengthUnit === 'm'}
+                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                        id="length-unit-switch-filter-top"
+                    />
+                    <span className="text-muted-foreground">M</span>
+                </div>
             </div>
         </div>
       </div>
       
       <Separator className="mb-8"/>
 
-      <div className="space-y-6 pb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-8">
           <div className="space-y-2">
               <Label>Price ({selectedCurrency.toUpperCase()})</Label>
               <div className="flex items-center gap-2">
@@ -189,8 +189,8 @@ export function YachtFilters() {
                     </div>
                     {isPowerChecked && (
                         <>
-                            <Separator className="bg-border/50" />
-                            <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                            <Separator className="bg-border/50 my-4" />
+                            <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                               {columnSortedPowerSubTypes.map(subType => (
                                 <div key={subType.id} className="flex items-center space-x-2">
                                     <Checkbox id={`subtype-${subType.id}`} name="powerSubTypes" value={subType.id} />
@@ -202,8 +202,8 @@ export function YachtFilters() {
                     )}
                     {isSailingChecked && (
                         <>
-                            <Separator className="bg-border/50" />
-                            <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                            <Separator className="bg-border/50 my-4" />
+                            <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                               {columnSortedUsageStyles.map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
@@ -229,7 +229,7 @@ export function YachtFilters() {
                   onChange={handleBuilderSearchChange}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+              <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                 {columnSortedMakes.map((make) => (
                   <div key={make.id} className="flex items-center space-x-2">
                     <Checkbox
@@ -249,7 +249,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-5 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-4 mt-2">
@@ -311,7 +311,7 @@ export function YachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedDeck.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
@@ -324,7 +324,7 @@ export function YachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
@@ -337,7 +337,7 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
@@ -350,7 +350,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
@@ -374,7 +374,7 @@ export function YachtFilters() {
                         {regionData.region}
                       </AccordionTrigger>
                       <AccordionContent className="pl-4">
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-2 pt-2">
+                        <div className="grid grid-cols-3 gap-x-2 gap-y-2 pt-2">
                           {regionData.locations.map((location) => (
                             <div key={location.id} className="flex items-center space-x-2">
                               <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />

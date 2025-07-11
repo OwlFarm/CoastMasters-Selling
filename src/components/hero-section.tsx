@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -6,7 +7,7 @@ import Image from 'next/image';
 import { YachtSearch } from '@/components/yacht-search';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { YachtFilters } from './yacht-filters';
+import { HomepageYachtFilters } from './homepage-yacht-filters';
 
 export function HeroSection() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -64,7 +65,7 @@ export function HeroSection() {
                         <h2 className="mb-10 text-center font-headline text-3xl font-bold tracking-tight md:text-4xl">
                             Refine Your Search
                         </h2>
-                        <YachtFilters />
+                        <HomepageYachtFilters />
                          <div className="mt-8 flex justify-center gap-4">
                             <Button size="lg" variant="outline">Save Search</Button>
                             <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Apply Filters</Button>
