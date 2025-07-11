@@ -54,7 +54,7 @@ export function HomepageYachtFilters() {
       });
   };
 
-  const sortIntoColumns = <T extends { label: string; value: string; }>(items: T[], numCols: number): T[][] => {
+  const sortIntoColumns = <T extends { id: string; label: string; }>(items: T[], numCols: number): T[][] => {
     if (!items || items.length === 0) return [];
     const sortedItems = [...items].sort((a, b) => a.label.localeCompare(b.label));
     const columns: T[][] = Array.from({ length: numCols }, () => []);
@@ -325,9 +325,9 @@ export function HomepageYachtFilters() {
               {columnSortedDeck.map((column, colIndex) => (
                   <div key={colIndex} className="flex flex-col space-y-4">
                       {column.map((feature) => (
-                          <div key={feature.value} className="flex items-center space-x-2">
-                              <Checkbox id={`deck-filter-${feature.value}`} name="deck" value={feature.value} />
-                              <Label htmlFor={`deck-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          <div key={feature.id} className="flex items-center space-x-2">
+                              <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
+                              <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                           </div>
                       ))}
                   </div>
@@ -342,9 +342,9 @@ export function HomepageYachtFilters() {
               {columnSortedCabin.map((column, colIndex) => (
                   <div key={colIndex} className="flex flex-col space-y-4">
                       {column.map((feature) => (
-                          <div key={feature.value} className="flex items-center space-x-2">
-                              <Checkbox id={`cabin-filter-${feature.value}`} name="cabin" value={feature.value} />
-                              <Label htmlFor={`cabin-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          <div key={feature.id} className="flex items-center space-x-2">
+                              <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
+                              <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                           </div>
                       ))}
                   </div>
@@ -359,9 +359,9 @@ export function HomepageYachtFilters() {
               {columnSortedFeatures.map((column, colIndex) => (
                   <div key={colIndex} className="flex flex-col space-y-4">
                       {column.map((feature) => (
-                          <div key={feature.value} className="flex items-center space-x-2">
-                              <Checkbox id={`feature-filter-${feature.value}`} name="features" value={feature.value} />
-                              <Label htmlFor={`feature-filter-${feature.value}`} className="font-normal">{feature.label}</Label>
+                          <div key={feature.id} className="flex items-center space-x-2">
+                              <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
+                              <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
                           </div>
                       ))}
                   </div>
@@ -372,7 +372,7 @@ export function HomepageYachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
