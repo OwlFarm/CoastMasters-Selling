@@ -84,7 +84,7 @@ export function YachtFilters() {
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
       <div className="space-y-6 pb-8">
-        <div className="flex items-center justify-start space-x-8">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4">
             <div className="flex items-center space-x-2">
                 <Checkbox id="condition-new" name="conditions" value="new" />
                 <Label htmlFor="condition-new" className="font-normal">New</Label>
@@ -93,9 +93,7 @@ export function YachtFilters() {
                 <Checkbox id="condition-used" name="conditions" value="used" />
                 <Label htmlFor="condition-used" className="font-normal">Used</Label>
             </div>
-        </div>
 
-        <div className="flex items-center justify-start space-x-8">
             <div className="flex items-center space-x-2">
                 <Checkbox id="listing-type-private" name="listingTypes" value="private" />
                 <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
@@ -104,9 +102,7 @@ export function YachtFilters() {
                 <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
                 <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
             </div>
-        </div>
-        
-        <div className="flex items-center justify-between">
+
             <div className="flex items-center space-x-2">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
@@ -122,7 +118,7 @@ export function YachtFilters() {
                      </SelectContent>
                  </Select>
             </div>
-             <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2 text-sm">
                 <span className="text-muted-foreground">Ft</span>
                 <Switch
                     checked={lengthUnit === 'm'}
