@@ -236,7 +236,7 @@ export function HomepageYachtFilters() {
                     notFoundText="No builder found."
                  />
               </div>
-              <ScrollArea className="h-72">
+              <ScrollArea className="h-[27rem]">
                 <div className="grid grid-cols-5 gap-x-2 gap-y-4 pr-6">
                   {columnSortedMakes.map((column, colIndex) => (
                       <div key={colIndex} className="flex flex-col space-y-4">
