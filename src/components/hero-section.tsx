@@ -67,8 +67,8 @@ export function HeroSection() {
                         </h2>
                         <HomepageYachtFilters />
                          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            <div className="justify-self-center">
-                                <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">Let's Go!</Button>
+                            <div className="sm:col-start-1 lg:col-start-2">
+                                <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Let's Go!</Button>
                             </div>
                         </div>
                     </div>
