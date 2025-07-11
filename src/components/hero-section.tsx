@@ -66,9 +66,9 @@ export function HeroSection() {
                             Find Your Boat
                         </h2>
                         <HomepageYachtFilters />
-                         <div className="mt-8 flex justify-center gap-4">
-                            <Button size="lg" variant="outline">Save Search</Button>
-                            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">Let's Go!</Button>
+                         <div className="mt-8 flex justify-center gap-4 w-full sm:w-1/2 mx-auto">
+                            <Button size="lg" variant="outline" className="flex-1">Save Search</Button>
+                            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1">Let's Go!</Button>
                         </div>
                     </div>
                 </div>
