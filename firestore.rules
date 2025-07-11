@@ -1,11 +1,17 @@
+
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Allow public read access to the yachts collection
+    match /yachts/{yachtId} {
+      allow read: if true;
+      allow write: if false; // Keep writes restricted
+    }
+
+    // Deny all other reads and writes by default
     match /{document=**} {
-      // Allow read/write access for development purposes.
-      // TODO: Secure your database before deploying to production.
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
