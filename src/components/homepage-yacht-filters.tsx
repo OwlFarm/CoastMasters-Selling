@@ -54,7 +54,7 @@ export function HomepageYachtFilters() {
       });
   };
 
-  const sortIntoColumns = <T extends { label: string }>(items: T[], numCols: number): T[][] => {
+  const sortIntoColumns = <T extends { label: string; value: string; }>(items: T[], numCols: number): T[][] => {
     if (!items || items.length === 0) return [];
     const sortedItems = [...items].sort((a, b) => a.label.localeCompare(b.label));
     const columns: T[][] = Array.from({ length: numCols }, () => []);
@@ -171,7 +171,7 @@ export function HomepageYachtFilters() {
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
-                    <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                    <div className="grid grid-cols-5 gap-x-2 gap-y-4">
                        <div className="flex items-center space-x-2">
                             <Checkbox 
                                 id="type-power" 
