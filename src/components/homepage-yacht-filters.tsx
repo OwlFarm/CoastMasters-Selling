@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Combobox } from './ui/combobox';
+import { ScrollArea } from './ui/scroll-area';
 
 export function HomepageYachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
@@ -235,24 +236,26 @@ export function HomepageYachtFilters() {
                     notFoundText="No builder found."
                  />
               </div>
-              <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-                {columnSortedMakes.map((column, colIndex) => (
-                    <div key={colIndex} className="flex flex-col space-y-4">
-                        {column.map((make) => (
-                            <div key={make.value} className="flex items-center space-x-2">
-                                <Checkbox
-                                    id={`make-${make.value}`}
-                                    name="builders"
-                                    value={make.value}
-                                    checked={selectedBuilders.includes(make.value)}
-                                    onCheckedChange={(checked) => handleBuilderCheckboxChange(make.value, checked)}
-                                />
-                                <Label htmlFor={`make-${make.value}`} className="font-normal text-sm">{make.label}</Label>
-                            </div>
-                        ))}
-                    </div>
-                ))}
-              </div>
+              <ScrollArea className="h-72">
+                <div className="grid grid-cols-5 gap-x-2 gap-y-4 pr-6">
+                  {columnSortedMakes.map((column, colIndex) => (
+                      <div key={colIndex} className="flex flex-col space-y-4">
+                          {column.map((make) => (
+                              <div key={make.value} className="flex items-center space-x-2">
+                                  <Checkbox
+                                      id={`make-${make.value}`}
+                                      name="builders"
+                                      value={make.value}
+                                      checked={selectedBuilders.includes(make.value)}
+                                      onCheckedChange={(checked) => handleBuilderCheckboxChange(make.value, checked)}
+                                  />
+                                  <Label htmlFor={`make-${make.value}`} className="font-normal text-sm">{make.label}</Label>
+                              </div>
+                          ))}
+                      </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </AccordionContent>
         </AccordionItem>
