@@ -83,8 +83,8 @@ export function YachtFilters() {
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
-      <div className="pb-8">
-        <div className="flex w-full items-center justify-around">
+      <div className="space-y-6 pb-8">
+        <div className="flex items-center justify-start space-x-8">
             <div className="flex items-center space-x-2">
                 <Checkbox id="condition-new" name="conditions" value="new" />
                 <Label htmlFor="condition-new" className="font-normal">New</Label>
@@ -93,7 +93,9 @@ export function YachtFilters() {
                 <Checkbox id="condition-used" name="conditions" value="used" />
                 <Label htmlFor="condition-used" className="font-normal">Used</Label>
             </div>
-            <Separator orientation="vertical" className="h-6" />
+        </div>
+
+        <div className="flex items-center justify-start space-x-8">
             <div className="flex items-center space-x-2">
                 <Checkbox id="listing-type-private" name="listingTypes" value="private" />
                 <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
@@ -102,7 +104,9 @@ export function YachtFilters() {
                 <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
                 <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
             </div>
-            <Separator orientation="vertical" className="h-6" />
+        </div>
+        
+        <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
                  <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
@@ -118,7 +122,6 @@ export function YachtFilters() {
                      </SelectContent>
                  </Select>
             </div>
-            <Separator orientation="vertical" className="h-6" />
              <div className="flex items-center gap-2 text-sm">
                 <span className="text-muted-foreground">Ft</span>
                 <Switch
@@ -133,8 +136,8 @@ export function YachtFilters() {
       
       <Separator className="mb-8"/>
 
-      <div className="flex flex-col md:flex-row gap-8 pb-8">
-          <div className="flex-1 space-y-2">
+      <div className="space-y-6 pb-8">
+          <div className="space-y-2">
               <Label>Price ({selectedCurrency.toUpperCase()})</Label>
               <div className="flex items-center gap-2">
                   <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
@@ -142,26 +145,15 @@ export function YachtFilters() {
                   <Input name="priceMax" type="number" placeholder="Max" className="w-full" list="price-list" />
               </div>
           </div>
-          <div className="flex-1 space-y-2">
-              <div className="flex items-center justify-between">
-                  <Label>LOA ({lengthUnit})</Label>
-                   <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground">Ft</span>
-                      <Switch
-                          checked={lengthUnit === 'm'}
-                          onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                          id="length-unit-switch-filter"
-                      />
-                      <span className="text-muted-foreground">M</span>
-                  </div>
-              </div>
+          <div className="space-y-2">
+              <Label>LOA ({lengthUnit})</Label>
               <div className="flex items-center gap-2">
                   <Input name="lengthMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
                   <Input name="lengthMax" type="number" placeholder="Max" className="w-full" />
               </div>
           </div>
-          <div className="flex-1 space-y-2">
+          <div className="space-y-2">
               <Label>Year</Label>
               <div className="flex items-center gap-2">
                   <Input name="yearMin" type="number" placeholder="Min" className="w-full" />
@@ -249,7 +241,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-4 mt-2">
@@ -350,7 +342,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
