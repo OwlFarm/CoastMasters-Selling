@@ -54,21 +54,17 @@ export function HomepageYachtFilters() {
       });
   };
 
-  // Function to sort items into columns for vertical alphabetical order
-  const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
+  const sortIntoColumns = <T extends { label: string }>(items: T[], numCols: number): T[][] => {
     if (!items || items.length === 0) return [];
-    const numRows = Math.ceil(items.length / numCols);
     const sortedItems = [...items].sort((a, b) => a.label.localeCompare(b.label));
-    const columns: {id: string; label: string}[][] = Array.from({ length: numCols }, () => []);
+    const columns: T[][] = Array.from({ length: numCols }, () => []);
     
     sortedItems.forEach((item, index) => {
-        const colIndex = Math.floor(index / numRows);
-        if(columns[colIndex]) {
-            columns[colIndex].push(item);
-        }
+        const colIndex = index % numCols;
+        columns[colIndex].push(item);
     });
 
-    return columns.flat();
+    return columns;
   };
 
   const columnSortedMakes = sortIntoColumns(allMakes, 5);
@@ -191,7 +187,7 @@ export function HomepageYachtFilters() {
                         <>
                             <Separator className="bg-border/50 my-4" />
                             <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                              {columnSortedPowerSubTypes.map(subType => (
+                              {powerBoatSubTypes.map(subType => (
                                 <div key={subType.id} className="flex items-center space-x-2">
                                     <Checkbox id={`subtype-${subType.id}`} name="powerSubTypes" value={subType.id} />
                                     <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
@@ -204,7 +200,7 @@ export function HomepageYachtFilters() {
                         <>
                             <Separator className="bg-border/50 my-4" />
                             <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                              {columnSortedUsageStyles.map(style => (
+                              {usageStyles.map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
                                     <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
@@ -232,17 +228,21 @@ export function HomepageYachtFilters() {
                  />
               </div>
               <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-                {columnSortedMakes.map((make) => (
-                  <div key={make.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`make-${make.id}`}
-                      name="builders"
-                      value={make.id}
-                      checked={selectedBuilders.includes(make.id)}
-                      onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
-                    />
-                    <Label htmlFor={`make-${make.id}`} className="font-normal text-sm">{make.label}</Label>
-                  </div>
+                {columnSortedMakes.map((column, colIndex) => (
+                    <div key={colIndex} className="flex flex-col space-y-4">
+                        {column.map((make) => (
+                            <div key={make.value} className="flex items-center space-x-2">
+                                <Checkbox
+                                    id={`make-${make.value}`}
+                                    name="builders"
+                                    value={make.value}
+                                    checked={selectedBuilders.includes(make.value)}
+                                    onCheckedChange={(checked) => handleBuilderCheckboxChange(make.value, checked)}
+                                />
+                                <Label htmlFor={`make-${make.value}`} className="font-normal text-sm">{make.label}</Label>
+                            </div>
+                        ))}
+                    </div>
                 ))}
               </div>
             </div>
@@ -314,7 +314,7 @@ export function HomepageYachtFilters() {
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedDeck.map((feature) => (
+              {columnSortedDeck.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
                   <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
@@ -327,7 +327,7 @@ export function HomepageYachtFilters() {
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedCabin.map((feature) => (
+              {columnSortedCabin.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
                   <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
@@ -340,7 +340,7 @@ export function HomepageYachtFilters() {
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-3 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedFeatures.map((feature) => (
+              {columnSortedFeatures.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
                   <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
