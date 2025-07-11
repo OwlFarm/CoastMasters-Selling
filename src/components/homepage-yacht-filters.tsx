@@ -71,7 +71,7 @@ export function HomepageYachtFilters() {
     return columns.flat();
   };
 
-  const columnSortedMakes = sortIntoColumns(allMakes, 3);
+  const columnSortedMakes = sortIntoColumns(allMakes, 5);
   const columnSortedFeatures = sortIntoColumns(featureOptions, 3);
   const columnSortedDeck = sortIntoColumns(deckOptions, 3);
   const columnSortedCabin = sortIntoColumns(cabinOptions, 3);
@@ -208,6 +208,7 @@ export function HomepageYachtFilters() {
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
                                     <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+
                                 </div>
                               ))}
                             </div>
@@ -230,7 +231,7 @@ export function HomepageYachtFilters() {
                     notFoundText="No builder found."
                  />
               </div>
-              <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+              <div className="grid grid-cols-5 gap-x-2 gap-y-4">
                 {columnSortedMakes.map((make) => (
                   <div key={make.id} className="flex items-center space-x-2">
                     <Checkbox
