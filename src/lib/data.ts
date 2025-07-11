@@ -214,6 +214,19 @@ export const usageStyles = [
   { id: 'project', label: 'Project' },
 ];
 
+export const powerBoatSubTypes = [
+    { id: 'bowrider', label: 'Bowrider' },
+    { id: 'center-console', label: 'Center Console' },
+    { id: 'cabin-cruiser', label: 'Cabin Cruiser' },
+    { id: 'pontoon', label: 'Pontoon' },
+    { id: 'ski-boat', label: 'Ski Boat' },
+    { id: 'fishing-boat', label: 'Fishing Boat' },
+    { id: 'deck-boat', label: 'Deck Boat' },
+    { id: 'runabout', label: 'Runabout' },
+    { id: 'cuddy-cabin', label: 'Cuddy Cabin' },
+    { id: 'express-cruiser', label: 'Express Cruiser' },
+];
+
 export const makes = [
   { value: 'absolute', label: 'Absolute' },
   { value: 'admiral', label: 'Admiral' },

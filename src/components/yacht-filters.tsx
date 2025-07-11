@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes } from "@/lib/data";
+import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes, powerBoatSubTypes } from "@/lib/data";
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -18,6 +18,7 @@ export function YachtFilters() {
   const [builderSearch, setBuilderSearch] = React.useState('');
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
   const [isSailingChecked, setIsSailingChecked] = React.useState(false);
+  const [isPowerChecked, setIsPowerChecked] = React.useState(false);
 
   const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -75,6 +76,8 @@ export function YachtFilters() {
   const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
   const columnSortedDeck = sortIntoColumns(deckOptions, 2);
   const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
+  const columnSortedPowerSubTypes = sortIntoColumns(powerBoatSubTypes, 2);
+  const columnSortedUsageStyles = sortIntoColumns(usageStyles, 2);
 
 
   return (
@@ -168,7 +171,12 @@ export function YachtFilters() {
                 <div className="space-y-4 pt-4 pb-4">
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                        <div className="flex items-center space-x-2">
-                            <Checkbox id="type-power" name="boatTypes" value="power" />
+                            <Checkbox 
+                                id="type-power" 
+                                name="boatTypes" 
+                                value="power"
+                                onCheckedChange={(checked) => setIsPowerChecked(checked === true)}
+                             />
                             <Label htmlFor="type-power" className="font-normal">Power</Label>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -181,11 +189,24 @@ export function YachtFilters() {
                             <Label htmlFor="type-sailing" className="font-normal">Sailing</Label>
                         </div>
                     </div>
+                    {isPowerChecked && (
+                        <>
+                            <Separator className="bg-border/50" />
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                              {columnSortedPowerSubTypes.map(subType => (
+                                <div key={subType.id} className="flex items-center space-x-2">
+                                    <Checkbox id={`subtype-${subType.id}`} name="powerSubTypes" value={subType.id} />
+                                    <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
+                                </div>
+                              ))}
+                            </div>
+                        </>
+                    )}
                     {isSailingChecked && (
                         <>
                             <Separator className="bg-border/50" />
                             <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                              {usageStyles.map(style => (
+                              {columnSortedUsageStyles.map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
                                     <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
