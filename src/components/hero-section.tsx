@@ -63,7 +63,7 @@ export function HeroSection() {
                 <div className="container mx-auto px-4 pb-16 md:pb-24">
                     <div className="mx-auto max-w-5xl">
                         <h2 className="mb-10 text-center font-headline text-3xl font-bold tracking-tight md:text-4xl">
-                            Refine Your Search
+                            Find Your Boat
                         </h2>
                         <HomepageYachtFilters />
                          <div className="mt-8 flex justify-center gap-4">
