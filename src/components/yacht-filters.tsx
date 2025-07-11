@@ -165,41 +165,21 @@ export function YachtFilters() {
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`type-motor`} name="boatTypes" value="motor" />
-                            <Label htmlFor={`type-motor`} className="font-normal">Motor</Label>
+                       {boatTypes.map(type => (
+                         <div key={type.id} className="flex items-center space-x-2">
+                            <Checkbox id={`type-${type.id}`} name="boatTypes" value={type.id} />
+                            <Label htmlFor={`type-${type.id}`} className="font-normal">{type.label}</Label>
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`type-sailing`} name="boatTypes" value="sailing" />
-                            <Label htmlFor={`type-sailing`} className="font-normal">Sailing</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`type-catamaran`} name="boatTypes" value="catamaran" />
-                            <Label htmlFor={`type-catamaran`} className="font-normal">Catamaran</Label>
-                        </div>
+                       ))}
                     </div>
                     <Separator className="bg-border/50" />
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`style-off-shore`} name="usageStyles" value="off-shore" />
-                            <Label htmlFor={`style-off-shore`} className="font-normal">Off Shore</Label>
+                      {usageStyles.map(style => (
+                        <div key={style.id} className="flex items-center space-x-2">
+                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`style-in-shore`} name="usageStyles" value="in-shore" />
-                            <Label htmlFor={`style-in-shore`} className="font-normal">In Shore</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`style-island`} name="usageStyles" value="island" />
-                            <Label htmlFor={`style-island`} className="font-normal">Island</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`style-off-grid`} name="usageStyles" value="off-grid" />
-                            <Label htmlFor={`style-off-grid`} className="font-normal">Off Grid</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox id={`style-project`} name="usageStyles" value="project" />
-                            <Label htmlFor={`style-project`} className="font-normal">Project</Label>
-                        </div>
+                      ))}
                     </div>
                 </div>
             </AccordionContent>

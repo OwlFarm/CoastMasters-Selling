@@ -5,7 +5,7 @@ export const featuredYachts: Yacht[] = [
   {
     id: '1',
     name: 'Serenity Cruiser',
-    boatType: 'Motor',
+    boatType: 'Power',
     listingType: 'Broker',
     price: 1250000,
     year: 2022,
@@ -52,7 +52,7 @@ export const featuredYachts: Yacht[] = [
   {
     id: '3',
     name: 'Twin Hull Drifter',
-    boatType: 'Catamaran',
+    boatType: 'Power',
     listingType: 'Broker',
     price: 975000,
     year: 2023,
@@ -68,11 +68,12 @@ export const featuredYachts: Yacht[] = [
     description: 'Brand new Lagoon 55 offering incredible volume and stability. The expansive flybridge and forward cockpit are perfect for entertaining. Ready for immediate delivery.',
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
+    usageStyles: ['catamaran'],
   },
   {
     id: '4',
     name: 'Azure Dream',
-    boatType: 'Motor',
+    boatType: 'Power',
     listingType: 'Broker',
     price: 2500000,
     year: 2021,
@@ -112,7 +113,7 @@ export const featuredYachts: Yacht[] = [
   {
     id: '6',
     name: 'Coastal Runner',
-    boatType: 'Motor',
+    boatType: 'Power',
     listingType: 'Broker',
     price: 720000,
     year: 2022,
@@ -132,7 +133,7 @@ export const featuredYachts: Yacht[] = [
   {
     id: '7',
     name: 'Sun Chaser',
-    boatType: 'Catamaran',
+    boatType: 'Power',
     listingType: 'Private',
     price: 1100000,
     year: 2021,
@@ -148,11 +149,12 @@ export const featuredYachts: Yacht[] = [
     description: 'A spacious and stable Leopard catamaran, perfect for charter or family adventures in the Caribbean. Features a huge flybridge and multiple entertaining areas.',
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
+    usageStyles: ['catamaran'],
   },
   {
     id: '8',
     name: 'Starlight Express',
-    boatType: 'Motor',
+    boatType: 'Power',
     listingType: 'Broker',
     price: 3200000,
     year: 2023,
@@ -198,12 +200,13 @@ export const priceValues = [
 ];
 
 export const boatTypes = [
-  { id: 'motor', label: 'Motor' },
+  { id: 'power', label: 'Power' },
   { id: 'sailing', label: 'Sailing' },
-  { id: 'catamaran', label: 'Catamaran' },
 ];
 
 export const usageStyles = [
+  { id: 'monohull', label: 'Monohull' },
+  { id: 'catamaran', label: 'Catamaran' },
   { id: 'off-shore', label: 'Off Shore' },
   { id: 'in-shore', label: 'In Shore' },
   { id: 'island', label: 'Island' },
