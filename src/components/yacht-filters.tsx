@@ -70,10 +70,10 @@ export function YachtFilters() {
     return columns.flat();
   };
 
-  const columnSortedMakes = sortIntoColumns(allMakes, 5);
-  const columnSortedFeatures = sortIntoColumns(featureOptions, 5);
-  const columnSortedDeck = sortIntoColumns(deckOptions, 5);
-  const columnSortedCabin = sortIntoColumns(cabinOptions, 5);
+  const columnSortedMakes = sortIntoColumns(allMakes, 2);
+  const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
+  const columnSortedDeck = sortIntoColumns(deckOptions, 2);
+  const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
 
 
   return (
@@ -176,22 +176,22 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
-                    <div className="grid grid-cols-5 gap-x-2">
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                         <div className="flex items-center space-x-2">
                             <Checkbox id={`type-motor`} name="boatTypes" value="motor" />
                             <Label htmlFor={`type-motor`} className="font-normal">Motor</Label>
                         </div>
-                        <div className="flex items-center space-x-2 col-start-2">
+                        <div className="flex items-center space-x-2">
                             <Checkbox id={`type-sailing`} name="boatTypes" value="sailing" />
                             <Label htmlFor={`type-sailing`} className="font-normal">Sailing</Label>
                         </div>
-                        <div className="flex items-center space-x-2 col-start-3">
+                        <div className="flex items-center space-x-2">
                             <Checkbox id={`type-catamaran`} name="boatTypes" value="catamaran" />
                             <Label htmlFor={`type-catamaran`} className="font-normal">Catamaran</Label>
                         </div>
                     </div>
                     <Separator className="bg-border/50" />
-                    <div className="grid grid-cols-5 gap-x-2">
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                         <div className="flex items-center space-x-2">
                             <Checkbox id={`style-off-shore`} name="usageStyles" value="off-shore" />
                             <Label htmlFor={`style-off-shore`} className="font-normal">Off Shore</Label>
@@ -229,7 +229,7 @@ export function YachtFilters() {
                   onChange={handleBuilderSearchChange}
                 />
               </div>
-              <div className="grid grid-cols-5 gap-x-2 gap-y-4">
+              <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                 {columnSortedMakes.map((make) => (
                   <div key={make.id} className="flex items-center space-x-2">
                     <Checkbox
@@ -249,7 +249,7 @@ export function YachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-6 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-4 mt-2">
@@ -311,7 +311,7 @@ export function YachtFilters() {
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedDeck.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
@@ -324,7 +324,7 @@ export function YachtFilters() {
         <AccordionItem value="cabin">
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedCabin.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
@@ -337,7 +337,7 @@ export function YachtFilters() {
         <AccordionItem value="features">
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
               {columnSortedFeatures.map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
@@ -350,7 +350,7 @@ export function YachtFilters() {
         <AccordionItem value="fuel">
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
-            <div className="flex flex-row flex-wrap gap-x-8 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-4 pb-4">
               {fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
