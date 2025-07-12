@@ -8,38 +8,32 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, Droplets, CheckCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  hullMaterialOptions,
-  hullShapeOptions,
-  bowShapeOptions,
-  keelTypeOptions,
-  rudderTypeOptions,
-  propellerTypeOptions,
-  usageStyles,
-  featureOptions,
-  deckOptions,
-  cabinOptions,
-  fuelTypes,
-  listingTypes,
-  conditions,
-  makes,
-  locationsByRegion,
-  boatTypes,
-} from '@/lib/data';
+import type { Metadata, Option, RegionOption } from '@/services/metadata-service';
 import { Card } from '@/components/ui/card';
 
 type ListingPreviewProps = {
     data: FormValues;
+    metadata: Metadata;
     heroImagePreview: string;
     galleryImagePreviews: string[];
 }
 
-const findLabel = (id: string | undefined, options: { id: string; label: string }[]) => {
+const findLabel = (id: string | undefined, options: (Option | RegionOption)[]) => {
   if (!id) return null;
-  return options.find(opt => opt.id === id)?.label || null;
+  
+  for (const option of options) {
+    if ('locations' in option) { // It's a RegionOption
+      const foundLocation = option.locations.find(loc => loc.id === id);
+      if (foundLocation) return foundLocation.label;
+    } else { // It's a simple Option
+      const valueToCompare = option.value ?? option.id;
+      if (valueToCompare === id) return option.label;
+    }
+  }
+  return null;
 };
 
-const renderFeatureList = (ids: string[] | undefined, options: { id: string; label: string }[]) => {
+const renderFeatureList = (ids: string[] | undefined, options: Option[]) => {
   if (!ids || ids.length === 0) {
     return <p className="text-muted-foreground italic">No specific features listed in this category.</p>;
   }
@@ -56,20 +50,21 @@ const renderFeatureList = (ids: string[] | undefined, options: { id: string; lab
   );
 };
 
-export function ListingPreview({ data, heroImagePreview, galleryImagePreviews }: ListingPreviewProps) {
+export function ListingPreview({ data, metadata, heroImagePreview, galleryImagePreviews }: ListingPreviewProps) {
+  const allLocations = metadata.locationsByRegion.flatMap(r => r.locations);
   const yacht = {
-      name: data.title || `${data.year} ${findLabel(data.make, makes)} ${data.model}`,
+      name: data.title || `${data.year} ${findLabel(data.make, metadata.makes)} ${data.model}`,
       price: data.price || 0,
       year: data.year,
       length: data.length,
-      location: findLabel(data.location, locationsByRegion.flatMap(r => r.locations)) || 'N/A',
+      location: findLabel(data.location, metadata.locationsByRegion) || 'N/A',
       imageUrl: heroImagePreview || 'https://placehold.co/600x400.png',
       images: galleryImagePreviews,
-      make: findLabel(data.make, makes) || 'N/A',
+      make: findLabel(data.make, metadata.makes) || 'N/A',
       model: data.model,
-      listingType: findLabel(data.listingType, listingTypes) || 'N/A',
-      boatType: findLabel(data.boatType, boatTypes) || 'N/A',
-      condition: findLabel(data.condition, conditions) || 'N/A',
+      listingType: findLabel(data.listingType, metadata.listingTypes) || 'N/A',
+      boatType: findLabel(data.boatType, metadata.boatTypes) || 'N/A',
+      condition: findLabel(data.condition, metadata.conditions) || 'N/A',
       description: data.description,
       fuelType: data.fuelType,
       hullMaterial: data.hullMaterial,
@@ -92,16 +87,16 @@ export function ListingPreview({ data, heroImagePreview, galleryImagePreviews }:
     { label: 'Type', value: yacht.boatType, icon: Ship },
     { label: 'Condition', value: yacht.condition, icon: Anchor },
     { label: 'Location', value: yacht.location, icon: MapPin },
-    { label: 'Fuel Type', value: findLabel(yacht.fuelType, fuelTypes), icon: Fuel },
-    { label: 'Hull Material', value: findLabel(yacht.hullMaterial, hullMaterialOptions), icon: Droplets },
+    { label: 'Fuel Type', value: findLabel(yacht.fuelType, metadata.fuelTypes), icon: Fuel },
+    { label: 'Hull Material', value: findLabel(yacht.hullMaterial, metadata.hullMaterialOptions), icon: Droplets },
   ];
   
   const hullAndEngineSpecs = [
-    { label: 'Hull Shape', value: findLabel(yacht.hullShape, hullShapeOptions) },
-    { label: 'Bow Shape', value: findLabel(yacht.bowShape, bowShapeOptions) },
-    { label: 'Keel Type', value: findLabel(yacht.keelType, keelTypeOptions) },
-    { label: 'Rudder Type', value: findLabel(yacht.rudderType, rudderTypeOptions) },
-    { label: 'Propeller Type', value: findLabel(yacht.propellerType, propellerTypeOptions) },
+    { label: 'Hull Shape', value: findLabel(yacht.hullShape, metadata.hullShapeOptions) },
+    { label: 'Bow Shape', value: findLabel(yacht.bowShape, metadata.bowShapeOptions) },
+    { label: 'Keel Type', value: findLabel(yacht.keelType, metadata.keelTypeOptions) },
+    { label: 'Rudder Type', value: findLabel(yacht.rudderType, metadata.rudderTypeOptions) },
+    { label: 'Propeller Type', value: findLabel(yacht.propellerType, metadata.propellerTypeOptions) },
   ].filter(spec => spec.value);
 
 
@@ -215,19 +210,19 @@ export function ListingPreview({ data, heroImagePreview, galleryImagePreviews }:
                         </TabsContent>
 
                         <TabsContent value="usage" className="mt-6">
-                        {renderFeatureList(yacht.usageStyles, usageStyles)}
+                        {renderFeatureList(yacht.usageStyles, metadata.usageStyles)}
                         </TabsContent>
 
                         <TabsContent value="features" className="mt-6">
-                        {renderFeatureList(yacht.features, featureOptions)}
+                        {renderFeatureList(yacht.features, metadata.featureOptions)}
                         </TabsContent>
 
                         <TabsContent value="deck" className="mt-6">
-                        {renderFeatureList(yacht.deck, deckOptions)}
+                        {renderFeatureList(yacht.deck, metadata.deckOptions)}
                         </TabsContent>
 
                         <TabsContent value="cabin" className="mt-6">
-                        {renderFeatureList(yacht.cabin, cabinOptions)}
+                        {renderFeatureList(yacht.cabin, metadata.cabinOptions)}
                         </TabsContent>
                     </Tabs>
                     </div>

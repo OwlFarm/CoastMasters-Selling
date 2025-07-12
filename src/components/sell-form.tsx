@@ -14,7 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Upload, Ship, X, ArrowLeft, Sparkles, LoaderCircle, Eye, Image as ImageIcon } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { boatTypes, makes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, listingTypes, bowShapeOptions } from '@/lib/data';
+import { getMetadata, type Metadata } from '@/services/metadata-service';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,6 +25,7 @@ import { ListingPreview } from './listing-preview';
 import { Combobox } from './ui/combobox';
 import { TextEditor } from './ui/text-editor';
 import { Textarea } from './ui/textarea';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // Updated schema to include a title and make some fields optional for multi-step validation
 const formSchema = z.object({
@@ -80,6 +81,7 @@ export function SellForm() {
     const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
     const [isPreview, setIsPreview] = React.useState(false);
     const { toast } = useToast();
+    const [metadata, setMetadata] = React.useState<Metadata | null>(null);
 
     const [aiState, aiFormAction, isAiPending] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
     const [polishState, polishFormAction, isPolishPending] = useActionState(handlePolishDescription, { result: undefined, error: undefined });
@@ -114,6 +116,14 @@ export function SellForm() {
             otherSpecifications: '',
         },
     });
+
+    React.useEffect(() => {
+        async function fetchMetadata() {
+            const data = await getMetadata();
+            setMetadata(data);
+        }
+        fetchMetadata();
+    }, []);
 
     useEffect(() => {
         if (aiState.error) {
@@ -191,6 +201,29 @@ export function SellForm() {
         });
     }
 
+    if (!metadata) {
+        return (
+             <div className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <Skeleton className="h-8 w-1/2" />
+                        <Skeleton className="h-4 w-3/4" />
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-10 w-full" />
+                        </div>
+                         <Skeleton className="h-24 w-full" />
+                    </CardContent>
+                </Card>
+             </div>
+        );
+    }
+
+
     if (isPreview) {
         const formData = form.getValues();
         return (
@@ -210,6 +243,7 @@ export function SellForm() {
                 </div>
                 <ListingPreview
                     data={formData}
+                    metadata={metadata}
                     heroImagePreview={heroImagePreview!}
                     galleryImagePreviews={galleryImagePreviews}
                 />
@@ -252,7 +286,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="listingType" render={({ field }) => (
                                                 <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
                                                     <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                        {listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                        {metadata.listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                             <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                             <FormLabel className="font-normal">{type.label}</FormLabel>
                                                         </FormItem>))}
@@ -262,7 +296,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="condition" render={({ field }) => (
                                                 <FormItem><FormLabel>Condition</FormLabel><FormControl>
                                                     <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                        {conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                                        {metadata.conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
                                                             <FormControl><RadioGroupItem value={c.id} /></FormControl>
                                                             <FormLabel className="font-normal">{c.label}</FormLabel>
                                                         </FormItem>))}
@@ -272,7 +306,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="boatType" render={({ field }) => (
                                             <FormItem className="md:col-span-2"><FormLabel>Boat Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                    {boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.boatTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                         <FormLabel className="font-normal">{type.label}</FormLabel>
                                                     </FormItem>))}
@@ -284,7 +318,7 @@ export function SellForm() {
                                                     <FormLabel>Builder</FormLabel>
                                                     <FormControl>
                                                         <Combobox
-                                                            options={makes.map(m => ({ label: m.label, value: m.value }))}
+                                                            options={metadata.makes.map(m => ({ label: m.label, value: m.value || m.id }))}
                                                             value={field.value}
                                                             onChange={field.onChange}
                                                             placeholder="Select a builder..."
@@ -328,7 +362,7 @@ export function SellForm() {
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
                                                     <SelectContent>
-                                                        {locationsByRegion.map((region) => (
+                                                        {metadata.locationsByRegion.map((region) => (
                                                             <SelectGroup key={region.region}>
                                                                 <SelectLabel>{region.region}</SelectLabel>
                                                                 {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
@@ -396,7 +430,7 @@ export function SellForm() {
                                             <FormItem>
                                                 <FormLabel>Usage Styles</FormLabel>
                                                 <div className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {usageStyles.map((item) => (
+                                                    {metadata.usageStyles.map((item) => (
                                                         <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
                                                             <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                                                                 <FormControl>
@@ -421,7 +455,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={mat.id} /></FormControl>
                                                         <FormLabel className="font-normal">{mat.label}</FormLabel>
                                                     </FormItem>))}
@@ -431,7 +465,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="hullShape" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
                                                     </FormItem>))}
@@ -441,7 +475,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="bowShape" render={({ field }) => (
                                             <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
                                                     </FormItem>))}
@@ -451,7 +485,7 @@ export function SellForm() {
                                          <FormField control={form.control} name="keelType" render={({ field }) => (
                                             <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={keel.id} /></FormControl>
                                                         <FormLabel className="font-normal">{keel.label}</FormLabel>
                                                     </FormItem>))}
@@ -461,7 +495,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="rudderType" render={({ field }) => (
                                             <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
                                                         <FormLabel className="font-normal">{rudder.label}</FormLabel>
                                                     </FormItem>))}
@@ -471,7 +505,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="propellerType" render={({ field }) => (
                                             <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={prop.id} /></FormControl>
                                                         <FormLabel className="font-normal">{prop.label}</FormLabel>
                                                     </FormItem>))}
@@ -481,7 +515,7 @@ export function SellForm() {
                                         <FormField control={form.control} name="fuelType" render={({ field }) => (
                                             <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                         <FormLabel className="font-normal">{type.label}</FormLabel>
                                                     </FormItem>))}
@@ -514,7 +548,7 @@ export function SellForm() {
                                     <CardContent>
                                         <FormField control={form.control} name="features" render={() => (
                                             <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {featureOptions.map((item) => (
+                                                {metadata.featureOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="features" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>
@@ -544,7 +578,7 @@ export function SellForm() {
                                     <CardContent>
                                         <FormField control={form.control} name="deck" render={() => (
                                             <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {deckOptions.map((item) => (
+                                                {metadata.deckOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="deck" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>
@@ -574,7 +608,7 @@ export function SellForm() {
                                     <CardContent>
                                         <FormField control={form.control} name="cabin" render={() => (
                                             <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {cabinOptions.map((item) => (
+                                                {metadata.cabinOptions.map((item) => (
                                                     <FormField key={item.id} control={form.control} name="cabin" render={({ field }) => (
                                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                                             <FormControl>

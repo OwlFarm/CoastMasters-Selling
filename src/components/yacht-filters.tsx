@@ -6,10 +6,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { boatTypes, makes as allMakes, locationsByRegion, conditions, fuelTypes, hullMaterialOptions, featureOptions, usageStyles, hullShapeOptions, keelTypeOptions, rudderTypeOptions, propellerTypeOptions, deckOptions, cabinOptions, priceValues, listingTypes, powerBoatSubTypes } from "@/lib/data";
+import { getMetadata, type Metadata } from '@/services/metadata-service';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Skeleton } from './ui/skeleton';
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
@@ -18,6 +19,15 @@ export function YachtFilters() {
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
   const [isSailingChecked, setIsSailingChecked] = React.useState(false);
   const [isPowerChecked, setIsPowerChecked] = React.useState(false);
+  const [metadata, setMetadata] = React.useState<Metadata | null>(null);
+
+  React.useEffect(() => {
+    async function fetchMetadata() {
+        const data = await getMetadata();
+        setMetadata(data);
+    }
+    fetchMetadata();
+  }, []);
 
   const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -30,7 +40,9 @@ export function YachtFilters() {
         return;
     }
 
-    const matchedMakeIds = allMakes
+    if (!metadata) return;
+
+    const matchedMakeIds = metadata.makes
       .filter(make => searchTerms.some(term => make.label.toLowerCase() === term))
       .map(make => make.id);
 
@@ -38,13 +50,14 @@ export function YachtFilters() {
   };
 
   const handleBuilderCheckboxChange = (makeId: string, checked: boolean | 'indeterminate') => {
+      if (!metadata) return;
       setSelectedBuilders(prevSelected => {
           const isChecked = checked === true;
           const newSelection = isChecked 
             ? Array.from(new Set([...prevSelected, makeId]))
             : prevSelected.filter(id => id !== makeId);
           
-          const newSearchText = allMakes
+          const newSearchText = metadata.makes
             .filter(make => newSelection.includes(make.id))
             .map(make => make.label)
             .join(', ');
@@ -70,18 +83,29 @@ export function YachtFilters() {
     return columns.flat();
   };
 
-  const columnSortedMakes = sortIntoColumns(allMakes, 2);
-  const columnSortedFeatures = sortIntoColumns(featureOptions, 2);
-  const columnSortedDeck = sortIntoColumns(deckOptions, 2);
-  const columnSortedCabin = sortIntoColumns(cabinOptions, 2);
-  const columnSortedPowerSubTypes = sortIntoColumns(powerBoatSubTypes, 2);
-  const columnSortedUsageStyles = sortIntoColumns(usageStyles, 2);
+  if (!metadata) {
+    return (
+        <div className="space-y-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+        </div>
+    );
+  }
+
+  const columnSortedMakes = sortIntoColumns(metadata.makes, 2);
+  const columnSortedFeatures = sortIntoColumns(metadata.featureOptions, 2);
+  const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 2);
+  const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 2);
+  const columnSortedPowerSubTypes = sortIntoColumns(metadata.powerBoatSubTypes, 2);
+  const columnSortedUsageStyles = sortIntoColumns(metadata.usageStyles, 2);
 
 
   return (
     <>
       <datalist id="price-list">
-        {priceValues.map(value => <option key={value} value={value} />)}
+        {metadata.priceValues.map(value => <option key={value} value={value} />)}
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
 
@@ -253,7 +277,7 @@ export function YachtFilters() {
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {hullMaterialOptions.map((material) => (
+                    {metadata.hullMaterialOptions.map((material) => (
                       <div key={material.id} className="flex items-center space-x-2">
                         <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
                         <Label htmlFor={`material-${material.id}`} className="font-normal text-sm">{material.label}</Label>
@@ -264,7 +288,7 @@ export function YachtFilters() {
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {hullShapeOptions.map((shape) => (
+                    {metadata.hullShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
                         <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
                         <Label htmlFor={`shape-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
@@ -275,7 +299,7 @@ export function YachtFilters() {
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {keelTypeOptions.map((keel) => (
+                    {metadata.keelTypeOptions.map((keel) => (
                       <div key={keel.id} className="flex items-center space-x-2">
                         <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
                         <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
@@ -286,7 +310,7 @@ export function YachtFilters() {
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {rudderTypeOptions.map((rudder) => (
+                    {metadata.rudderTypeOptions.map((rudder) => (
                       <div key={rudder.id} className="flex items-center space-x-2">
                         <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
                         <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
@@ -297,7 +321,7 @@ export function YachtFilters() {
                <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {propellerTypeOptions.map((prop) => (
+                    {metadata.propellerTypeOptions.map((prop) => (
                       <div key={prop.id} className="flex items-center space-x-2">
                         <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
                         <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
@@ -351,7 +375,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Fuel</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
-              {fuelTypes.map((fuel) => (
+              {metadata.fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
                   <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
@@ -364,7 +388,7 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Location</AccordionTrigger>
           <AccordionContent>
              <Accordion type="multiple" className="w-full pt-2 pb-4">
-                {locationsByRegion.map((regionData) => {
+                {metadata.locationsByRegion.map((regionData) => {
                   if (regionData.locations.length === 0) {
                     return null;
                   }

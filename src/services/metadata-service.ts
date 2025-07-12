@@ -1,0 +1,114 @@
+
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { 
+    boatTypes as defaultBoatTypes,
+    makes as defaultMakes,
+    locationsByRegion as defaultLocationsByRegion,
+    conditions as defaultConditions,
+    fuelTypes as defaultFuelTypes,
+    hullMaterialOptions as defaultHullMaterialOptions,
+    hullShapeOptions as defaultHullShapeOptions,
+    bowShapeOptions as defaultBowShapeOptions,
+    keelTypeOptions as defaultKeelTypeOptions,
+    rudderTypeOptions as defaultRudderTypeOptions,
+    propellerTypeOptions as defaultPropellerTypeOptions,
+    featureOptions as defaultFeatureOptions,
+    usageStyles as defaultUsageStyles,
+    deckOptions as defaultDeckOptions,
+    cabinOptions as defaultCabinOptions,
+    listingTypes as defaultListingTypes,
+    powerBoatSubTypes as defaultPowerBoatSubTypes,
+    priceValues as defaultPriceValues,
+} from '@/lib/data';
+
+export type Option = {
+    id: string;
+    label: string;
+    value?: string;
+};
+
+export type RegionOption = {
+    region: string;
+    locations: Option[];
+}
+
+export type Metadata = {
+    boatTypes: Option[];
+    makes: Option[];
+    locationsByRegion: RegionOption[];
+    conditions: Option[];
+    fuelTypes: Option[];
+    hullMaterialOptions: Option[];
+    hullShapeOptions: Option[];
+    bowShapeOptions: Option[];
+    keelTypeOptions: Option[];
+    rudderTypeOptions: Option[];
+    propellerTypeOptions: Option[];
+    featureOptions: Option[];
+    usageStyles: Option[];
+    deckOptions: Option[];
+    cabinOptions: Option[];
+    listingTypes: Option[];
+    powerBoatSubTypes: Option[];
+    priceValues: string[];
+};
+
+// In-memory cache
+let metadataCache: Metadata | null = null;
+
+async function initializeMetadata() {
+    console.log('Initializing metadata from default data...');
+    const metadataRef = doc(db, 'metadata', 'options');
+    const defaultData: Metadata = {
+        boatTypes: defaultBoatTypes,
+        makes: defaultMakes,
+        locationsByRegion: defaultLocationsByRegion,
+        conditions: defaultConditions,
+        fuelTypes: defaultFuelTypes,
+        hullMaterialOptions: defaultHullMaterialOptions,
+        hullShapeOptions: defaultHullShapeOptions,
+        bowShapeOptions: defaultBowShapeOptions,
+        keelTypeOptions: defaultKeelTypeOptions,
+        rudderTypeOptions: defaultRudderTypeOptions,
+        propellerTypeOptions: defaultPropellerTypeOptions,
+        featureOptions: defaultFeatureOptions,
+        usageStyles: defaultUsageStyles,
+        deckOptions: defaultDeckOptions,
+        cabinOptions: defaultCabinOptions,
+        listingTypes: defaultListingTypes,
+        powerBoatSubTypes: defaultPowerBoatSubTypes,
+        priceValues: defaultPriceValues,
+    };
+    await setDoc(metadataRef, defaultData);
+    console.log('Metadata initialized in Firestore.');
+    return defaultData;
+}
+
+export async function getMetadata(): Promise<Metadata> {
+    if (metadataCache) {
+        return metadataCache;
+    }
+
+    const metadataRef = doc(db, 'metadata', 'options');
+    try {
+        const docSnap = await getDoc(metadataRef);
+
+        if (docSnap.exists()) {
+            console.log("Metadata fetched from Firestore.");
+            metadataCache = docSnap.data() as Metadata;
+            return metadataCache!;
+        } else {
+            console.log("No metadata found in Firestore. Initializing with default data.");
+            const defaultMetadata = await initializeMetadata();
+            metadataCache = defaultMetadata;
+            return metadataCache;
+        }
+    } catch (error) {
+        console.error("Error fetching metadata from Firestore:", error);
+        console.log("Falling back to initializing default metadata.");
+        const defaultMetadata = await initializeMetadata();
+        metadataCache = defaultMetadata;
+        return metadataCache;
+    }
+}
