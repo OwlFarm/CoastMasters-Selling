@@ -11,6 +11,8 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Skeleton } from './ui/skeleton';
+import { ScrollArea } from './ui/scroll-area';
+import { Combobox } from './ui/combobox';
 
 export function YachtFilters() {
   const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
@@ -29,8 +31,7 @@ export function YachtFilters() {
     fetchMetadata();
   }, []);
 
-  const handleBuilderSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const handleBuilderSearchChange = (value: string) => {
     setBuilderSearch(value);
 
     const searchTerms = value.toLowerCase().split(',').map(term => term.trim()).filter(Boolean);
@@ -43,7 +44,7 @@ export function YachtFilters() {
     if (!metadata) return;
 
     const matchedMakeIds = metadata.makes
-      .filter(make => searchTerms.some(term => make.label.toLowerCase() === term))
+      .filter(make => searchTerms.some(term => make.label.toLowerCase().includes(term)))
       .map(make => make.id);
 
     setSelectedBuilders(matchedMakeIds);
@@ -67,20 +68,17 @@ export function YachtFilters() {
       });
   };
 
-  const sortIntoColumns = (items: {id: string; label: string}[], numCols: number) => {
+  const sortIntoColumns = <T extends { id: string; label: string; value?: string; }>(items: T[], numCols: number): T[][] => {
     if (!items || items.length === 0) return [];
-    const numRows = Math.ceil(items.length / numCols);
     const sortedItems = [...items].sort((a, b) => a.label.localeCompare(b.label));
-    const columns: {id: string; label: string}[][] = Array.from({ length: numCols }, () => []);
+    const columns: T[][] = Array.from({ length: numCols }, () => []);
     
     sortedItems.forEach((item, index) => {
-        const colIndex = Math.floor(index / numRows);
-        if(columns[colIndex]) {
-            columns[colIndex].push(item);
-        }
+        const colIndex = index % numCols;
+        columns[colIndex].push(item);
     });
 
-    return columns.flat();
+    return columns;
   };
 
   if (!metadata) {
@@ -245,28 +243,35 @@ export function YachtFilters() {
           <AccordionContent>
             <div className="pt-2 pb-4">
               <div className="col-span-full mb-4">
-                <Input 
-                  id="builder-search"
-                  name="builderSearch"
-                  placeholder="Search Builders (comma-separated)"
-                  value={builderSearch}
-                  onChange={handleBuilderSearchChange}
-                />
+                 <Combobox
+                    options={metadata.makes.map(m => ({ label: m.label, value: m.value || m.id }))}
+                    value={builderSearch}
+                    onChange={handleBuilderSearchChange}
+                    placeholder="Select or enter builders..."
+                    searchPlaceholder="Search builders (comma-separated)..."
+                    notFoundText="No builder found."
+                 />
               </div>
-              <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                {columnSortedMakes.map((make) => (
-                  <div key={make.id} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`make-${make.id}`}
-                      name="builders"
-                      value={make.id}
-                      checked={selectedBuilders.includes(make.id)}
-                      onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
-                    />
-                    <Label htmlFor={`make-${make.id}`} className="font-normal text-sm">{make.label}</Label>
-                  </div>
-                ))}
-              </div>
+              <ScrollArea className="h-72">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-4 pr-6">
+                  {columnSortedMakes.map((column, colIndex) => (
+                    <div key={colIndex} className="flex flex-col space-y-4">
+                      {column.map((make) => (
+                        <div key={make.id} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={`make-${make.id}`}
+                            name="builders"
+                            value={make.id}
+                            checked={selectedBuilders.includes(make.id)}
+                            onCheckedChange={(checked) => handleBuilderCheckboxChange(make.id, checked)}
+                          />
+                          <Label htmlFor={`make-${make.id}`} className="font-normal text-sm">{make.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </div>
           </AccordionContent>
         </AccordionItem>
