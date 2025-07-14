@@ -1,4 +1,5 @@
 
+import { cache } from 'react';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { 
@@ -85,7 +86,7 @@ async function initializeMetadata() {
     return defaultData;
 }
 
-export async function getMetadata(): Promise<Metadata> {
+export const getMetadata = cache(async (): Promise<Metadata> => {
     if (metadataCache) {
         return metadataCache;
     }
@@ -111,4 +112,4 @@ export async function getMetadata(): Promise<Metadata> {
         metadataCache = defaultMetadata;
         return metadataCache;
     }
-}
+});
