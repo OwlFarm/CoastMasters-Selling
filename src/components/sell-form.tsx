@@ -669,7 +669,7 @@ export function SellForm() {
                                                     <FormControl className="flex-grow">
                                                          <label htmlFor="hero-dropzone-file" className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted relative">
                                                             {heroImagePreview ? (
-                                                                &lt;&gt;
+                                                                <>
                                                                     <Image src={heroImagePreview} alt="Hero Preview" fill className="rounded-md object-cover" />
                                                                     <Button
                                                                         type="button"
@@ -684,7 +684,7 @@ export function SellForm() {
                                                                     >
                                                                         <X className="h-4 w-4" />
                                                                     </Button>
-                                                                &lt;/&gt;
+                                                                </>
                                                             ) : (
                                                                 <div className="flex flex-col items-center justify-center text-center p-4">
                                                                     <ImageIcon className="mb-4 h-8 w-8 text-muted-foreground" />
@@ -726,37 +726,37 @@ export function SellForm() {
                                                                   <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP</p>
                                                               </div>
                                                               <Input
-                                                              id="gallery-dropzone-file"
-                                                              type="file"
-                                                              className="hidden"
-                                                              multiple
-                                                              accept="image/*"
-                                                              onChange={(e) => {
-                                                                  if (e.target.files) {
-                                                                      const newFiles = Array.from(e.target.files);
-                                                                      const currentFiles = field.value || [];
-                                                                      const combinedFiles = [...currentFiles, ...newFiles];
-                                                                      const limitedFiles = combinedFiles.slice(0, 49);
-                                                                      
-                                                                      field.onChange(limitedFiles);
+                                                               id="gallery-dropzone-file"
+                                                               type="file"
+                                                               className="hidden"
+                                                               multiple
+                                                               accept="image/*"
+                                                               onChange={(e) => {
+                                                                   if (e.target.files) {
+                                                                       const newFiles = Array.from(e.target.files);
+                                                                       const currentFiles = field.value || [];
+                                                                       const combinedFiles = [...currentFiles, ...newFiles];
+                                                                       const limitedFiles = combinedFiles.slice(0, 49);
+                                                                       
+                                                                       field.onChange(limitedFiles);
 
-                                                                      const previews = limitedFiles.map(file => {
-                                                                          if (file instanceof File) {
-                                                                              return URL.createObjectURL(file);
-                                                                          }
-                                                                          return file; 
-                                                                      }).filter(p => typeof p === 'string');
-                                                                      
-                                                                      galleryImagePreviews.forEach(url => {
-                                                                          if (url.startsWith('blob:')) {
-                                                                            URL.revokeObjectURL(url);
-                                                                          }
-                                                                      });
+                                                                       const previews = limitedFiles.map(file => {
+                                                                           if (file instanceof File) {
+                                                                               return URL.createObjectURL(file);
+                                                                           }
+                                                                           return file; 
+                                                                       }).filter(p => typeof p === 'string');
+                                                                       
+                                                                       galleryImagePreviews.forEach(url => {
+                                                                           if (url.startsWith('blob:')) {
+                                                                             URL.revokeObjectURL(url);
+                                                                           }
+                                                                       });
 
-                                                                      setGalleryImagePreviews(previews as string[]);
-                                                                  }
-                                                              }}
-                                                              />
+                                                                       setGalleryImagePreviews(previews as string[]);
+                                                                   }
+                                                               }}
+                                                               />
                                                           </label>
                                                         </div>
                                                     </FormControl>
@@ -825,3 +825,5 @@ export function SellForm() {
         </Form>
     );
 }
+
+    
