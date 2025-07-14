@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getFirestore, enableIndexedDbPersistence, connectFirestoreEmulator } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -17,11 +17,19 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
-// Enable offline persistence
-try {
-  enableIndexedDbPersistence(db);
-} catch (err) {
-  console.error("Failed to enable offline persistence:", err);
+// Enable offline persistence only in the browser
+if (typeof window !== 'undefined') {
+  try {
+    enableIndexedDbPersistence(db);
+  } catch (err: any) {
+    if (err.code === 'failed-precondition') {
+      console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+    } else if (err.code === 'unimplemented') {
+      console.warn('The current browser does not support all of the features required to enable persistence.');
+    } else {
+      console.error("Failed to enable offline persistence:", err);
+    }
+  }
 }
 
 export { app, db };
