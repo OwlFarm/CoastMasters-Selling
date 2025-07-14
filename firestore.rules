@@ -1,16 +1,17 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow public read access for yacht listings
-    match /yachts/{yachtId} {
+    // Allow public read access to all documents in the yachts collection
+    match /yachts/{document=**} {
       allow read: if true;
       allow write: if false; 
     }
 
-    // Allow public read access for app metadata (filters, options, etc.)
-    match /metadata/{docId} {
+    // Allow public read access to all documents in the metadata collection
+    match /metadata/{document=**} {
       allow read: if true;
-      allow write: if false; // Keep writes restricted
+      allow write: if false;
     }
   }
 }
