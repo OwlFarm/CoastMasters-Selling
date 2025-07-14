@@ -1,0 +1,53 @@
+type User @table {
+  username: String!
+  email: String!
+  createdAt: Timestamp!
+  displayName: String
+  phoneNumber: String
+  location: String
+  profilePictureUrl: String
+  isSeller: Boolean
+}
+
+type BoatListing @table {
+  seller: User!
+  title: String!
+  price: Float!
+  year: Int!
+  make: String!
+  model: String!
+  lengthFeet: Float!
+  location: String!
+  status: String!
+  createdAt: Timestamp!
+  description: String
+  engineType: String
+  hullMaterial: String
+  condition: String
+  draftFeet: Float
+  beamFeet: Float
+  fuelType: String
+  engineHours: Int
+  updatedAt: Timestamp
+}
+
+type BoatImage @table {
+  listing: BoatListing!
+  imageUrl: String!
+  orderIndex: Int!
+}
+
+type Inquiry @table {
+  sender: User!
+  listing: BoatListing!
+  messageBody: String!
+  sentAt: Timestamp!
+  subject: String
+  isRead: Boolean
+}
+
+type SavedListing @table(key: ["user", "listing"]) {
+  user: User!
+  listing: BoatListing!
+  savedAt: Timestamp!
+}

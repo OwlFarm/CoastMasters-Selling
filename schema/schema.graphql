@@ -1,0 +1,7 @@
+graphql
+    type Query {
+      hello: String!
+    }
+*   **Explanation:**
+    *   `type Query`: This defines a type for queries, which are operations to fetch data.
+    *   `hello: String!`: This defines a specific query named `hello` that will return a non-null string (`String!`).

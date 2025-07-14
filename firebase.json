@@ -4,7 +4,7 @@
   },
   "apphosting": {
     "backendId": "coast-masters-be-temp",
-    "rootDir": "src",
+    "rootDir": ".",
     "ignore": [
       "node_modules",
       ".git",

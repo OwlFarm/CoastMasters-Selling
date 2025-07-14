@@ -1,3 +1,4 @@
+
 rules_version = '2';
 
 service cloud.firestore {
@@ -5,7 +6,7 @@ service cloud.firestore {
     // Allow public read access to all documents
     match /{document=**} {
       allow read: if true;
-      allow write: if false;
+      allow write: if false; // Deny all write operations
     }
   }
 }
