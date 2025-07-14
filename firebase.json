@@ -9,5 +9,17 @@
       "firebase-debug.log",
       "firebase-debug.*.log"
     ]
+  },
+  "apphosting": {
+    "backends": [
+      {
+        "id": "nextn",
+        "region": "us-central1",
+        "instanceSize": "cpu-1",
+        "minInstances": 0
+      }
+    ],
+    "rootDir": ".",
+    "postbuild": "npm run build"
   }
 }
