@@ -61,17 +61,17 @@ export function HeroSection() {
 
             <CollapsibleContent className="w-full overflow-hidden bg-background pt-16 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                 <div className="container mx-auto px-4 pb-16 md:pb-24">
-                    <div className="mx-auto max-w-5xl">
+                    <form action="/yachts" method="GET" className="mx-auto max-w-5xl">
                         <h2 className="mb-10 text-center font-headline text-3xl font-bold tracking-tight md:text-4xl">
                             Find Your Boat
                         </h2>
                         <HomepageYachtFilters />
                          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             <div className="sm:col-start-1 lg:col-start-2">
-                                <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Let's Go!</Button>
+                                <Button size="lg" type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Let's Go!</Button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </CollapsibleContent>
         </Collapsible>
