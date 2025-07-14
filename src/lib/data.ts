@@ -207,6 +207,8 @@ export const boatTypes = [
 export const usageStyles = [
   { id: 'monohull', label: 'Monohull' },
   { id: 'catamaran', label: 'Catamaran' },
+  { id: 'expedition', label: 'Expedition' },
+  { id: 'bluewater-passage', label: 'Bluewater Passage' },
   { id: 'off-shore', label: 'Off Shore' },
   { id: 'in-shore', label: 'In Shore' },
   { id: 'island', label: 'Island' },
