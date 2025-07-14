@@ -260,7 +260,7 @@ export function SellForm() {
 
     return (
         <Form {...form}>
-            <form className="space-y-8">
+            <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="space-y-2">
                   <Progress value={((currentStep + 1) / (steps.length + 1)) * 100} />
                   <p className="text-sm text-muted-foreground">Step {currentStep + 1} of {steps.length}: {steps[currentStep].name}</p>
@@ -375,8 +375,23 @@ export function SellForm() {
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
                                               <FormLabel>Listing Title</FormLabel>
-                                              <form action={aiFormAction}>
-                                                <Button type="submit" variant="outline" size="sm" disabled={isAiPending}>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    disabled={isAiPending}
+                                                    onClick={() => {
+                                                        const formData = new FormData();
+                                                        formData.append('make', form.getValues('make'));
+                                                        formData.append('model', form.getValues('model'));
+                                                        formData.append('year', form.getValues('year').toString());
+                                                        formData.append('length', form.getValues('length').toString());
+                                                        formData.append('condition', form.getValues('condition'));
+                                                        formData.append('boatType', form.getValues('boatType'));
+                                                        form.getValues('features')?.forEach(f => formData.append('features', f));
+                                                        aiFormAction(formData);
+                                                    }}
+                                                >
                                                     {isAiPending ? (
                                                         <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                                     ) : (
@@ -384,7 +399,6 @@ export function SellForm() {
                                                     )}
                                                     Generate with AI
                                                 </Button>
-                                              </form>
                                             </div>
                                             <FormField control={form.control} name="title" render={({ field }) => (
                                                 <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
@@ -394,10 +408,17 @@ export function SellForm() {
                                             <FormItem>
                                                 <div className="flex items-center justify-between">
                                                     <FormLabel>Description</FormLabel>
-                                                    <form action={polishFormAction}>
-                                                        {/* Pass current description as hidden input */}
-                                                        <input type="hidden" name="description" value={form.watch('description')} />
-                                                        <Button type="submit" variant="outline" size="sm" disabled={isPolishPending || !field.value}>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            disabled={isPolishPending || !field.value}
+                                                            onClick={() => {
+                                                                const formData = new FormData();
+                                                                formData.append('description', form.getValues('description'));
+                                                                polishFormAction(formData);
+                                                            }}
+                                                        >
                                                             {isPolishPending ? (
                                                                 <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                                                             ) : (
@@ -405,7 +426,6 @@ export function SellForm() {
                                                             )}
                                                             Polish with AI
                                                         </Button>
-                                                    </form>
                                                 </div>
                                                 <FormControl>
                                                     <TextEditor
@@ -542,7 +562,7 @@ export function SellForm() {
                                 </Card>
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Features & Equipment</CardTitle>
+                                        <CardTitle>Features &amp; Equipment</CardTitle>
                                         <CardDescription>Select all features and equipment included with your yacht.</CardDescription>
                                     </CardHeader>
                                     <CardContent>
@@ -649,7 +669,7 @@ export function SellForm() {
                                                     <FormControl className="flex-grow">
                                                          <label htmlFor="hero-dropzone-file" className="flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card hover:bg-muted relative">
                                                             {heroImagePreview ? (
-                                                                <>
+                                                                &lt;&gt;
                                                                     <Image src={heroImagePreview} alt="Hero Preview" fill className="rounded-md object-cover" />
                                                                     <Button
                                                                         type="button"
@@ -664,7 +684,7 @@ export function SellForm() {
                                                                     >
                                                                         <X className="h-4 w-4" />
                                                                     </Button>
-                                                                </>
+                                                                &lt;/&gt;
                                                             ) : (
                                                                 <div className="flex flex-col items-center justify-center text-center p-4">
                                                                     <ImageIcon className="mb-4 h-8 w-8 text-muted-foreground" />
