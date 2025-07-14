@@ -1,19 +1,17 @@
 
 {
-  "firestore": {
-    "rules": "firestore.rules"
-  },
   "hosting": {
     "source": ".",
     "ignore": [
-      "firebase-debug.log",
-      "firebase-debug.*.log"
-    ]
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
   },
-  "apphosting": {
-    "backend": "nextn",
-    "region": "us-central1",
-    "instanceSize": "cpu-1",
-    "minInstances": 0
+  "firestore": {
+    "rules": "firestore.rules"
   }
 }

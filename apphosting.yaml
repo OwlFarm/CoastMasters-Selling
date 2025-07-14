@@ -1,21 +1,4 @@
 
-# Settings for Backend (on Cloud Run).
-# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
-runConfig:
-  minInstances: 0
-# Environment variables and secrets.
-# See https://firebase.google.com/docs/app-hosting/configure#environment-variables-and-secrets
-env:
-  - variable: BROWSER_BUILD
-    value: "true"
-    availability:
-      - BUILD
-      - RUNTIME
-# Grant access to secrets in Cloud Secret Manager.
-# See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
-#  - secret: mySecretRef
-#    variable: MY_SECRET
-
 # Required for Genkit to work with App Hosting.
 # See https://firebase.google.com/docs/app-hosting/genkit-integration#production
 requiredAPIs:
@@ -26,3 +9,9 @@ requiredAPIs:
   - serviceName: "cloudbuild.googleapis.com"
   - serviceName: "secretmanager.googleapis.com"
   - serviceName: "iam.googleapis.com"
+env:
+  - variable: BROWSER_BUILD
+    value: "true"
+    availability:
+      - BUILD
+      - RUNTIME
