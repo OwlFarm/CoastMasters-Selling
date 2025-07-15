@@ -38,9 +38,9 @@ const formSchema = z.object({
   hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
   hullShape: z.string({ required_error: 'Please select a hull shape.' }),
   bowShape: z.string({ required_error: 'Please select a bow shape.' }),
-  keelType: z.string({ required_error: 'Please select a keel type.' }),
-  rudderType: z.string({ required_error: 'Please select a rudder type.' }),
-  propellerType: z.string({ required_error: 'Please select a propeller type.' }),
+  keelType: z.string().optional(),
+  rudderType: z.string().optional(),
+  propellerType: z.string().optional(),
   make: z.string({ required_error: 'Please select or enter a builder.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
@@ -57,7 +57,32 @@ const formSchema = z.object({
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
+}).superRefine((data, ctx) => {
+    if (data.boatType === 'sailing') {
+        if (!data.keelType) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ['keelType'],
+                message: 'Keel type is required for sailing boats.',
+            });
+        }
+        if (!data.rudderType) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ['rudderType'],
+                message: 'Rudder type is required for sailing boats.',
+            });
+        }
+        if (!data.propellerType) {
+             ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ['propellerType'],
+                message: 'Propeller type is required for sailing boats.',
+            });
+        }
+    }
 });
+
 
 export type FormValues = z.infer<typeof formSchema>;
 
@@ -116,6 +141,8 @@ export function SellForm() {
             otherSpecifications: '',
         },
     });
+
+    const boatTypeWatcher = form.watch('boatType');
 
     React.useEffect(() => {
         async function fetchMetadata() {
@@ -446,32 +473,34 @@ export function SellForm() {
                                         <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-8">
-                                         <FormField control={form.control} name="usageStyles" render={() => (
-                                            <FormItem>
-                                                <FormLabel>Usage Styles</FormLabel>
-                                                <div className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.usageStyles.map((item) => (
-                                                        <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
-                                                            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                                                                <FormControl>
-                                                                    <Checkbox
-                                                                        checked={field.value?.includes(item.id)}
-                                                                        onCheckedChange={(checked) => {
-                                                                            const currentValue = field.value || [];
-                                                                            return checked
-                                                                                ? field.onChange([...currentValue, item.id])
-                                                                                : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                        }}
-                                                                    />
-                                                                </FormControl>
-                                                                <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                            </FormItem>
-                                                        )} />
-                                                    ))}
-                                                </div>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )} />
+                                         {boatTypeWatcher === 'sailing' && (
+                                            <FormField control={form.control} name="usageStyles" render={() => (
+                                                <FormItem>
+                                                    <FormLabel>Usage Styles</FormLabel>
+                                                    <div className="grid grid-cols-5 gap-x-8 pt-2">
+                                                        {metadata.usageStyles.map((item) => (
+                                                            <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
+                                                                <FormItem className="flex flex-row items-start space-x-2 space-y-0">
+                                                                    <FormControl>
+                                                                        <Checkbox
+                                                                            checked={field.value?.includes(item.id)}
+                                                                            onCheckedChange={(checked) => {
+                                                                                const currentValue = field.value || [];
+                                                                                return checked
+                                                                                    ? field.onChange([...currentValue, item.id])
+                                                                                    : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                            }}
+                                                                        />
+                                                                    </FormControl>
+                                                                    <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                                </FormItem>
+                                                            )} />
+                                                        ))}
+                                                    </div>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )} />
+                                         )}
                                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
@@ -502,36 +531,40 @@ export function SellForm() {
                                                 </RadioGroup>
                                             </FormControl><FormMessage /></FormItem>
                                         )} />
-                                         <FormField control={form.control} name="keelType" render={({ field }) => (
-                                            <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={keel.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{keel.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="rudderType" render={({ field }) => (
-                                            <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{rudder.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="propellerType" render={({ field }) => (
-                                            <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={prop.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{prop.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
+                                        {boatTypeWatcher === 'sailing' && (
+                                            <>
+                                                <FormField control={form.control} name="keelType" render={({ field }) => (
+                                                    <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
+                                                        <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                            {metadata.keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
+                                                                <FormControl><RadioGroupItem value={keel.id} /></FormControl>
+                                                                <FormLabel className="font-normal">{keel.label}</FormLabel>
+                                                            </FormItem>))}
+                                                        </RadioGroup>
+                                                    </FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="rudderType" render={({ field }) => (
+                                                    <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
+                                                        <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                            {metadata.rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
+                                                                <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
+                                                                <FormLabel className="font-normal">{rudder.label}</FormLabel>
+                                                            </FormItem>))}
+                                                        </RadioGroup>
+                                                    </FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="propellerType" render={({ field }) => (
+                                                    <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
+                                                        <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                            {metadata.propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
+                                                                <FormControl><RadioGroupItem value={prop.id} /></FormControl>
+                                                                <FormLabel className="font-normal">{prop.label}</FormLabel>
+                                                            </FormItem>))}
+                                                        </RadioGroup>
+                                                    </FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </>
+                                        )}
                                         <FormField control={form.control} name="fuelType" render={({ field }) => (
                                             <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
@@ -825,5 +858,3 @@ export function SellForm() {
         </Form>
     );
 }
-
-    
