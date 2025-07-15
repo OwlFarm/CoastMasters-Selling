@@ -202,6 +202,7 @@ export const priceValues = [
 export const boatTypes = [
   { id: 'power', label: 'Power' },
   { id: 'sailing', label: 'Sailing' },
+  { id: 'hobby', label: 'Hobby' },
 ];
 
 export const usageStyles = [

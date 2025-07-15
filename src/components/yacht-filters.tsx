@@ -21,6 +21,7 @@ export function YachtFilters() {
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
   const [isSailingChecked, setIsSailingChecked] = React.useState(false);
   const [isPowerChecked, setIsPowerChecked] = React.useState(false);
+  const [isHobbyChecked, setIsHobbyChecked] = React.useState(false);
   const [metadata, setMetadata] = React.useState<Metadata | null>(null);
 
   React.useEffect(() => {
@@ -209,6 +210,16 @@ export function YachtFilters() {
                                 onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
                             />
                             <Label htmlFor="type-sailing-side" className="font-normal">Sailing</Label>
+                        </div>
+                         <div className="flex items-center space-x-2">
+                            <Checkbox 
+                                id="type-hobby-side" 
+                                name="boatTypes" 
+                                value="hobby" 
+                                checked={isHobbyChecked}
+                                onCheckedChange={(checked) => setIsHobbyChecked(checked === true)}
+                            />
+                            <Label htmlFor="type-hobby-side" className="font-normal">Hobby</Label>
                         </div>
                     </div>
                     {isPowerChecked && (
