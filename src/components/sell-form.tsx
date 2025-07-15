@@ -32,6 +32,7 @@ const formSchema = z.object({
   title: z.string().min(5, { message: 'Title must be at least 5 characters.' }),
   listingType: z.string({ required_error: 'Please select a listing type.' }),
   boatType: z.string({ required_error: 'Please select a boat type.' }),
+  hobbySubType: z.string().optional(),
   condition: z.string({ required_error: 'Please select the condition.' }),
   location: z.string({ required_error: 'Please select a location.' }),
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
@@ -93,7 +94,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 
-        'otherSpecifications', 'features', 'deck', 'cabin'
+        'otherSpecifications', 'features', 'deck', 'cabin', 'hobbySubType'
     ] 
   },
   { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
@@ -126,6 +127,7 @@ export function SellForm() {
             galleryImages: [],
             listingType: undefined,
             boatType: undefined,
+            hobbySubType: undefined,
             usageStyles: [],
             deck: [],
             cabin: [],
@@ -340,6 +342,28 @@ export function SellForm() {
                                                 </RadioGroup>
                                             </FormControl><FormMessage /></FormItem>
                                             )} />
+                                            
+                                            {boatTypeWatcher === 'hobby' && (
+                                                <FormField control={form.control} name="hobbySubType" render={({ field }) => (
+                                                    <FormItem className="md:col-span-2">
+                                                        <FormLabel>Hobby Sub-Type</FormLabel>
+                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="Select a hobby type" />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                {metadata.hobbyBoatSubTypes.map(type => (
+                                                                    <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )} />
+                                            )}
+
                                             <FormField control={form.control} name="make" render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Builder</FormLabel>

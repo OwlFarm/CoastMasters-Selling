@@ -98,6 +98,7 @@ export function YachtFilters() {
   const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 2);
   const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 2);
   const columnSortedPowerSubTypes = sortIntoColumns(metadata.powerBoatSubTypes, 2);
+  const columnSortedHobbySubTypes = sortIntoColumns(metadata.hobbyBoatSubTypes, 2);
   const columnSortedUsageStyles = sortIntoColumns(metadata.usageStyles, 2);
 
 
@@ -224,7 +225,7 @@ export function YachtFilters() {
                     </div>
                     {isPowerChecked && (
                         <>
-                            <Separator className="bg-border/50" />
+                            <Separator className="bg-border/50 my-4" />
                              <h4 className="font-medium text-sm text-muted-foreground pt-2">Power Types</h4>
                             <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                               {columnSortedPowerSubTypes.flat().map(subType => (
@@ -238,13 +239,27 @@ export function YachtFilters() {
                     )}
                     {isSailingChecked && (
                         <>
-                            <Separator className="bg-border/50" />
+                            <Separator className="bg-border/50 my-4" />
                             <h4 className="font-medium text-sm text-muted-foreground pt-2">Sailing Styles</h4>
                             <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                               {columnSortedUsageStyles.flat().map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
                                     <Label htmlFor={`style-${style.id}`} className="font-normal text-sm">{style.label}</Label>
+                                </div>
+                              ))}
+                            </div>
+                        </>
+                    )}
+                    {isHobbyChecked && (
+                        <>
+                            <Separator className="bg-border/50 my-4" />
+                            <h4 className="font-medium text-sm text-muted-foreground pt-2">Hobby Types</h4>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                              {columnSortedHobbySubTypes.flat().map(subType => (
+                                <div key={subType.id} className="flex items-center space-x-2">
+                                    <Checkbox id={`subtype-hobby-${subType.id}`} name="hobbySubTypes" value={subType.id} />
+                                    <Label htmlFor={`subtype-hobby-${subType.id}`} className="font-normal text-sm">{subType.label}</Label>
                                 </div>
                               ))}
                             </div>

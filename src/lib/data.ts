@@ -205,6 +205,14 @@ export const boatTypes = [
   { id: 'hobby', label: 'Hobby' },
 ];
 
+export const hobbyBoatSubTypes = [
+    { id: 'dinghy', label: 'Dinghy' },
+    { id: 'tender', label: 'Tender' },
+    { id: 'kayak', label: 'Kayak' },
+    { id: 'jetski', label: 'Jetski' },
+    { id: 'sailboard', label: 'Sailboard' },
+];
+
 export const usageStyles = [
   { id: 'monohull', label: 'Monohull' },
   { id: 'catamaran', label: 'Catamaran' },

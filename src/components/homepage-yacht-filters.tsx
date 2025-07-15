@@ -103,6 +103,7 @@ export function HomepageYachtFilters() {
   const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 5);
   const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 5);
   const columnSortedPowerSubTypes = sortIntoColumns(metadata.powerBoatSubTypes, 3);
+  const columnSortedHobbySubTypes = sortIntoColumns(metadata.hobbyBoatSubTypes, 3);
   const columnSortedUsageStyles = sortIntoColumns(metadata.usageStyles, 3);
 
 
@@ -233,7 +234,7 @@ export function HomepageYachtFilters() {
       </div>
       
       <Accordion type="multiple" defaultValue={['boatType', 'builder']} className="w-full">
-        {(isPowerChecked || isSailingChecked) && (
+        {(isPowerChecked || isSailingChecked || isHobbyChecked) && (
             <AccordionItem value="boatType">
               <AccordionTrigger className="font-semibold">Boat Type Details</AccordionTrigger>
                 <AccordionContent>
@@ -253,7 +254,7 @@ export function HomepageYachtFilters() {
                         )}
                         {isSailingChecked && (
                             <>
-                                {isPowerChecked && <Separator className="bg-border/50 my-4" />}
+                                {(isPowerChecked || isHobbyChecked) && <Separator className="bg-border/50 my-4" />}
                                 <h4 className="font-medium text-sm text-muted-foreground">Sailing Styles</h4>
                                 <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                                   {columnSortedUsageStyles.flat().map(style => (
@@ -261,6 +262,20 @@ export function HomepageYachtFilters() {
                                         <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
                                         <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
 
+                                    </div>
+                                  ))}
+                                </div>
+                            </>
+                        )}
+                         {isHobbyChecked && (
+                            <>
+                                {(isPowerChecked || isSailingChecked) && <Separator className="bg-border/50 my-4" />}
+                                <h4 className="font-medium text-sm text-muted-foreground">Hobby Types</h4>
+                                <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                                  {columnSortedHobbySubTypes.flat().map(subType => (
+                                    <div key={subType.id} className="flex items-center space-x-2">
+                                        <Checkbox id={`subtype-${subType.id}`} name="hobbySubTypes" value={subType.id} />
+                                        <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
                                     </div>
                                   ))}
                                 </div>

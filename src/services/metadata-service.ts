@@ -21,6 +21,7 @@ import {
     listingTypes as defaultListingTypes,
     powerBoatSubTypes as defaultPowerBoatSubTypes,
     priceValues as defaultPriceValues,
+    hobbyBoatSubTypes as defaultHobbyBoatSubTypes,
 } from '@/lib/data';
 
 export type Option = {
@@ -52,6 +53,7 @@ export type Metadata = {
     cabinOptions: Option[];
     listingTypes: Option[];
     powerBoatSubTypes: Option[];
+    hobbyBoatSubTypes: Option[];
     priceValues: string[];
 };
 
@@ -79,6 +81,7 @@ async function initializeMetadata() {
         cabinOptions: defaultCabinOptions,
         listingTypes: defaultListingTypes,
         powerBoatSubTypes: defaultPowerBoatSubTypes,
+        hobbyBoatSubTypes: defaultHobbyBoatSubTypes,
         priceValues: defaultPriceValues,
     };
     await setDoc(metadataRef, defaultData);
