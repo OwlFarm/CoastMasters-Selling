@@ -112,27 +112,33 @@ export function YachtFilters() {
       <div className="space-y-4 pb-8">
          <div className="grid grid-cols-2 gap-x-4 gap-y-4">
             <div className="flex items-center space-x-2">
-                <Checkbox id="condition-new" name="conditions" value="new" />
-                <Label htmlFor="condition-new" className="font-normal">New</Label>
+                <Checkbox id="condition-new-side" name="conditions" value="new" />
+                <Label htmlFor="condition-new-side" className="font-normal">New</Label>
             </div>
              <div className="flex items-center space-x-2">
-                <Checkbox id="condition-used" name="conditions" value="used" />
-                <Label htmlFor="condition-used" className="font-normal">Used</Label>
+                <Checkbox id="condition-used-side" name="conditions" value="used" />
+                <Label htmlFor="condition-used-side" className="font-normal">Used</Label>
             </div>
 
             <div className="flex items-center space-x-2">
-                <Checkbox id="listing-type-private" name="listingTypes" value="private" />
-                <Label htmlFor="listing-type-private" className="font-normal">Private</Label>
+                <Checkbox id="listing-type-private-side" name="listingTypes" value="private" />
+                <Label htmlFor="listing-type-private-side" className="font-normal">Private</Label>
             </div>
             <div className="flex items-center space-x-2">
-                <Checkbox id="listing-type-broker" name="listingTypes" value="broker" />
-                <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
+                <Checkbox id="listing-type-broker-side" name="listingTypes" value="broker" />
+                <Label htmlFor="listing-type-broker-side" className="font-normal">Broker</Label>
             </div>
-            
-            <div className="flex items-center space-x-2">
-                 <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
+        </div>
+      </div>
+      
+      <Separator className="mb-8"/>
+
+      <div className="space-y-6 pb-8">
+          <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>Price</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                     <SelectTrigger id="currency-select" className="w-[90px]">
+                     <SelectTrigger id="currency-select-side" className="w-[90px] h-7 text-xs">
                          <SelectValue placeholder="Currency" />
                      </SelectTrigger>
                      <SelectContent>
@@ -143,25 +149,7 @@ export function YachtFilters() {
                          <SelectItem value="nzd">NZD</SelectItem>
                      </SelectContent>
                  </Select>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm justify-self-start">
-                <span className="text-muted-foreground">Ft</span>
-                <Switch
-                    checked={lengthUnit === 'm'}
-                    onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                    id="length-unit-switch-filter-top"
-                />
-                <span className="text-muted-foreground">M</span>
-            </div>
-        </div>
-      </div>
-      
-      <Separator className="mb-8"/>
-
-      <div className="space-y-6 pb-8">
-          <div className="space-y-2">
-              <Label>Price ({selectedCurrency.toUpperCase()})</Label>
+              </div>
               <div className="flex items-center gap-2">
                   <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
                   <span className="text-muted-foreground">-</span>
@@ -169,7 +157,18 @@ export function YachtFilters() {
               </div>
           </div>
           <div className="space-y-2">
-              <Label>LOA ({lengthUnit})</Label>
+              <div className="flex items-center justify-between">
+                <Label>LOA</Label>
+                <div className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground text-xs">Ft</span>
+                    <Switch
+                        checked={lengthUnit === 'm'}
+                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                        id="length-unit-switch-filter-side"
+                    />
+                    <span className="text-muted-foreground text-xs">M</span>
+                </div>
+              </div>
               <div className="flex items-center gap-2">
                   <Input name="lengthMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
@@ -445,8 +444,8 @@ export function YachtFilters() {
                         <div className="grid grid-cols-2 gap-x-2 gap-y-2 pt-2">
                           {regionData.locations.map((location) => (
                             <div key={location.id} className="flex items-center space-x-2">
-                              <Checkbox id={`location-${location.id}`} name="locations" value={location.id} />
-                              <Label htmlFor={`location-${location.id}`} className="font-normal text-sm">
+                              <Checkbox id={`location-side-${location.id}`} name="locations" value={location.id} />
+                              <Label htmlFor={`location-side-${location.id}`} className="font-normal text-sm">
                                 {location.label}
                               </Label>
                             </div>

@@ -174,13 +174,17 @@ export function HomepageYachtFilters() {
                   <Label htmlFor="listing-type-broker" className="font-normal">Broker</Label>
               </div>
             </div>
+        </div>
+      </div>
+      
+      <Separator className="mb-8"/>
 
-            <Separator orientation="vertical" />
-            
-            <div className="flex items-center gap-6">
-                 <Label htmlFor="currency-select" className="font-normal sr-only">Currency</Label>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-8">
+          <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>Price</Label>
                  <Select name="currency" value={selectedCurrency} onValueChange={setSelectedCurrency}>
-                     <SelectTrigger id="currency-select" className="w-[90px]">
+                     <SelectTrigger id="currency-select" className="w-[90px] h-7 text-xs">
                          <SelectValue placeholder="Currency" />
                      </SelectTrigger>
                      <SelectContent>
@@ -191,24 +195,7 @@ export function HomepageYachtFilters() {
                          <SelectItem value="nzd">NZD</SelectItem>
                      </SelectContent>
                  </Select>
-                 <div className="flex items-center gap-2 text-sm">
-                    <span className="text-muted-foreground">Ft</span>
-                    <Switch
-                        checked={lengthUnit === 'm'}
-                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                        id="length-unit-switch-filter-top"
-                    />
-                    <span className="text-muted-foreground">M</span>
-                </div>
-            </div>
-        </div>
-      </div>
-      
-      <Separator className="mb-8"/>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-8">
-          <div className="space-y-2">
-              <Label>Price ({selectedCurrency.toUpperCase()})</Label>
+              </div>
               <div className="flex items-center gap-2">
                   <Input name="priceMin" type="number" placeholder="Min" className="w-full" list="price-list" />
                   <span className="text-muted-foreground">-</span>
@@ -216,7 +203,18 @@ export function HomepageYachtFilters() {
               </div>
           </div>
           <div className="space-y-2">
-              <Label>LOA ({lengthUnit})</Label>
+               <div className="flex items-center justify-between">
+                <Label>LOA</Label>
+                 <div className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground text-xs">Ft</span>
+                    <Switch
+                        checked={lengthUnit === 'm'}
+                        onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
+                        id="length-unit-switch-filter-top"
+                    />
+                    <span className="text-muted-foreground text-xs">M</span>
+                </div>
+              </div>
               <div className="flex items-center gap-2">
                   <Input name="lengthMin" type="number" placeholder="Min" className="w-full" />
                   <span className="text-muted-foreground">-</span>
@@ -274,8 +272,8 @@ export function HomepageYachtFilters() {
                                 <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                                   {columnSortedHobbySubTypes.flat().map(subType => (
                                     <div key={subType.id} className="flex items-center space-x-2">
-                                        <Checkbox id={`subtype-${subType.id}`} name="hobbySubTypes" value={subType.id} />
-                                        <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
+                                        <Checkbox id={`subtype-hobby-${subType.id}`} name="hobbySubTypes" value={subType.id} />
+                                        <Label htmlFor={`subtype-hobby-${subType.id}`} className="font-normal">{subType.label}</Label>
                                     </div>
                                   ))}
                                 </div>
