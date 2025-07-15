@@ -127,6 +127,31 @@ export function HomepageYachtFilters() {
 
             <Separator orientation="vertical" />
             
+             <div className="flex items-center gap-6">
+              <div className="flex items-center space-x-2">
+                    <Checkbox 
+                        id="type-power" 
+                        name="boatTypes" 
+                        value="power"
+                        checked={isPowerChecked}
+                        onCheckedChange={(checked) => setIsPowerChecked(checked === true)}
+                     />
+                    <Label htmlFor="type-power" className="font-normal">Power</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox 
+                        id="type-sailing" 
+                        name="boatTypes" 
+                        value="sailing" 
+                        checked={isSailingChecked}
+                        onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
+                    />
+                    <Label htmlFor="type-sailing" className="font-normal">Sailing</Label>
+                </div>
+            </div>
+
+            <Separator orientation="vertical" />
+
             <div className="flex items-center gap-6">
               <div className="flex items-center space-x-2">
                   <Checkbox id="listing-type-private" name="listingTypes" value="private" />
@@ -198,32 +223,11 @@ export function HomepageYachtFilters() {
       
       <Accordion type="multiple" defaultValue={['boatType', 'builder', 'hull']} className="w-full">
         <AccordionItem value="boatType">
-          <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Boat Type Details</AccordionTrigger>
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
-                    <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-                       <div className="flex items-center space-x-2">
-                            <Checkbox 
-                                id="type-power" 
-                                name="boatTypes" 
-                                value="power"
-                                onCheckedChange={(checked) => setIsPowerChecked(checked === true)}
-                             />
-                            <Label htmlFor="type-power" className="font-normal">Power</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Checkbox 
-                                id="type-sailing" 
-                                name="boatTypes" 
-                                value="sailing" 
-                                onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
-                            />
-                            <Label htmlFor="type-sailing" className="font-normal">Sailing</Label>
-                        </div>
-                    </div>
                     {isPowerChecked && (
                         <>
-                            <Separator className="bg-border/50 my-4" />
                             <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                               {metadata.powerBoatSubTypes.map(subType => (
                                 <div key={subType.id} className="flex items-center space-x-2">
@@ -236,7 +240,7 @@ export function HomepageYachtFilters() {
                     )}
                     {isSailingChecked && (
                         <>
-                            <Separator className="bg-border/50 my-4" />
+                            {isPowerChecked && <Separator className="bg-border/50 my-4" />}
                             <div className="grid grid-cols-3 gap-x-2 gap-y-4">
                               {metadata.usageStyles.map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
@@ -247,6 +251,9 @@ export function HomepageYachtFilters() {
                               ))}
                             </div>
                         </>
+                    )}
+                    {!isPowerChecked && !isSailingChecked && (
+                        <p className="text-sm text-muted-foreground">Select a boat type above (Power or Sailing) to see more specific options.</p>
                     )}
                 </div>
             </AccordionContent>
@@ -449,3 +456,5 @@ export function HomepageYachtFilters() {
     </>
   );
 }
+
+    
