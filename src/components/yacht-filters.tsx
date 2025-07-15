@@ -184,7 +184,7 @@ export function YachtFilters() {
           </div>
       </div>
       
-      <Accordion type="multiple" defaultValue={['boatType', 'builder', 'hull']} className="w-full">
+      <Accordion type="multiple" defaultValue={['boatType', 'builder']} className="w-full">
         <AccordionItem value="boatType">
           <AccordionTrigger className="font-semibold">Boat Type</AccordionTrigger>
             <AccordionContent>
@@ -192,31 +192,34 @@ export function YachtFilters() {
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
                        <div className="flex items-center space-x-2">
                             <Checkbox 
-                                id="type-power" 
+                                id="type-power-side" 
                                 name="boatTypes" 
                                 value="power"
+                                checked={isPowerChecked}
                                 onCheckedChange={(checked) => setIsPowerChecked(checked === true)}
                              />
-                            <Label htmlFor="type-power" className="font-normal">Power</Label>
+                            <Label htmlFor="type-power-side" className="font-normal">Power</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                             <Checkbox 
-                                id="type-sailing" 
+                                id="type-sailing-side" 
                                 name="boatTypes" 
                                 value="sailing" 
+                                checked={isSailingChecked}
                                 onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
                             />
-                            <Label htmlFor="type-sailing" className="font-normal">Sailing</Label>
+                            <Label htmlFor="type-sailing-side" className="font-normal">Sailing</Label>
                         </div>
                     </div>
                     {isPowerChecked && (
                         <>
                             <Separator className="bg-border/50" />
+                             <h4 className="font-medium text-sm text-muted-foreground pt-2">Power Types</h4>
                             <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                              {columnSortedPowerSubTypes.map(subType => (
+                              {columnSortedPowerSubTypes.flat().map(subType => (
                                 <div key={subType.id} className="flex items-center space-x-2">
                                     <Checkbox id={`subtype-${subType.id}`} name="powerSubTypes" value={subType.id} />
-                                    <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
+                                    <Label htmlFor={`subtype-${subType.id}`} className="font-normal text-sm">{subType.label}</Label>
                                 </div>
                               ))}
                             </div>
@@ -225,11 +228,12 @@ export function YachtFilters() {
                     {isSailingChecked && (
                         <>
                             <Separator className="bg-border/50" />
+                            <h4 className="font-medium text-sm text-muted-foreground pt-2">Sailing Styles</h4>
                             <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                              {columnSortedUsageStyles.map(style => (
+                              {columnSortedUsageStyles.flat().map(style => (
                                 <div key={style.id} className="flex items-center space-x-2">
                                     <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
-                                    <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                                    <Label htmlFor={`style-${style.id}`} className="font-normal text-sm">{style.label}</Label>
                                 </div>
                               ))}
                             </div>
@@ -276,7 +280,7 @@ export function YachtFilters() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="hull">
-          <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Hull Details</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
@@ -301,50 +305,59 @@ export function YachtFilters() {
                     ))}
                   </div>
               </div>
-              <div>
-                  <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
-                  <div className="flex flex-col gap-4 mt-2">
-                    {metadata.keelTypeOptions.map((keel) => (
-                      <div key={keel.id} className="flex items-center space-x-2">
-                        <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
-                        <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
-                      </div>
-                    ))}
-                  </div>
-              </div>
-              <div>
-                  <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
-                  <div className="flex flex-col gap-4 mt-2">
-                    {metadata.rudderTypeOptions.map((rudder) => (
-                      <div key={rudder.id} className="flex items-center space-x-2">
-                        <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
-                        <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
-                      </div>
-                    ))}
-                  </div>
-              </div>
-               <div>
-                  <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
-                  <div className="flex flex-col gap-4 mt-2">
-                    {metadata.propellerTypeOptions.map((prop) => (
-                      <div key={prop.id} className="flex items-center space-x-2">
-                        <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
-                        <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
-                      </div>
-                    ))}
-                  </div>
-              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
+        {isSailingChecked && (
+          <AccordionItem value="sailing-specifics">
+            <AccordionTrigger className="font-semibold">Sailing Specifics</AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
+                <div>
+                    <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
+                    <div className="flex flex-col gap-4 mt-2">
+                      {metadata.keelTypeOptions.map((keel) => (
+                        <div key={keel.id} className="flex items-center space-x-2">
+                          <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
+                          <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                </div>
+                <div>
+                    <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
+                    <div className="flex flex-col gap-4 mt-2">
+                      {metadata.rudderTypeOptions.map((rudder) => (
+                        <div key={rudder.id} className="flex items-center space-x-2">
+                          <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
+                          <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                </div>
+                 <div>
+                    <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
+                    <div className="flex flex-col gap-4 mt-2">
+                      {metadata.propellerTypeOptions.map((prop) => (
+                        <div key={prop.id} className="flex items-center space-x-2">
+                          <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
+                          <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedDeck.map((feature) => (
+              {columnSortedDeck.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`deck-filter-${feature.id}`} name="deck" value={feature.id} />
-                  <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                  <Label htmlFor={`deck-filter-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
                 </div>
               ))}
             </div>
@@ -354,10 +367,10 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedCabin.map((feature) => (
+              {columnSortedCabin.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
-                  <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                  <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
                 </div>
               ))}
             </div>
@@ -367,10 +380,10 @@ export function YachtFilters() {
           <AccordionTrigger className="font-semibold">Features & Equipment</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedFeatures.map((feature) => (
+              {columnSortedFeatures.flat().map((feature) => (
                 <div key={feature.id} className="flex items-center space-x-2">
                   <Checkbox id={`feature-filter-${feature.id}`} name="features" value={feature.id} />
-                  <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal">{feature.label}</Label>
+                  <Label htmlFor={`feature-filter-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
                 </div>
               ))}
             </div>
