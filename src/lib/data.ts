@@ -226,7 +226,7 @@ export const makes = [
     { id: 'valiant', value: 'valiant', label: 'Valiant' },
     { id: 'van-de-stadt', value: 'van-de-stadt', label: 'Van De Stadt' },
     { id: 'westsail', value: 'westsail', label: 'Westsail' },
-];
+].sort((a, b) => a.label.localeCompare(b.label));
 
 export const locationsByRegion = [
     {
