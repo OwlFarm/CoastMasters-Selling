@@ -196,7 +196,7 @@ export function HomepageYachtFilters() {
           <AccordionTrigger className="font-semibold">Sailing Style</AccordionTrigger>
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
-                    <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                    <div className="grid grid-cols-5 gap-x-2 gap-y-4">
                       {metadata.usageStyles.map(style => (
                         <div key={style.id} className="flex items-center space-x-2">
                             <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
