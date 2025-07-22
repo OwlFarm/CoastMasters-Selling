@@ -116,7 +116,7 @@ export const usageStyles = [
 
 export const makes = [
   { id: '2-bar', value: '2-bar', label: '2 Bar' },
-].sort((a, b) => a.label.localeCompare(b.label));
+];
 
 export const locationsByRegion = [
     {

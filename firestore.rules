@@ -4,20 +4,21 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
   
-    // Allow public read access to yachts and metadata for browsing.
+    // Allow public read access to yachts and metadata
     match /yachts/{yachtId} {
       allow read: if true;
-      allow write: if false; // Disallow public writes
+      allow write: if false; // Block all writes for now
     }
 
     match /metadata/{docId} {
       allow read: if true;
-      allow write: if false; // Disallow public writes
+      allow write: if false; // Block all writes for now
     }
 
-    // By default, deny all other access
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    // You can add more specific rules for other collections here.
+    // For example, for user-specific data:
+    // match /users/{userId} {
+    //   allow read, write: if request.auth != null && request.auth.uid == userId;
+    // }
   }
 }
