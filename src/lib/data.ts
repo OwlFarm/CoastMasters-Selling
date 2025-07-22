@@ -119,8 +119,8 @@ export const makes = [
     { id: 'alberg', value: 'alberg', label: 'Alberg' },
     { id: 'alden', value: 'alden', label: 'Alden' },
     { id: 'allied', value: 'allied', label: 'Allied' },
+    { id: 'alloy-yachts', value: 'alloy-yachts', label: 'Alloy' },
     { id: 'allures', value: 'allures', label: 'Allures' },
-    { id: 'alloy-yachts', value: 'alloy-yachts', label: 'Alloy Yachts' },
     { id: 'alubat', value: 'alubat', label: 'Alubat' },
     { id: 'alumarine', value: 'alumarine', label: 'Alumarine' },
     { id: 'aluminum-cruiser', value: 'aluminum-cruiser', label: 'Aluminum Cruiser' },
@@ -132,7 +132,6 @@ export const makes = [
     { id: 'beneteau', value: 'beneteau', label: 'Beneteau' },
     { id: 'bestevaer', value: 'bestevaer', label: 'Bestevaer' },
     { id: 'bluewater', value: 'bluewater', label: 'Bluewater' },
-    { id: 'bluewater-yachts', value: 'bluewater-yachts', label: 'Bluewater' },
     { id: 'bowman', value: 'bowman', label: 'Bowman' },
     { id: 'brewer', value: 'brewer', label: 'Brewer' },
     { id: 'bristol-channel-cutter', value: 'bristol-channel-cutter', label: 'Bristol Channel Cutter' },
@@ -148,7 +147,6 @@ export const makes = [
     { id: 'chris-white', value: 'chris-white', label: 'Chris White' },
     { id: 'colin-archer', value: 'colin-archer', label: 'Colin Archer' },
     { id: 'columbia', value: 'columbia', label: 'Columbia' },
-    { id: 'columbia-yacht', value: 'columbia-yacht', label: 'Columbia' },
     { id: 'colvin', value: 'colvin', label: 'Colvin' },
     { id: 'contest', value: 'contest', label: 'Contest' },
     { id: 'contessa', value: 'contessa', label: 'Contessa' },
@@ -232,7 +230,6 @@ export const makes = [
     { id: 'southern-cross', value: 'southern-cross', label: 'Southern Cross' },
     { id: 'sparkman-&-stephens', value: 'sparkman-&-stephens', label: 'Sparkman & Stephens' },
     { id: 'spirit', value: 'spirit', label: 'Spirit' },
-    { id: 'spirit-yachts', value: 'spirit-yachts', label: 'Spirit' },
     { id: 'sun-odyssey', value: 'sun-odyssey', label: 'Sun Odyssey' },
     { id: 'sundeer', value: 'sundeer', label: 'Sundeer' },
     { id: 'sweden-yachts', value: 'sweden-yachts', label: 'Sweden' },
@@ -426,3 +423,4 @@ export const cabinOptions = [
     
 
     
+
