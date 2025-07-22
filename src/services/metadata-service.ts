@@ -56,6 +56,10 @@ export type Metadata = {
 // In-memory cache
 let metadataCache: Metadata | null = null;
 
+// ****** DEVELOPMENT ONLY: Force re-initialization ******
+const FORCE_REINIT = true; 
+// ******************************************************
+
 async function initializeMetadata() {
     console.log('Initializing metadata from default data...');
     const metadataRef = doc(db, 'metadata', 'options');
@@ -84,7 +88,7 @@ async function initializeMetadata() {
 }
 
 export const getMetadata = cache(async (): Promise<Metadata> => {
-    if (metadataCache) {
+    if (metadataCache && !FORCE_REINIT) {
         return metadataCache;
     }
 
@@ -92,7 +96,7 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
     try {
         const docSnap = await getDoc(metadataRef);
 
-        if (docSnap.exists()) {
+        if (docSnap.exists() && !FORCE_REINIT) {
             console.log("Metadata fetched from Firestore.");
             const data = docSnap.data();
             // Ensure all keys exist, falling back to defaults if not present
@@ -117,7 +121,8 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
             };
             return metadataCache;
         } else {
-            console.log("No metadata found in Firestore. Initializing with default data.");
+            const reason = FORCE_REINIT ? "Forced re-initialization" : "No metadata found in Firestore";
+            console.log(`${reason}. Initializing with default data.`);
             const defaultMetadata = await initializeMetadata();
             metadataCache = defaultMetadata;
             return metadataCache;
