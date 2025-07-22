@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview An AI flow to generate SEO-friendly listing details for a yacht.
@@ -13,7 +14,7 @@ import {
   type GenerateListingDetailsOutput,
 } from '@/ai/schemas/listing-details-schemas';
 import {
-  usageStyles,
+  divisions,
   hullMaterialOptions,
   hullShapeOptions,
   keelTypeOptions,
@@ -68,8 +69,8 @@ Based on this analysis, identify all applicable features and specifications from
 Return ONLY the \`id\` for each matching item in the corresponding output field (e.g., \`detectedFeatures\`, \`detectedHullMaterial\`).
 For single-choice categories (like Hull Material), return only the one most likely ID as a string. For multi-choice categories (like Features), return an array of all matching IDs.
 
-**Available Usage Styles:**
-{{{usageStyles}}}
+**Available Divisions:**
+{{{divisions}}}
 
 **Available Hull Materials:**
 {{{hullMaterialOptions}}}
@@ -98,7 +99,7 @@ For single-choice categories (like Hull Material), return only the one most like
 **Available Cabin Features:**
 {{{cabinOptions}}}
 
-**Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "off-shore" in the \`detectedUsageStyles\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
+**Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "off-shore" in the \`detectedDivisions\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
 
 Generate the final JSON output with all fields: \`title\`, \`description\`, and all \`detected...\` fields.`,
 });
@@ -113,7 +114,7 @@ const generateListingDetailsFlow = ai.defineFlow(
      // The AI needs to know the possible options to choose from. We'll pass them in here.
     const promptData = {
       ...input,
-      usageStyles: formatOptionsForPrompt(usageStyles),
+      divisions: formatOptionsForPrompt(divisions),
       hullMaterialOptions: formatOptionsForPrompt(hullMaterialOptions),
       hullShapeOptions: formatOptionsForPrompt(hullShapeOptions),
       keelTypeOptions: formatOptionsForPrompt(keelTypeOptions),

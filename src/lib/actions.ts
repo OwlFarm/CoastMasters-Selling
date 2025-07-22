@@ -70,7 +70,7 @@ type Filters = {
     yearMin?: number;
     yearMax?: number;
     boatTypes: string[];
-    usageStyles: string[];
+    divisions: string[];
     builders: string[];
     hullMaterials: string[];
     hullShapes: string[];
@@ -101,10 +101,10 @@ function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
         if (f.locations.length > 0 && yacht.locationId && !f.locations.includes(yacht.locationId)) return false;
 
         const allYachtFeatures = [
-            ...(yacht.usageStyles || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
+            ...(yacht.divisions || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
         ];
         const allFilterFeatures = [
-            ...f.usageStyles, ...f.features, ...f.deck, ...f.cabin
+            ...f.divisions, ...f.features, ...f.deck, ...f.cabin
         ];
         if (allFilterFeatures.length > 0 && !allFilterFeatures.every(feat => allYachtFeatures.includes(feat))) return false;
 
@@ -128,7 +128,7 @@ export async function handleFilteredSearch(
     yearMin: getNumber(formData.get('yearMin')),
     yearMax: getNumber(formData.get('yearMax')),
     boatTypes: formData.getAll('boatTypes').map(String).filter(Boolean),
-    usageStyles: formData.getAll('usageStyles').map(String).filter(Boolean),
+    divisions: formData.getAll('divisions').map(String).filter(Boolean),
     builders: formData.getAll('builders').map(String).filter(Boolean),
     hullMaterials: formData.getAll('hullMaterials').map(String).filter(Boolean),
     hullShapes: formData.getAll('hullShapes').map(String).filter(Boolean),

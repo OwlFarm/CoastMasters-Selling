@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -24,7 +25,7 @@ const SmartSearchInputSchema = z.object({
   yearMin: z.number().optional().describe('Minimum manufacturing year.'),
   yearMax: z.number().optional().describe('Maximum manufacturing year.'),
   boatTypes: z.array(z.string()).optional().describe('Selected boat types.'),
-  usageStyles: z.array(z.string()).optional().describe('Selected usage styles (e.g., blue-water, in-shore).'),
+  divisions: z.array(z.string()).optional().describe('Selected divisions (e.g., blue-water, in-shore).'),
   builders: z.array(z.string()).optional().describe('Selected builders.'),
   hullMaterials: z.array(z.string()).optional().describe('Selected hull materials.'),
   hullShapes: z.array(z.string()).optional().describe('Selected hull shapes.'),
@@ -83,7 +84,7 @@ Here are the user's search criteria. A field not provided means the user has no 
 - Length Range: {{#if lengthMin}}{{lengthMin}}{{else}}any{{/if}} - {{#if lengthMax}}{{lengthMax}}{{else}}any{{/if}} {{#if lengthUnit}}{{lengthUnit}}{{/if}}
 - Year Range: {{#if yearMin}}{{yearMin}}{{else}}any{{/if}} - {{#if yearMax}}{{yearMax}}{{else}}any{{/if}}
 - Boat Types: {{#if boatTypes}}{{#each boatTypes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
-- Usage Styles: {{#if usageStyles}}{{#each usageStyles}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
+- Divisions: {{#if divisions}}{{#each divisions}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Builders: {{#if builders}}{{#each builders}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Hull Materials: {{#if hullMaterials}}{{#each hullMaterials}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}
 - Hull Shape: {{#if hullShapes}}{{#each hullShapes}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}{{/if}}

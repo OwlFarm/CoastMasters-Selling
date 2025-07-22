@@ -16,7 +16,7 @@ import {
   keelTypeOptions,
   rudderTypeOptions,
   propellerTypeOptions,
-  usageStyles,
+  divisions,
   featureOptions,
   deckOptions,
   cabinOptions,
@@ -180,7 +180,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                   <Tabs defaultValue="specifications" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
                       <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
-                      <TabsTrigger value="usage">Usage</TabsTrigger>
+                      <TabsTrigger value="usage">Division</TabsTrigger>
                       <TabsTrigger value="features">Equipment</TabsTrigger>
                       <TabsTrigger value="deck">Deck</TabsTrigger>
                       <TabsTrigger value="cabin">Cabin</TabsTrigger>
@@ -204,7 +204,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                     </TabsContent>
 
                     <TabsContent value="usage" className="mt-6">
-                      {renderFeatureList(yacht.usageStyles, usageStyles)}
+                      {renderFeatureList(yacht.divisions, divisions)}
                     </TabsContent>
 
                     <TabsContent value="features" className="mt-6">

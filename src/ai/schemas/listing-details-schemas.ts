@@ -1,3 +1,4 @@
+
 /**
  * @fileOverview Zod schemas and TypeScript types for the yacht listing details generation flow.
  *
@@ -29,7 +30,7 @@ export const GenerateListingDetailsOutputSchema = z.object({
     .describe(
       'A detailed, engaging, and SEO-optimized description of the yacht. It should be written in paragraph form, highlighting the key features, condition, and ideal use cases. It should naturally incorporate keywords that potential buyers would search for.'
     ),
-  detectedUsageStyles: z.array(z.string()).optional().describe('An array of usage style IDs detected from the yacht details (e.g., ["blue-water", "island"]).'),
+  detectedDivisions: z.array(z.string()).optional().describe('An array of division IDs detected from the yacht details (e.g., ["blue-water", "island"]).'),
   detectedHullMaterial: z.string().optional().describe('The hull material ID detected from the yacht details (e.g., "fiberglass").'),
   detectedHullShape: z.string().optional().describe('The hull shape ID detected from the yacht details (e.g., "displacement").'),
   detectedKeelType: z.string().optional().describe('The keel type ID detected from the yacht details (e.g., "fin").'),

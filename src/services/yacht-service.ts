@@ -1,3 +1,4 @@
+
 import { db } from '@/lib/firebase';
 import { collection, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import type { Yacht } from '@/lib/types';
@@ -30,7 +31,7 @@ function toYacht(doc: QueryDocumentSnapshot<DocumentData>): Yacht {
     keelType: data.keelType || '',
     rudderType: data.rudderType || '',
     propellerType: data.propellerType || '',
-    usageStyles: data.usageStyles || [],
+    divisions: data.divisions || [],
     features: data.features || [],
     deck: data.deck || [],
     cabin: data.cabin || [],

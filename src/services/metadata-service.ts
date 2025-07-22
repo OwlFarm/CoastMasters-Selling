@@ -15,7 +15,7 @@ import {
     rudderTypeOptions as defaultRudderTypeOptions,
     propellerTypeOptions as defaultPropellerTypeOptions,
     featureOptions as defaultFeatureOptions,
-    usageStyles as defaultUsageStyles,
+    divisions as defaultDivisions,
     deckOptions as defaultDeckOptions,
     cabinOptions as defaultCabinOptions,
     listingTypes as defaultListingTypes,
@@ -46,7 +46,7 @@ export type Metadata = {
     rudderTypeOptions: Option[];
     propellerTypeOptions: Option[];
     featureOptions: Option[];
-    usageStyles: Option[];
+    divisions: Option[];
     deckOptions: Option[];
     cabinOptions: Option[];
     listingTypes: Option[];
@@ -57,7 +57,7 @@ export type Metadata = {
 let metadataCache: Metadata | null = null;
 
 // ****** DEVELOPMENT ONLY: Force re-initialization ******
-const FORCE_REINIT = false; 
+const FORCE_REINIT = true; 
 // ******************************************************
 
 async function initializeMetadata() {
@@ -76,7 +76,7 @@ async function initializeMetadata() {
         rudderTypeOptions: defaultRudderTypeOptions,
         propellerTypeOptions: defaultPropellerTypeOptions,
         featureOptions: defaultFeatureOptions,
-        usageStyles: defaultUsageStyles,
+        divisions: defaultDivisions,
         deckOptions: defaultDeckOptions,
         cabinOptions: defaultCabinOptions,
         listingTypes: defaultListingTypes,
@@ -113,7 +113,7 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
                 rudderTypeOptions: data.rudderTypeOptions || defaultRudderTypeOptions,
                 propellerTypeOptions: data.propellerTypeOptions || defaultPropellerTypeOptions,
                 featureOptions: data.featureOptions || defaultFeatureOptions,
-                usageStyles: data.usageStyles || defaultUsageStyles,
+                divisions: data.divisions || defaultDivisions,
                 deckOptions: data.deckOptions || defaultDeckOptions,
                 cabinOptions: data.cabinOptions || defaultCabinOptions,
                 listingTypes: data.listingTypes || defaultListingTypes,
@@ -135,5 +135,3 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
         return metadataCache;
     }
 });
-
-    

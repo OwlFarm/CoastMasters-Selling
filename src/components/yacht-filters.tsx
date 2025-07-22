@@ -94,7 +94,7 @@ export function YachtFilters() {
   const columnSortedFeatures = sortIntoColumns(metadata.featureOptions, 2);
   const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 2);
   const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 2);
-  const columnSortedUsageStyles = sortIntoColumns(metadata.usageStyles, 2);
+  const columnSortedDivisions = sortIntoColumns(metadata.divisions, 2);
 
 
   return (
@@ -183,13 +183,13 @@ export function YachtFilters() {
       
       <Accordion type="multiple" defaultValue={['boatType', 'builder']} className="w-full">
         <AccordionItem value="boatType">
-          <AccordionTrigger className="font-semibold">Sailing Style</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Division</AccordionTrigger>
             <AccordionContent>
                 <div className="space-y-4 pt-4 pb-4">
                     <div className="grid grid-cols-2 gap-x-2 gap-y-4">
-                      {columnSortedUsageStyles.flat().map(style => (
+                      {columnSortedDivisions.flat().map(style => (
                         <div key={style.id} className="flex items-center space-x-2">
-                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                            <Checkbox id={`style-${style.id}`} name="divisions" value={style.id} />
                             <Label htmlFor={`style-${style.id}`} className="font-normal text-sm">{style.label}</Label>
                         </div>
                       ))}
@@ -383,5 +383,3 @@ export function YachtFilters() {
     </>
   );
 }
-
-    

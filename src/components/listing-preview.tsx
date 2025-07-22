@@ -73,7 +73,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       keelType: data.keelType,
       rudderType: data.rudderType,
       propellerType: data.propellerType,
-      usageStyles: data.usageStyles,
+      divisions: data.divisions,
       features: data.features,
       deck: data.deck,
       cabin: data.cabin,
@@ -186,7 +186,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <Tabs defaultValue="specifications" className="w-full">
                         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
-                        <TabsTrigger value="usage">Usage</TabsTrigger>
+                        <TabsTrigger value="usage">Division</TabsTrigger>
                         <TabsTrigger value="features">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         <TabsTrigger value="cabin">Cabin</TabsTrigger>
@@ -210,7 +210,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         </TabsContent>
 
                         <TabsContent value="usage" className="mt-6">
-                        {renderFeatureList(yacht.usageStyles, metadata.usageStyles)}
+                        {renderFeatureList(yacht.divisions, metadata.divisions)}
                         </TabsContent>
 
                         <TabsContent value="features" className="mt-6">

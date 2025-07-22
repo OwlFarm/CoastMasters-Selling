@@ -101,7 +101,7 @@ export const boatTypes = [
   { id: 'sailing', label: 'Sailing' },
 ];
 
-export const usageStyles = [
+export const divisions = [
   { id: 'monohull', label: 'Monohull' },
   { id: 'catamaran', label: 'Catamaran' },
   { id: 'trimaran', label: 'Trimaran' },
@@ -412,15 +412,3 @@ export const cabinOptions = [
     { id: 'hot-water', label: 'Hot Water System' },
     { id: 'tv-set', label: 'TV Set' },
 ].sort((a, b) => a.label.localeCompare(b.label));
-
-    
-
-    
-
-
-
-
-    
-
-    
-

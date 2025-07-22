@@ -51,7 +51,7 @@ const formSchema = z.object({
   price: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number().positive('Must be a positive number')),
   description: z.string().min(50, { message: 'Description must be at least 50 characters.' }).max(5000, { message: 'Description cannot exceed 5000 characters.' }),
   features: z.array(z.string()).optional(),
-  usageStyles: z.array(z.string()).optional(),
+  divisions: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
   cabin: z.array(z.string()).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
@@ -68,7 +68,7 @@ const steps = [
     name: 'Listing Details', 
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
-        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'usageStyles', 
+        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'divisions', 
         'otherSpecifications', 'features', 'deck', 'cabin'
     ] 
   },
@@ -102,7 +102,7 @@ export function SellForm() {
             galleryImages: [],
             listingType: undefined,
             boatType: 'sailing',
-            usageStyles: [],
+            divisions: [],
             deck: [],
             cabin: [],
             condition: undefined,
@@ -143,7 +143,7 @@ export function SellForm() {
             if (aiState.result.detectedRudderType) form.setValue('rudderType', aiState.result.detectedRudderType, { shouldValidate: true });
             if (aiState.result.detectedPropellerType) form.setValue('propellerType', aiState.result.detectedPropellerType, { shouldValidate: true });
             if (aiState.result.detectedFuelType) form.setValue('fuelType', aiState.result.detectedFuelType, { shouldValidate: true });
-            if (aiState.result.detectedUsageStyles) form.setValue('usageStyles', aiState.result.detectedUsageStyles, { shouldValidate: true });
+            if (aiState.result.detectedDivisions) form.setValue('divisions', aiState.result.detectedDivisions, { shouldValidate: true });
             if (aiState.result.detectedFeatures) form.setValue('features', aiState.result.detectedFeatures, { shouldValidate: true });
             if (aiState.result.detectedDeck) form.setValue('deck', aiState.result.detectedDeck, { shouldValidate: true });
             if (aiState.result.detectedCabin) form.setValue('cabin', aiState.result.detectedCabin, { shouldValidate: true });
@@ -442,12 +442,12 @@ export function SellForm() {
                                         <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-8">
-                                        <FormField control={form.control} name="usageStyles" render={() => (
+                                        <FormField control={form.control} name="divisions" render={() => (
                                             <FormItem>
-                                                <FormLabel>Sailing Style</FormLabel>
+                                                <FormLabel>Division</FormLabel>
                                                 <div className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.usageStyles.map((item) => (
-                                                        <FormField key={item.id} control={form.control} name="usageStyles" render={({ field }) => (
+                                                    {metadata.divisions.map((item) => (
+                                                        <FormField key={item.id} control={form.control} name="divisions" render={({ field }) => (
                                                             <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                                                                 <FormControl>
                                                                     <Checkbox

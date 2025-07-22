@@ -1,3 +1,4 @@
+
 export type Yacht = {
   id: string;
   name: string;
@@ -22,7 +23,7 @@ export type Yacht = {
   keelType?: string;
   rudderType?: string;
   propellerType?: string;
-  usageStyles?: string[];
+  divisions?: string[];
   features?: string[];
   deck?: string[];
   cabin?: string[];
