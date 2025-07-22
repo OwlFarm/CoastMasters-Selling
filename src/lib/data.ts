@@ -89,27 +89,6 @@ export const featuredYachts: Yacht[] = [
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
   },
-  {
-    id: '3',
-    name: 'Twin Hull Drifter',
-    boatType: 'Catamaran',
-    listingType: 'Broker',
-    price: 975000,
-    year: 2023,
-    length: 55,
-    location: 'Fort Lauderdale, FL',
-    locationId: 'fort-lauderdale',
-    imageUrl: 'https://placehold.co/600x400/4ECCA3/232931.png',
-    imageHint: 'catamaran boat',
-    make: 'Lagoon',
-    model: '55',
-    condition: 'New',
-    images: ['https://placehold.co/600x400/4ECCA3/232931.png'],
-    description: 'Brand new Lagoon 55 offering incredible volume and stability. The expansive flybridge and forward cockpit are perfect for entertaining. Ready for immediate delivery.',
-    fuelType: 'diesel',
-    hullMaterial: 'fiberglass',
-    usageStyles: ['catamaran'],
-  },
 ];
 
 export const priceValues = [
@@ -125,6 +104,7 @@ export const boatTypes = [
 export const usageStyles = [
   { id: 'monohull', label: 'Monohull' },
   { id: 'catamaran', label: 'Catamaran' },
+  { id: 'trimaran', label: 'Trimaran' },
   { id: 'expedition', label: 'Expedition' },
   { id: 'bluewater-passage', label: 'Bluewater Passage' },
   { id: 'off-shore', label: 'Off Shore' },
