@@ -109,7 +109,7 @@ export const usageStyles = [
   { id: 'ocean', label: 'Ocean' },
   { id: 'off-shore', label: 'Off Shore' },
   { id: 'in-shore', label: 'In Shore' },
-  { id: 'island', label: 'Island' },
+  { id: 'racing', label: 'Racing' },
   { id: 'off-grid', label: 'Off Grid' },
   { id: 'project', label: 'Project' },
 ];
