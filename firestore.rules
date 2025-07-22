@@ -1,13 +1,26 @@
 
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow public read access to all collections for the web app
+    
+    // Allow public read access to all collections for the app to function
     match /{document=**} {
       allow read: if true;
-      allow write: if false; // Keep write access restricted
+      allow write: if false; // Keep writes restricted
     }
+
+    // Allow read/write access to the 'yachts' collection for authenticated users
+    // This is a common pattern, but for now we'll keep it simple with public read
+    // match /yachts/{yachtId} {
+    //   allow read: if true;
+    //   allow create, update, delete: if request.auth != null;
+    // }
+
+    // Allow read/write access to metadata for authenticated users
+    // match /metadata/{docId} {
+    //  allow read: if true;
+    //  allow write: if request.auth != null;
+    // }
   }
 }
-
-    
