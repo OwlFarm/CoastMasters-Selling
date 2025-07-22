@@ -119,8 +119,8 @@ export const makes = [
     { id: 'alberg', value: 'alberg', label: 'Alberg' },
     { id: 'alden', value: 'alden', label: 'Alden' },
     { id: 'allied', value: 'allied', label: 'Allied' },
-    { id: 'alloy-yachts', value: 'alloy-yachts', label: 'Alloy Yachts' },
     { id: 'allures', value: 'allures', label: 'Allures' },
+    { id: 'alloy-yachts', value: 'alloy-yachts', label: 'Alloy Yachts' },
     { id: 'alubat', value: 'alubat', label: 'Alubat' },
     { id: 'alumarine', value: 'alumarine', label: 'Alumarine' },
     { id: 'aluminum-cruiser', value: 'aluminum-cruiser', label: 'Aluminum Cruiser' },
@@ -154,8 +154,8 @@ export const makes = [
     { id: 'contessa', value: 'contessa', label: 'Contessa' },
     { id: 'corbin', value: 'corbin', label: 'Corbin' },
     { id: 'cutter', value: 'cutter', label: 'Cutter' },
-    { id: 'deerfoot', value: 'deerfoot', label: 'Deerfoot' },
     { id: 'dehler', value: 'dehler', label: 'Dehler' },
+    { id: 'deerfoot', value: 'deerfoot', label: 'Deerfoot' },
     { id: 'dolphin', value: 'dolphin', label: 'Dolphin' },
     { id: 'dudley-dix', value: 'dudley-dix', label: 'Dudley Dix' },
     { id: 'dufour-yachts', value: 'dufour-yachts', label: 'Dufour Yachts' },
@@ -420,3 +420,6 @@ export const cabinOptions = [
     
 
 
+
+
+    
