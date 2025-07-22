@@ -243,8 +243,8 @@ export function YachtFilters() {
                   <div className="flex flex-col gap-4 mt-2">
                     {metadata.hullMaterialOptions.map((material) => (
                       <div key={material.id} className="flex items-center space-x-2">
-                        <Checkbox id={`material-${material.id}`} name="hullMaterials" value={material.id} />
-                        <Label htmlFor={`material-${material.id}`} className="font-normal text-sm">{material.label}</Label>
+                        <Checkbox id={`material-side-${material.id}`} name="hullMaterials" value={material.id} />
+                        <Label htmlFor={`material-side-${material.id}`} className="font-normal text-sm">{material.label}</Label>
                       </div>
                     ))}
                   </div>
@@ -254,26 +254,19 @@ export function YachtFilters() {
                   <div className="flex flex-col gap-4 mt-2">
                     {metadata.hullShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
-                        <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
-                        <Label htmlFor={`shape-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
+                        <Checkbox id={`shape-side-${shape.id}`} name="hullShapes" value={shape.id} />
+                        <Label htmlFor={`shape-side-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
                       </div>
                     ))}
                   </div>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="sailing-specifics">
-          <AccordionTrigger className="font-semibold">Sailing Specifics</AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
                   <div className="flex flex-col gap-4 mt-2">
                     {metadata.keelTypeOptions.map((keel) => (
                       <div key={keel.id} className="flex items-center space-x-2">
-                        <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
-                        <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
+                        <Checkbox id={`keel-side-${keel.id}`} name="keelTypes" value={keel.id} />
+                        <Label htmlFor={`keel-side-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
                       </div>
                     ))}
                   </div>
@@ -283,8 +276,8 @@ export function YachtFilters() {
                   <div className="flex flex-col gap-4 mt-2">
                     {metadata.rudderTypeOptions.map((rudder) => (
                       <div key={rudder.id} className="flex items-center space-x-2">
-                        <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
-                        <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
+                        <Checkbox id={`rudder-side-${rudder.id}`} name="rudderTypes" value={rudder.id} />
+                        <Label htmlFor={`rudder-side-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
                       </div>
                     ))}
                   </div>
@@ -294,8 +287,8 @@ export function YachtFilters() {
                   <div className="flex flex-col gap-4 mt-2">
                     {metadata.propellerTypeOptions.map((prop) => (
                       <div key={prop.id} className="flex items-center space-x-2">
-                        <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
-                        <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
+                        <Checkbox id={`propeller-side-${prop.id}`} name="propellerTypes" value={prop.id} />
+                        <Label htmlFor={`propeller-side-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
                       </div>
                     ))}
                   </div>
@@ -390,3 +383,5 @@ export function YachtFilters() {
     </>
   );
 }
+
+    

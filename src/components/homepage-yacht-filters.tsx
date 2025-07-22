@@ -247,7 +247,7 @@ export function HomepageYachtFilters() {
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull Details</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 pb-4">
+            <div className="grid grid-cols-5 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Material</h4>
                   <div className="flex flex-col gap-4 mt-2">
@@ -270,13 +270,6 @@ export function HomepageYachtFilters() {
                     ))}
                   </div>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="sailing-specifics">
-          <AccordionTrigger className="font-semibold">Sailing Specifics</AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-3 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>
                   <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
                   <div className="flex flex-col gap-4 mt-2">
@@ -412,3 +405,5 @@ export function HomepageYachtFilters() {
     </>
   );
 }
+
+    
