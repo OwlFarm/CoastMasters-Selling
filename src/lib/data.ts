@@ -21,6 +21,7 @@ export const featuredYachts: Yacht[] = [
     description: 'A performance cruiser with elegant lines and a powerful sail plan. Perfect for both competitive racing and comfortable blue-water cruising. Well-maintained by a single owner.',
     fuelType: 'diesel',
     hullMaterial: 'composite',
+    sailRigging: 'sloop',
   },
   {
     id: '5',
@@ -41,6 +42,7 @@ export const featuredYachts: Yacht[] = [
     description: 'The ideal Mediterranean cruiser. This Beneteau Oceanis 45 is easy to handle, comfortable, and has been lovingly cared for. Equipped with solar panels and a water maker for extended cruising.',
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
+    sailRigging: 'sloop',
   },
   {
     id: '9',
@@ -61,6 +63,7 @@ export const featuredYachts: Yacht[] = [
     description: 'A fast and comfortable cruiser from Hanse. Known for its easy-to-handle self-tacking jib and spacious, modern interior. Ready for coastal hopping or offshore passages.',
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
+    sailRigging: 'sloop',
   },
   {
     id: '1',
@@ -88,6 +91,7 @@ export const featuredYachts: Yacht[] = [
     description: 'A stunning example of modern yacht design, offering unparalleled luxury and comfort. Features a spacious open-plan layout, a beach club at the stern, and state-of-the-art navigation systems.',
     fuelType: 'diesel',
     hullMaterial: 'fiberglass',
+    sailRigging: 'ketch',
   },
 ];
 
@@ -119,7 +123,7 @@ export const makes = [
     { id: 'alberg', value: 'alberg', label: 'Alberg' },
     { id: 'alden', value: 'alden', label: 'Alden' },
     { id: 'allied', value: 'allied', label: 'Allied' },
-    { id: 'alloy-yachts', value: 'alloy-yachts', label: 'Alloy' },
+    { id: 'alloy', value: 'alloy', label: 'Alloy' },
     { id: 'allures', value: 'allures', label: 'Allures' },
     { id: 'alubat', value: 'alubat', label: 'Alubat' },
     { id: 'alumarine', value: 'alumarine', label: 'Alumarine' },
@@ -128,7 +132,7 @@ export const makes = [
     { id: 'azimut-benetti', value: 'azimut-benetti', label: 'Azimut-Benetti' },
     { id: 'baba', value: 'baba', label: 'Baba' },
     { id: 'baltic', value: 'baltic', label: 'Baltic' },
-    { id: 'bavaria-yachts', value: 'bavaria-yachts', label: 'Bavaria' },
+    { id: 'bavaria', value: 'bavaria', label: 'Bavaria' },
     { id: 'beneteau', value: 'beneteau', label: 'Beneteau' },
     { id: 'bestevaer', value: 'bestevaer', label: 'Bestevaer' },
     { id: 'bluewater', value: 'bluewater', label: 'Bluewater' },
@@ -142,7 +146,7 @@ export const makes = [
     { id: 'caliber', value: 'caliber', label: 'Caliber' },
     { id: 'cape-dory', value: 'cape-dory', label: 'Cape Dory' },
     { id: 'cape-george', value: 'cape-george', label: 'Cape George' },
-    { id: 'catalina-yachts', value: 'catalina-yachts', label: 'Catalina' },
+    { id: 'catalina', value: 'catalina', label: 'Catalina' },
     { id: 'catana', value: 'catana', label: 'Catana' },
     { id: 'chris-white', value: 'chris-white', label: 'Chris White' },
     { id: 'colin-archer', value: 'colin-archer', label: 'Colin Archer' },
@@ -156,8 +160,8 @@ export const makes = [
     { id: 'deerfoot', value: 'deerfoot', label: 'Deerfoot' },
     { id: 'dolphin', value: 'dolphin', label: 'Dolphin' },
     { id: 'dudley-dix', value: 'dudley-dix', label: 'Dudley Dix' },
-    { id: 'dufour-yachts', value: 'dufour-yachts', label: 'Dufour' },
-    { id: 'elan-yachts', value: 'elan-yachts', label: 'Elan' },
+    { id: 'dufour', value: 'dufour', label: 'Dufour' },
+    { id: 'elan', value: 'elan', label: 'Elan' },
     { id: 'endeavour', value: 'endeavour', label: 'Endeavour' },
     { id: 'endurance', value: 'endurance', label: 'Endurance' },
     { id: 'excess', value: 'excess', label: 'Excess' },
@@ -168,12 +172,12 @@ export const makes = [
     { id: 'garcia', value: 'garcia', label: 'Garcia' },
     { id: 'gib\'sea', value: 'gib\'sea', label: 'Gib\'Sea' },
     { id: 'gozzard', value: 'gozzard', label: 'Gozzard' },
-    { id: 'greenline-yachts', value: 'greenline-yachts', label: 'Greenline' },
+    { id: 'greenline', value: 'greenline', label: 'Greenline' },
     { id: 'gulfstar', value: 'gulfstar', label: 'Gulfstar' },
     { id: 'hallberg-rassy', value: 'hallberg-rassy', label: 'Hallberg-Rassy' },
     { id: 'hank-hinckley', value: 'hank-hinckley', label: 'Hank Hinckley' },
     { id: 'hans-christian', value: 'hans-christian', label: 'Hans Christian' },
-    { id: 'hanse-yachts', value: 'hanse-yachts', label: 'Hanse' },
+    { id: 'hanse', value: 'hanse', label: 'Hanse' },
     { id: 'herreshoff', value: 'herreshoff', label: 'Herreshoff' },
     { id: 'hinckley', value: 'hinckley', label: 'Hinckley' },
     { id: 'hoek', value: 'hoek', label: 'Hoek' },
@@ -220,7 +224,7 @@ export const makes = [
     { id: 'puffin', value: 'puffin', label: 'Puffin' },
     { id: 'robert-perry', value: 'robert-perry', label: 'Robert Perry' },
     { id: 'rustler', value: 'rustler', label: 'Rustler' },
-    { id: 'sabre-yachts', value: 'sabre-yachts', label: 'Sabre' },
+    { id: 'sabre', value: 'sabre', label: 'Sabre' },
     { id: 'saga', value: 'saga', label: 'Saga' },
     { id: 'santa-cruz', value: 'santa-cruz', label: 'Santa Cruz' },
     { id: 'schionning', value: 'schionning', label: 'Schionning' },
@@ -232,7 +236,7 @@ export const makes = [
     { id: 'spirit', value: 'spirit', label: 'Spirit' },
     { id: 'sun-odyssey', value: 'sun-odyssey', label: 'Sun Odyssey' },
     { id: 'sundeer', value: 'sundeer', label: 'Sundeer' },
-    { id: 'sweden-yachts', value: 'sweden-yachts', label: 'Sweden' },
+    { id: 'sweden', value: 'sweden', label: 'Sweden' },
     { id: 'ta-chiao', value: 'ta-chiao', label: 'Ta Chiao' },
     { id: 'ta-shing', value: 'ta-shing', label: 'Ta Shing' },
     { id: 'tayana', value: 'tayana', label: 'Tayana' },
@@ -371,6 +375,14 @@ export const propellerTypeOptions = [
     { id: 'controllable-pitch', label: 'Controllable-Pitch' },
 ];
 
+export const sailRiggingOptions = [
+    { id: 'sloop', label: 'Sloop' },
+    { id: 'cutter', label: 'Cutter' },
+    { id: 'ketch', label: 'Ketch' },
+    { id: 'yawl', label: 'Yawl' },
+    { id: 'schooner', label: 'Schooner' },
+];
+
 
 export const featureOptions = [
     { id: 'gps', label: 'GPS Navigation' },
@@ -412,3 +424,5 @@ export const cabinOptions = [
     { id: 'hot-water', label: 'Hot Water System' },
     { id: 'tv-set', label: 'TV Set' },
 ].sort((a, b) => a.label.localeCompare(b.label));
+
+    

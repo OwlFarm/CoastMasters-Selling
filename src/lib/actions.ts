@@ -77,6 +77,7 @@ type Filters = {
     keelTypes: string[];
     rudderTypes: string[];
     propellerTypes: string[];
+    sailRiggings: string[];
     features: string[];
     deck: string[];
     cabin: string[];
@@ -99,6 +100,8 @@ function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
         if (f.hullMaterials.length > 0 && yacht.hullMaterial && !f.hullMaterials.includes(yacht.hullMaterial)) return false;
         if (f.fuelTypes.length > 0 && yacht.fuelType && !f.fuelTypes.includes(yacht.fuelType)) return false;
         if (f.locations.length > 0 && yacht.locationId && !f.locations.includes(yacht.locationId)) return false;
+        if (f.sailRiggings.length > 0 && yacht.sailRigging && !f.sailRiggings.includes(yacht.sailRigging)) return false;
+
 
         const allYachtFeatures = [
             ...(yacht.divisions || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
@@ -135,6 +138,7 @@ export async function handleFilteredSearch(
     keelTypes: formData.getAll('keelTypes').map(String).filter(Boolean),
     rudderTypes: formData.getAll('rudderTypes').map(String).filter(Boolean),
     propellerTypes: formData.getAll('propellerTypes').map(String).filter(Boolean),
+    sailRiggings: formData.getAll('sailRiggings').map(String).filter(Boolean),
     features: formData.getAll('features').map(String).filter(Boolean),
     deck: formData.getAll('deck').map(String).filter(Boolean),
     cabin: formData.getAll('cabin').map(String).filter(Boolean),
@@ -245,3 +249,5 @@ export async function handlePolishDescription(
     return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }
+
+    

@@ -41,6 +41,7 @@ const formSchema = z.object({
   keelType: z.string({ required_error: 'Keel type is required for sailing boats.' }),
   rudderType: z.string({ required_error: 'Rudder type is required for sailing boats.' }),
   propellerType: z.string({ required_error: 'Propeller type is required for sailing boats.' }),
+  sailRigging: z.string({ required_error: 'Sail rigging is required for sailing boats.' }),
   make: z.string({ required_error: 'Please select or enter a builder.' }),
   model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
   year: z.preprocess(
@@ -68,7 +69,7 @@ const steps = [
     name: 'Listing Details', 
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
-        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'fuelType', 'divisions', 
+        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
         'otherSpecifications', 'features', 'deck', 'cabin'
     ] 
   },
@@ -114,6 +115,7 @@ export function SellForm() {
             keelType: undefined,
             rudderType: undefined,
             propellerType: undefined,
+            sailRigging: undefined,
             otherSpecifications: '',
         },
     });
@@ -468,6 +470,16 @@ export function SellForm() {
                                                 <FormMessage />
                                             </FormItem>
                                         )} />
+                                        <FormField control={form.control} name="sailRigging" render={({ field }) => (
+                                            <FormItem><FormLabel>Sail Rigging</FormLabel><FormControl>
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                    {metadata.sailRiggingOptions.map((rig) => (<FormItem key={rig.id} className="flex items-center space-x-2 space-y-0">
+                                                        <FormControl><RadioGroupItem value={rig.id} /></FormControl>
+                                                        <FormLabel className="font-normal">{rig.label}</FormLabel>
+                                                    </FormItem>))}
+                                                </RadioGroup>
+                                            </FormControl><FormMessage /></FormItem>
+                                        )} />
                                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
@@ -821,3 +833,5 @@ export function SellForm() {
         </Form>
     );
 }
+
+    

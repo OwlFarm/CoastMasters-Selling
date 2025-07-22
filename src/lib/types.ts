@@ -23,9 +23,12 @@ export type Yacht = {
   keelType?: string;
   rudderType?: string;
   propellerType?: string;
+  sailRigging?: string;
   divisions?: string[];
   features?: string[];
   deck?: string[];
   cabin?: string[];
   otherSpecifications?: string;
 };
+
+    

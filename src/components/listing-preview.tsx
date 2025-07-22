@@ -6,7 +6,7 @@ import type { FormValues } from './sell-form';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, Droplets, CheckCircle } from 'lucide-react';
+import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, Droplets, CheckCircle, Sailboat } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Metadata, Option, RegionOption } from '@/services/metadata-service';
 import { Card } from '@/components/ui/card';
@@ -73,6 +73,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       keelType: data.keelType,
       rudderType: data.rudderType,
       propellerType: data.propellerType,
+      sailRigging: data.sailRigging,
       divisions: data.divisions,
       features: data.features,
       deck: data.deck,
@@ -89,6 +90,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     { label: 'Location', value: yacht.location, icon: MapPin },
     { label: 'Fuel Type', value: findLabel(yacht.fuelType, metadata.fuelTypes), icon: Fuel },
     { label: 'Hull Material', value: findLabel(yacht.hullMaterial, metadata.hullMaterialOptions), icon: Droplets },
+    { label: 'Sail Rigging', value: findLabel(yacht.sailRigging, metadata.sailRiggingOptions), icon: Sailboat },
   ];
   
   const hullAndEngineSpecs = [
@@ -233,3 +235,5 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     </div>
   );
 }
+
+    

@@ -31,6 +31,7 @@ function toYacht(doc: QueryDocumentSnapshot<DocumentData>): Yacht {
     keelType: data.keelType || '',
     rudderType: data.rudderType || '',
     propellerType: data.propellerType || '',
+    sailRigging: data.sailRigging || '',
     divisions: data.divisions || [],
     features: data.features || [],
     deck: data.deck || [],
@@ -58,3 +59,5 @@ export async function getFeaturedYachts(): Promise<Yacht[]> {
     return featuredYachts;
   }
 }
+
+    

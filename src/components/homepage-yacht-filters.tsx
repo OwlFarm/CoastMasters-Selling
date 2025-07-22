@@ -244,6 +244,19 @@ export function HomepageYachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem value="sail-rigging">
+            <AccordionTrigger className="font-semibold">Sail Rigging</AccordionTrigger>
+            <AccordionContent>
+                <div className="grid grid-cols-5 gap-x-2 gap-y-4 pt-4 pb-4">
+                    {metadata.sailRiggingOptions.map(rig => (
+                        <div key={rig.id} className="flex items-center space-x-2">
+                            <Checkbox id={`rig-${rig.id}`} name="sailRiggings" value={rig.id} />
+                            <Label htmlFor={`rig-${rig.id}`} className="font-normal">{rig.label}</Label>
+                        </div>
+                    ))}
+                </div>
+            </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="hull">
           <AccordionTrigger className="font-semibold">Hull Details</AccordionTrigger>
           <AccordionContent>
@@ -405,3 +418,5 @@ export function HomepageYachtFilters() {
     </>
   );
 }
+
+    

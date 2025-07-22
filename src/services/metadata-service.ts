@@ -14,6 +14,7 @@ import {
     keelTypeOptions as defaultKeelTypeOptions,
     rudderTypeOptions as defaultRudderTypeOptions,
     propellerTypeOptions as defaultPropellerTypeOptions,
+    sailRiggingOptions as defaultSailRiggingOptions,
     featureOptions as defaultFeatureOptions,
     divisions as defaultDivisions,
     deckOptions as defaultDeckOptions,
@@ -45,6 +46,7 @@ export type Metadata = {
     keelTypeOptions: Option[];
     rudderTypeOptions: Option[];
     propellerTypeOptions: Option[];
+    sailRiggingOptions: Option[];
     featureOptions: Option[];
     divisions: Option[];
     deckOptions: Option[];
@@ -57,7 +59,7 @@ export type Metadata = {
 let metadataCache: Metadata | null = null;
 
 // ****** DEVELOPMENT ONLY: Force re-initialization ******
-const FORCE_REINIT = false; 
+const FORCE_REINIT = true; 
 // ******************************************************
 
 async function initializeMetadata() {
@@ -75,6 +77,7 @@ async function initializeMetadata() {
         keelTypeOptions: defaultKeelTypeOptions,
         rudderTypeOptions: defaultRudderTypeOptions,
         propellerTypeOptions: defaultPropellerTypeOptions,
+        sailRiggingOptions: defaultSailRiggingOptions,
         featureOptions: defaultFeatureOptions,
         divisions: defaultDivisions,
         deckOptions: defaultDeckOptions,
@@ -112,6 +115,7 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
                 keelTypeOptions: data.keelTypeOptions || defaultKeelTypeOptions,
                 rudderTypeOptions: data.rudderTypeOptions || defaultRudderTypeOptions,
                 propellerTypeOptions: data.propellerTypeOptions || defaultPropellerTypeOptions,
+                sailRiggingOptions: data.sailRiggingOptions || defaultSailRiggingOptions,
                 featureOptions: data.featureOptions || defaultFeatureOptions,
                 divisions: data.divisions || defaultDivisions,
                 deckOptions: data.deckOptions || defaultDeckOptions,
@@ -135,3 +139,5 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
         return metadataCache;
     }
 });
+
+    

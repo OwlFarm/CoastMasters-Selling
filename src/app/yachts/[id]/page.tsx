@@ -1,5 +1,4 @@
 
-
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getFeaturedYachts } from '@/services/yacht-service';
@@ -7,7 +6,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, Droplets, CheckCircle } from 'lucide-react';
+import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, Droplets, CheckCircle, Sailboat } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   hullMaterialOptions,
@@ -16,6 +15,7 @@ import {
   keelTypeOptions,
   rudderTypeOptions,
   propellerTypeOptions,
+  sailRiggingOptions,
   divisions,
   featureOptions,
   deckOptions,
@@ -65,6 +65,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
     { label: 'Location', value: yacht.location, icon: MapPin },
     { label: 'Fuel Type', value: findLabel(yacht.fuelType, fuelTypes), icon: Fuel },
     { label: 'Hull Material', value: findLabel(yacht.hullMaterial, hullMaterialOptions), icon: Droplets },
+    { label: 'Sail Rigging', value: findLabel(yacht.sailRigging, sailRiggingOptions), icon: Sailboat },
   ];
   
   const hullAndEngineSpecs = [
@@ -228,3 +229,5 @@ export default async function YachtDetailPage({ params }: { params: { id: string
     </div>
   );
 }
+
+    
