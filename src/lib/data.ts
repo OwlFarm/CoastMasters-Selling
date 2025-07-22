@@ -106,7 +106,7 @@ export const usageStyles = [
   { id: 'catamaran', label: 'Catamaran' },
   { id: 'trimaran', label: 'Trimaran' },
   { id: 'expedition', label: 'Expedition' },
-  { id: 'bluewater-passage', label: 'Bluewater Passage' },
+  { id: 'ocean', label: 'Ocean' },
   { id: 'off-shore', label: 'Off Shore' },
   { id: 'in-shore', label: 'In Shore' },
   { id: 'island', label: 'Island' },
