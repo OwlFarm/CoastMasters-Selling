@@ -19,9 +19,6 @@ export function HomepageYachtFilters() {
   const [selectedCurrency, setSelectedCurrency] = React.useState('usd');
   const [builderSearch, setBuilderSearch] = React.useState('');
   const [selectedBuilders, setSelectedBuilders] = React.useState<string[]>([]);
-  const [isSailingChecked, setIsSailingChecked] = React.useState(false);
-  const [isPowerChecked, setIsPowerChecked] = React.useState(false);
-  const [isHobbyChecked, setIsHobbyChecked] = React.useState(false);
   const [metadata, setMetadata] = React.useState<Metadata | null>(null);
 
   React.useEffect(() => {
@@ -102,10 +99,6 @@ export function HomepageYachtFilters() {
   const columnSortedFeatures = sortIntoColumns(metadata.featureOptions, 5);
   const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 5);
   const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 5);
-  const columnSortedPowerSubTypes = sortIntoColumns(metadata.powerBoatSubTypes, 3);
-  const columnSortedHobbySubTypes = sortIntoColumns(metadata.hobbyBoatSubTypes, 3);
-  const columnSortedUsageStyles = sortIntoColumns(metadata.usageStyles, 3);
-
 
   return (
     <>
@@ -113,9 +106,11 @@ export function HomepageYachtFilters() {
         {metadata.priceValues.map(value => <option key={value} value={value} />)}
       </datalist>
       <input type="hidden" name="lengthUnit" value={lengthUnit} />
+      <input type="hidden" name="boatTypes" value="sailing" />
+
 
       <div className="space-y-6 pb-8">
-        <div className="flex h-8 justify-between items-center gap-6">
+        <div className="flex h-8 justify-center items-center gap-6">
             <div className="flex items-center gap-6">
               <div className="flex items-center space-x-2">
                   <Checkbox id="condition-new" name="conditions" value="new" />
@@ -125,41 +120,6 @@ export function HomepageYachtFilters() {
                   <Checkbox id="condition-used" name="conditions" value="used" />
                   <Label htmlFor="condition-used" className="font-normal">Used</Label>
               </div>
-            </div>
-
-            <Separator orientation="vertical" />
-            
-             <div className="flex items-center gap-6">
-              <div className="flex items-center space-x-2">
-                    <Checkbox 
-                        id="type-power-main" 
-                        name="boatTypes" 
-                        value="power"
-                        checked={isPowerChecked}
-                        onCheckedChange={(checked) => setIsPowerChecked(checked === true)}
-                     />
-                    <Label htmlFor="type-power-main" className="font-normal">Power</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox 
-                        id="type-sailing-main" 
-                        name="boatTypes" 
-                        value="sailing" 
-                        checked={isSailingChecked}
-                        onCheckedChange={(checked) => setIsSailingChecked(checked === true)}
-                    />
-                    <Label htmlFor="type-sailing-main" className="font-normal">Sailing</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox 
-                        id="type-hobby-main" 
-                        name="boatTypes" 
-                        value="hobby" 
-                        checked={isHobbyChecked}
-                        onCheckedChange={(checked) => setIsHobbyChecked(checked === true)}
-                    />
-                    <Label htmlFor="type-hobby-main" className="font-normal">Hobby</Label>
-                </div>
             </div>
 
             <Separator orientation="vertical" />
@@ -232,57 +192,21 @@ export function HomepageYachtFilters() {
       </div>
       
       <Accordion type="multiple" defaultValue={['boatType', 'builder']} className="w-full">
-        {(isPowerChecked || isSailingChecked || isHobbyChecked) && (
-            <AccordionItem value="boatType">
-              <AccordionTrigger className="font-semibold">Boat Type Details</AccordionTrigger>
-                <AccordionContent>
-                    <div className="space-y-4 pt-4 pb-4">
-                        {isPowerChecked && (
-                            <>
-                                <h4 className="font-medium text-sm text-muted-foreground">Power Types</h4>
-                                <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                                  {columnSortedPowerSubTypes.flat().map(subType => (
-                                    <div key={subType.id} className="flex items-center space-x-2">
-                                        <Checkbox id={`subtype-${subType.id}`} name="powerSubTypes" value={subType.id} />
-                                        <Label htmlFor={`subtype-${subType.id}`} className="font-normal">{subType.label}</Label>
-                                    </div>
-                                  ))}
-                                </div>
-                            </>
-                        )}
-                        {isSailingChecked && (
-                            <>
-                                {(isPowerChecked || isHobbyChecked) && <Separator className="bg-border/50 my-4" />}
-                                <h4 className="font-medium text-sm text-muted-foreground">Sailing Styles</h4>
-                                <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                                  {columnSortedUsageStyles.flat().map(style => (
-                                    <div key={style.id} className="flex items-center space-x-2">
-                                        <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
-                                        <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
-
-                                    </div>
-                                  ))}
-                                </div>
-                            </>
-                        )}
-                         {isHobbyChecked && (
-                            <>
-                                {(isPowerChecked || isSailingChecked) && <Separator className="bg-border/50 my-4" />}
-                                <h4 className="font-medium text-sm text-muted-foreground">Hobby Types</h4>
-                                <div className="grid grid-cols-3 gap-x-2 gap-y-4">
-                                  {columnSortedHobbySubTypes.flat().map(subType => (
-                                    <div key={subType.id} className="flex items-center space-x-2">
-                                        <Checkbox id={`subtype-hobby-${subType.id}`} name="hobbySubTypes" value={subType.id} />
-                                        <Label htmlFor={`subtype-hobby-${subType.id}`} className="font-normal">{subType.label}</Label>
-                                    </div>
-                                  ))}
-                                </div>
-                            </>
-                        )}
+        <AccordionItem value="boatType">
+          <AccordionTrigger className="font-semibold">Sailing Style</AccordionTrigger>
+            <AccordionContent>
+                <div className="space-y-4 pt-4 pb-4">
+                    <div className="grid grid-cols-3 gap-x-2 gap-y-4">
+                      {metadata.usageStyles.map(style => (
+                        <div key={style.id} className="flex items-center space-x-2">
+                            <Checkbox id={`style-${style.id}`} name="usageStyles" value={style.id} />
+                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                        </div>
+                      ))}
                     </div>
-                </AccordionContent>
-            </AccordionItem>
-        )}
+                </div>
+            </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
@@ -349,48 +273,46 @@ export function HomepageYachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
-        {isSailingChecked && (
-          <AccordionItem value="sailing-specifics">
-            <AccordionTrigger className="font-semibold">Sailing Specifics</AccordionTrigger>
-            <AccordionContent>
-              <div className="grid grid-cols-3 gap-x-6 gap-y-4 pt-4 pb-4">
-                <div>
-                    <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
-                    <div className="flex flex-col gap-4 mt-2">
-                      {metadata.keelTypeOptions.map((keel) => (
-                        <div key={keel.id} className="flex items-center space-x-2">
-                          <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
-                          <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
-                        </div>
-                      ))}
-                    </div>
-                </div>
-                <div>
-                    <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
-                    <div className="flex flex-col gap-4 mt-2">
-                      {metadata.rudderTypeOptions.map((rudder) => (
-                        <div key={rudder.id} className="flex items-center space-x-2">
-                          <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
-                          <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
-                        </div>
-                      ))}
-                    </div>
-                </div>
-                 <div>
-                    <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
-                    <div className="flex flex-col gap-4 mt-2">
-                      {metadata.propellerTypeOptions.map((prop) => (
-                        <div key={prop.id} className="flex items-center space-x-2">
-                          <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
-                          <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
-                        </div>
-                      ))}
-                    </div>
-                </div>
+        <AccordionItem value="sailing-specifics">
+          <AccordionTrigger className="font-semibold">Sailing Specifics</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-3 gap-x-6 gap-y-4 pt-4 pb-4">
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Keel</h4>
+                  <div className="flex flex-col gap-4 mt-2">
+                    {metadata.keelTypeOptions.map((keel) => (
+                      <div key={keel.id} className="flex items-center space-x-2">
+                        <Checkbox id={`keel-${keel.id}`} name="keelTypes" value={keel.id} />
+                        <Label htmlFor={`keel-${keel.id}`} className="font-normal text-sm">{keel.label}</Label>
+                      </div>
+                    ))}
+                  </div>
               </div>
-            </AccordionContent>
-          </AccordionItem>
-        )}
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Rudder</h4>
+                  <div className="flex flex-col gap-4 mt-2">
+                    {metadata.rudderTypeOptions.map((rudder) => (
+                      <div key={rudder.id} className="flex items-center space-x-2">
+                        <Checkbox id={`rudder-${rudder.id}`} name="rudderTypes" value={rudder.id} />
+                        <Label htmlFor={`rudder-${rudder.id}`} className="font-normal text-sm">{rudder.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+                <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Propeller</h4>
+                  <div className="flex flex-col gap-4 mt-2">
+                    {metadata.propellerTypeOptions.map((prop) => (
+                      <div key={prop.id} className="flex items-center space-x-2">
+                        <Checkbox id={`propeller-${prop.id}`} name="propellerTypes" value={prop.id} />
+                        <Label htmlFor={`propeller-${prop.id}`} className="font-normal text-sm">{prop.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="deck">
           <AccordionTrigger className="font-semibold">Deck</AccordionTrigger>
           <AccordionContent>

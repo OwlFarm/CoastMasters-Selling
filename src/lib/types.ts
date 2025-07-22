@@ -12,7 +12,7 @@ export type Yacht = {
   make: string;
   model: string;
   listingType: 'Private' | 'Broker';
-  boatType: 'Motor' | 'Sailing' | 'Catamaran' | 'Hobby' | string;
+  boatType: 'Sailing' | 'Catamaran' | string;
   condition: 'New' | 'Used' | string;
   description?: string;
   fuelType?: string;

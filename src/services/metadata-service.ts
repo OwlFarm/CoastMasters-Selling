@@ -19,9 +19,7 @@ import {
     deckOptions as defaultDeckOptions,
     cabinOptions as defaultCabinOptions,
     listingTypes as defaultListingTypes,
-    powerBoatSubTypes as defaultPowerBoatSubTypes,
     priceValues as defaultPriceValues,
-    hobbyBoatSubTypes as defaultHobbyBoatSubTypes,
 } from '@/lib/data';
 
 export type Option = {
@@ -52,8 +50,6 @@ export type Metadata = {
     deckOptions: Option[];
     cabinOptions: Option[];
     listingTypes: Option[];
-    powerBoatSubTypes: Option[];
-    hobbyBoatSubTypes: Option[];
     priceValues: string[];
 };
 
@@ -80,11 +76,9 @@ async function initializeMetadata() {
         deckOptions: defaultDeckOptions,
         cabinOptions: defaultCabinOptions,
         listingTypes: defaultListingTypes,
-        powerBoatSubTypes: defaultPowerBoatSubTypes,
-        hobbyBoatSubTypes: defaultHobbyBoatSubTypes,
         priceValues: defaultPriceValues,
     };
-    await setDoc(metadataRef, defaultData);
+    await setDoc(metadataRef, defaultData, { merge: true });
     console.log('Metadata initialized in Firestore.');
     return defaultData;
 }
@@ -100,8 +94,28 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
 
         if (docSnap.exists()) {
             console.log("Metadata fetched from Firestore.");
-            metadataCache = docSnap.data() as Metadata;
-            return metadataCache!;
+            const data = docSnap.data();
+            // Ensure all keys exist, falling back to defaults if not present
+            metadataCache = {
+                boatTypes: data.boatTypes || defaultBoatTypes,
+                makes: data.makes || defaultMakes,
+                locationsByRegion: data.locationsByRegion || defaultLocationsByRegion,
+                conditions: data.conditions || defaultConditions,
+                fuelTypes: data.fuelTypes || defaultFuelTypes,
+                hullMaterialOptions: data.hullMaterialOptions || defaultHullMaterialOptions,
+                hullShapeOptions: data.hullShapeOptions || defaultHullShapeOptions,
+                bowShapeOptions: data.bowShapeOptions || defaultBowShapeOptions,
+                keelTypeOptions: data.keelTypeOptions || defaultKeelTypeOptions,
+                rudderTypeOptions: data.rudderTypeOptions || defaultRudderTypeOptions,
+                propellerTypeOptions: data.propellerTypeOptions || defaultPropellerTypeOptions,
+                featureOptions: data.featureOptions || defaultFeatureOptions,
+                usageStyles: data.usageStyles || defaultUsageStyles,
+                deckOptions: data.deckOptions || defaultDeckOptions,
+                cabinOptions: data.cabinOptions || defaultCabinOptions,
+                listingTypes: data.listingTypes || defaultListingTypes,
+                priceValues: data.priceValues || defaultPriceValues,
+            };
+            return metadataCache;
         } else {
             console.log("No metadata found in Firestore. Initializing with default data.");
             const defaultMetadata = await initializeMetadata();
