@@ -80,7 +80,12 @@ type Filters = {
     sailRiggings: string[];
     features: string[];
     deck: string[];
-    cabin: string[];
+    accommodation: {
+        cabins: string[];
+        saloon: string[];
+        galley: string[];
+        heads: string[];
+    };
     fuelTypes: string[];
     locations: string[];
 };
@@ -104,10 +109,22 @@ function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
 
 
         const allYachtFeatures = [
-            ...(yacht.divisions || []), ...(yacht.features || []), ...(yacht.deck || []), ...(yacht.cabin || [])
+            ...(yacht.divisions || []), 
+            ...(yacht.features || []), 
+            ...(yacht.deck || []),
+            ...(yacht.accommodation?.cabins || []),
+            ...(yacht.accommodation?.saloon || []),
+            ...(yacht.accommodation?.galley || []),
+            ...(yacht.accommodation?.heads || []),
         ];
         const allFilterFeatures = [
-            ...f.divisions, ...f.features, ...f.deck, ...f.cabin
+            ...f.divisions, 
+            ...f.features, 
+            ...f.deck,
+            ...f.accommodation.cabins,
+            ...f.accommodation.saloon,
+            ...f.accommodation.galley,
+            ...f.accommodation.heads,
         ];
         if (allFilterFeatures.length > 0 && !allFilterFeatures.every(feat => allYachtFeatures.includes(feat))) return false;
 
@@ -141,7 +158,12 @@ export async function handleFilteredSearch(
     sailRiggings: formData.getAll('sailRiggings').map(String).filter(Boolean),
     features: formData.getAll('features').map(String).filter(Boolean),
     deck: formData.getAll('deck').map(String).filter(Boolean),
-    cabin: formData.getAll('cabin').map(String).filter(Boolean),
+    accommodation: {
+        cabins: formData.getAll('accommodation.cabins').map(String).filter(Boolean),
+        saloon: formData.getAll('accommodation.saloon').map(String).filter(Boolean),
+        galley: formData.getAll('accommodation.galley').map(String).filter(Boolean),
+        heads: formData.getAll('accommodation.heads').map(String).filter(Boolean),
+    },
     fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
     locations: formData.getAll('locations').map(String).filter(Boolean),
   };
@@ -249,3 +271,5 @@ export async function handlePolishDescription(
     return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }
+
+    

@@ -39,6 +39,11 @@ export const GenerateListingDetailsOutputSchema = z.object({
   detectedFuelType: z.string().optional().describe('The fuel type ID detected from the yacht details (e.g., "diesel").'),
   detectedFeatures: z.array(z.string()).optional().describe('An array of general feature IDs detected from the yacht details (e.g., ["gps", "autopilot"]).'),
   detectedDeck: z.array(z.string()).optional().describe('An array of deck feature IDs detected from the yacht details (e.g., ["teak-deck", "bimini"]).'),
-  detectedCabin: z.array(z.string()).optional().describe('An array of cabin feature IDs detected from the yacht details (e.g., ["nav-station", "galley-fridge"]).'),
+  detectedCabins: z.array(z.string()).optional().describe('An array of cabin feature IDs detected from the yacht details.'),
+  detectedSaloon: z.array(z.string()).optional().describe('An array of saloon feature IDs detected from the yacht details.'),
+  detectedGalley: z.array(z.string()).optional().describe('An array of galley feature IDs detected from the yacht details.'),
+  detectedHeads: z.array(z.string()).optional().describe('An array of heads feature IDs detected from the yacht details.'),
 });
 export type GenerateListingDetailsOutput = z.infer<typeof GenerateListingDetailsOutputSchema>;
+
+    

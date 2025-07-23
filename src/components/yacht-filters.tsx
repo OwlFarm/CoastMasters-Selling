@@ -93,7 +93,6 @@ export function YachtFilters() {
   const columnSortedMakes = sortIntoColumns(metadata.makes, 2);
   const columnSortedFeatures = sortIntoColumns(metadata.featureOptions, 2);
   const columnSortedDeck = sortIntoColumns(metadata.deckOptions, 2);
-  const columnSortedCabin = sortIntoColumns(metadata.cabinOptions, 2);
   const columnSortedDivisions = sortIntoColumns(metadata.divisions, 2);
 
 
@@ -322,16 +321,54 @@ export function YachtFilters() {
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="cabin">
-          <AccordionTrigger className="font-semibold">Cabin</AccordionTrigger>
+        <AccordionItem value="accommodation">
+          <AccordionTrigger className="font-semibold">Accommodation</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 pt-4 pb-4">
-              {columnSortedCabin.flat().map((feature) => (
-                <div key={feature.id} className="flex items-center space-x-2">
-                  <Checkbox id={`cabin-filter-${feature.id}`} name="cabin" value={feature.id} />
-                  <Label htmlFor={`cabin-filter-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
-                </div>
-              ))}
+            <div className="space-y-4 pt-4 pb-4">
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Cabins</h4>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-4 mt-2">
+                      {metadata.cabinFeatureOptions.map((feature) => (
+                      <div key={feature.id} className="flex items-center space-x-2">
+                          <Checkbox id={`side-accommodation-cabins-${feature.id}`} name="accommodation.cabins" value={feature.id} />
+                          <Label htmlFor={`side-accommodation-cabins-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
+                      </div>
+                      ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Saloon</h4>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-4 mt-2">
+                      {metadata.saloonOptions.map((feature) => (
+                      <div key={feature.id} className="flex items-center space-x-2">
+                          <Checkbox id={`side-accommodation-saloon-${feature.id}`} name="accommodation.saloon" value={feature.id} />
+                          <Label htmlFor={`side-accommodation-saloon-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
+                      </div>
+                      ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Galley</h4>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-4 mt-2">
+                      {metadata.galleyOptions.map((feature) => (
+                      <div key={feature.id} className="flex items-center space-x-2">
+                          <Checkbox id={`side-accommodation-galley-${feature.id}`} name="accommodation.galley" value={feature.id} />
+                          <Label htmlFor={`side-accommodation-galley-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
+                      </div>
+                      ))}
+                  </div>
+              </div>
+              <div>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Heads</h4>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-4 mt-2">
+                      {metadata.headsOptions.map((feature) => (
+                      <div key={feature.id} className="flex items-center space-x-2">
+                          <Checkbox id={`side-accommodation-heads-${feature.id}`} name="accommodation.heads" value={feature.id} />
+                          <Label htmlFor={`side-accommodation-heads-${feature.id}`} className="font-normal text-sm">{feature.label}</Label>
+                      </div>
+                      ))}
+                  </div>
+              </div>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -355,7 +392,7 @@ export function YachtFilters() {
               {metadata.fuelTypes.map((fuel) => (
                 <div key={fuel.id} className="flex items-center space-x-2">
                   <Checkbox id={`fuel-${fuel.id}`} name="fuelTypes" value={fuel.id} />
-                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal">{fuel.label}</Label>
+                  <Label htmlFor={`fuel-${fuel.id}`} className="font-normal text-sm">{fuel.label}</Label>
                 </div>
               ))}
             </div>

@@ -127,7 +127,6 @@ export const makes = [
     { id: 'allures', value: 'allures', label: 'Allures' },
     { id: 'alubat', value: 'alubat', label: 'Alubat' },
     { id: 'alumarine', value: 'alumarine', label: 'Alumarine' },
-    { id: 'aluminum-cruiser', value: 'aluminum-cruiser', label: 'Aluminum Cruiser' },
     { id: 'amel', value: 'amel', label: 'Amel' },
     { id: 'azimut-benetti', value: 'azimut-benetti', label: 'Azimut-Benetti' },
     { id: 'baba', value: 'baba', label: 'Baba' },
@@ -388,8 +387,6 @@ export const featureOptions = [
     { id: 'gps', label: 'GPS Navigation' },
     { id: 'autopilot', label: 'Autopilot System' },
     { id: 'radar', label: 'Radar' },
-    { id: 'airConditioning', label: 'Air Conditioning' },
-    { id: 'heating', label: 'Heating' },
     { id: 'generator', label: 'Generator' },
     { id: 'bowThruster', label: 'Bow Thruster' },
     { id: 'sternThruster', label: 'Stern Thruster' },
@@ -412,17 +409,32 @@ export const deckOptions = [
     { id: 'swim-platform', label: 'Swim Platform' },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
-export const cabinOptions = [
-    { id: 'nav-station', label: 'Navigation Station' },
-    { id: 'galley-fridge', label: 'Refrigerator' },
-    { id: 'galley-freezer', label: 'Freezer' },
-    { id: 'galley-oven', label: 'Oven' },
-    { id: 'microwave', label: 'Microwave' },
+export const cabinFeatureOptions = [
+    { id: 'v-berth', label: 'V-Berth' },
+    { id: 'aft-cabin', label: 'Aft Cabin' },
+    { id: 'air-conditioning', label: 'Air Conditioning' },
+    { id: 'heating', label: 'Heating' },
     { id: 'cabin-fans', label: 'Cabin Fans' },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+export const saloonOptions = [
+    { id: 'tv-set', label: 'TV Set' },
+    { id: 'nav-station', label: 'Navigation Station' },
+    { id: 'hot-water', label: 'Hot Water System' },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+export const galleyOptions = [
+    { id: 'refrigerator', label: 'Refrigerator' },
+    { id: 'freezer', label: 'Freezer' },
+    { id: 'oven', label: 'Oven' },
+    { id: 'microwave', label: 'Microwave' },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+export const headsOptions = [
     { id: 'electric-head', label: 'Electric Head' },
     { id: 'manual-head', label: 'Manual Head' },
-    { id: 'hot-water', label: 'Hot Water System' },
-    { id: 'tv-set', label: 'TV Set' },
+    { id: 'holding-tank', label: 'Holding Tank' },
 ].sort((a, b) => a.label.localeCompare(b.label));
+    
 
     

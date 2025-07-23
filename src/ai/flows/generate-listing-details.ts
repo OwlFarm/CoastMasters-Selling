@@ -23,7 +23,10 @@ import {
   fuelTypes,
   featureOptions,
   deckOptions,
-  cabinOptions,
+  cabinFeatureOptions,
+  saloonOptions,
+  galleyOptions,
+  headsOptions,
 } from '@/lib/data';
 
 export async function generateListingDetails(input: GenerateListingDetailsInput): Promise<GenerateListingDetailsOutput> {
@@ -97,7 +100,16 @@ For single-choice categories (like Hull Material), return only the one most like
 {{{deckOptions}}}
 
 **Available Cabin Features:**
-{{{cabinOptions}}}
+{{{cabinFeatureOptions}}}
+
+**Available Saloon Features:**
+{{{saloonOptions}}}
+
+**Available Galley Features:**
+{{{galleyOptions}}}
+
+**Available Heads Features:**
+{{{headsOptions}}}
 
 **Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "off-shore" in the \`detectedDivisions\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
 
@@ -123,10 +135,15 @@ const generateListingDetailsFlow = ai.defineFlow(
       fuelTypes: formatOptionsForPrompt(fuelTypes),
       featureOptions: formatOptionsForPrompt(featureOptions),
       deckOptions: formatOptionsForPrompt(deckOptions),
-      cabinOptions: formatOptionsForPrompt(cabinOptions),
+      cabinFeatureOptions: formatOptionsForPrompt(cabinFeatureOptions),
+      saloonOptions: formatOptionsForPrompt(saloonOptions),
+      galleyOptions: formatOptionsForPrompt(galleyOptions),
+      headsOptions: formatOptionsForPrompt(headsOptions),
     };
 
     const {output} = await prompt(promptData as any);
     return output!;
   }
 );
+
+    

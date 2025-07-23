@@ -18,7 +18,10 @@ import {
     featureOptions as defaultFeatureOptions,
     divisions as defaultDivisions,
     deckOptions as defaultDeckOptions,
-    cabinOptions as defaultCabinOptions,
+    cabinFeatureOptions as defaultCabinFeatureOptions,
+    saloonOptions as defaultSaloonOptions,
+    galleyOptions as defaultGalleyOptions,
+    headsOptions as defaultHeadsOptions,
     listingTypes as defaultListingTypes,
     priceValues as defaultPriceValues,
 } from '@/lib/data';
@@ -50,7 +53,10 @@ export type Metadata = {
     featureOptions: Option[];
     divisions: Option[];
     deckOptions: Option[];
-    cabinOptions: Option[];
+    cabinFeatureOptions: Option[];
+    saloonOptions: Option[];
+    galleyOptions: Option[];
+    headsOptions: Option[];
     listingTypes: Option[];
     priceValues: string[];
 };
@@ -59,7 +65,7 @@ export type Metadata = {
 let metadataCache: Metadata | null = null;
 
 // ****** DEVELOPMENT ONLY: Force re-initialization ******
-const FORCE_REINIT = false; 
+const FORCE_REINIT = true; 
 // ******************************************************
 
 async function initializeMetadata() {
@@ -81,7 +87,10 @@ async function initializeMetadata() {
         featureOptions: defaultFeatureOptions,
         divisions: defaultDivisions,
         deckOptions: defaultDeckOptions,
-        cabinOptions: defaultCabinOptions,
+        cabinFeatureOptions: defaultCabinFeatureOptions,
+        saloonOptions: defaultSaloonOptions,
+        galleyOptions: defaultGalleyOptions,
+        headsOptions: defaultHeadsOptions,
         listingTypes: defaultListingTypes,
         priceValues: defaultPriceValues,
     };
@@ -119,7 +128,10 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
                 featureOptions: data.featureOptions || defaultFeatureOptions,
                 divisions: data.divisions || defaultDivisions,
                 deckOptions: data.deckOptions || defaultDeckOptions,
-                cabinOptions: data.cabinOptions || defaultCabinOptions,
+                cabinFeatureOptions: data.cabinFeatureOptions || defaultCabinFeatureOptions,
+                saloonOptions: data.saloonOptions || defaultSaloonOptions,
+                galleyOptions: data.galleyOptions || defaultGalleyOptions,
+                headsOptions: data.headsOptions || defaultHeadsOptions,
                 listingTypes: data.listingTypes || defaultListingTypes,
                 priceValues: data.priceValues || defaultPriceValues,
             };

@@ -27,7 +27,12 @@ export type Yacht = {
   divisions?: string[];
   features?: string[];
   deck?: string[];
-  cabin?: string[];
+  accommodation?: {
+      cabins?: string[];
+      saloon?: string[];
+      galley?: string[];
+      heads?: string[];
+  };
   otherSpecifications?: string;
   saDisp?: number;
   balDisp?: number;
@@ -38,3 +43,5 @@ export type Yacht = {
   hullSpeed?: number;
   poundsPerInchImmersion?: number;
 };
+
+    
