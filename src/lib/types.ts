@@ -29,6 +29,12 @@ export type Yacht = {
   deck?: string[];
   cabin?: string[];
   otherSpecifications?: string;
+  saDisp?: number;
+  balDisp?: number;
+  dispLen?: number;
+  comfortRatio?: number;
+  capsizeScreeningFormula?: number;
+  sNum?: number;
+  hullSpeed?: number;
+  poundsPerInchImmersion?: number;
 };
-
-    

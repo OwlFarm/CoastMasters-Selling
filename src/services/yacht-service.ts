@@ -59,5 +59,3 @@ export async function getFeaturedYachts(): Promise<Yacht[]> {
     return featuredYachts;
   }
 }
-
-    

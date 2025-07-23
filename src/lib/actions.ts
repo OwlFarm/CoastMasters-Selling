@@ -249,5 +249,3 @@ export async function handlePolishDescription(
     return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }
-
-    

@@ -207,6 +207,77 @@ export function HomepageYachtFilters() {
                 </div>
             </AccordionContent>
         </AccordionItem>
+        <AccordionItem value="calculations">
+          <AccordionTrigger className="font-semibold">Calculations</AccordionTrigger>
+            <AccordionContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4 pt-4 pb-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="sa-disp-min">SA/Disp.</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="saDispMin" id="sa-disp-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="saDispMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="bal-disp-min">Bal./Disp.</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="balDispMin" id="bal-disp-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="balDispMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="disp-len-min">Disp./Len.</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="dispLenMin" id="disp-len-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="dispLenMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="comfort-ratio-min">Comfort Ratio</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="comfortRatioMin" id="comfort-ratio-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="comfortRatioMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="csf-min">Capsize Screening Formula (CSF)</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="csfMin" id="csf-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="csfMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="s-num-min">S#</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="sNumMin" id="s-num-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="sNumMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="hull-speed-min">Hull Speed</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="hullSpeedMin" id="hull-speed-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="hullSpeedMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="ppi-min">Pounds per Inch Immersion</Label>
+                        <div className="flex items-center gap-2">
+                            <Input name="ppiMin" id="ppi-min" type="number" placeholder="Min" className="w-full" />
+                            <span className="text-muted-foreground">-</span>
+                            <Input name="ppiMax" type="number" placeholder="Max" className="w-full" />
+                        </div>
+                    </div>
+                </div>
+            </AccordionContent>
+        </AccordionItem>
         <AccordionItem value="builder">
           <AccordionTrigger className="font-semibold">Builder</AccordionTrigger>
           <AccordionContent>
@@ -418,5 +489,3 @@ export function HomepageYachtFilters() {
     </>
   );
 }
-
-    
