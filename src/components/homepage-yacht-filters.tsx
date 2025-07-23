@@ -192,21 +192,6 @@ export function HomepageYachtFilters() {
       </div>
       
       <Accordion type="multiple" defaultValue={['boatType', 'builder']} className="w-full">
-        <AccordionItem value="boatType">
-          <AccordionTrigger className="font-semibold">Division</AccordionTrigger>
-            <AccordionContent>
-                <div className="space-y-4 pt-4 pb-4">
-                    <div className="grid grid-cols-5 gap-x-2 gap-y-4">
-                      {metadata.divisions.map(style => (
-                        <div key={style.id} className="flex items-center space-x-2">
-                            <Checkbox id={`style-${style.id}`} name="divisions" value={style.id} />
-                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
-                        </div>
-                      ))}
-                    </div>
-                </div>
-            </AccordionContent>
-        </AccordionItem>
         <AccordionItem value="calculations">
           <AccordionTrigger className="font-semibold">Calculations</AccordionTrigger>
             <AccordionContent>
@@ -274,6 +259,21 @@ export function HomepageYachtFilters() {
                             <span className="text-muted-foreground">-</span>
                             <Input name="ppiMax" type="number" placeholder="Max" className="w-full" />
                         </div>
+                    </div>
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="boatType">
+          <AccordionTrigger className="font-semibold">Division</AccordionTrigger>
+            <AccordionContent>
+                <div className="space-y-4 pt-4 pb-4">
+                    <div className="grid grid-cols-5 gap-x-2 gap-y-4">
+                      {metadata.divisions.map(style => (
+                        <div key={style.id} className="flex items-center space-x-2">
+                            <Checkbox id={`style-${style.id}`} name="divisions" value={style.id} />
+                            <Label htmlFor={`style-${style.id}`} className="font-normal">{style.label}</Label>
+                        </div>
+                      ))}
                     </div>
                 </div>
             </AccordionContent>
