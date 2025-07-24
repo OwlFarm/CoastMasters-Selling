@@ -6,8 +6,8 @@ import { generateListingDetails, type GenerateListingDetailsOutput } from '@/ai/
 import { polishDescription } from '@/ai/flows/polish-description';
 import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
-import { getFeaturedYachts } from '@/services/yacht-service';
 import type { Yacht } from '@/lib/types';
+import { searchYachts, type PiloterrSearchQuery } from '@/services/piloterr-service';
 
 
 const searchSchema = z.object({
@@ -59,140 +59,33 @@ const getNumber = (value: FormDataEntryValue | null) => {
     return isNaN(num) ? undefined : num;
 };
 
-type Filters = {
-    conditions: string[];
-    listingTypes: string[];
-    priceMin?: number;
-    priceMax?: number;
-    lengthMin?: number;
-    lengthMax?: number;
-    lengthUnit: 'ft' | 'm';
-    yearMin?: number;
-    yearMax?: number;
-    boatTypes: string[];
-    divisions: string[];
-    builders: string[];
-    hullMaterials: string[];
-    hullShapes: string[];
-    keelTypes: string[];
-    rudderTypes: string[];
-    propellerTypes: string[];
-    sailRiggings: string[];
-    features: string[];
-    deck: string[];
-    accommodation: {
-        cabins: string[];
-        saloon: string[];
-        galley: string[];
-        heads: string[];
-    };
-    fuelTypes: string[];
-    locations: string[];
-};
-
-function applyFilters(yachts: Yacht[], f: Filters): Yacht[] {
-    return yachts.filter(yacht => {
-        if (f.priceMin !== undefined && yacht.price < f.priceMin) return false;
-        if (f.priceMax !== undefined && yacht.price > f.priceMax) return false;
-        if (f.yearMin !== undefined && yacht.year < f.yearMin) return false;
-        if (f.yearMax !== undefined && yacht.year > f.yearMax) return false;
-        if (f.lengthMin !== undefined && yacht.length < f.lengthMin) return false;
-        if (f.lengthMax !== undefined && yacht.length > f.lengthMax) return false;
-        if (f.conditions.length > 0 && !f.conditions.some(c => c.toLowerCase() === yacht.condition.toLowerCase())) return false;
-        if (f.listingTypes.length > 0 && !f.listingTypes.some(t => t.toLowerCase() === yacht.listingType.toLowerCase())) return false;
-        if (f.boatTypes.length > 0 && !f.boatTypes.some(bt => bt.toLowerCase() === yacht.boatType.toLowerCase())) return false;
-        if (f.builders.length > 0 && !f.builders.some(b => b.toLowerCase() === yacht.make.toLowerCase())) return false;
-        if (f.hullMaterials.length > 0 && yacht.hullMaterial && !f.hullMaterials.includes(yacht.hullMaterial)) return false;
-        if (f.fuelTypes.length > 0 && yacht.fuelType && !f.fuelTypes.includes(yacht.fuelType)) return false;
-        if (f.locations.length > 0 && yacht.locationId && !f.locations.includes(yacht.locationId)) return false;
-        if (f.sailRiggings.length > 0 && yacht.sailRigging && !f.sailRiggings.includes(yacht.sailRigging)) return false;
-
-
-        const allYachtFeatures = [
-            ...(yacht.divisions || []), 
-            ...(yacht.features || []), 
-            ...(yacht.deck || []),
-            ...(yacht.accommodation?.cabins || []),
-            ...(yacht.accommodation?.saloon || []),
-            ...(yacht.accommodation?.galley || []),
-            ...(yacht.accommodation?.heads || []),
-        ];
-        const allFilterFeatures = [
-            ...f.divisions, 
-            ...f.features, 
-            ...f.deck,
-            ...f.accommodation.cabins,
-            ...f.accommodation.saloon,
-            ...f.accommodation.galley,
-            ...f.accommodation.heads,
-        ];
-        if (allFilterFeatures.length > 0 && !allFilterFeatures.every(feat => allYachtFeatures.includes(feat))) return false;
-
-        return true;
-    });
-}
-
 export async function handleFilteredSearch(
   prevState: FilteredSearchState,
   formData: FormData
 ): Promise<FilteredSearchState> {
   
-  const filters: Filters = {
-    conditions: formData.getAll('conditions').map(String).filter(Boolean),
-    listingTypes: formData.getAll('listingTypes').map(String).filter(Boolean),
-    priceMin: getNumber(formData.get('priceMin')),
-    priceMax: getNumber(formData.get('priceMax')),
-    lengthMin: getNumber(formData.get('lengthMin')),
-    lengthMax: getNumber(formData.get('lengthMax')),
-    lengthUnit: (formData.get('lengthUnit') as 'ft' | 'm' | null) || 'ft',
-    yearMin: getNumber(formData.get('yearMin')),
-    yearMax: getNumber(formData.get('yearMax')),
-    boatTypes: formData.getAll('boatTypes').map(String).filter(Boolean),
-    divisions: formData.getAll('divisions').map(String).filter(Boolean),
-    builders: formData.getAll('builders').map(String).filter(Boolean),
-    hullMaterials: formData.getAll('hullMaterials').map(String).filter(Boolean),
-    hullShapes: formData.getAll('hullShapes').map(String).filter(Boolean),
-    keelTypes: formData.getAll('keelTypes').map(String).filter(Boolean),
-    rudderTypes: formData.getAll('rudderTypes').map(String).filter(Boolean),
-    propellerTypes: formData.getAll('propellerTypes').map(String).filter(Boolean),
-    sailRiggings: formData.getAll('sailRiggings').map(String).filter(Boolean),
-    features: formData.getAll('features').map(String).filter(Boolean),
-    deck: formData.getAll('deck').map(String).filter(Boolean),
-    accommodation: {
-        cabins: formData.getAll('accommodation.cabins').map(String).filter(Boolean),
-        saloon: formData.getAll('accommodation.saloon').map(String).filter(Boolean),
-        galley: formData.getAll('accommodation.galley').map(String).filter(Boolean),
-        heads: formData.getAll('accommodation.heads').map(String).filter(Boolean),
-    },
-    fuelTypes: formData.getAll('fuelTypes').map(String).filter(Boolean),
-    locations: formData.getAll('locations').map(String).filter(Boolean),
+  const query: PiloterrSearchQuery = {
+    // We can add a query if we have a search bar for it.
+    // For now, let's search for "sailboat" to get relevant results.
+    query: 'sailboat', 
+    min_price: getNumber(formData.get('priceMin')),
+    max_price: getNumber(formData.get('priceMax')),
+    min_year: getNumber(formData.get('yearMin')),
+    max_year: getNumber(formData.get('yearMax')),
+    min_length: getNumber(formData.get('lengthMin')),
+    max_length: getNumber(formData.get('lengthMax')),
+    currency: formData.get('currency')?.toString().toUpperCase(),
   };
 
   try {
-    const allYachts = await getFeaturedYachts();
+    const yachts = await searchYachts(query);
     
-    let filteredYachts = applyFilters(allYachts, filters);
+    // The Piloterr API does the filtering, so we just display the results.
+    // We can add client-side filtering here later if needed for unsupported params.
     
-    if (filteredYachts.length > 0) {
-        const message = `Showing ${filteredYachts.length} matching yachts.`;
-        return { result: { yachts: filteredYachts, message } };
-    }
-
-    const hasPriceFilter = filters.priceMin !== undefined || filters.priceMax !== undefined;
-    const hasLocationFilter = filters.locations.length > 0;
-    
-    if (hasPriceFilter || hasLocationFilter) {
-        const relaxedFilters = { ...filters, priceMin: undefined, priceMax: undefined, locations: [] };
-        const relaxedYachts = applyFilters(allYachts, relaxedFilters);
-
-        if (relaxedYachts.length > 0) {
-            let relaxedCriteria: string[] = [];
-            if (hasPriceFilter) relaxedCriteria.push('price');
-            if (hasLocationFilter) relaxedCriteria.push('location');
-            
-            const message = `No exact matches. Showing ${relaxedYachts.length} comparable yachts by expanding ${relaxedCriteria.join(' and ')}.`;
-            return { result: { yachts: relaxedYachts, message } };
-        }
+    if (yachts.length > 0) {
+        const message = `Showing ${yachts.length} matching yachts.`;
+        return { result: { yachts, message } };
     }
 
     const message = 'No matching yachts found. Try broadening your search filters.';
@@ -200,7 +93,8 @@ export async function handleFilteredSearch(
 
   } catch (error) {
     console.error('Filtered search failed:', error);
-    return { error: 'An error occurred during the search. Please try again.' };
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { error: `An error occurred during the search: ${errorMessage}` };
   }
 }
 
@@ -271,5 +165,3 @@ export async function handlePolishDescription(
     return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }
-
-    
