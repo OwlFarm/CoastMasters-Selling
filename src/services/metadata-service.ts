@@ -65,7 +65,7 @@ export type Metadata = {
 let metadataCache: Metadata | null = null;
 
 // ****** DEVELOPMENT ONLY: Force re-initialization ******
-const FORCE_REINIT = true; 
+const FORCE_REINIT = false; 
 // ******************************************************
 
 async function initializeMetadata() {
@@ -151,5 +151,3 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
         return metadataCache;
     }
 });
-
-    
