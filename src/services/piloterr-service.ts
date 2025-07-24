@@ -79,6 +79,7 @@ export async function searchYachts(query: PiloterrSearchQuery): Promise<Yacht[]>
     });
 
     const url = `https://api.piloterr.com/v2/yachtworld/search?${params.toString()}`;
+    console.log(`Making Piloterr API request to: ${url}`);
 
     try {
         const response = await fetch(url, {
@@ -96,9 +97,11 @@ export async function searchYachts(query: PiloterrSearchQuery): Promise<Yacht[]>
         const result = await response.json();
         
         if (result.data && Array.isArray(result.data)) {
+            console.log(`Piloterr API returned ${result.data.length} yachts.`);
             return result.data.map((yacht: PiloterrYacht, index: number) => toYacht(yacht, index));
         }
 
+        console.log('Piloterr API returned no data.');
         return [];
     } catch (error) {
         console.error('Failed to fetch from Piloterr API:', error);

@@ -77,6 +77,8 @@ export async function handleFilteredSearch(
     currency: formData.get('currency')?.toString().toUpperCase(),
   };
 
+  console.log('Constructed filter query for Piloterr API:', query);
+
   try {
     const yachts = await searchYachts(query);
     
