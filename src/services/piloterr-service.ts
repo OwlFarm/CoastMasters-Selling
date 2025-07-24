@@ -65,7 +65,8 @@ function toYacht(piloterrYacht: PiloterrYacht, index: number): Yacht {
 export async function searchYachts(query: PiloterrSearchQuery): Promise<Yacht[]> {
     const apiKey = process.env.BOAT_LISTINGS_API_KEY;
     if (!apiKey) {
-        throw new Error('Piloterr API key is not configured. Please set BOAT_LISTINGS_API_KEY in your .env file.');
+        console.warn('Piloterr API key is not configured. Please set BOAT_LISTINGS_API_KEY in your .env file. Falling back to static data.');
+        return [];
     }
 
     const params = new URLSearchParams();
@@ -95,7 +96,7 @@ export async function searchYachts(query: PiloterrSearchQuery): Promise<Yacht[]>
         const result = await response.json();
         
         if (result.data && Array.isArray(result.data)) {
-            return result.data.map((yacht: PilototerrYacht, index: number) => toYacht(yacht, index));
+            return result.data.map((yacht: PiloterrYacht, index: number) => toYacht(yacht, index));
         }
 
         return [];
