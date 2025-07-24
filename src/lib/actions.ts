@@ -77,17 +77,27 @@ export async function handleFilteredSearch(
     currency: formData.get('currency')?.toString().toUpperCase(),
   };
 
-  console.log('Constructed filter query for Piloterr API:', query);
+  const selectedConditions = formData.getAll('conditions').map(String);
 
   try {
-    const yachts = await searchYachts(query);
+    const apiYachts = await searchYachts(query);
     
-    // The Piloterr API does the filtering, so we just display the results.
-    // We can add client-side filtering here later if needed for unsupported params.
+    // The Piloterr API does some filtering, but we need to do the rest.
+    const filteredYachts = apiYachts.filter(yacht => {
+        // Condition filter
+        if (selectedConditions.length > 0 && !selectedConditions.includes(yacht.condition.toLowerCase())) {
+            return false;
+        }
+
+        // Add any other client-side filters here in the future
+        // e.g., for hull type, features, etc.
+
+        return true;
+    });
     
-    if (yachts.length > 0) {
-        const message = `Showing ${yachts.length} matching yachts.`;
-        return { result: { yachts, message } };
+    if (filteredYachts.length > 0) {
+        const message = `Showing ${filteredYachts.length} matching yachts.`;
+        return { result: { yachts: filteredYachts, message } };
     }
 
     const message = 'No matching yachts found. Try broadening your search filters.';
