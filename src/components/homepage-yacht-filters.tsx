@@ -407,7 +407,7 @@ export function HomepageYachtFilters() {
             </AccordionContent>
         </AccordionItem>
         <AccordionItem value="hull">
-          <AccordionTrigger className="font-semibold">Hull Details</AccordionTrigger>
+          <AccordionTrigger className="font-semibold">Hull</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-5 gap-x-6 gap-y-4 pt-4 pb-4">
               <div>

@@ -358,6 +358,8 @@ export const keelTypeOptions = [
     { id: 'winged', label: 'Winged Keel' },
     { id: 'bulb', label: 'Bulb Keel' },
     { id: 'daggerboard', label: 'Daggerboard' },
+    { id: 'bolt-on', label: 'Bolt-On' },
+    { id: 'encapsulated', label: 'Encapsulated' },
 ];
 
 export const rudderTypeOptions = [
