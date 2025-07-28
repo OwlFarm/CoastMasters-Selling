@@ -407,6 +407,8 @@ export const deckOptions = [
     { id: 'tiller-steering', label: 'Tiller Steering' },
     { id: 'windlass', label: 'Electric Windlass' },
     { id: 'swim-platform', label: 'Swim Platform' },
+    { id: 'centre-cockpit', label: 'Centre Cockpit' },
+    { id: 'aft-cockpit', label: 'Aft Cockpit' },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
 export const cabinFeatureOptions = [
