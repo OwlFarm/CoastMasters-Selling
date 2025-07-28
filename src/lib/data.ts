@@ -336,12 +336,12 @@ export const hullMaterialOptions = [
   { id: 'composite', label: 'Composite' },
 ];
 
-export const hullShapeOptions = [
-    { id: 'displacement', label: 'Displacement' },
-    { id: 'semi-displacement', label: 'Semi-Displacement' },
-    { id: 'planing', label: 'Planing' },
-    { id: 'catamaran', label: 'Catamaran' },
-    { id: 'trimaran', label: 'Trimaran' },
+export const transomShapeOptions = [
+    { id: 'traditional', label: 'Traditional' },
+    { id: 'plumb', label: 'Plumb' },
+    { id: 'reverse', label: 'Reverse' },
+    { id: 'scoop', label: 'Scoop' },
+    { id: 'walk-through', label: 'Walk-through' },
 ];
 
 export const bowShapeOptions = [

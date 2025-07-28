@@ -1,4 +1,5 @@
 
+
 export type Yacht = {
   id: string;
   name: string;
@@ -18,7 +19,7 @@ export type Yacht = {
   description?: string;
   fuelType?: string;
   hullMaterial?: string;
-  hullShape?: string;
+  transomShape?: string;
   bowShape?: string;
   keelType?: string;
   rudderType?: string;

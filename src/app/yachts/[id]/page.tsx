@@ -1,4 +1,5 @@
 
+
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getFeaturedYachts } from '@/services/yacht-service';
@@ -10,7 +11,7 @@ import { Heart, GitCompareArrows, MapPin, Calendar, Ship, Ruler, Anchor, Fuel, D
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   hullMaterialOptions,
-  hullShapeOptions,
+  transomShapeOptions,
   bowShapeOptions,
   keelTypeOptions,
   rudderTypeOptions,
@@ -19,7 +20,10 @@ import {
   divisions,
   featureOptions,
   deckOptions,
-  cabinOptions,
+  cabinFeatureOptions,
+  saloonOptions,
+  galleyOptions,
+  headsOptions,
   fuelTypes
 } from '@/lib/data';
 import type { Yacht } from '@/lib/types';
@@ -69,12 +73,19 @@ export default async function YachtDetailPage({ params }: { params: { id: string
   ];
   
   const hullAndEngineSpecs = [
-    { label: 'Hull Shape', value: findLabel(yacht.hullShape, hullShapeOptions) },
+    { label: 'Transom Shape', value: findLabel(yacht.transomShape, transomShapeOptions) },
     { label: 'Bow Shape', value: findLabel(yacht.bowShape, bowShapeOptions) },
     { label: 'Keel Type', value: findLabel(yacht.keelType, keelTypeOptions) },
     { label: 'Rudder Type', value: findLabel(yacht.rudderType, rudderTypeOptions) },
     { label: 'Propeller Type', value: findLabel(yacht.propellerType, propellerTypeOptions) },
   ].filter(spec => spec.value);
+
+  const accommodationFeatures = [
+    { category: 'Cabins', features: yacht.accommodation?.cabins, options: cabinFeatureOptions },
+    { category: 'Saloon', features: yacht.accommodation?.saloon, options: saloonOptions },
+    { category: 'Galley', features: yacht.accommodation?.galley, options: galleyOptions },
+    { category: 'Heads', features: yacht.accommodation?.heads, options: headsOptions },
+  ];
 
 
   return (
@@ -184,7 +195,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                       <TabsTrigger value="usage">Division</TabsTrigger>
                       <TabsTrigger value="features">Equipment</TabsTrigger>
                       <TabsTrigger value="deck">Deck</TabsTrigger>
-                      <TabsTrigger value="cabin">Cabin</TabsTrigger>
+                      <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="specifications" className="mt-6">
@@ -216,8 +227,13 @@ export default async function YachtDetailPage({ params }: { params: { id: string
                       {renderFeatureList(yacht.deck, deckOptions)}
                     </TabsContent>
 
-                    <TabsContent value="cabin" className="mt-6">
-                      {renderFeatureList(yacht.cabin, cabinOptions)}
+                    <TabsContent value="accommodation" className="mt-6 space-y-8">
+                       {accommodationFeatures.map(group => (
+                          <div key={group.category}>
+                            <h3 className="text-lg font-semibold mb-4 border-b pb-2">{group.category}</h3>
+                            {renderFeatureList(group.features, group.options)}
+                          </div>
+                        ))}
                     </TabsContent>
                   </Tabs>
                 </div>

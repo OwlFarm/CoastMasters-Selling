@@ -32,7 +32,7 @@ export const GenerateListingDetailsOutputSchema = z.object({
     ),
   detectedDivisions: z.array(z.string()).optional().describe('An array of division IDs detected from the yacht details (e.g., ["blue-water", "island"]).'),
   detectedHullMaterial: z.string().optional().describe('The hull material ID detected from the yacht details (e.g., "fiberglass").'),
-  detectedHullShape: z.string().optional().describe('The hull shape ID detected from the yacht details (e.g., "displacement").'),
+  detectedTransomShape: z.string().optional().describe('The transom shape ID detected from the yacht details (e.g., "reverse").'),
   detectedKeelType: z.string().optional().describe('The keel type ID detected from the yacht details (e.g., "fin").'),
   detectedRudderType: z.string().optional().describe('The rudder type ID detected from the yacht details (e.g., "spade").'),
   detectedPropellerType: z.string().optional().describe('The propeller type ID detected from the yacht details (e.g., "folding").'),

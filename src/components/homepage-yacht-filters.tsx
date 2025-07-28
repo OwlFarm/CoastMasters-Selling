@@ -299,7 +299,7 @@ export function HomepageYachtFilters() {
                              <InfoTooltip>
                                 <div className="space-y-2 text-left">
                                     <p>A guide to probable boat performance. For boats of the same length, a higher S# generally means a lower PHRF. &lt;2: Slow, 2-3: Cruiser, 3-5: Racer Cruiser, 5+: Fast/Racing.</p>
-                                    <code className="text-xs">S# = 3.972*(10^(-[Dsp/LWL]/526+(0.691*(LOG([SA/Dp]])-1)^0.8)))</code>
+                                    <code className="text-xs">S# = 3.972*(10^(-[Dsp/LWL]/526+(0.691*(LOG([@[SA/Dp]])-1)^0.8)))</code>
                                 </div>
                             </InfoTooltip>
                         </div>
@@ -422,11 +422,11 @@ export function HomepageYachtFilters() {
                   </div>
               </div>
               <div>
-                  <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Transom</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {metadata.hullShapeOptions.map((shape) => (
+                    {metadata.transomShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
-                        <Checkbox id={`shape-${shape.id}`} name="hullShapes" value={shape.id} />
+                        <Checkbox id={`shape-${shape.id}`} name="transomShapes" value={shape.id} />
                         <Label htmlFor={`shape-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
                       </div>
                     ))}

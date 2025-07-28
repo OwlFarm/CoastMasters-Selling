@@ -16,7 +16,7 @@ import {
 import {
   divisions,
   hullMaterialOptions,
-  hullShapeOptions,
+  transomShapeOptions,
   keelTypeOptions,
   rudderTypeOptions,
   propellerTypeOptions,
@@ -78,8 +78,8 @@ For single-choice categories (like Hull Material), return only the one most like
 **Available Hull Materials:**
 {{{hullMaterialOptions}}}
 
-**Available Hull Shapes:**
-{{{hullShapeOptions}}}
+**Available Transom Shapes:**
+{{{transomShapeOptions}}}
 
 **Available Keel Types:**
 {{{keelTypeOptions}}}
@@ -128,7 +128,7 @@ const generateListingDetailsFlow = ai.defineFlow(
       ...input,
       divisions: formatOptionsForPrompt(divisions),
       hullMaterialOptions: formatOptionsForPrompt(hullMaterialOptions),
-      hullShapeOptions: formatOptionsForPrompt(hullShapeOptions),
+      transomShapeOptions: formatOptionsForPrompt(transomShapeOptions),
       keelTypeOptions: formatOptionsForPrompt(keelTypeOptions),
       rudderTypeOptions: formatOptionsForPrompt(rudderTypeOptions),
       propellerTypeOptions: formatOptionsForPrompt(propellerTypeOptions),

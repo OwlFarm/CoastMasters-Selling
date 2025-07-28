@@ -9,7 +9,7 @@ import {
     conditions as defaultConditions,
     fuelTypes as defaultFuelTypes,
     hullMaterialOptions as defaultHullMaterialOptions,
-    hullShapeOptions as defaultHullShapeOptions,
+    transomShapeOptions as defaultTransomShapeOptions,
     bowShapeOptions as defaultBowShapeOptions,
     keelTypeOptions as defaultKeelTypeOptions,
     rudderTypeOptions as defaultRudderTypeOptions,
@@ -44,7 +44,7 @@ export type Metadata = {
     conditions: Option[];
     fuelTypes: Option[];
     hullMaterialOptions: Option[];
-    hullShapeOptions: Option[];
+    transomShapeOptions: Option[];
     bowShapeOptions: Option[];
     keelTypeOptions: Option[];
     rudderTypeOptions: Option[];
@@ -78,7 +78,7 @@ async function initializeMetadata() {
         conditions: defaultConditions,
         fuelTypes: defaultFuelTypes,
         hullMaterialOptions: defaultHullMaterialOptions,
-        hullShapeOptions: defaultHullShapeOptions,
+        transomShapeOptions: defaultTransomShapeOptions,
         bowShapeOptions: defaultBowShapeOptions,
         keelTypeOptions: defaultKeelTypeOptions,
         rudderTypeOptions: defaultRudderTypeOptions,
@@ -119,7 +119,7 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
                 conditions: data.conditions || defaultConditions,
                 fuelTypes: data.fuelTypes || defaultFuelTypes,
                 hullMaterialOptions: data.hullMaterialOptions || defaultHullMaterialOptions,
-                hullShapeOptions: data.hullShapeOptions || defaultHullShapeOptions,
+                transomShapeOptions: data.transomShapeOptions || defaultTransomShapeOptions,
                 bowShapeOptions: data.bowShapeOptions || defaultBowShapeOptions,
                 keelTypeOptions: data.keelTypeOptions || defaultKeelTypeOptions,
                 rudderTypeOptions: data.rudderTypeOptions || defaultRudderTypeOptions,

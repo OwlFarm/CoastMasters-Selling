@@ -36,7 +36,7 @@ const formSchema = z.object({
   location: z.string({ required_error: 'Please select a location.' }),
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
   hullMaterial: z.string({ required_error: 'Please select a hull material.' }),
-  hullShape: z.string({ required_error: 'Please select a hull shape.' }),
+  transomShape: z.string({ required_error: 'Please select a transom shape.' }),
   bowShape: z.string({ required_error: 'Please select a bow shape.' }),
   keelType: z.string({ required_error: 'Keel type is required for sailing boats.' }),
   rudderType: z.string({ required_error: 'Rudder type is required for sailing boats.' }),
@@ -54,7 +54,12 @@ const formSchema = z.object({
   features: z.array(z.string()).optional(),
   divisions: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
-  cabin: z.array(z.string()).optional(),
+  accommodation: z.object({
+    cabins: z.array(z.string()).optional(),
+    saloon: z.array(z.string()).optional(),
+    galley: z.array(z.string()).optional(),
+    heads: z.array(z.string()).optional(),
+  }).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
@@ -69,8 +74,8 @@ const steps = [
     name: 'Listing Details', 
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
-        'hullMaterial', 'hullShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'cabin'
+        'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
+        'otherSpecifications', 'features', 'deck', 'accommodation'
     ] 
   },
   { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
@@ -105,12 +110,17 @@ export function SellForm() {
             boatType: 'sailing',
             divisions: [],
             deck: [],
-            cabin: [],
+            accommodation: {
+                cabins: [],
+                saloon: [],
+                galley: [],
+                heads: [],
+            },
             condition: undefined,
             location: undefined,
             fuelType: undefined,
             hullMaterial: undefined,
-            hullShape: undefined,
+            transomShape: undefined,
             bowShape: undefined,
             keelType: undefined,
             rudderType: undefined,
@@ -140,7 +150,7 @@ export function SellForm() {
             form.setValue('title', aiState.result.title, { shouldValidate: true });
             form.setValue('description', aiState.result.description, { shouldValidate: true });
             if (aiState.result.detectedHullMaterial) form.setValue('hullMaterial', aiState.result.detectedHullMaterial, { shouldValidate: true });
-            if (aiState.result.detectedHullShape) form.setValue('hullShape', aiState.result.detectedHullShape, { shouldValidate: true });
+            if (aiState.result.detectedTransomShape) form.setValue('transomShape', aiState.result.detectedTransomShape, { shouldValidate: true });
             if (aiState.result.detectedKeelType) form.setValue('keelType', aiState.result.detectedKeelType, { shouldValidate: true });
             if (aiState.result.detectedRudderType) form.setValue('rudderType', aiState.result.detectedRudderType, { shouldValidate: true });
             if (aiState.result.detectedPropellerType) form.setValue('propellerType', aiState.result.detectedPropellerType, { shouldValidate: true });
@@ -148,7 +158,10 @@ export function SellForm() {
             if (aiState.result.detectedDivisions) form.setValue('divisions', aiState.result.detectedDivisions, { shouldValidate: true });
             if (aiState.result.detectedFeatures) form.setValue('features', aiState.result.detectedFeatures, { shouldValidate: true });
             if (aiState.result.detectedDeck) form.setValue('deck', aiState.result.detectedDeck, { shouldValidate: true });
-            if (aiState.result.detectedCabin) form.setValue('cabin', aiState.result.detectedCabin, { shouldValidate: true });
+            if (aiState.result.detectedCabins) form.setValue('accommodation.cabins', aiState.result.detectedCabins, { shouldValidate: true });
+            if (aiState.result.detectedSaloon) form.setValue('accommodation.saloon', aiState.result.detectedSaloon, { shouldValidate: true });
+            if (aiState.result.detectedGalley) form.setValue('accommodation.galley', aiState.result.detectedGalley, { shouldValidate: true });
+            if (aiState.result.detectedHeads) form.setValue('accommodation.heads', aiState.result.detectedHeads, { shouldValidate: true });
             toast({
                 title: 'AI Magic Complete!',
                 description: 'Your title and description have been generated, and we\'ve pre-selected some features for you.',
@@ -490,10 +503,10 @@ export function SellForm() {
                                                 </RadioGroup>
                                             </FormControl><FormMessage /></FormItem>
                                         )} />
-                                        <FormField control={form.control} name="hullShape" render={({ field }) => (
-                                            <FormItem><FormLabel>Hull Shape</FormLabel><FormControl>
+                                        <FormField control={form.control} name="transomShape" render={({ field }) => (
+                                            <FormItem><FormLabel>Transom Shape</FormLabel><FormControl>
                                                 <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.hullShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
+                                                    {metadata.transomShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
                                                     </FormItem>))}
@@ -630,32 +643,146 @@ export function SellForm() {
                                 </Card>
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Cabin Features</CardTitle>
-                                        <CardDescription>Select all features included in the cabin.</CardDescription>
+                                        <CardTitle>Accommodation</CardTitle>
+                                        <CardDescription>Select all features included in the accommodation areas.</CardDescription>
                                     </CardHeader>
-                                    <CardContent>
-                                        <FormField control={form.control} name="cabin" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {metadata.cabinOptions.map((item) => (
-                                                    <FormField key={item.id} control={form.control} name="cabin" render={({ field }) => (
-                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                            <FormControl>
-                                                                <Checkbox
-                                                                    checked={field.value?.includes(item.id)}
-                                                                    onCheckedChange={(checked) => {
-                                                                        const currentValue = field.value || [];
-                                                                        return checked
-                                                                            ? field.onChange([...currentValue, item.id])
-                                                                            : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                    }}
-                                                                />
-                                                            </FormControl>
-                                                            <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                        </FormItem>
-                                                    )} />
-                                                ))}
-                                            </FormItem>
-                                        )} />
+                                    <CardContent className="space-y-6">
+                                        <FormField
+                                            control={form.control}
+                                            name="accommodation.cabins"
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="text-base font-semibold">Cabins</FormLabel>
+                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
+                                                        {metadata.cabinFeatureOptions.map((item) => (
+                                                            <FormField
+                                                                key={item.id}
+                                                                control={form.control}
+                                                                name="accommodation.cabins"
+                                                                render={({ field }) => (
+                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                                        <FormControl>
+                                                                            <Checkbox
+                                                                                checked={field.value?.includes(item.id)}
+                                                                                onCheckedChange={(checked) => {
+                                                                                    const currentValue = field.value || [];
+                                                                                    return checked
+                                                                                        ? field.onChange([...currentValue, item.id])
+                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                                }}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="accommodation.saloon"
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="text-base font-semibold">Saloon</FormLabel>
+                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
+                                                        {metadata.saloonOptions.map((item) => (
+                                                            <FormField
+                                                                key={item.id}
+                                                                control={form.control}
+                                                                name="accommodation.saloon"
+                                                                render={({ field }) => (
+                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                                        <FormControl>
+                                                                            <Checkbox
+                                                                                checked={field.value?.includes(item.id)}
+                                                                                onCheckedChange={(checked) => {
+                                                                                    const currentValue = field.value || [];
+                                                                                    return checked
+                                                                                        ? field.onChange([...currentValue, item.id])
+                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                                }}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="accommodation.galley"
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="text-base font-semibold">Galley</FormLabel>
+                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
+                                                        {metadata.galleyOptions.map((item) => (
+                                                            <FormField
+                                                                key={item.id}
+                                                                control={form.control}
+                                                                name="accommodation.galley"
+                                                                render={({ field }) => (
+                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                                        <FormControl>
+                                                                            <Checkbox
+                                                                                checked={field.value?.includes(item.id)}
+                                                                                onCheckedChange={(checked) => {
+                                                                                    const currentValue = field.value || [];
+                                                                                    return checked
+                                                                                        ? field.onChange([...currentValue, item.id])
+                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                                }}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="accommodation.heads"
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="text-base font-semibold">Heads</FormLabel>
+                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
+                                                        {metadata.headsOptions.map((item) => (
+                                                            <FormField
+                                                                key={item.id}
+                                                                control={form.control}
+                                                                name="accommodation.heads"
+                                                                render={({ field }) => (
+                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                                        <FormControl>
+                                                                            <Checkbox
+                                                                                checked={field.value?.includes(item.id)}
+                                                                                onCheckedChange={(checked) => {
+                                                                                    const currentValue = field.value || [];
+                                                                                    return checked
+                                                                                        ? field.onChange([...currentValue, item.id])
+                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                                }}
+                                                                            />
+                                                                        </FormControl>
+                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </FormItem>
+                                            )}
+                                        />
                                     </CardContent>
                                 </Card>
                             </div>

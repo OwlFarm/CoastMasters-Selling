@@ -262,11 +262,11 @@ export function YachtFilters() {
                   </div>
               </div>
               <div>
-                  <h4 className="font-medium mb-2 pb-1 border-b">Shape</h4>
+                  <h4 className="font-medium mb-2 pb-1 border-b">Transom</h4>
                   <div className="flex flex-col gap-4 mt-2">
-                    {metadata.hullShapeOptions.map((shape) => (
+                    {metadata.transomShapeOptions.map((shape) => (
                       <div key={shape.id} className="flex items-center space-x-2">
-                        <Checkbox id={`shape-side-${shape.id}`} name="hullShapes" value={shape.id} />
+                        <Checkbox id={`shape-side-${shape.id}`} name="transomShapes" value={shape.id} />
                         <Label htmlFor={`shape-side-${shape.id}`} className="font-normal text-sm">{shape.label}</Label>
                       </div>
                     ))}
