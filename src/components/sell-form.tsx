@@ -54,6 +54,7 @@ const formSchema = z.object({
   features: z.array(z.string()).optional(),
   divisions: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
+  cabin: z.array(z.string()).optional(), // Legacy, will be mapped from accommodation
   accommodation: z.object({
     cabins: z.array(z.string()).optional(),
     saloon: z.array(z.string()).optional(),
@@ -75,7 +76,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'accommodation'
+        'otherSpecifications', 'features', 'deck', 'accommodation', 'cabin',
     ] 
   },
   { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
@@ -110,6 +111,7 @@ export function SellForm() {
             boatType: 'sailing',
             divisions: [],
             deck: [],
+            cabin: [],
             accommodation: {
                 cabins: [],
                 saloon: [],
@@ -210,7 +212,17 @@ export function SellForm() {
     };
     
     function onSubmit(values: FormValues) {
-        console.log('Form Submitted:', { ...values, lengthUnit });
+        // Map the flat 'cabin' array from accommodation object for submission
+        const submissionValues = {
+            ...values,
+            cabin: [
+                ...(values.accommodation?.cabins || []),
+                ...(values.accommodation?.saloon || []),
+                ...(values.accommodation?.galley || []),
+                ...(values.accommodation?.heads || []),
+            ]
+        };
+        console.log('Form Submitted:', { ...submissionValues, lengthUnit });
         toast({
             title: "Listing Submitted!",
             description: "Your yacht is now ready for review.",
@@ -960,5 +972,3 @@ export function SellForm() {
         </Form>
     );
 }
-
-    

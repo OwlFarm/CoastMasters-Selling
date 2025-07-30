@@ -229,6 +229,7 @@ export default async function YachtDetailPage({ params }: { params: { id: string
 
                     <TabsContent value="accommodation" className="mt-6 space-y-8">
                        {accommodationFeatures.map(group => (
+                          group.features && group.features.length > 0 &&
                           <div key={group.category}>
                             <h3 className="text-lg font-semibold mb-4 border-b pb-2">{group.category}</h3>
                             {renderFeatureList(group.features, group.options)}
@@ -245,5 +246,3 @@ export default async function YachtDetailPage({ params }: { params: { id: string
     </div>
   );
 }
-
-    

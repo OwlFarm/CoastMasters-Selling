@@ -45,5 +45,3 @@ export const GenerateListingDetailsOutputSchema = z.object({
   detectedHeads: z.array(z.string()).optional().describe('An array of heads feature IDs detected from the yacht details.'),
 });
 export type GenerateListingDetailsOutput = z.infer<typeof GenerateListingDetailsOutputSchema>;
-
-    

@@ -145,5 +145,3 @@ const generateListingDetailsFlow = ai.defineFlow(
     return output!;
   }
 );
-
-    

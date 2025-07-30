@@ -601,5 +601,3 @@ export function HomepageYachtFilters() {
     </>
   );
 }
-
-    

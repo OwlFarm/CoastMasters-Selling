@@ -18,7 +18,7 @@ type ListingPreviewProps = {
     galleryImagePreviews: string[];
 }
 
-const findLabel = (id: string | undefined, options: (Option | RegionOption)[]) => {
+const findLabel = (id: string | undefined, options: (Option | RegionOption)[]): string | null => {
   if (!id) return null;
   
   for (const option of options) {
@@ -26,7 +26,7 @@ const findLabel = (id: string | undefined, options: (Option | RegionOption)[]) =
       const foundLocation = option.locations.find(loc => loc.id === id);
       if (foundLocation) return foundLocation.label;
     } else { // It's a simple Option
-      const valueToCompare = option.value ?? option.id;
+      const valueToCompare = (option as Option).value ?? option.id;
       if (valueToCompare === id) return option.label;
     }
   }
@@ -68,7 +68,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       description: data.description,
       fuelType: data.fuelType,
       hullMaterial: data.hullMaterial,
-      hullShape: data.hullShape,
+      transomShape: data.transomShape,
       bowShape: data.bowShape,
       keelType: data.keelType,
       rudderType: data.rudderType,
@@ -77,7 +77,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       divisions: data.divisions,
       features: data.features,
       deck: data.deck,
-      cabin: data.cabin,
+      cabin: [
+        ...(data.accommodation?.cabins || []),
+        ...(data.accommodation?.saloon || []),
+        ...(data.accommodation?.galley || []),
+        ...(data.accommodation?.heads || []),
+      ],
       otherSpecifications: data.otherSpecifications,
   };
 
@@ -94,7 +99,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
   ];
   
   const hullAndEngineSpecs = [
-    { label: 'Hull Shape', value: findLabel(yacht.hullShape, metadata.hullShapeOptions) },
+    { label: 'Transom Shape', value: findLabel(yacht.transomShape, metadata.transomShapeOptions) },
     { label: 'Bow Shape', value: findLabel(yacht.bowShape, metadata.bowShapeOptions) },
     { label: 'Keel Type', value: findLabel(yacht.keelType, metadata.keelTypeOptions) },
     { label: 'Rudder Type', value: findLabel(yacht.rudderType, metadata.rudderTypeOptions) },
@@ -235,5 +240,3 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     </div>
   );
 }
-
-    

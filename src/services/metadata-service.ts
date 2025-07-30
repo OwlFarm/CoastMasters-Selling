@@ -59,6 +59,9 @@ export type Metadata = {
     headsOptions: Option[];
     listingTypes: Option[];
     priceValues: string[];
+    // This is a new type that combines cabin, saloon, galley, and heads for the preview component.
+    // It's not stored in the database.
+    cabinOptions: Option[];
 };
 
 // In-memory cache
@@ -71,7 +74,7 @@ const FORCE_REINIT = true;
 async function initializeMetadata() {
     console.log('Initializing metadata from default data...');
     const metadataRef = doc(db, 'metadata', 'options');
-    const defaultData: Metadata = {
+    const defaultData = {
         boatTypes: defaultBoatTypes,
         makes: defaultMakes,
         locationsByRegion: defaultLocationsByRegion,
@@ -96,7 +99,17 @@ async function initializeMetadata() {
     };
     await setDoc(metadataRef, defaultData, { merge: true });
     console.log('Metadata initialized in Firestore.');
-    return defaultData;
+    // The full metadata object needs to be constructed after setting the doc
+     const fullMetadata: Metadata = {
+        ...defaultData,
+        cabinOptions: [
+            ...defaultCabinFeatureOptions,
+            ...defaultSaloonOptions,
+            ...defaultGalleyOptions,
+            ...defaultHeadsOptions,
+        ],
+    };
+    return fullMetadata;
 }
 
 export const getMetadata = cache(async (): Promise<Metadata> => {
@@ -134,6 +147,12 @@ export const getMetadata = cache(async (): Promise<Metadata> => {
                 headsOptions: data.headsOptions || defaultHeadsOptions,
                 listingTypes: data.listingTypes || defaultListingTypes,
                 priceValues: data.priceValues || defaultPriceValues,
+                cabinOptions: [
+                    ...(data.cabinFeatureOptions || defaultCabinFeatureOptions),
+                    ...(data.saloonOptions || defaultSaloonOptions),
+                    ...(data.galleyOptions || defaultGalleyOptions),
+                    ...(data.headsOptions || defaultHeadsOptions),
+                ]
             };
             return metadataCache;
         } else {
