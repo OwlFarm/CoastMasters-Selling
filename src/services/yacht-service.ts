@@ -17,7 +17,7 @@ export async function getFeaturedYachts(): Promise<Yacht[]> {
     return yachts;
   } catch (error) {
     console.error("Error fetching yachts from Piloterr API. Returning sample data as a fallback.", error);
-    // In case of any error (e.g., config not set up), fall back to sample data.
+    // In case of any error (e.g., config not set up or network blocked), fall back to sample data.
     return featuredYachts;
   }
 }
