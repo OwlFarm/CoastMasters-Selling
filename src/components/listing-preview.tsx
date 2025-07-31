@@ -233,6 +233,33 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     { label: 'Watermaker', value: yacht.machinery?.watermaker },
     { label: 'Extra Info', value: yacht.machinery?.extraInfo },
   ];
+  
+  const equipmentSpecs = [
+      { label: 'Fixed Windscreen', value: yacht.equipment?.fixedWindscreen },
+      { label: 'Cockpit Table', value: yacht.equipment?.cockpitTable },
+      { label: 'Bathing Platform', value: yacht.equipment?.bathingPlatform },
+      { label: 'Boarding Ladder', value: yacht.equipment?.boardingLadder },
+      { label: 'Deck Shower', value: yacht.equipment?.deckShower },
+      { label: 'Anchor', value: yacht.equipment?.anchor },
+      { label: 'Anchor Chain', value: yacht.equipment?.anchorChain },
+      { label: 'Anchor 2', value: yacht.equipment?.anchor2 },
+      { label: 'Windlass', value: yacht.equipment?.windlass },
+      { label: 'Deck Wash', value: yacht.equipment?.deckWash },
+      { label: 'Dinghy', value: yacht.equipment?.dinghy },
+      { label: 'Outboard', value: yacht.equipment?.outboard },
+      { label: 'Davits', value: yacht.equipment?.davits },
+      { label: 'Sea Railing', value: yacht.equipment?.seaRailing },
+      { label: 'Pushpit', value: yacht.equipment?.pushpit },
+      { label: 'Pulpit', value: yacht.equipment?.pulpit },
+      { label: 'Lifebuoy', value: yacht.equipment?.lifebuoy },
+      { label: 'Radar Reflector', value: yacht.equipment?.radarReflector },
+      { label: 'Fenders', value: yacht.equipment?.fenders },
+      { label: 'Mooring Lines', value: yacht.equipment?.mooringLines },
+      { label: 'Radio', value: yacht.equipment?.radio },
+      { label: 'Cockpit Speakers', value: yacht.equipment?.cockpitSpeakers },
+      { label: 'Speakers in Salon', value: yacht.equipment?.speakersInSalon },
+      { label: 'Fire Extinguisher', value: yacht.equipment?.fireExtinguisher },
+  ];
 
 
   return (
@@ -324,7 +351,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="machinery">Machinery</TabsTrigger>
-                        <TabsTrigger value="features">Equipment</TabsTrigger>
+                        <TabsTrigger value="equipment">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         </TabsList>
 
@@ -401,8 +428,10 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                             </div>
                         </TabsContent>
 
-                        <TabsContent value="features" className="mt-6">
-                        {renderFeatureList(yacht.features, metadata.featureOptions)}
+                        <TabsContent value="equipment" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {equipmentSpecs.map(item => <SpecItem key={item.label} {...item} />)}
+                            </div>
                         </TabsContent>
 
                         <TabsContent value="deck" className="mt-6">

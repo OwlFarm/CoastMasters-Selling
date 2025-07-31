@@ -136,6 +136,32 @@ const formSchema = z.object({
     watermaker: z.string().optional(),
     extraInfo: z.string().optional(),
   }).optional(),
+  equipment: z.object({
+      fixedWindscreen: z.string().optional(),
+      cockpitTable: z.string().optional(),
+      bathingPlatform: z.string().optional(),
+      boardingLadder: z.string().optional(),
+      deckShower: z.string().optional(),
+      anchor: z.string().optional(),
+      anchorChain: z.string().optional(),
+      anchor2: z.string().optional(),
+      windlass: z.string().optional(),
+      deckWash: z.string().optional(),
+      dinghy: z.string().optional(),
+      outboard: z.string().optional(),
+      davits: z.string().optional(),
+      seaRailing: z.string().optional(),
+      pushpit: z.string().optional(),
+      pulpit: z.string().optional(),
+      lifebuoy: z.string().optional(),
+      radarReflector: z.string().optional(),
+      fenders: z.string().optional(),
+      mooringLines: z.string().optional(),
+      radio: z.string().optional(),
+      cockpitSpeakers: z.string().optional(),
+      speakersInSalon: z.string().optional(),
+      fireExtinguisher: z.string().optional(),
+  }).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
@@ -189,7 +215,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'cabin',
+        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'equipment', 'cabin',
         'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion',
         'loaM', 'lwlM', 'beamM', 'draftM', 'airDraftM', 'headroomM', 'country', 'designer', 'displacementT', 'ballastTonnes',
         'hullColor', 'hullShape', 'superstructureMaterial', 'deckMaterial', 'deckFinish', 'superstructureDeckFinish', 'cockpitDeckFinish',
@@ -237,6 +263,7 @@ export function SellForm() {
                 heads: [],
             },
             machinery: {},
+            equipment: {},
             condition: undefined,
             location: undefined,
             fuelType: undefined,
@@ -890,66 +917,6 @@ export function SellForm() {
                                 </Card>
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Features &amp; Equipment</CardTitle>
-                                        <CardDescription>Select all features and equipment included with your yacht.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <FormField control={form.control} name="features" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {metadata.featureOptions.map((item) => (
-                                                    <FormField key={item.id} control={form.control} name="features" render={({ field }) => (
-                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                            <FormControl>
-                                                                <Checkbox
-                                                                    checked={field.value?.includes(item.id)}
-                                                                    onCheckedChange={(checked) => {
-                                                                        const currentValue = field.value || [];
-                                                                        return checked
-                                                                            ? field.onChange([...currentValue, item.id])
-                                                                            : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                    }}
-                                                                />
-                                                            </FormControl>
-                                                            <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                        </FormItem>
-                                                    )} />
-                                                ))}
-                                            </FormItem>
-                                        )} />
-                                    </CardContent>
-                                </Card>
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Deck Features</CardTitle>
-                                        <CardDescription>Select all deck features included with your yacht.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <FormField control={form.control} name="deck" render={() => (
-                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
-                                                {metadata.deckOptions.map((item) => (
-                                                    <FormField key={item.id} control={form.control} name="deck" render={({ field }) => (
-                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                            <FormControl>
-                                                                <Checkbox
-                                                                    checked={field.value?.includes(item.id)}
-                                                                    onCheckedChange={(checked) => {
-                                                                        const currentValue = field.value || [];
-                                                                        return checked
-                                                                            ? field.onChange([...currentValue, item.id])
-                                                                            : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                    }}
-                                                                />
-                                                            </FormControl>
-                                                            <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                        </FormItem>
-                                                    )} />
-                                                ))}
-                                            </FormItem>
-                                        )} />
-                                    </CardContent>
-                                </Card>
-                                <Card>
-                                    <CardHeader>
                                         <CardTitle>Accommodation</CardTitle>
                                         <CardDescription>Provide details about the interior layout and features.</CardDescription>
                                     </CardHeader>
@@ -1147,6 +1114,71 @@ export function SellForm() {
                                             <FormField control={form.control} name="machinery.watermaker" render={({ field }) => (<FormItem><FormLabel>Watermaker</FormLabel><FormControl><Input placeholder="e.g., Not connected" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="machinery.extraInfo" render={({ field }) => (<FormItem className="md:col-span-full"><FormLabel>Extra Info</FormLabel><FormControl><Textarea placeholder="Any other machinery details..." {...field} /></FormControl><FormMessage /></FormItem>)} />
                                         </div>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Equipment</CardTitle>
+                                        <CardDescription>Provide details about the equipment included with your yacht.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <FormField control={form.control} name="equipment.fixedWindscreen" render={({ field }) => (<FormItem><FormLabel>Fixed Windscreen</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.cockpitTable" render={({ field }) => (<FormItem><FormLabel>Cockpit Table</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.bathingPlatform" render={({ field }) => (<FormItem><FormLabel>Bathing Platform</FormLabel><FormControl><Input placeholder="e.g., Custom made stainless steel and teak" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.boardingLadder" render={({ field }) => (<FormItem><FormLabel>Boarding Ladder</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.deckShower" render={({ field }) => (<FormItem><FormLabel>Deck Shower</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.anchor" render={({ field }) => (<FormItem><FormLabel>Anchor</FormLabel><FormControl><Input placeholder="e.g., 40 kg Rocna" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.anchorChain" render={({ field }) => (<FormItem><FormLabel>Anchor Chain</FormLabel><FormControl><Input placeholder="e.g., 80 mtr calibrated chain" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.anchor2" render={({ field }) => (<FormItem><FormLabel>Anchor 2</FormLabel><FormControl><Input placeholder="e.g., Spare Aluminium 34 kg CQR" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.windlass" render={({ field }) => (<FormItem><FormLabel>Windlass</FormLabel><FormControl><Input placeholder="e.g., electrical Lofrans Albatross 1500 W" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.deckWash" render={({ field }) => (<FormItem><FormLabel>Deck Wash</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.dinghy" render={({ field }) => (<FormItem><FormLabel>Dinghy</FormLabel><FormControl><Input placeholder="e.g., Avon 2.8 mtr." {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.outboard" render={({ field }) => (<FormItem><FormLabel>Outboard</FormLabel><FormControl><Input placeholder="e.g., New 2022 | Mariner F4 4hp 4 stroke" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.davits" render={({ field }) => (<FormItem><FormLabel>Davits</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.seaRailing" render={({ field }) => (<FormItem><FormLabel>Sea Railing</FormLabel><FormControl><Input placeholder="e.g., wire" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.pushpit" render={({ field }) => (<FormItem><FormLabel>Pushpit</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.pulpit" render={({ field }) => (<FormItem><FormLabel>Pulpit</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.lifebuoy" render={({ field }) => (<FormItem><FormLabel>Lifebuoy</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.radarReflector" render={({ field }) => (<FormItem><FormLabel>Radar Reflector</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.fenders" render={({ field }) => (<FormItem><FormLabel>Fenders</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.mooringLines" render={({ field }) => (<FormItem><FormLabel>Mooring Lines</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.radio" render={({ field }) => (<FormItem><FormLabel>Radio</FormLabel><FormControl><Input placeholder="e.g., Sony" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.cockpitSpeakers" render={({ field }) => (<FormItem><FormLabel>Cockpit Speakers</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.speakersInSalon" render={({ field }) => (<FormItem><FormLabel>Speakers in Salon</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.fireExtinguisher" render={({ field }) => (<FormItem><FormLabel>Fire Extinguisher</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Deck Features</CardTitle>
+                                        <CardDescription>Select all deck features included with your yacht.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <FormField control={form.control} name="deck" render={() => (
+                                            <FormItem className="grid grid-cols-2 gap-x-8 gap-y-4 md:grid-cols-3">
+                                                {metadata.deckOptions.map((item) => (
+                                                    <FormField key={item.id} control={form.control} name="deck" render={({ field }) => (
+                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    checked={field.value?.includes(item.id)}
+                                                                    onCheckedChange={(checked) => {
+                                                                        const currentValue = field.value || [];
+                                                                        return checked
+                                                                            ? field.onChange([...currentValue, item.id])
+                                                                            : field.onChange(currentValue.filter((value) => value !== item.id));
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                            <FormLabel className="font-normal">{item.label}</FormLabel>
+                                                        </FormItem>
+                                                    )} />
+                                                ))}
+                                            </FormItem>
+                                        )} />
                                     </CardContent>
                                 </Card>
                             </div>
