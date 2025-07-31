@@ -438,7 +438,6 @@ export function SellForm() {
         );
     }
 
-
     if (isPreview) {
         const formData = form.getValues();
         return (
@@ -696,7 +695,7 @@ export function SellForm() {
 
                                                 <FormField control={form.control} name="divisions" render={({ field }) => (
                                                     <FormItem><FormLabel>Division</FormLabel>
-                                                        <Select onValueChange={field.onChange} defaultValue={field.value?.[0]}>
+                                                        <Select onValueChange={(value) => field.onChange([value])} defaultValue={field.value?.[0]}>
                                                             <FormControl><SelectTrigger><SelectValue placeholder="Select a division" /></SelectTrigger></FormControl>
                                                             <SelectContent>
                                                                 {metadata.divisions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
@@ -1219,7 +1218,7 @@ export function SellForm() {
                                                 <FormField control={form.control} name="equipment.mooringLines" render={({ field }) => (<FormItem><FormLabel>Mooring Lines</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                                 <FormField control={form.control} name="equipment.radio" render={({ field }) => (<FormItem><FormLabel>Radio</FormLabel><FormControl><Input placeholder="e.g., Sony" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                                 <FormField control={form.control} name="equipment.cockpitSpeakers" render={({ field }) => (<FormItem><FormLabel>Cockpit Speakers</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                                                <FormField control={form.control} name="equipment.speakersInSalon" render={({ field }) => (<FormItem><FormLabel>Speakers in Salon</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                                <FormField control={form.control} name="equipment.speakersInSalon" render={({ field }) => (<FormItem><FormLabel>Speakers in Salon</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormMessage>)} />
                                                 <FormField control={form.control} name="equipment.fireExtinguisher" render={({ field }) => (<FormItem><FormLabel>Fire Extinguisher</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             </div>
                                         </CardContent>
