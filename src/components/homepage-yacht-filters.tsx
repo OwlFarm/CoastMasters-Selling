@@ -16,7 +16,7 @@ import { Skeleton } from './ui/skeleton';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-const InfoTooltip = ({ children }: { children: React.ReactNode }) => (
+export const InfoTooltip = ({ children }: { children: React.ReactNode }) => (
     <TooltipProvider>
         <Tooltip>
             <TooltipTrigger asChild>
@@ -601,3 +601,5 @@ export function HomepageYachtFilters() {
     </>
   );
 }
+
+    

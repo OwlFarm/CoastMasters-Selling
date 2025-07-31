@@ -26,6 +26,7 @@ import { Combobox } from './ui/combobox';
 import { TextEditor } from './ui/text-editor';
 import { Textarea } from './ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
+import { InfoTooltip } from './homepage-yacht-filters';
 
 // Updated schema to include a title and make some fields optional for multi-step validation
 const formSchema = z.object({
@@ -64,6 +65,14 @@ const formSchema = z.object({
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
+  saDisp: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  balDisp: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  dispLen: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  comfortRatio: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  capsizeScreeningFormula: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  sNum: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  hullSpeed: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  poundsPerInchImmersion: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
 });
 
 
@@ -77,6 +86,7 @@ const steps = [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
         'otherSpecifications', 'features', 'deck', 'accommodation', 'cabin',
+        'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion'
     ] 
   },
   { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
@@ -466,13 +476,13 @@ export function SellForm() {
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Specifications</CardTitle>
-                                        <CardDescription>Provide the technical details about your yacht's build.</CardDescription>
+                                        <CardDescription>Provide the technical details about your yacht's build and performance.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-8">
                                         <FormField control={form.control} name="divisions" render={() => (
                                             <FormItem>
                                                 <FormLabel>Division</FormLabel>
-                                                <div className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.divisions.map((item) => (
                                                         <FormField key={item.id} control={form.control} name="divisions" render={({ field }) => (
                                                             <FormItem className="flex flex-row items-start space-x-2 space-y-0">
@@ -497,7 +507,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="sailRigging" render={({ field }) => (
                                             <FormItem><FormLabel>Sail Rigging</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.sailRiggingOptions.map((rig) => (<FormItem key={rig.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={rig.id} /></FormControl>
                                                         <FormLabel className="font-normal">{rig.label}</FormLabel>
@@ -507,7 +517,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="hullMaterial" render={({ field }) => (
                                             <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={mat.id} /></FormControl>
                                                         <FormLabel className="font-normal">{mat.label}</FormLabel>
@@ -517,7 +527,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="transomShape" render={({ field }) => (
                                             <FormItem><FormLabel>Transom Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.transomShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -527,7 +537,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="bowShape" render={({ field }) => (
                                             <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={shape.id} /></FormControl>
                                                         <FormLabel className="font-normal">{shape.label}</FormLabel>
@@ -537,7 +547,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="keelType" render={({ field }) => (
                                             <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={keel.id} /></FormControl>
                                                         <FormLabel className="font-normal">{keel.label}</FormLabel>
@@ -547,7 +557,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="rudderType" render={({ field }) => (
                                             <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
                                                         <FormLabel className="font-normal">{rudder.label}</FormLabel>
@@ -557,7 +567,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="propellerType" render={({ field }) => (
                                             <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={prop.id} /></FormControl>
                                                         <FormLabel className="font-normal">{prop.label}</FormLabel>
@@ -567,7 +577,7 @@ export function SellForm() {
                                         )} />
                                         <FormField control={form.control} name="fuelType" render={({ field }) => (
                                             <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-5 gap-x-8 pt-2">
+                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
                                                     {metadata.fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
                                                         <FormControl><RadioGroupItem value={type.id} /></FormControl>
                                                         <FormLabel className="font-normal">{type.label}</FormLabel>
@@ -591,6 +601,101 @@ export function SellForm() {
                                                 <FormMessage />
                                             </FormItem>
                                         )} />
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Calculated Ratios (Optional)</CardTitle>
+                                        <CardDescription>Provide these performance ratios if you know them. They are highly sought after by experienced sailors.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                            <FormField control={form.control} name="saDisp" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="sa-disp">SA/Disp.</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>A sail area/displacement ratio below 16 is underpowered; 16 to 20 is good performance; above 20 is high performance.</p>
+                                                            <code className="text-xs">SA/D = SA (ft²) ÷ [Disp (lbs) / 64]^0.666</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="sa-disp" type="number" placeholder="e.g., 18.5" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="balDisp" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="bal-disp">Bal./Disp.</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>A Ballast/Displacement ratio of 40 or more means a stiffer, more powerful boat.</p>
+                                                            <code className="text-xs">Bal./Disp = ballast (lbs) / displacement (lbs) * 100</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="bal-disp" type="number" placeholder="e.g., 42" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="dispLen" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="disp-len">Disp./Len.</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>The lower the ratio, the less power is needed to reach hull speed. &lt;100: Ultralight, 100-200: Light, 200-275: Moderate, 275-350: Heavy, 350+: Ultraheavy.</p>
+                                                            <code className="text-xs">D/L = (Disp / 2240) / (0.01*LWL)^3</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="disp-len" type="number" placeholder="e.g., 280" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="comfortRatio" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="comfort-ratio">Comfort Ratio</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>A measure of motion comfort by Ted Brewer. &lt;20: Racing, 20-30: Coastal Cruiser, 30-40: Moderate Bluewater, 40-50: Heavy Bluewater, 50+: Extremely Heavy Bluewater.</p>
+                                                            <code className="text-xs">CR = D ÷ (.65 x (.7 LWL + .3 LOA) x Beam^1.33)</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="comfort-ratio" type="number" placeholder="e.g., 35" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="capsizeScreeningFormula" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="csf">Capsize Screen</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>Determines blue water capability. A result of 2.0 or less is better suited for ocean passages. The lower the better.</p>
+                                                            <code className="text-xs">CSF = Beam / (Disp / 64)^0.333</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="csf" type="number" placeholder="e.g., 1.8" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="sNum" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="s-num">S#</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>A guide to probable boat performance. For boats of the same length, a higher S# generally means a lower PHRF. &lt;2: Slow, 2-3: Cruiser, 3-5: Racer Cruiser, 5+: Fast/Racing.</p>
+                                                            <code className="text-xs">S# = 3.972*(10^(-[Dsp/LWL]/526+(0.691*(LOG([@[SA/Dp]])-1)^0.8)))</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="s-num" type="number" placeholder="e.g., 3.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="hullSpeed" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="hull-speed">Hull Speed</FormLabel>
+                                                    <InfoTooltip>
+                                                        <div className="space-y-2 text-left">
+                                                            <p>The maximum speed of a displacement hull.</p>
+                                                            <code className="text-xs">HS = 1.34 x &#8730;LWL (in feet)</code>
+                                                        </div>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="hull-speed" type="number" placeholder="e.g., 8.3" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="poundsPerInchImmersion" render={({ field }) => (
+                                                <FormItem><div className="flex items-center">
+                                                    <FormLabel htmlFor="ppi">PPI</FormLabel>
+                                                    <InfoTooltip>
+                                                        <p className="text-left">Pounds per Inch Immersion.</p>
+                                                    </InfoTooltip>
+                                                </div><FormControl><Input id="ppi" type="number" placeholder="e.g., 1500" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                        </div>
                                     </CardContent>
                                 </Card>
                                 <Card>
@@ -972,3 +1077,5 @@ export function SellForm() {
         </Form>
     );
 }
+
+    
