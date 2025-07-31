@@ -132,14 +132,11 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       { label: 'Level Indicator (Freshwater)', value: yacht.levelIndicatorFreshwater },
       { label: 'Wheel Steering', value: yacht.wheelSteering },
       { label: 'Outside Helm Position', value: yacht.outsideHelmPosition },
-  ].filter(spec => spec.value);
-  
-  const hullAndEngineSpecs = [
-    { label: 'Transom Shape', value: yacht.transomShapeLabel },
-    { label: 'Bow Shape', value: yacht.bowShapeLabel },
-    { label: 'Keel Type', value: yacht.keelTypeLabel },
-    { label: 'Rudder Type', value: yacht.rudderTypeLabel },
-    { label: 'Propeller Type', value: yacht.propellerTypeLabel },
+      { label: 'Transom Shape', value: yacht.transomShapeLabel },
+      { label: 'Bow Shape', value: yacht.bowShapeLabel },
+      { label: 'Keel Type', value: yacht.keelTypeLabel },
+      { label: 'Rudder Type', value: yacht.rudderTypeLabel },
+      { label: 'Propeller Type', value: yacht.propellerTypeLabel },
   ].filter(spec => spec.value);
 
   const accommodationGeneral = [
@@ -386,9 +383,8 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-8">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7">
                         <TabsTrigger value="general">General</TabsTrigger>
-                        <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="machinery">Machinery</TabsTrigger>
                         <TabsTrigger value="navigation">Navigation</TabsTrigger>
@@ -406,23 +402,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                                 </div>
                                 ))}
                             </div>
-                        </TabsContent>
-
-                        <TabsContent value="specifications" className="mt-6">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                            {hullAndEngineSpecs.map(spec => (
-                            <div key={spec.label}>
-                                <p className="text-sm font-medium text-muted-foreground">{spec.label}</p>
-                                <p className="text-md font-semibold">{spec.value}</p>
-                            </div>
-                            ))}
-                        </div>
-                        {yacht.otherSpecifications && (
-                            <div className="mt-6 pt-4 border-t">
-                                <p className="text-sm font-medium text-muted-foreground">Other Specifications</p>
-                                <p className="text-md font-semibold whitespace-pre-line">{yacht.otherSpecifications}</p>
-                            </div>
-                        )}
+                            {yacht.otherSpecifications && (
+                                <div className="mt-6 pt-4 border-t">
+                                    <p className="text-sm font-medium text-muted-foreground">Other Specifications</p>
+                                    <p className="text-md font-semibold whitespace-pre-line">{yacht.otherSpecifications}</p>
+                                </div>
+                            )}
                         </TabsContent>
 
                         <TabsContent value="accommodation" className="mt-6 space-y-8">

@@ -692,8 +692,100 @@ export function SellForm() {
                                             <FormField control={form.control} name="outsideHelmPosition" render={({ field }) => (
                                                 <FormItem><FormLabel>Outside Helm Position</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
+
+                                            <FormField control={form.control} name="divisions" render={({ field }) => (
+                                                <FormItem><FormLabel>Division</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value?.[0]}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select a division" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.divisions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="sailRigging" render={({ field }) => (
+                                                <FormItem><FormLabel>Sail Rigging</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select sail rigging" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.sailRiggingOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="hullMaterial" render={({ field }) => (
+                                                <FormItem><FormLabel>Hull Material</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select hull material" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.hullMaterialOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="transomShape" render={({ field }) => (
+                                                <FormItem><FormLabel>Transom Shape</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select transom shape" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.transomShapeOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="bowShape" render={({ field }) => (
+                                                <FormItem><FormLabel>Bow Shape</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select bow shape" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.bowShapeOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="keelType" render={({ field }) => (
+                                                <FormItem><FormLabel>Keel Type</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select keel type" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.keelTypeOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="rudderType" render={({ field }) => (
+                                                <FormItem><FormLabel>Rudder Type</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select rudder type" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.rudderTypeOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="propellerType" render={({ field }) => (
+                                                <FormItem><FormLabel>Propeller Type</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select propeller type" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.propellerTypeOptions.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="fuelType" render={({ field }) => (
+                                                <FormItem><FormLabel>Fuel Type</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select fuel type" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.fuelTypes.map((item) => (<SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                            )} />
+
                                         </div>
-                                         <FormField control={form.control} name="description" render={({ field }) => (
+                                        <FormField control={form.control} name="description" render={({ field }) => (
                                             <FormItem>
                                                 <div className="flex items-center justify-between">
                                                     <FormLabel>Description</FormLabel>
@@ -727,120 +819,6 @@ export function SellForm() {
                                                 <FormMessage />
                                             </FormItem>
                                         )} />
-                                    </CardContent>
-                                </Card>
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Specifications</CardTitle>
-                                        <CardDescription>Provide the technical details about your yacht's build and performance.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="space-y-8">
-                                        <FormField control={form.control} name="divisions" render={() => (
-                                            <FormItem>
-                                                <FormLabel>Division</FormLabel>
-                                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.divisions.map((item) => (
-                                                        <FormField key={item.id} control={form.control} name="divisions" render={({ field }) => (
-                                                            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                                                                <FormControl>
-                                                                    <Checkbox
-                                                                        checked={field.value?.includes(item.id)}
-                                                                        onCheckedChange={(checked) => {
-                                                                            const currentValue = field.value || [];
-                                                                            return checked
-                                                                                ? field.onChange([...currentValue, item.id])
-                                                                                : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                        }}
-                                                                    />
-                                                                </FormControl>
-                                                                <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                            </FormItem>
-                                                        )} />
-                                                    ))}
-                                                </div>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="sailRigging" render={({ field }) => (
-                                            <FormItem><FormLabel>Sail Rigging</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.sailRiggingOptions.map((rig) => (<FormItem key={rig.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={rig.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{rig.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="hullMaterial" render={({ field }) => (
-                                            <FormItem><FormLabel>Hull Material</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.hullMaterialOptions.map((mat) => (<FormItem key={mat.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={mat.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{mat.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="transomShape" render={({ field }) => (
-                                            <FormItem><FormLabel>Transom Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.transomShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={shape.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{shape.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="bowShape" render={({ field }) => (
-                                            <FormItem><FormLabel>Bow Shape</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.bowShapeOptions.map((shape) => (<FormItem key={shape.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={shape.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{shape.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="keelType" render={({ field }) => (
-                                            <FormItem><FormLabel>Keel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.keelTypeOptions.map((keel) => (<FormItem key={keel.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={keel.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{keel.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="rudderType" render={({ field }) => (
-                                            <FormItem><FormLabel>Rudder Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.rudderTypeOptions.map((rudder) => (<FormItem key={rudder.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={rudder.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{rudder.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="propellerType" render={({ field }) => (
-                                            <FormItem><FormLabel>Propeller Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.propellerTypeOptions.map((prop) => (<FormItem key={prop.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={prop.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{prop.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
-                                        <FormField control={form.control} name="fuelType" render={({ field }) => (
-                                            <FormItem><FormLabel>Fuel Type</FormLabel><FormControl>
-                                                <RadioGroup onValueChange={field.onChange} value={field.value} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 pt-2">
-                                                    {metadata.fuelTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                        <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                        <FormLabel className="font-normal">{type.label}</FormLabel>
-                                                    </FormItem>))}
-                                                </RadioGroup>
-                                            </FormControl><FormMessage /></FormItem>
-                                        )} />
                                         <FormField control={form.control} name="otherSpecifications" render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Other Specifications (Optional)</FormLabel>
@@ -859,6 +837,7 @@ export function SellForm() {
                                         )} />
                                     </CardContent>
                                 </Card>
+                                
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Calculated Ratios (Optional)</CardTitle>
@@ -1134,7 +1113,7 @@ export function SellForm() {
                                                     <FormItem><FormLabel>Toilet System</FormLabel><FormControl><Input placeholder="e.g., manual" {...field} /></FormControl><FormMessage /></FormItem>
                                                 )} />
                                                  <FormField control={form.control} name="accommodation.sharedWashBasin" render={({ field }) => (
-                                                    <FormItem><FormLabel>Wash Basin</FormLabel><FormControl><Input placeholder="e.g., in bathroom" {...field} /></FormControl><FormMessage /></FormItem>
+                                                    <FormItem><FormLabel>Wash Basin</FormLabel><FormControl><Input placeholder="e.g., in bathroom" {...field} /></FormControl><FormMessage /></FormMessage /></FormItem>
                                                 )} />
                                                  <FormField control={form.control} name="accommodation.sharedShower" render={({ field }) => (
                                                     <FormItem><FormLabel>Shower</FormLabel><FormControl><Input placeholder="e.g., shared" {...field} /></FormControl><FormMessage /></FormItem>
