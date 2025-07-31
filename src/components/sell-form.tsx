@@ -269,7 +269,6 @@ export function SellForm() {
     const [currentStep, setCurrentStep] = React.useState(0);
     const [heroImagePreview, setHeroImagePreview] = React.useState<string | null>(null);
     const [galleryImagePreviews, setGalleryImagePreviews] = React.useState<string[]>([]);
-    const [lengthUnit, setLengthUnit] = React.useState<'ft' | 'm'>('ft');
     const [isPreview, setIsPreview] = React.useState(false);
     const { toast } = useToast();
     const [metadata, setMetadata] = React.useState<Metadata | null>(null);
@@ -423,7 +422,7 @@ export function SellForm() {
                 ...(values.accommodation?.heads || []),
             ]
         };
-        console.log('Form Submitted:', { ...submissionValues, lengthUnit });
+        console.log('Form Submitted:', { ...submissionValues });
         toast({
             title: "Listing Submitted!",
             description: "Your yacht is now ready for review.",
