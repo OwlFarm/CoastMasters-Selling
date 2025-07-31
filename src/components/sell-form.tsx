@@ -327,6 +327,20 @@ export function SellForm() {
         fetchMetadata();
     }, []);
 
+    // Cleanup for Object URLs to prevent memory leaks
+    React.useEffect(() => {
+        return () => {
+            if (heroImagePreview && heroImagePreview.startsWith('blob:')) {
+                URL.revokeObjectURL(heroImagePreview);
+            }
+            galleryImagePreviews.forEach(url => {
+                if (url.startsWith('blob:')) {
+                    URL.revokeObjectURL(url);
+                }
+            });
+        };
+    }, [heroImagePreview, galleryImagePreviews]);
+
     useEffect(() => {
         if (aiState.error) {
             toast({
