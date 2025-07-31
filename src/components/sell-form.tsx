@@ -26,7 +26,7 @@ import { ListingPreview } from './listing-preview';
 import { Combobox } from './ui/combobox';
 import { TextEditor } from './ui/text-editor';
 import { Textarea } from '@/components/ui/textarea';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from './ui/skeleton';
 import { InfoTooltip } from './homepage-yacht-filters';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
