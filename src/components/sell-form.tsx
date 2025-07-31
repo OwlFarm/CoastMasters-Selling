@@ -497,7 +497,113 @@ export function SellForm() {
                                         <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <FormField control={form.control} name="listingType" render={({ field }) => (
+                                                <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                        {metadata.listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                            <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                                            <FormLabel className="font-normal">{type.label}</FormLabel>
+                                                        </FormItem>))}
+                                                    </RadioGroup>
+                                                </FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="condition" render={({ field }) => (
+                                                <FormItem><FormLabel>Condition</FormLabel><FormControl>
+                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                        {metadata.conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                                            <FormControl><RadioGroupItem value={c.id} /></FormControl>
+                                                            <FormLabel className="font-normal">{c.label}</FormLabel>
+                                                        </FormItem>))}
+                                                    </RadioGroup>
+                                                </FormControl><FormMessage /></FormItem>
+                                            )} />
+                                        </div>
+                                         <FormField control={form.control} name="price" render={({ field }) => (
+                                            <FormItem><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
+                                        )} />
+                                        <FormField control={form.control} name="location" render={({ field }) => (
+                                            <FormItem><FormLabel>Location</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
+                                                    <SelectContent>
+                                                        {metadata.locationsByRegion.map((region) => (
+                                                            <SelectGroup key={region.region}>
+                                                                <SelectLabel>{region.region}</SelectLabel>
+                                                                {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
+                                                            </SelectGroup>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            <FormMessage /></FormItem>
+                                        )} />
+                                        <div className="space-y-2">
+                                            <div className="flex items-center justify-between">
+                                              <FormLabel>Listing Title</FormLabel>
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    disabled={isAiPending}
+                                                    onClick={() => {
+                                                        const formData = new FormData();
+                                                        formData.append('make', form.getValues('make'));
+                                                        formData.append('model', form.getValues('model'));
+                                                        formData.append('year', form.getValues('year').toString());
+                                                        formData.append('length', form.getValues('length').toString());
+                                                        formData.append('condition', form.getValues('condition'));
+                                                        formData.append('boatType', form.getValues('boatType'));
+                                                        form.getValues('features')?.forEach(f => formData.append('features', f));
+                                                        aiFormAction(formData);
+                                                    }}
+                                                >
+                                                    {isAiPending ? (
+                                                        <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                    ) : (
+                                                        <Sparkles className="mr-2 h-4 w-4" />
+                                                    )}
+                                                    Generate with AI
+                                                </Button>
+                                            </div>
+                                            <FormField control={form.control} name="title" render={({ field }) => (
+                                                <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                        </div>
+                                         <FormField control={form.control} name="description" render={({ field }) => (
+                                            <FormItem>
+                                                <div className="flex items-center justify-between">
+                                                    <FormLabel>Description</FormLabel>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            disabled={isPolishPending || !field.value}
+                                                            onClick={() => {
+                                                                const formData = new FormData();
+                                                                formData.append('description', form.getValues('description'));
+                                                                polishFormAction(formData);
+                                                            }}
+                                                        >
+                                                            {isPolishPending ? (
+                                                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                            ) : (
+                                                                <Sparkles className="mr-2 h-4 w-4" />
+                                                            )}
+                                                            Polish with AI
+                                                        </Button>
+                                                </div>
+                                                <FormControl>
+                                                    <TextEditor
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        placeholder="Describe your yacht's condition, history, and unique features..."
+                                                    />
+                                                </FormControl>
+                                                <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
+                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 pt-4 border-t">
                                             <FormField control={form.control} name="make" render={({ field }) => (
                                                 <FormItem><FormLabel>Builder</FormLabel>
                                                     <FormControl>
@@ -620,115 +726,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="outsideHelmPosition" render={({ field }) => (
                                                 <FormItem><FormLabel>Outside Helm Position</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
-                                             <div className="md:col-span-full">
-                                                <FormField control={form.control} name="listingType" render={({ field }) => (
-                                                    <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
-                                                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                            {metadata.listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                                <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                                <FormLabel className="font-normal">{type.label}</FormLabel>
-                                                            </FormItem>))}
-                                                        </RadioGroup>
-                                                    </FormControl><FormMessage /></FormItem>
-                                                )} />
-                                            </div>
-                                             <div className="md:col-span-full">
-                                                <FormField control={form.control} name="condition" render={({ field }) => (
-                                                    <FormItem><FormLabel>Condition</FormLabel><FormControl>
-                                                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                            {metadata.conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
-                                                                <FormControl><RadioGroupItem value={c.id} /></FormControl>
-                                                                <FormLabel className="font-normal">{c.label}</FormLabel>
-                                                            </FormItem>))}
-                                                        </RadioGroup>
-                                                    </FormControl><FormMessage /></FormItem>
-                                                )} />
-                                            </div>
-                                            <FormField control={form.control} name="price" render={({ field }) => (
-                                                <FormItem className="md:col-span-full"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
-                                            )} />
                                         </div>
-                                        <FormField control={form.control} name="location" render={({ field }) => (
-                                            <FormItem><FormLabel>Location</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select a location" /></SelectTrigger></FormControl>
-                                                    <SelectContent>
-                                                        {metadata.locationsByRegion.map((region) => (
-                                                            <SelectGroup key={region.region}>
-                                                                <SelectLabel>{region.region}</SelectLabel>
-                                                                {region.locations.map(loc => <SelectItem key={loc.id} value={loc.id}>{loc.label}</SelectItem>)}
-                                                            </SelectGroup>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            <FormMessage /></FormItem>
-                                        )} />
-                                        <div className="space-y-2">
-                                            <div className="flex items-center justify-between">
-                                              <FormLabel>Listing Title</FormLabel>
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    size="sm"
-                                                    disabled={isAiPending}
-                                                    onClick={() => {
-                                                        const formData = new FormData();
-                                                        formData.append('make', form.getValues('make'));
-                                                        formData.append('model', form.getValues('model'));
-                                                        formData.append('year', form.getValues('year').toString());
-                                                        formData.append('length', form.getValues('length').toString());
-                                                        formData.append('condition', form.getValues('condition'));
-                                                        formData.append('boatType', form.getValues('boatType'));
-                                                        form.getValues('features')?.forEach(f => formData.append('features', f));
-                                                        aiFormAction(formData);
-                                                    }}
-                                                >
-                                                    {isAiPending ? (
-                                                        <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                                    ) : (
-                                                        <Sparkles className="mr-2 h-4 w-4" />
-                                                    )}
-                                                    Generate with AI
-                                                </Button>
-                                            </div>
-                                            <FormField control={form.control} name="title" render={({ field }) => (
-                                                <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
-                                            )} />
-                                        </div>
-                                         <FormField control={form.control} name="description" render={({ field }) => (
-                                            <FormItem>
-                                                <div className="flex items-center justify-between">
-                                                    <FormLabel>Description</FormLabel>
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            disabled={isPolishPending || !field.value}
-                                                            onClick={() => {
-                                                                const formData = new FormData();
-                                                                formData.append('description', form.getValues('description'));
-                                                                polishFormAction(formData);
-                                                            }}
-                                                        >
-                                                            {isPolishPending ? (
-                                                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                                            ) : (
-                                                                <Sparkles className="mr-2 h-4 w-4" />
-                                                            )}
-                                                            Polish with AI
-                                                        </Button>
-                                                </div>
-                                                <FormControl>
-                                                    <TextEditor
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        placeholder="Describe your yacht's condition, history, and unique features..."
-                                                    />
-                                                </FormControl>
-                                                <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )} />
                                     </CardContent>
                                 </Card>
                                 <Card>
@@ -983,7 +981,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="rigging.secondarySheetWinch" render={({ field }) => (<FormItem><FormLabel>Secondary Sheet Winch</FormLabel><FormControl><Input placeholder="e.g., Lewmar 46 self tailing" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="rigging.genoaSheetwinches" render={({ field }) => (<FormItem><FormLabel>Genoa Sheetwinches</FormLabel><FormControl><Input placeholder="e.g., 2x Lewmar 64 self tailing electric" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="rigging.halyardWinches" render={({ field }) => (<FormItem><FormLabel>Halyard Winches</FormLabel><FormControl><Input placeholder="e.g., 2x Lewmar 43 self tailing" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                                            <FormField control={form.control} name="rigging.multifunctionalWinches" render={({ field }) => (<FormItem><FormLabel>Multifunctional Winches</FormLabel><FormControl><Input placeholder="e.g., Lewmar 8 Pole hoist winch" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.multifunctionalWinches" render={({ field }) => (<FormItem><FormLabel>Multifunctional Winches</FormLabel><FormControl><Input placeholder="e.g., Lewmar 8 Pole hoist winch | Lewmar ocean electric 40" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="rigging.spiPole" render={({ field }) => (<FormItem><FormLabel>Spi-Pole</FormLabel><FormControl><Input placeholder="e.g., aluminium" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                         </div>
                                     </CardContent>
@@ -1421,5 +1419,3 @@ export function SellForm() {
         </Form>
     );
 }
-
-    
