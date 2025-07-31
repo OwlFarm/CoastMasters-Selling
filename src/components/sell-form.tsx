@@ -177,6 +177,30 @@ const formSchema = z.object({
       speakersInSalon: z.string().optional(),
       fireExtinguisher: z.string().optional(),
   }).optional(),
+  rigging: z.object({
+    rigging: z.string().optional(),
+    standingRigging: z.string().optional(),
+    brandMast: z.string().optional(),
+    materialMast: z.string().optional(),
+    spreaders: z.string().optional(),
+    mainsail: z.string().optional(),
+    stowayMast: z.string().optional(),
+    cutterstay: z.string().optional(),
+    jib: z.string().optional(),
+    genoa: z.string().optional(),
+    genoaFurler: z.string().optional(),
+    cutterFurler: z.string().optional(),
+    gennaker: z.string().optional(),
+    spinnaker: z.string().optional(),
+    reefingSystem: z.string().optional(),
+    backstayAdjuster: z.string().optional(),
+    primarySheetWinch: z.string().optional(),
+    secondarySheetWinch: z.string().optional(),
+    genoaSheetwinches: z.string().optional(),
+    halyardWinches: z.string().optional(),
+    multifunctionalWinches: z.string().optional(),
+    spiPole: z.string().optional(),
+  }).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
@@ -230,7 +254,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'navigation', 'equipment', 'cabin',
+        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'navigation', 'equipment', 'cabin', 'rigging',
         'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion',
         'loaM', 'lwlM', 'beamM', 'draftM', 'airDraftM', 'headroomM', 'country', 'designer', 'displacementT', 'ballastTonnes',
         'hullColor', 'hullShape', 'superstructureMaterial', 'deckMaterial', 'deckFinish', 'superstructureDeckFinish', 'cockpitDeckFinish',
@@ -280,6 +304,7 @@ export function SellForm() {
             machinery: {},
             navigation: {},
             equipment: {},
+            rigging: {},
             condition: undefined,
             location: undefined,
             fuelType: undefined,
@@ -1217,6 +1242,38 @@ export function SellForm() {
                                                 ))}
                                             </FormItem>
                                         )} />
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Rigging</CardTitle>
+                                        <CardDescription>Provide details about the rigging and sails.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <FormField control={form.control} name="rigging.rigging" render={({ field }) => (<FormItem><FormLabel>Rigging</FormLabel><FormControl><Input placeholder="e.g., sloop" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.standingRigging" render={({ field }) => (<FormItem><FormLabel>Standing Rigging</FormLabel><FormControl><Input placeholder="e.g., wire" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.brandMast" render={({ field }) => (<FormItem><FormLabel>Brand Mast</FormLabel><FormControl><Input placeholder="e.g., Seldén" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.materialMast" render={({ field }) => (<FormItem><FormLabel>Material Mast</FormLabel><FormControl><Input placeholder="e.g., aluminium" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.spreaders" render={({ field }) => (<FormItem><FormLabel>Spreaders</FormLabel><FormControl><Input placeholder="e.g., 3 sets" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.mainsail" render={({ field }) => (<FormItem><FormLabel>Mainsail</FormLabel><FormControl><Input placeholder="e.g., New 2023 De vries maritiem lemmer 55m2" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.stowayMast" render={({ field }) => (<FormItem><FormLabel>Stoway Mast</FormLabel><FormControl><Input placeholder="e.g., Seldén electric" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.cutterstay" render={({ field }) => (<FormItem><FormLabel>Cutterstay</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.jib" render={({ field }) => (<FormItem><FormLabel>Jib</FormLabel><FormControl><Input placeholder="e.g., Ullman sails" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.genoa" render={({ field }) => (<FormItem><FormLabel>Genoa</FormLabel><FormControl><Input placeholder="e.g., New 2023 De vries maritiem lemmer 77m2" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.genoaFurler" render={({ field }) => (<FormItem><FormLabel>Genoa Furler</FormLabel><FormControl><Input placeholder="e.g., Furlex 400e Electric" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.cutterFurler" render={({ field }) => (<FormItem><FormLabel>Cutter Furler</FormLabel><FormControl><Input placeholder="e.g., Furlex" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.gennaker" render={({ field }) => (<FormItem><FormLabel>Gennaker</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.spinnaker" render={({ field }) => (<FormItem><FormLabel>Spinnaker</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.reefingSystem" render={({ field }) => (<FormItem><FormLabel>Reefing System</FormLabel><FormControl><Input placeholder="e.g., main in-mast furling" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.backstayAdjuster" render={({ field }) => (<FormItem><FormLabel>Backstay Adjuster</FormLabel><FormControl><Input placeholder="e.g., hydraulic | Navtec" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.primarySheetWinch" render={({ field }) => (<FormItem><FormLabel>Primary Sheet Winch</FormLabel><FormControl><Input placeholder="e.g., 2x Lewmar 43 self tailing" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.secondarySheetWinch" render={({ field }) => (<FormItem><FormLabel>Secondary Sheet Winch</FormLabel><FormControl><Input placeholder="e.g., Lewmar 46 self tailing" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.genoaSheetwinches" render={({ field }) => (<FormItem><FormLabel>Genoa Sheetwinches</FormLabel><FormControl><Input placeholder="e.g., 2x Lewmar 64 self tailing electric" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.halyardWinches" render={({ field }) => (<FormItem><FormLabel>Halyard Winches</FormLabel><FormControl><Input placeholder="e.g., 2x Lewmar 43 self tailing" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.multifunctionalWinches" render={({ field }) => (<FormItem><FormLabel>Multifunctional Winches</FormLabel><FormControl><Input placeholder="e.g., Lewmar 8 Pole hoist winch" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="rigging.spiPole" render={({ field }) => (<FormItem><FormLabel>Spi-Pole</FormLabel><FormControl><Input placeholder="e.g., aluminium" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </div>

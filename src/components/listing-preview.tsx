@@ -277,6 +277,30 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       { label: 'Fire Extinguisher', value: yacht.equipment?.fireExtinguisher },
   ];
 
+  const riggingSpecs = [
+      { label: 'Rigging', value: yacht.rigging?.rigging },
+      { label: 'Standing Rigging', value: yacht.rigging?.standingRigging },
+      { label: 'Brand Mast', value: yacht.rigging?.brandMast },
+      { label: 'Material Mast', value: yacht.rigging?.materialMast },
+      { label: 'Spreaders', value: yacht.rigging?.spreaders },
+      { label: 'Mainsail', value: yacht.rigging?.mainsail },
+      { label: 'Stoway Mast', value: yacht.rigging?.stowayMast },
+      { label: 'Cutterstay', value: yacht.rigging?.cutterstay },
+      { label: 'Jib', value: yacht.rigging?.jib },
+      { label: 'Genoa', value: yacht.rigging?.genoa },
+      { label: 'Genoa Furler', value: yacht.rigging?.genoaFurler },
+      { label: 'Cutter Furler', value: yacht.rigging?.cutterFurler },
+      { label: 'Gennaker', value: yacht.rigging?.gennaker },
+      { label: 'Spinnaker', value: yacht.rigging?.spinnaker },
+      { label: 'Reefing System', value: yacht.rigging?.reefingSystem },
+      { label: 'Backstay Adjuster', value: yacht.rigging?.backstayAdjuster },
+      { label: 'Primary Sheet Winch', value: yacht.rigging?.primarySheetWinch },
+      { label: 'Secondary Sheet Winch', value: yacht.rigging?.secondarySheetWinch },
+      { label: 'Genoa Sheetwinches', value: yacht.rigging?.genoaSheetwinches },
+      { label: 'Halyard Winches', value: yacht.rigging?.halyardWinches },
+      { label: 'Multifunctional Winches', value: yacht.rigging?.multifunctionalWinches },
+      { label: 'Spi-Pole', value: yacht.rigging?.spiPole },
+  ];
 
   return (
     <div className="bg-background rounded-lg border p-4 sm:p-6 md:p-8">
@@ -362,13 +386,14 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-8">
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="machinery">Machinery</TabsTrigger>
                         <TabsTrigger value="navigation">Navigation</TabsTrigger>
                         <TabsTrigger value="equipment">Equipment</TabsTrigger>
+                        <TabsTrigger value="rigging">Rigging</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         </TabsList>
 
@@ -454,6 +479,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         <TabsContent value="equipment" className="mt-6">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                                 {equipmentSpecs.map(item => <SpecItem key={item.label} {...item} />)}
+                            </div>
+                        </TabsContent>
+
+                        <TabsContent value="rigging" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {riggingSpecs.map(item => <SpecItem key={item.label} {...item} />)}
                             </div>
                         </TabsContent>
 
