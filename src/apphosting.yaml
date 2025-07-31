@@ -1,3 +1,4 @@
+
 # Required for Genkit to work with App Hosting.
 # See https://firebase.google.com/docs/app-hosting/genkit-integration#production
 requiredAPIs:
@@ -11,11 +12,6 @@ requiredAPIs:
 env:
   - variable: BROWSER_BUILD
     value: "true"
-    availability:
-      - BUILD
-      - RUNTIME
-  - variable: BOAT_LISTINGS_API_KEY
-    value: ${secret:BOAT_LISTINGS_API_KEY}
     availability:
       - BUILD
       - RUNTIME

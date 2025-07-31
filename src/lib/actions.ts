@@ -7,7 +7,6 @@ import { polishDescription } from '@/ai/flows/polish-description';
 import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
 import type { Yacht } from '@/lib/types';
-import { searchYachts, type PiloterrSearchQuery } from '@/services/piloterr-service';
 
 
 const searchSchema = z.object({
@@ -41,72 +40,6 @@ export async function handleSmartSearch(
   } catch (error) {
     console.error('Smart search failed:', error);
     return { error: 'An error occurred during the search. Please try again.' };
-  }
-}
-
-// State and action for the detailed filters on the yachts page.
-export type FilteredSearchState = {
-  result?: {
-      yachts: Yacht[];
-      message: string;
-  };
-  error?: string;
-};
-
-const getNumber = (value: FormDataEntryValue | null) => {
-    if (value === null || value === '') return undefined;
-    const num = Number(value);
-    return isNaN(num) ? undefined : num;
-};
-
-export async function handleFilteredSearch(
-  prevState: FilteredSearchState,
-  formData: FormData
-): Promise<FilteredSearchState> {
-  
-  const query: PiloterrSearchQuery = {
-    // We can add a query if we have a search bar for it.
-    // For now, let's search for "sailboat" to get relevant results.
-    query: 'sailboat', 
-    min_price: getNumber(formData.get('priceMin')),
-    max_price: getNumber(formData.get('priceMax')),
-    min_year: getNumber(formData.get('yearMin')),
-    max_year: getNumber(formData.get('yearMax')),
-    min_length: getNumber(formData.get('lengthMin')),
-    max_length: getNumber(formData.get('lengthMax')),
-    currency: formData.get('currency')?.toString().toUpperCase(),
-  };
-
-  const selectedConditions = formData.getAll('conditions').map(String);
-
-  try {
-    const apiYachts = await searchYachts(query);
-    
-    // The Piloterr API does some filtering, but we need to do the rest.
-    const filteredYachts = apiYachts.filter(yacht => {
-        // Condition filter
-        if (selectedConditions.length > 0 && !selectedConditions.includes(yacht.condition.toLowerCase())) {
-            return false;
-        }
-
-        // Add any other client-side filters here in the future
-        // e.g., for hull type, features, etc.
-
-        return true;
-    });
-    
-    if (filteredYachts.length > 0) {
-        const message = `Showing ${filteredYachts.length} matching yachts.`;
-        return { result: { yachts: filteredYachts, message } };
-    }
-
-    const message = 'No matching yachts found. Try broadening your search filters.';
-    return { result: { yachts: [], message } };
-
-  } catch (error) {
-    console.error('Filtered search failed:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
-    return { error: `An error occurred during the search: ${errorMessage}` };
   }
 }
 

@@ -2,13 +2,10 @@
 'use client';
 
 import * as React from 'react';
-import { useActionState } from 'react';
 import type { Yacht } from '@/lib/types';
 import { YachtListings } from '@/components/yacht-listings';
 import { YachtFilters } from '@/components/yacht-filters';
 import { Button } from '@/components/ui/button';
-import { LoaderCircle, SearchX } from 'lucide-react';
-import { handleFilteredSearch, FilteredSearchState } from '@/lib/actions';
 import {
   Select,
   SelectContent,
@@ -16,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useToast } from '@/hooks/use-toast';
 import {
   Sidebar,
   SidebarContent,
@@ -33,45 +29,13 @@ type YachtsViewProps = {
 };
 
 export function YachtsView({ initialYachts }: YachtsViewProps) {
-  const initialState: FilteredSearchState = { result: { yachts: initialYachts, message: `Showing ${initialYachts.length} featured results.` } };
-  const [state, formAction, isPending] = useActionState(handleFilteredSearch, initialState);
-  const { toast } = useToast();
   const formRef = React.useRef<HTMLFormElement>(null);
-  const [isDebouncing, setIsDebouncing] = React.useState(false);
+  const [yachts, setYachts] = React.useState(initialYachts);
 
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  const handleFormChange = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    
-    setIsDebouncing(true);
-
-    timeoutRef.current = setTimeout(() => {
-      if (formRef.current) {
-        const formData = new FormData(formRef.current);
-        formAction(formData);
-      }
-      setIsDebouncing(false);
-    }, 750);
-  };
-  
-  React.useEffect(() => {
-    if (state.error) {
-      toast({
-        variant: 'destructive',
-        title: 'Search Error',
-        description: state.error,
-      });
-    }
-  }, [state.error, toast]);
-
-  const yachtsToShow = state?.result?.yachts ?? initialYachts;
-  const message = state?.result?.message ?? `Showing ${initialYachts.length} featured results.`;
+  const message = `Showing ${yachts.length} results.`;
 
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <div className="container mx-auto px-4 py-8 md:py-12">
             
             <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
@@ -81,7 +45,7 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                         variant="default"
                         className="h-12 w-full text-base bg-accent text-accent-foreground hover:bg-accent/90"
                     >
-                        Search
+                        Search & Filter
                     </Button>
                 </SidebarTrigger>
               </div>
@@ -90,7 +54,6 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
                 <p className="text-sm text-muted-foreground">
                   {message}
                 </p>
-                {(isPending || isDebouncing) && <LoaderCircle className="h-4 w-4 animate-spin" />}
               </div>
 
               <div className="flex items-center gap-2 justify-start md:justify-end">
@@ -110,34 +73,26 @@ export function YachtsView({ initialYachts }: YachtsViewProps) {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
               <Sidebar>
                 <SidebarHeader>
                     <h2 className="text-lg font-semibold text-foreground">Search</h2>
                     <p className="text-sm text-muted-foreground">
-                        Apply filters to find the perfect yacht. Results will update automatically.
+                        Apply filters to find the perfect yacht.
                     </p>
                 </SidebarHeader>
                 <SidebarContent>
-                    <form ref={formRef} onChange={handleFormChange} className="p-4 pt-0">
+                    <form ref={formRef} className="p-4 pt-0">
                         <YachtFilters />
                     </form>
                 </SidebarContent>
                 <SheetFooter className="p-4 pt-2 bg-card border-t">
-                    <Button size="lg" variant="outline" type="reset" onClick={() => formRef.current?.reset()} className="w-full">Clear All Filters</Button>
+                     <Button size="lg" type="submit" className="w-full">Search</Button>
                 </SheetFooter>
               </Sidebar>
 
               <SidebarInset className="lg:col-span-3 group-data-[state=expanded]/sidebar-wrapper:lg:col-span-2">
-                {yachtsToShow.length > 0 ? (
-                  <YachtListings yachts={yachtsToShow} />
-                ) : (
-                    <div className="text-center py-16 border rounded-lg bg-card">
-                      <SearchX className="mx-auto h-12 w-12 text-muted-foreground" />
-                      <p className="font-semibold mt-4">No Yachts Found</p>
-                      <p className="text-muted-foreground mt-2">Try adjusting your filters for a broader search.</p>
-                    </div>
-                )}
+                <YachtListings yachts={yachts} />
               </SidebarInset>
             </div>
         </div>
