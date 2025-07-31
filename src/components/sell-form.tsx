@@ -453,7 +453,7 @@ export function SellForm() {
     }
     
     return (
-        <div>
+      <div>
         {isPreview ? (
           <div>
             <div className="mb-8 flex justify-between items-center">
