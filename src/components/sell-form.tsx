@@ -790,691 +790,744 @@ export function SellForm() {
 
   return (
     <ErrorBoundary>
-        <div>
-            {isPreview ? (
-                <div>
-                    <div className="mb-8 flex justify-between items-center">
-                        <Button variant="outline" onClick={prev}>
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to Edit
-                        </Button>
-                         <h2 className="text-2xl font-bold">Listing Preview</h2>
-                        <Button onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting}>
-                            {isSubmitting ? (
-                                <LoaderCircle className="animate-spin" />
-                            ) : (
-                                'Submit Listing'
-                            )}
-                        </Button>
-                    </div>
-                    <ListingPreview 
-                        data={form.getValues()} 
-                        metadata={metadata}
-                        heroImagePreview={heroImagePreview || ''}
-                        galleryImagePreviews={galleryImagePreviews}
-                    />
+      <div>
+        {isPreview ? (
+          <div>
+            <div className="mb-8 flex justify-between items-center">
+              <Button variant="outline" onClick={prev}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Edit
+              </Button>
+              <h2 className="text-2xl font-bold">Listing Preview</h2>
+              <Button onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting}>
+                {isSubmitting ? <LoaderCircle className="animate-spin" /> : 'Submit Listing'}
+              </Button>
+            </div>
+            <ListingPreview
+              data={form.getValues()}
+              metadata={metadata}
+              heroImagePreview={heroImagePreview || ''}
+              galleryImagePreviews={galleryImagePreviews}
+            />
+          </div>
+        ) : (
+          <Form {...form}>
+            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+              {/* Progress Bar and Navigation */}
+              <div className="space-y-4">
+                <Progress value={((currentStep + 1) / STEPS.length) * 100} />
+                <div className="flex justify-between items-center">
+                  <Button type="button" onClick={prev} variant="ghost" disabled={currentStep === 0}>
+                    <ArrowLeft className="mr-2" /> Go Back
+                  </Button>
+                  <div className="text-sm font-medium">
+                    Step {currentStep + 1} of {STEPS.length}: <span className="font-bold">{STEPS[currentStep].name}</span>
+                  </div>
                 </div>
-            ) : (
-                <Form {...form}>
-                    <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                        
-                        {/* Progress Bar and Navigation */}
-                        <div className="space-y-4">
-                            <Progress value={((currentStep + 1) / STEPS.length) * 100} />
-                            <div className="flex justify-between items-center">
-                                <Button
-                                    type="button"
-                                    onClick={prev}
-                                    variant="ghost"
-                                    disabled={currentStep === 0}
-                                >
-                                    <ArrowLeft className="mr-2" /> Go Back
-                                </Button>
-                                <div className="text-sm font-medium">
-                                    Step {currentStep + 1} of {STEPS.length}: <span className="font-bold">{STEPS[currentStep].name}</span>
-                                </div>
+              </div>
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -50, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  {/* Step 1: General Information */}
+                  {currentStep === 0 && (
+                    <div className="space-y-8">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Yacht Details</CardTitle>
+                          <CardDescription>Start with the basics of your yacht.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <FormField
+                              control={form.control}
+                              name="listingType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Listing Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select listing type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.listingTypes.map((type) => (
+                                        <SelectItem key={type.id} value={type.id}>
+                                          {type.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="boatType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Boat Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select boat type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.boatTypes.map((type) => (
+                                        <SelectItem key={type.id} value={type.id}>
+                                          {type.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="condition"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Condition</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select condition" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.conditions.map((type) => (
+                                        <SelectItem key={type.id} value={type.id}>
+                                          {type.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="make"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Builder/Make</FormLabel>
+                                  <Combobox
+                                    options={metadata.makes.map((make) => ({ label: make.label, value: make.id }))}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Select or enter a builder"
+                                    searchPlaceholder="Search builders..."
+                                    notFoundText="No builder found."
+                                  />
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="model"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Model</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="e.g., Oceanis 46.1" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="year"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Year</FormLabel>
+                                  <FormControl>
+                                    <Input type="number" placeholder="YYYY" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="length"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Length (ft)</FormLabel>
+                                  <FormControl>
+                                    <Input type="number" placeholder="Overall length in feet" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="price"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Price (USD)</FormLabel>
+                                  <FormControl>
+                                    <Input type="number" placeholder="Asking price" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="location"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Location</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select location" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.locationsByRegion.map((region) => (
+                                        <SelectGroup key={region.region}>
+                                          <SelectLabel>{region.region}</SelectLabel>
+                                          {region.locations.map((loc) => (
+                                            <SelectItem key={loc.id} value={loc.id}>
+                                              {loc.label}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectGroup>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <CardTitle>Title & Description</CardTitle>
+                              <CardDescription>
+                                Craft a compelling narrative for your listing. Use our AI tools for a professional touch.
+                              </CardDescription>
                             </div>
-                        </div>
-
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentStep}
-                                initial={{ x: 50, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                exit={{ x: -50, opacity: 0 }}
-                                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                            >
-                                {/* Step 1: General Information */}
-                                {currentStep === 0 && (
-                                    <div className="space-y-8">
-                                        <Card>
-                                            <CardHeader>
-                                                <CardTitle>Yacht Details</CardTitle>
-                                                <CardDescription>Start with the basics of your yacht.</CardDescription>
-                                            </CardHeader>
-                                            <CardContent className="space-y-6">
-                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="listingType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Listing Type</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl>
-                                                                        <SelectTrigger>
-                                                                            <SelectValue placeholder="Select listing type" />
-                                                                        </SelectTrigger>
-                                                                    </FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.listingTypes.map(type => (
-                                                                            <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="boatType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Boat Type</FormLabel>
-                                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl>
-                                                                        <SelectTrigger>
-                                                                            <SelectValue placeholder="Select boat type" />
-                                                                        </SelectTrigger>
-                                                                    </FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.boatTypes.map(type => (
-                                                                            <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="condition"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Condition</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl>
-                                                                        <SelectTrigger>
-                                                                            <SelectValue placeholder="Select condition" />
-                                                                        </SelectTrigger>
-                                                                    </FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.conditions.map(type => (
-                                                                            <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="make"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Builder/Make</FormLabel>
-                                                                <Combobox
-                                                                    options={metadata.makes.map(make => ({ label: make.label, value: make.id }))}
-                                                                    value={field.value}
-                                                                    onChange={field.onChange}
-                                                                    placeholder="Select or enter a builder"
-                                                                    searchPlaceholder="Search builders..."
-                                                                    notFoundText="No builder found."
-                                                                />
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="model"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Model</FormLabel>
-                                                                <FormControl>
-                                                                    <Input placeholder="e.g., Oceanis 46.1" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="year"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Year</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="number" placeholder="YYYY" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="length"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Length (ft)</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="number" placeholder="Overall length in feet" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="price"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Price (USD)</FormLabel>
-                                                                <FormControl>
-                                                                    <Input type="number" placeholder="Asking price" {...field} />
-                                                                </FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="location"
-                                                        render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Location</FormLabel>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <FormControl>
-                                                                <SelectTrigger>
-                                                                <SelectValue placeholder="Select location" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                {metadata.locationsByRegion.map((region) => (
-                                                                <SelectGroup key={region.region}>
-                                                                    <SelectLabel>{region.region}</SelectLabel>
-                                                                    {region.locations.map((loc) => (
-                                                                    <SelectItem key={loc.id} value={loc.id}>
-                                                                        {loc.label}
-                                                                    </SelectItem>
-                                                                    ))}
-                                                                </SelectGroup>
-                                                                ))}
-                                                            </SelectContent>
-                                                            </Select>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                        )}
-                                                    />
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                         <Card>
-                                            <CardHeader>
-                                                <div className="flex items-center justify-between">
-                                                    <div>
-                                                        <CardTitle>Title & Description</CardTitle>
-                                                        <CardDescription>
-                                                            Craft a compelling narrative for your listing. Use our AI tools for a professional touch.
-                                                        </CardDescription>
-                                                    </div>
-                                                    <Button type="button" onClick={handleGenerateClick} disabled={isAiPending}>
-                                                        {isAiPending ? (
-                                                            <LoaderCircle className="animate-spin" />
-                                                        ) : (
-                                                            <>
-                                                                <Sparkles className="mr-2" /> Generate with AI
-                                                            </>
-                                                        )}
-                                                    </Button>
-                                                </div>
-                                            </CardHeader>
-                                            <CardContent className="space-y-6">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="title"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Listing Title</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="e.g., Immaculate 2022 Beneteau Oceanis 46.1 For Sale" {...field} />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="description"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <div className="flex items-center justify-between mb-2">
-                                                                <FormLabel>Description</FormLabel>
-                                                                <Button type="button" variant="outline" size="sm" onClick={handlePolishClick} disabled={isPolishPending}>
-                                                                    {isPolishPending ? (
-                                                                        <LoaderCircle className="animate-spin" />
-                                                                    ) : (
-                                                                        <>
-                                                                            <Sparkles className="mr-2 h-3 w-3" /> Polish with AI
-                                                                        </>
-                                                                    )}
-                                                                </Button>
-                                                            </div>
-                                                            <FormControl>
-                                                                <TextEditor
-                                                                    value={field.value}
-                                                                    onChange={field.onChange}
-                                                                    placeholder="Describe the yacht's history, features, condition, and recent upgrades..."
-                                                                />
-                                                            </FormControl>
-                                                            <FormDescription>
-                                                                A detailed and engaging description helps attract more buyers.
-                                                            </FormDescription>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </CardContent>
-                                        </Card>
-                                        
-                                        <Card>
-                                            <CardHeader>
-                                                <CardTitle>Specifications & Features</CardTitle>
-                                                <CardDescription>Provide the technical details and equipment of your yacht.</CardDescription>
-                                            </CardHeader>
-                                            <CardContent className="space-y-6">
-                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                                     <FormField
-                                                        control={form.control}
-                                                        name="hullMaterial"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Hull Material</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select material" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.hullMaterialOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="transomShape"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Transom Shape</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select shape" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.transomShapeOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="bowShape"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Bow Shape</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select shape" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.bowShapeOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                      <FormField
-                                                        control={form.control}
-                                                        name="keelType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Keel Type</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.keelTypeOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="rudderType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Rudder Type</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.rudderTypeOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                      <FormField
-                                                        control={form.control}
-                                                        name="propellerType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Propeller Type</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.propellerTypeOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="sailRigging"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Sail Rigging</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select rigging" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.sailRiggingOptions.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="fuelType"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Fuel Type</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl><SelectTrigger><SelectValue placeholder="Select fuel type" /></SelectTrigger></FormControl>
-                                                                    <SelectContent>
-                                                                        {metadata.fuelTypes.map(opt => <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>)}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                 </div>
-
-                                                <FormField
-                                                    control={form.control}
-                                                    name="otherSpecifications"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Other Key Specifications</FormLabel>
-                                                            <FormControl>
-                                                                <Textarea
-                                                                    placeholder="List other important specifications, e.g., Engine: Yanmar 75hp, Water Capacity: 200L. Each on a new line."
-                                                                    className="min-h-[120px]"
-                                                                    {...field}
-                                                                />
-                                                            </FormControl>
-                                                             <FormDescription>This can be automatically populated using the "Generate with AI" feature.</FormDescription>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <div className="space-y-4">
-                                                    <FormLabel>Features & Equipment</FormLabel>
-                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                                        {metadata.featureOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="features"
-                                                                render={({ field }) => {
-                                                                    return (
-                                                                        <FormItem
-                                                                            key={item.id}
-                                                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                                                        >
-                                                                            <FormControl>
-                                                                                <Checkbox
-                                                                                    checked={field.value?.includes(item.id)}
-                                                                                    onCheckedChange={(checked) => {
-                                                                                        return checked
-                                                                                            ? field.onChange([...(field.value || []), item.id])
-                                                                                            : field.onChange(
-                                                                                                field.value?.filter(
-                                                                                                    (value) => value !== item.id
-                                                                                                )
-                                                                                            )
-                                                                                    }}
-                                                                                />
-                                                                            </FormControl>
-                                                                            <FormLabel className="font-normal">
-                                                                                {item.label}
-                                                                            </FormLabel>
-                                                                        </FormItem>
-                                                                    )
-                                                                }}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-4">
-                                                    <FormLabel>Deck Features</FormLabel>
-                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                                        {metadata.deckOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="deck"
-                                                                render={({ field }) => (
-                                                                    <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => (
-                                                                                    checked
-                                                                                    ? field.onChange([...(field.value || []), item.id])
-                                                                                    : field.onChange(field.value?.filter(v => v !== item.id))
-                                                                                )}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                                 <div className="space-y-4">
-                                                    <FormLabel>Accommodation Features</FormLabel>
-                                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                                        {metadata.cabinOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="accommodation.cabins"
-                                                                render={({ field }) => (
-                                                                    <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => (
-                                                                                    checked
-                                                                                    ? field.onChange([...(field.value || []), item.id])
-                                                                                    : field.onChange(field.value?.filter(v => v !== item.id))
-                                                                                )}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-                                )}
-
-                                {/* Step 2: Photos */}
-                                {currentStep === 1 && (
-                                    <div className="space-y-8">
-                                         <Card>
-                                            <CardHeader>
-                                                <CardTitle>Upload Photos</CardTitle>
-                                                <CardDescription>
-                                                    High-quality photos are crucial for attracting buyers. Upload one hero image and at least {FORM_CONSTANTS.MIN_GALLERY_IMAGES} additional photos.
-                                                </CardDescription>
-                                            </CardHeader>
-                                            <CardContent className="space-y-8">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="heroImage"
-                                                    render={({ field: { onChange, value, ...rest } }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Hero Image</FormLabel>
-                                                            <FormDescription>This is the main image for your listing.</FormDescription>
-                                                            <FormControl>
-                                                                <div className="relative flex items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary">
-                                                                    <Input
-                                                                        type="file"
-                                                                        className="absolute w-full h-full opacity-0 cursor-pointer"
-                                                                        accept={FORM_CONSTANTS.ALLOWED_IMAGE_TYPES.join(',')}
-                                                                        onChange={(e) => {
-                                                                            const file = e.target.files?.[0];
-                                                                            if (file) {
-                                                                                onChange(file);
-                                                                                setHeroImage(file);
-                                                                            }
-                                                                        }}
-                                                                        {...rest}
-                                                                    />
-                                                                    {heroImagePreview ? (
-                                                                        <>
-                                                                            <Image src={heroImagePreview} alt="Hero preview" fill className="object-cover rounded-lg" />
-                                                                            <Button
-                                                                                type="button"
-                                                                                variant="destructive"
-                                                                                size="icon"
-                                                                                className="absolute top-2 right-2 z-10"
-                                                                                onClick={() => {
-                                                                                    onChange(null);
-                                                                                    setHeroImage(null);
-                                                                                }}
-                                                                            >
-                                                                                <X className="h-4 w-4" />
-                                                                            </Button>
-                                                                        </>
-                                                                    ) : (
-                                                                        <div className="text-center">
-                                                                            <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
-                                                                            <p className="mt-2 text-sm text-muted-foreground">Click to upload or drag and drop</p>
-                                                                            <p className="text-xs text-muted-foreground">PNG, JPG, WEBP up to 10MB</p>
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="galleryImages"
-                                                    render={({ field: { onChange, value, ...rest } }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Gallery Images</FormLabel>
-                                                             <FormDescription>Upload between {FORM_CONSTANTS.MIN_GALLERY_IMAGES} and {FORM_CONSTANTS.MAX_GALLERY_IMAGES} additional photos.</FormDescription>
-                                                            <FormControl>
-                                                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                                                    {galleryImagePreviews.map((src, index) => (
-                                                                        <div key={index} className="relative group">
-                                                                            <Image src={src} alt={`Gallery preview ${index + 1}`} width={200} height={150} className="object-cover rounded-lg aspect-[4/3]" />
-                                                                            <Button
-                                                                                type="button"
-                                                                                variant="destructive"
-                                                                                size="icon"
-                                                                                className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                                                                                onClick={() => {
-                                                                                    const updatedFiles = (value || []).filter((_: any, i: number) => i !== index);
-                                                                                    onChange(updatedFiles);
-                                                                                    removeGalleryImage(index, updatedFiles);
-                                                                                }}
-                                                                            >
-                                                                                <X className="h-3 w-3" />
-                                                                            </Button>
-                                                                        </div>
-                                                                    ))}
-                                                                    <div className="relative flex items-center justify-center w-full aspect-[4/3] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary">
-                                                                        <Input
-                                                                            type="file"
-                                                                            multiple
-                                                                            className="absolute w-full h-full opacity-0 cursor-pointer"
-                                                                            accept={FORM_CONSTANTS.ALLOWED_IMAGE_TYPES.join(',')}
-                                                                            onChange={(e) => {
-                                                                                const files = Array.from(e.target.files || []);
-                                                                                const currentFiles = value || [];
-                                                                                const newFiles = [...currentFiles, ...files];
-                                                                                onChange(newFiles);
-                                                                                setGalleryImages(newFiles);
-                                                                            }}
-                                                                            {...rest}
-                                                                        />
-                                                                        <div className="text-center p-2">
-                                                                            <ImageIcon className="mx-auto h-8 w-8 text-muted-foreground" />
-                                                                            <p className="mt-1 text-xs text-muted-foreground">Add more</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-                                )}
-
-                            </motion.div>
-                        </AnimatePresence>
-
-                        <div className="flex justify-end">
-                            <Button type="button" size="lg" onClick={next}>
-                                {currentStep === STEPS.length - 1 ? 'Preview Listing' : 'Next Step'}
-                                <Ship className="ml-2" />
+                            <Button type="button" onClick={handleGenerateClick} disabled={isAiPending}>
+                              {isAiPending ? (
+                                <LoaderCircle className="animate-spin" />
+                              ) : (
+                                <>
+                                  <Sparkles className="mr-2" /> Generate with AI
+                                </>
+                              )}
                             </Button>
-                        </div>
-                    </form>
-                </Form>
-            )}
-        </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                          <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Listing Title</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="e.g., Immaculate 2022 Beneteau Oceanis 46.1 For Sale" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                              <FormItem>
+                                <div className="flex items-center justify-between mb-2">
+                                  <FormLabel>Description</FormLabel>
+                                  <Button type="button" variant="outline" size="sm" onClick={handlePolishClick} disabled={isPolishPending}>
+                                    {isPolishPending ? (
+                                      <LoaderCircle className="animate-spin" />
+                                    ) : (
+                                      <>
+                                        <Sparkles className="mr-2 h-3 w-3" /> Polish with AI
+                                      </>
+                                    )}
+                                  </Button>
+                                </div>
+                                <FormControl>
+                                  <TextEditor
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder="Describe the yacht's history, features, condition, and recent upgrades..."
+                                  />
+                                </FormControl>
+                                <FormDescription>
+                                  A detailed and engaging description helps attract more buyers.
+                                </FormDescription>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Specifications & Features</CardTitle>
+                          <CardDescription>Provide the technical details and equipment of your yacht.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <FormField
+                              control={form.control}
+                              name="hullMaterial"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Hull Material</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select material" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.hullMaterialOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="transomShape"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Transom Shape</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select shape" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.transomShapeOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="bowShape"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Bow Shape</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select shape" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.bowShapeOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="keelType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Keel Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.keelTypeOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="rudderType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Rudder Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.rudderTypeOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="propellerType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Propeller Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.propellerTypeOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="sailRigging"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Sail Rigging</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select rigging" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.sailRiggingOptions.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="fuelType"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Fuel Type</FormLabel>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select fuel type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {metadata.fuelTypes.map((opt) => (
+                                        <SelectItem key={opt.id} value={opt.id}>
+                                          {opt.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name="otherSpecifications"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Other Key Specifications</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="List other important specifications, e.g., Engine: Yanmar 75hp, Water Capacity: 200L. Each on a new line."
+                                    className="min-h-[120px]"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormDescription>This can be automatically populated using the "Generate with AI" feature.</FormDescription>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <div className="space-y-4">
+                            <FormLabel>Features & Equipment</FormLabel>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              {metadata.featureOptions.map((item) => (
+                                <FormField
+                                  key={item.id}
+                                  control={form.control}
+                                  name="features"
+                                  render={({ field }) => {
+                                    return (
+                                      <FormItem
+                                        key={item.id}
+                                        className="flex flex-row items-start space-x-3 space-y-0"
+                                      >
+                                        <FormControl>
+                                          <Checkbox
+                                            checked={field.value?.includes(item.id)}
+                                            onCheckedChange={(checked) => {
+                                              return checked
+                                                ? field.onChange([...(field.value || []), item.id])
+                                                : field.onChange(field.value?.filter((value) => value !== item.id));
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">{item.label}</FormLabel>
+                                      </FormItem>
+                                    );
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <div className="space-y-4">
+                            <FormLabel>Deck Features</FormLabel>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              {metadata.deckOptions.map((item) => (
+                                <FormField
+                                  key={item.id}
+                                  control={form.control}
+                                  name="deck"
+                                  render={({ field }) => (
+                                    <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                      <FormControl>
+                                        <Checkbox
+                                          checked={field.value?.includes(item.id)}
+                                          onCheckedChange={(checked) =>
+                                            checked
+                                              ? field.onChange([...(field.value || []), item.id])
+                                              : field.onChange(field.value?.filter((v) => v !== item.id))
+                                          }
+                                        />
+                                      </FormControl>
+                                      <FormLabel className="font-normal">{item.label}</FormLabel>
+                                    </FormItem>
+                                  )}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <div className="space-y-4">
+                            <FormLabel>Accommodation Features</FormLabel>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                              {metadata.cabinOptions.map((item) => (
+                                <FormField
+                                  key={item.id}
+                                  control={form.control}
+                                  name="accommodation.cabins"
+                                  render={({ field }) => (
+                                    <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                                      <FormControl>
+                                        <Checkbox
+                                          checked={field.value?.includes(item.id)}
+                                          onCheckedChange={(checked) =>
+                                            checked
+                                              ? field.onChange([...(field.value || []), item.id])
+                                              : field.onChange(field.value?.filter((v) => v !== item.id))
+                                          }
+                                        />
+                                      </FormControl>
+                                      <FormLabel className="font-normal">{item.label}</FormLabel>
+                                    </FormItem>
+                                  )}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+
+                  {/* Step 2: Photos */}
+                  {currentStep === 1 && (
+                    <div className="space-y-8">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Upload Photos</CardTitle>
+                          <CardDescription>
+                            High-quality photos are crucial for attracting buyers. Upload one hero image and at least {FORM_CONSTANTS.MIN_GALLERY_IMAGES} additional photos.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-8">
+                          <FormField
+                            control={form.control}
+                            name="heroImage"
+                            render={({ field: { onChange, value, ...rest } }) => (
+                              <FormItem>
+                                <FormLabel>Hero Image</FormLabel>
+                                <FormDescription>This is the main image for your listing.</FormDescription>
+                                <FormControl>
+                                  <div className="relative flex items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary">
+                                    <Input
+                                      type="file"
+                                      className="absolute w-full h-full opacity-0 cursor-pointer"
+                                      accept={FORM_CONSTANTS.ALLOWED_IMAGE_TYPES.join(',')}
+                                      onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                          onChange(file);
+                                          setHeroImage(file);
+                                        }
+                                      }}
+                                      {...rest}
+                                    />
+                                    {heroImagePreview ? (
+                                      <>
+                                        <Image src={heroImagePreview} alt="Hero preview" fill className="object-cover rounded-lg" />
+                                        <Button
+                                          type="button"
+                                          variant="destructive"
+                                          size="icon"
+                                          className="absolute top-2 right-2 z-10"
+                                          onClick={() => {
+                                            onChange(null);
+                                            setHeroImage(null);
+                                          }}
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </>
+                                    ) : (
+                                      <div className="text-center">
+                                        <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                                        <p className="mt-2 text-sm text-muted-foreground">Click to upload or drag and drop</p>
+                                        <p className="text-xs text-muted-foreground">PNG, JPG, WEBP up to 10MB</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="galleryImages"
+                            render={({ field: { onChange, value, ...rest } }) => (
+                              <FormItem>
+                                <FormLabel>Gallery Images</FormLabel>
+                                <FormDescription>Upload between {FORM_CONSTANTS.MIN_GALLERY_IMAGES} and {FORM_CONSTANTS.MAX_GALLERY_IMAGES} additional photos.</FormDescription>
+                                <FormControl>
+                                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                    {galleryImagePreviews.map((src, index) => (
+                                      <div key={index} className="relative group">
+                                        <Image src={src} alt={`Gallery preview ${index + 1}`} width={200} height={150} className="object-cover rounded-lg aspect-[4/3]" />
+                                        <Button
+                                          type="button"
+                                          variant="destructive"
+                                          size="icon"
+                                          className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                          onClick={() => {
+                                            const updatedFiles = (value || []).filter((_: any, i: number) => i !== index);
+                                            onChange(updatedFiles);
+                                            removeGalleryImage(index, updatedFiles);
+                                          }}
+                                        >
+                                          <X className="h-3 w-3" />
+                                        </Button>
+                                      </div>
+                                    ))}
+                                    <div className="relative flex items-center justify-center w-full aspect-[4/3] border-2 border-dashed rounded-lg cursor-pointer hover:border-primary">
+                                      <Input
+                                        type="file"
+                                        multiple
+                                        className="absolute w-full h-full opacity-0 cursor-pointer"
+                                        accept={FORM_CONSTANTS.ALLOWED_IMAGE_TYPES.join(',')}
+                                        onChange={(e) => {
+                                          const files = Array.from(e.target.files || []);
+                                          const currentFiles = value || [];
+                                          const newFiles = [...currentFiles, ...files];
+                                          onChange(newFiles);
+                                          setGalleryImages(newFiles);
+                                        }}
+                                        {...rest}
+                                      />
+                                      <div className="text-center p-2">
+                                        <ImageIcon className="mx-auto h-8 w-8 text-muted-foreground" />
+                                        <p className="mt-1 text-xs text-muted-foreground">Add more</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="flex justify-end">
+                <Button type="button" size="lg" onClick={next}>
+                  {currentStep === STEPS.length - 1 ? 'Preview Listing' : 'Next Step'}
+                  <Ship className="ml-2" />
+                </Button>
+              </div>
+            </form>
+          </Form>
+        )}
+      </div>
     </ErrorBoundary>
   );
 }
