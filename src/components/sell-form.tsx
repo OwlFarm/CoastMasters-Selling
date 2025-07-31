@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -43,14 +44,16 @@ const FORM_CONSTANTS = {
 } as const;
 
 // Utility functions
-const createNumberPreprocessor = (optional = false) => 
+const createNumberPreprocessor = (optional = false, positive = false) => 
   z.preprocess(
     (a) => {
       if (a === '' || a === null || a === undefined) return optional ? undefined : 0;
       const num = typeof a === 'string' ? parseFloat(a) : Number(a);
       return isNaN(num) ? (optional ? undefined : 0) : num;
     },
-    optional ? z.number().optional() : z.number()
+    optional 
+      ? (positive ? z.number().positive('Must be a positive number').optional() : z.number().optional())
+      : (positive ? z.number().positive('Must be a positive number') : z.number())
   );
 
 const createIntegerPreprocessor = (optional = false) =>
@@ -95,8 +98,8 @@ const formSchema = z.object({
     val => val >= FORM_CONSTANTS.MIN_YEAR && val <= new Date().getFullYear() + 1,
     'Invalid year'
   ),
-  length: createNumberPreprocessor().positive('Must be a positive number'),
-  price: createNumberPreprocessor().positive('Must be a positive number'),
+  length: createNumberPreprocessor(false, true),
+  price: createNumberPreprocessor(false, true),
   description: z.string()
     .min(FORM_CONSTANTS.MIN_DESCRIPTION_LENGTH, { 
       message: `Description must be at least ${FORM_CONSTANTS.MIN_DESCRIPTION_LENGTH} characters.` 
