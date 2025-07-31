@@ -103,6 +103,39 @@ const formSchema = z.object({
     sharedShower: z.string().optional(),
     washingMachine: z.string().optional(),
   }).optional(),
+  machinery: z.object({
+    numberOfEngines: z.preprocess((a) => a === '' ? undefined : parseInt(z.string().parse(a), 10), z.number().optional()),
+    make: z.string().optional(),
+    type: z.string().optional(),
+    hp: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    kw: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    fuel: z.string().optional(),
+    yearInstalled: z.preprocess((a) => a === '' ? undefined : parseInt(z.string().parse(a), 10), z.number().optional()),
+    yearOfOverhaul: z.string().optional(),
+    maxSpeedKnots: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    cruisingSpeedKnots: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    consumptionLhr: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    engineCoolingSystem: z.string().optional(),
+    drive: z.string().optional(),
+    shaftSeal: z.string().optional(),
+    engineControls: z.string().optional(),
+    gearbox: z.string().optional(),
+    bowthruster: z.string().optional(),
+    propellerType: z.string().optional(),
+    manualBilgePump: z.string().optional(),
+    electricBilgePump: z.string().optional(),
+    electricalInstallation: z.string().optional(),
+    generator: z.string().optional(),
+    batteries: z.string().optional(),
+    startBattery: z.string().optional(),
+    serviceBattery: z.string().optional(),
+    batteryMonitor: z.string().optional(),
+    batteryCharger: z.string().optional(),
+    solarPanel: z.string().optional(),
+    shorepower: z.string().optional(),
+    watermaker: z.string().optional(),
+    extraInfo: z.string().optional(),
+  }).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
   otherSpecifications: z.string().max(500, { message: "Cannot exceed 500 characters."}).optional(),
@@ -156,7 +189,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'accommodation', 'cabin',
+        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'cabin',
         'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion',
         'loaM', 'lwlM', 'beamM', 'draftM', 'airDraftM', 'headroomM', 'country', 'designer', 'displacementT', 'ballastTonnes',
         'hullColor', 'hullShape', 'superstructureMaterial', 'deckMaterial', 'deckFinish', 'superstructureDeckFinish', 'cockpitDeckFinish',
@@ -203,6 +236,7 @@ export function SellForm() {
                 galley: [],
                 heads: [],
             },
+            machinery: {},
             condition: undefined,
             location: undefined,
             fuelType: undefined,
@@ -1071,6 +1105,47 @@ export function SellForm() {
                                                     <FormItem><FormLabel>Washing Machine</FormLabel><FormControl><Input placeholder="e.g., Kenny Compact" {...field} /></FormControl><FormMessage /></FormItem>
                                                 )} />
                                             </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Machinery</CardTitle>
+                                        <CardDescription>Provide details about the engine and other machinery.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <FormField control={form.control} name="machinery.numberOfEngines" render={({ field }) => (<FormItem><FormLabel>No. of Engines</FormLabel><FormControl><Input type="number" placeholder="e.g., 1" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.make" render={({ field }) => (<FormItem><FormLabel>Make</FormLabel><FormControl><Input placeholder="e.g., Volvo Penta" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.type" render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input placeholder="e.g., TMD41A" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.hp" render={({ field }) => (<FormItem><FormLabel>HP</FormLabel><FormControl><Input type="number" placeholder="e.g., 143" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.kw" render={({ field }) => (<FormItem><FormLabel>kW</FormLabel><FormControl><Input type="number" placeholder="e.g., 105.25" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.fuel" render={({ field }) => (<FormItem><FormLabel>Fuel</FormLabel><FormControl><Input placeholder="e.g., diesel" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.yearInstalled" render={({ field }) => (<FormItem><FormLabel>Year Installed</FormLabel><FormControl><Input type="number" placeholder="e.g., 1991" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.yearOfOverhaul" render={({ field }) => (<FormItem><FormLabel>Year of Overhaul</FormLabel><FormControl><Input placeholder="e.g., 2018" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.maxSpeedKnots" render={({ field }) => (<FormItem><FormLabel>Max Speed (kn)</FormLabel><FormControl><Input type="number" placeholder="e.g., 9" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.cruisingSpeedKnots" render={({ field }) => (<FormItem><FormLabel>Cruising Speed (kn)</FormLabel><FormControl><Input type="number" placeholder="e.g., 7.5" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.consumptionLhr" render={({ field }) => (<FormItem><FormLabel>Consumption (L/hr)</FormLabel><FormControl><Input type="number" placeholder="e.g., 10" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.engineCoolingSystem" render={({ field }) => (<FormItem><FormLabel>Engine Cooling System</FormLabel><FormControl><Input placeholder="e.g., seawater" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.drive" render={({ field }) => (<FormItem><FormLabel>Drive</FormLabel><FormControl><Input placeholder="e.g., shaft" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.shaftSeal" render={({ field }) => (<FormItem><FormLabel>Shaft Seal</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.engineControls" render={({ field }) => (<FormItem><FormLabel>Engine Controls</FormLabel><FormControl><Input placeholder="e.g., bowden cable" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.gearbox" render={({ field }) => (<FormItem><FormLabel>Gearbox</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.bowthruster" render={({ field }) => (<FormItem><FormLabel>Bowthruster</FormLabel><FormControl><Input placeholder="e.g., electric" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.propellerType" render={({ field }) => (<FormItem><FormLabel>Propeller Type</FormLabel><FormControl><Input placeholder="e.g., fixed" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.manualBilgePump" render={({ field }) => (<FormItem><FormLabel>Manual Bilge Pump</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.electricBilgePump" render={({ field }) => (<FormItem><FormLabel>Electric Bilge Pump</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.electricalInstallation" render={({ field }) => (<FormItem><FormLabel>Electrical Installation</FormLabel><FormControl><Input placeholder="e.g., 12-24-230 V" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.generator" render={({ field }) => (<FormItem><FormLabel>Generator</FormLabel><FormControl><Input placeholder="e.g., Westerbeke 8 kW" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.batteries" render={({ field }) => (<FormItem><FormLabel>Batteries</FormLabel><FormControl><Input placeholder="e.g., 5 x Greenline 12V - 105Ah" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.startBattery" render={({ field }) => (<FormItem><FormLabel>Start Battery</FormLabel><FormControl><Input placeholder="e.g., 1 x 105Ah" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.serviceBattery" render={({ field }) => (<FormItem><FormLabel>Service Battery</FormLabel><FormControl><Input placeholder="e.g., 4 x 105Ah" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.batteryMonitor" render={({ field }) => (<FormItem><FormLabel>Battery Monitor</FormLabel><FormControl><Input placeholder="e.g., Odelco DCC 2000" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.batteryCharger" render={({ field }) => (<FormItem><FormLabel>Battery Charger</FormLabel><FormControl><Input placeholder="e.g., Victron Centaur 24v 60Ah" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.solarPanel" render={({ field }) => (<FormItem><FormLabel>Solar Panel</FormLabel><FormControl><Input placeholder="e.g., Solbian 2 x SR166" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.shorepower" render={({ field }) => (<FormItem><FormLabel>Shorepower</FormLabel><FormControl><Input placeholder="e.g., with cable" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.watermaker" render={({ field }) => (<FormItem><FormLabel>Watermaker</FormLabel><FormControl><Input placeholder="e.g., Not connected" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="machinery.extraInfo" render={({ field }) => (<FormItem className="md:col-span-full"><FormLabel>Extra Info</FormLabel><FormControl><Textarea placeholder="Any other machinery details..." {...field} /></FormControl><FormMessage /></FormItem>)} />
                                         </div>
                                     </CardContent>
                                 </Card>

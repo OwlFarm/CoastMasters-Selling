@@ -200,6 +200,40 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     { label: 'Washing Machine', value: yacht.accommodation?.washingMachine },
   ];
 
+  const machinerySpecs = [
+    { label: 'No. of Engines', value: yacht.machinery?.numberOfEngines },
+    { label: 'Make', value: yacht.machinery?.make },
+    { label: 'Type', value: yacht.machinery?.type },
+    { label: 'HP', value: yacht.machinery?.hp },
+    { label: 'kW', value: yacht.machinery?.kw },
+    { label: 'Fuel', value: yacht.machinery?.fuel },
+    { label: 'Year Installed', value: yacht.machinery?.yearInstalled },
+    { label: 'Year of Overhaul', value: yacht.machinery?.yearOfOverhaul },
+    { label: 'Max Speed (kn)', value: yacht.machinery?.maxSpeedKnots },
+    { label: 'Cruising Speed (kn)', value: yacht.machinery?.cruisingSpeedKnots },
+    { label: 'Consumption (L/hr)', value: yacht.machinery?.consumptionLhr },
+    { label: 'Engine Cooling System', value: yacht.machinery?.engineCoolingSystem },
+    { label: 'Drive', value: yacht.machinery?.drive },
+    { label: 'Shaft Seal', value: yacht.machinery?.shaftSeal },
+    { label: 'Engine Controls', value: yacht.machinery?.engineControls },
+    { label: 'Gearbox', value: yacht.machinery?.gearbox },
+    { label: 'Bowthruster', value: yacht.machinery?.bowthruster },
+    { label: 'Propeller Type', value: yacht.machinery?.propellerType },
+    { label: 'Manual Bilge Pump', value: yacht.machinery?.manualBilgePump },
+    { label: 'Electric Bilge Pump', value: yacht.machinery?.electricBilgePump },
+    { label: 'Electrical Installation', value: yacht.machinery?.electricalInstallation },
+    { label: 'Generator', value: yacht.machinery?.generator },
+    { label: 'Batteries', value: yacht.machinery?.batteries },
+    { label: 'Start Battery', value: yacht.machinery?.startBattery },
+    { label: 'Service Battery', value: yacht.machinery?.serviceBattery },
+    { label: 'Battery Monitor', value: yacht.machinery?.batteryMonitor },
+    { label: 'Battery Charger', value: yacht.machinery?.batteryCharger },
+    { label: 'Solar Panel', value: yacht.machinery?.solarPanel },
+    { label: 'Shorepower', value: yacht.machinery?.shorepower },
+    { label: 'Watermaker', value: yacht.machinery?.watermaker },
+    { label: 'Extra Info', value: yacht.machinery?.extraInfo },
+  ];
+
 
   return (
     <div className="bg-background rounded-lg border p-4 sm:p-6 md:p-8">
@@ -285,10 +319,11 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
+                        <TabsTrigger value="machinery">Machinery</TabsTrigger>
                         <TabsTrigger value="features">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         </TabsList>
@@ -357,6 +392,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                                      {accommodationBathroom.map(item => <SpecItem key={item.label} {...item} />)}
                                 </div>
+                            </div>
+                        </TabsContent>
+
+                        <TabsContent value="machinery" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {machinerySpecs.map(item => <SpecItem key={item.label} {...item} />)}
                             </div>
                         </TabsContent>
 
