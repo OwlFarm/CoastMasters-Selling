@@ -52,8 +52,8 @@ const createNumberPreprocessor = (optional = false, positive = false) =>
       return isNaN(num) ? (optional ? undefined : 0) : num;
     },
     optional 
-      ? (positive ? z.number().positive('Must be a positive number').optional() : z.number().optional())
-      : (positive ? z.number().positive('Must be a positive number') : z.number())
+      ? (positive ? z.number().positive({ message: 'Must be a positive number' }).optional() : z.number().optional())
+      : (positive ? z.number().positive({ message: 'Must be a positive number' }) : z.number())
   );
 
 const createIntegerPreprocessor = (optional = false) =>
