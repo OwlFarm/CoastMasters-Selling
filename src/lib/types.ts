@@ -43,6 +43,33 @@ export type Yacht = {
   sNum?: number;
   hullSpeed?: number;
   poundsPerInchImmersion?: number;
-};
 
-    
+  // New General Fields from HALLBERG RASSY 49
+  loaM?: number;
+  lwlM?: number;
+  beamM?: number;
+  draftM?: number;
+  airDraftM?: number;
+  headroomM?: number;
+  country?: string;
+  designer?: string;
+  displacementT?: number;
+  ballastTonnes?: number;
+  hullColor?: string;
+  hullShape?: string;
+  superstructureMaterial?: string;
+  deckMaterial?: string;
+  deckFinish?: string;
+  superstructureDeckFinish?: string;
+  cockpitDeckFinish?: string;
+  dorades?: string;
+  windowFrame?: string;
+  windowMaterial?: string;
+  deckhatch?: string;
+  fuelTankLitre?: number;
+  levelIndicatorFuel?: string;
+  freshwaterTankLitre?: number;
+  levelIndicatorFreshwater?: string;
+  wheelSteering?: string;
+  outsideHelmPosition?: string;
+};

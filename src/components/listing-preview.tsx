@@ -51,59 +51,80 @@ const renderFeatureList = (ids: string[] | undefined, options: Option[]) => {
 };
 
 export function ListingPreview({ data, metadata, heroImagePreview, galleryImagePreviews }: ListingPreviewProps) {
-  const allLocations = metadata.locationsByRegion.flatMap(r => r.locations);
   const yacht = {
+      ...data,
       name: data.title || `${data.year} ${findLabel(data.make, metadata.makes)} ${data.model}`,
       price: data.price || 0,
-      year: data.year,
-      length: data.length,
-      location: findLabel(data.location, metadata.locationsByRegion) || 'N/A',
       imageUrl: heroImagePreview || 'https://placehold.co/600x400.png',
       images: galleryImagePreviews,
-      make: findLabel(data.make, metadata.makes) || 'N/A',
-      model: data.model,
-      listingType: findLabel(data.listingType, metadata.listingTypes) || 'N/A',
-      boatType: findLabel(data.boatType, metadata.boatTypes) || 'N/A',
-      condition: findLabel(data.condition, metadata.conditions) || 'N/A',
-      description: data.description,
-      fuelType: data.fuelType,
-      hullMaterial: data.hullMaterial,
-      transomShape: data.transomShape,
-      bowShape: data.bowShape,
-      keelType: data.keelType,
-      rudderType: data.rudderType,
-      propellerType: data.propellerType,
-      sailRigging: data.sailRigging,
-      divisions: data.divisions,
-      features: data.features,
-      deck: data.deck,
-      cabin: [
+      makeLabel: findLabel(data.make, metadata.makes) || 'N/A',
+      listingTypeLabel: findLabel(data.listingType, metadata.listingTypes) || 'N/A',
+      boatTypeLabel: findLabel(data.boatType, metadata.boatTypes) || 'N/A',
+      conditionLabel: findLabel(data.condition, metadata.conditions) || 'N/A',
+      locationLabel: findLabel(data.location, metadata.locationsByRegion) || 'N/A',
+      fuelTypeLabel: findLabel(data.fuelType, metadata.fuelTypes),
+      hullMaterialLabel: findLabel(data.hullMaterial, metadata.hullMaterialOptions),
+      sailRiggingLabel: findLabel(data.sailRigging, metadata.sailRiggingOptions),
+      transomShapeLabel: findLabel(data.transomShape, metadata.transomShapeOptions),
+      bowShapeLabel: findLabel(data.bowShape, metadata.bowShapeOptions),
+      keelTypeLabel: findLabel(data.keelType, metadata.keelTypeOptions),
+      rudderTypeLabel: findLabel(data.rudderType, metadata.rudderTypeOptions),
+      propellerTypeLabel: findLabel(data.propellerType, metadata.propellerTypeOptions),
+      cabinFeatures: [
         ...(data.accommodation?.cabins || []),
         ...(data.accommodation?.saloon || []),
         ...(data.accommodation?.galley || []),
         ...(data.accommodation?.heads || []),
       ],
-      otherSpecifications: data.otherSpecifications,
   };
-
 
   const specifications = [
     { label: 'Year', value: yacht.year, icon: Calendar },
     { label: 'LOA', value: `${yacht.length} ft`, icon: Ruler },
-    { label: 'Type', value: yacht.boatType, icon: Ship },
-    { label: 'Condition', value: yacht.condition, icon: Anchor },
-    { label: 'Location', value: yacht.location, icon: MapPin },
-    { label: 'Fuel Type', value: findLabel(yacht.fuelType, metadata.fuelTypes), icon: Fuel },
-    { label: 'Hull Material', value: findLabel(yacht.hullMaterial, metadata.hullMaterialOptions), icon: Droplets },
-    { label: 'Sail Rigging', value: findLabel(yacht.sailRigging, metadata.sailRiggingOptions), icon: Sailboat },
+    { label: 'Type', value: yacht.boatTypeLabel, icon: Ship },
+    { label: 'Condition', value: yacht.conditionLabel, icon: Anchor },
+    { label: 'Location', value: yacht.locationLabel, icon: MapPin },
+    { label: 'Fuel Type', value: yacht.fuelTypeLabel, icon: Fuel },
+    { label: 'Hull Material', value: yacht.hullMaterialLabel, icon: Droplets },
+    { label: 'Sail Rigging', value: yacht.sailRiggingLabel, icon: Sailboat },
   ];
+
+  const generalSpecs = [
+      { label: 'LOA (m)', value: yacht.loaM },
+      { label: 'LWL (m)', value: yacht.lwlM },
+      { label: 'Beam (m)', value: yacht.beamM },
+      { label: 'Draft (m)', value: yacht.draftM },
+      { label: 'Air Draft (m)', value: yacht.airDraftM },
+      { label: 'Headroom (m)', value: yacht.headroomM },
+      { label: 'Country', value: yacht.country },
+      { label: 'Designer', value: yacht.designer },
+      { label: 'Displacement (t)', value: yacht.displacementT },
+      { label: 'Ballast (tonnes)', value: yacht.ballastTonnes },
+      { label: 'Hull Colour', value: yacht.hullColor },
+      { label: 'Hull Shape', value: yacht.hullShape },
+      { label: 'Superstructure Material', value: yacht.superstructureMaterial },
+      { label: 'Deck Material', value: yacht.deckMaterial },
+      { label: 'Deck Finish', value: yacht.deckFinish },
+      { label: 'Superstructure Deck Finish', value: yacht.superstructureDeckFinish },
+      { label: 'Cockpit Deck Finish', value: yacht.cockpitDeckFinish },
+      { label: 'Dorades', value: yacht.dorades },
+      { label: 'Window Frame', value: yacht.windowFrame },
+      { label: 'Window Material', value: yacht.windowMaterial },
+      { label: 'Deckhatch', value: yacht.deckhatch },
+      { label: 'Fuel Tank (litre)', value: yacht.fuelTankLitre },
+      { label: 'Level Indicator (Fuel)', value: yacht.levelIndicatorFuel },
+      { label: 'Freshwater Tank (litre)', value: yacht.freshwaterTankLitre },
+      { label: 'Level Indicator (Freshwater)', value: yacht.levelIndicatorFreshwater },
+      { label: 'Wheel Steering', value: yacht.wheelSteering },
+      { label: 'Outside Helm Position', value: yacht.outsideHelmPosition },
+  ].filter(spec => spec.value);
   
   const hullAndEngineSpecs = [
-    { label: 'Transom Shape', value: findLabel(yacht.transomShape, metadata.transomShapeOptions) },
-    { label: 'Bow Shape', value: findLabel(yacht.bowShape, metadata.bowShapeOptions) },
-    { label: 'Keel Type', value: findLabel(yacht.keelType, metadata.keelTypeOptions) },
-    { label: 'Rudder Type', value: findLabel(yacht.rudderType, metadata.rudderTypeOptions) },
-    { label: 'Propeller Type', value: findLabel(yacht.propellerType, metadata.propellerTypeOptions) },
+    { label: 'Transom Shape', value: yacht.transomShapeLabel },
+    { label: 'Bow Shape', value: yacht.bowShapeLabel },
+    { label: 'Keel Type', value: yacht.keelTypeLabel },
+    { label: 'Rudder Type', value: yacht.rudderTypeLabel },
+    { label: 'Propeller Type', value: yacht.propellerTypeLabel },
   ].filter(spec => spec.value);
 
 
@@ -142,7 +163,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                 <Card className="rounded-lg border bg-card p-6 shadow-sm w-full flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between">
-                        <Badge variant="secondary" className="text-base">{yacht.listingType}</Badge>
+                        <Badge variant="secondary" className="text-base">{yacht.listingTypeLabel}</Badge>
                         <div className="flex gap-2">
                             <Button size="icon" variant="outline" className="h-9 w-9 rounded-full">
                                 <Heart className="h-4 w-4" />
@@ -190,14 +211,26 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     </div>
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
-                    <Tabs defaultValue="specifications" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
+                    <Tabs defaultValue="general" className="w-full">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
+                        <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="usage">Division</TabsTrigger>
                         <TabsTrigger value="features">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         <TabsTrigger value="cabin">Cabin</TabsTrigger>
                         </TabsList>
+
+                        <TabsContent value="general" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {generalSpecs.map(spec => (
+                                <div key={spec.label}>
+                                    <p className="text-sm font-medium text-muted-foreground">{spec.label}</p>
+                                    <p className="text-md font-semibold">{spec.value}</p>
+                                </div>
+                                ))}
+                            </div>
+                        </TabsContent>
 
                         <TabsContent value="specifications" className="mt-6">
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -229,7 +262,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         </TabsContent>
 
                         <TabsContent value="cabin" className="mt-6">
-                        {renderFeatureList(yacht.cabin, metadata.cabinOptions)}
+                        {renderFeatureList(yacht.cabinFeatures, metadata.cabinOptions)}
                         </TabsContent>
                     </Tabs>
                     </div>

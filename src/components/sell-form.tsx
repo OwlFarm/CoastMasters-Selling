@@ -44,7 +44,7 @@ const formSchema = z.object({
   propellerType: z.string({ required_error: 'Propeller type is required for sailing boats.' }),
   sailRigging: z.string({ required_error: 'Sail rigging is required for sailing boats.' }),
   make: z.string({ required_error: 'Please select or enter a builder.' }),
-  model: z.string().min(2, { message: 'Model must be at least 2 characters.' }),
+  model: z.string().min(1, { message: 'Model is required.' }),
   year: z.preprocess(
     (a) => parseInt(z.string().parse(a), 10),
     z.number().min(1900, 'Invalid year').max(new Date().getFullYear() + 1, 'Invalid year')
@@ -73,6 +73,36 @@ const formSchema = z.object({
   sNum: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
   hullSpeed: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
   poundsPerInchImmersion: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+
+  // New General Fields
+  loaM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  lwlM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  beamM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  draftM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  airDraftM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  headroomM: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  country: z.string().optional(),
+  designer: z.string().optional(),
+  displacementT: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  ballastTonnes: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  hullColor: z.string().optional(),
+  hullShape: z.string().optional(),
+  superstructureMaterial: z.string().optional(),
+  deckMaterial: z.string().optional(),
+  deckFinish: z.string().optional(),
+  superstructureDeckFinish: z.string().optional(),
+  cockpitDeckFinish: z.string().optional(),
+  dorades: z.string().optional(),
+  windowFrame: z.string().optional(),
+  windowMaterial: z.string().optional(),
+  deckhatch: z.string().optional(),
+  fuelTankLitre: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  levelIndicatorFuel: z.string().optional(),
+  freshwaterTankLitre: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+  levelIndicatorFreshwater: z.string().optional(),
+  wheelSteering: z.string().optional(),
+  outsideHelmPosition: z.string().optional(),
+
 });
 
 
@@ -81,12 +111,16 @@ export type FormValues = z.infer<typeof formSchema>;
 const steps = [
   { 
     id: 'Step 1', 
-    name: 'Listing Details', 
+    name: 'General', 
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
         'otherSpecifications', 'features', 'deck', 'accommodation', 'cabin',
-        'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion'
+        'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion',
+        'loaM', 'lwlM', 'beamM', 'draftM', 'airDraftM', 'headroomM', 'country', 'designer', 'displacementT', 'ballastTonnes',
+        'hullColor', 'hullShape', 'superstructureMaterial', 'deckMaterial', 'deckFinish', 'superstructureDeckFinish', 'cockpitDeckFinish',
+        'dorades', 'windowFrame', 'windowMaterial', 'deckhatch', 'fuelTankLitre', 'levelIndicatorFuel', 'freshwaterTankLitre',
+        'levelIndicatorFreshwater', 'wheelSteering', 'outsideHelmPosition'
     ] 
   },
   { id: 'Step 2', name: 'Photos', fields: ['heroImage', 'galleryImages'] },
@@ -316,39 +350,13 @@ export function SellForm() {
                             <div className="space-y-8">
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle>Listing Essentials</CardTitle>
+                                        <CardTitle>General</CardTitle>
                                         <CardDescription>Start with the most important details for your listing. Use our AI assistant for an SEO-optimized result!</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                                            <FormField control={form.control} name="listingType" render={({ field }) => (
-                                                <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
-                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                        {metadata.listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
-                                                            <FormControl><RadioGroupItem value={type.id} /></FormControl>
-                                                            <FormLabel className="font-normal">{type.label}</FormLabel>
-                                                        </FormItem>))}
-                                                    </RadioGroup>
-                                                </FormControl><FormMessage /></FormItem>
-                                            )} />
-                                            <FormField control={form.control} name="condition" render={({ field }) => (
-                                                <FormItem><FormLabel>Condition</FormLabel><FormControl>
-                                                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
-                                                        {metadata.conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
-                                                            <FormControl><RadioGroupItem value={c.id} /></FormControl>
-                                                            <FormLabel className="font-normal">{c.label}</FormLabel>
-                                                        </FormItem>))}
-                                                    </RadioGroup>
-                                                </FormControl><FormMessage /></FormItem>
-                                            )} />
-                                             <FormField control={form.control} name="boatType" render={({ field }) => (
-                                                <FormItem className="hidden">
-                                                    <FormControl><Input type="hidden" {...field} /></FormControl>
-                                                </FormItem>
-                                            )} />
+                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
                                             <FormField control={form.control} name="make" render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Builder</FormLabel>
+                                                <FormItem><FormLabel>Builder</FormLabel>
                                                     <FormControl>
                                                         <Combobox
                                                             options={metadata.makes.map(m => ({ label: m.label, value: m.value || m.id }))}
@@ -359,35 +367,142 @@ export function SellForm() {
                                                             notFoundText="No builder found. You can add a new one."
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
+                                                <FormMessage /></FormItem>
                                             )} />
                                             <FormField control={form.control} name="model" render={({ field }) => (
                                                 <FormItem><FormLabel>Model</FormLabel><FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
+                                            <FormField control={form.control} name="boatType" render={({ field }) => (
+                                                <FormItem><FormLabel>Type</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl><SelectTrigger><SelectValue placeholder="Select a type" /></SelectTrigger></FormControl>
+                                                        <SelectContent>
+                                                            {metadata.boatTypes.map((type) => (
+                                                                <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage /></FormItem>
+                                             )} />
                                             <FormField control={form.control} name="year" render={({ field }) => (
-                                                <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
+                                                <FormItem><FormLabel>Year Built</FormLabel><FormControl><Input type="number" placeholder="e.g., 2022" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="designer" render={({ field }) => (
+                                                <FormItem><FormLabel>Designer</FormLabel><FormControl><Input placeholder="e.g., Olle Enderlein" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="country" render={({ field }) => (
+                                                <FormItem><FormLabel>Country</FormLabel><FormControl><Input placeholder="e.g., Sweden" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
                                             <FormField control={form.control} name="length" render={({ field }) => (
                                             <FormItem>
                                                 <div className="flex items-center justify-between">
-                                                    <FormLabel>LOA ({lengthUnit})</FormLabel>
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <span className="text-muted-foreground">Ft</span>
-                                                        <Switch
-                                                            checked={lengthUnit === 'm'}
-                                                            onCheckedChange={(checked) => setLengthUnit(checked ? 'm' : 'ft')}
-                                                            id="length-unit-switch-form"
-                                                        />
-                                                        <span className="text-muted-foreground">M</span>
-                                                    </div>
+                                                    <FormLabel>LOA (ft)</FormLabel>
                                                 </div>
-                                                <FormControl><Input type="number" placeholder={lengthUnit === 'ft' ? "e.g., 46" : "e.g., 14"} {...field} /></FormControl>
+                                                <FormControl><Input type="number" placeholder="e.g., 49" {...field} /></FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                             )} />
+                                             <FormField control={form.control} name="loaM" render={({ field }) => (
+                                                <FormItem><FormLabel>LOA (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 14.96" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="lwlM" render={({ field }) => (
+                                                <FormItem><FormLabel>LWL (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 12.50" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="beamM" render={({ field }) => (
+                                                <FormItem><FormLabel>Beam (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 4.42" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="draftM" render={({ field }) => (
+                                                <FormItem><FormLabel>Draft (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 2.20" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="airDraftM" render={({ field }) => (
+                                                <FormItem><FormLabel>Air Draft (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 21.45" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="headroomM" render={({ field }) => (
+                                                <FormItem><FormLabel>Headroom (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 2.00" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="displacementT" render={({ field }) => (
+                                                <FormItem><FormLabel>Displacement (t)</FormLabel><FormControl><Input type="number" placeholder="e.g., 18" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="ballastTonnes" render={({ field }) => (
+                                                <FormItem><FormLabel>Ballast (tonnes)</FormLabel><FormControl><Input type="number" placeholder="e.g., 8.1" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="hullColor" render={({ field }) => (
+                                                <FormItem><FormLabel>Hull Colour</FormLabel><FormControl><Input placeholder="e.g., white" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                             <FormField control={form.control} name="hullShape" render={({ field }) => (
+                                                <FormItem><FormLabel>Hull Shape</FormLabel><FormControl><Input placeholder="e.g., S-bilged" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                             <FormField control={form.control} name="superstructureMaterial" render={({ field }) => (
+                                                <FormItem><FormLabel>Superstructure Material</FormLabel><FormControl><Input placeholder="e.g., GRP" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="deckMaterial" render={({ field }) => (
+                                                <FormItem><FormLabel>Deck Material</FormLabel><FormControl><Input placeholder="e.g., GRP" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="deckFinish" render={({ field }) => (
+                                                <FormItem><FormLabel>Deck Finish</FormLabel><FormControl><Input placeholder="e.g., teak 2019" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="superstructureDeckFinish" render={({ field }) => (
+                                                <FormItem><FormLabel>Superstructure Deck Finish</FormLabel><FormControl><Input placeholder="e.g., teak 2019" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="cockpitDeckFinish" render={({ field }) => (
+                                                <FormItem><FormLabel>Cockpit Deck Finish</FormLabel><FormControl><Input placeholder="e.g., teak" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="dorades" render={({ field }) => (
+                                                <FormItem><FormLabel>Dorades</FormLabel><FormControl><Input placeholder="e.g., 5x Vetus" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="windowFrame" render={({ field }) => (
+                                                <FormItem><FormLabel>Window Frame</FormLabel><FormControl><Input placeholder="e.g., aluminium" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="windowMaterial" render={({ field }) => (
+                                                <FormItem><FormLabel>Window Material</FormLabel><FormControl><Input placeholder="e.g., tempered glass" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="deckhatch" render={({ field }) => (
+                                                <FormItem><FormLabel>Deckhatch</FormLabel><FormControl><Input placeholder="e.g., 6x Gebo" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="fuelTankLitre" render={({ field }) => (
+                                                <FormItem><FormLabel>Fuel Tank (litre)</FormLabel><FormControl><Input type="number" placeholder="e.g., 765" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="levelIndicatorFuel" render={({ field }) => (
+                                                <FormItem><FormLabel>Level Indicator (Fuel)</FormLabel><FormControl><Input placeholder="e.g., Wema aanalogue indicator" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="freshwaterTankLitre" render={({ field }) => (
+                                                <FormItem><FormLabel>Freshwater Tank (litre)</FormLabel><FormControl><Input type="number" placeholder="e.g., 1400" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="levelIndicatorFreshwater" render={({ field }) => (
+                                                <FormItem><FormLabel>Level Indicator (Freshwater)</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="wheelSteering" render={({ field }) => (
+                                                <FormItem><FormLabel>Wheel Steering</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                            <FormField control={form.control} name="outsideHelmPosition" render={({ field }) => (
+                                                <FormItem><FormLabel>Outside Helm Position</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>
+                                            )} />
+                                             <div className="md:col-span-full">
+                                                <FormField control={form.control} name="listingType" render={({ field }) => (
+                                                    <FormItem><FormLabel>Listing Type</FormLabel><FormControl>
+                                                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                            {metadata.listingTypes.map((type) => (<FormItem key={type.id} className="flex items-center space-x-2 space-y-0">
+                                                                <FormControl><RadioGroupItem value={type.id} /></FormControl>
+                                                                <FormLabel className="font-normal">{type.label}</FormLabel>
+                                                            </FormItem>))}
+                                                        </RadioGroup>
+                                                    </FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                             <div className="md:col-span-full">
+                                                <FormField control={form.control} name="condition" render={({ field }) => (
+                                                    <FormItem><FormLabel>Condition</FormLabel><FormControl>
+                                                        <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex items-center space-x-4 pt-2">
+                                                            {metadata.conditions.map((c) => (<FormItem key={c.id} className="flex items-center space-x-2 space-y-0">
+                                                                <FormControl><RadioGroupItem value={c.id} /></FormControl>
+                                                                <FormLabel className="font-normal">{c.label}</FormLabel>
+                                                            </FormItem>))}
+                                                        </RadioGroup>
+                                                    </FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
                                             <FormField control={form.control} name="price" render={({ field }) => (
-                                                <FormItem className="md:col-span-2"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
+                                                <FormItem className="md:col-span-full"><FormLabel>Price (USD)</FormLabel><FormControl><Input type="number" placeholder="e.g., 500000" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
                                         </div>
                                         <FormField control={form.control} name="location" render={({ field }) => (
@@ -1077,5 +1192,3 @@ export function SellForm() {
         </Form>
     );
 }
-
-    
