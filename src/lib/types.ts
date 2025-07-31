@@ -119,6 +119,21 @@ export type Yacht = {
     watermaker?: string;
     extraInfo?: string;
   };
+  navigation?: {
+    compass?: string;
+    depthSounder?: string;
+    log?: string;
+    windset?: string;
+    vhf?: string;
+    autopilot?: string;
+    radar?: string;
+    gps?: string;
+    plotter?: string;
+    navtex?: string;
+    aisTransceiver?: string;
+    navigationLights?: string;
+    extraInfo?: string;
+  };
   equipment?: {
     fixedWindscreen?: string;
     cockpitTable?: string;

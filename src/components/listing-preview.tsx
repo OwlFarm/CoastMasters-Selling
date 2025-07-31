@@ -234,6 +234,22 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     { label: 'Extra Info', value: yacht.machinery?.extraInfo },
   ];
   
+  const navigationSpecs = [
+    { label: 'Compass', value: yacht.navigation?.compass },
+    { label: 'Depth Sounder', value: yacht.navigation?.depthSounder },
+    { label: 'Log', value: yacht.navigation?.log },
+    { label: 'Windset', value: yacht.navigation?.windset },
+    { label: 'VHF', value: yacht.navigation?.vhf },
+    { label: 'Autopilot', value: yacht.navigation?.autopilot },
+    { label: 'Radar', value: yacht.navigation?.radar },
+    { label: 'GPS', value: yacht.navigation?.gps },
+    { label: 'Plotter', value: yacht.navigation?.plotter },
+    { label: 'Navtex', value: yacht.navigation?.navtex },
+    { label: 'AIS Transceiver', value: yacht.navigation?.aisTransceiver },
+    { label: 'Navigation Lights', value: yacht.navigation?.navigationLights },
+    { label: 'Extra Info', value: yacht.navigation?.extraInfo },
+  ];
+
   const equipmentSpecs = [
       { label: 'Fixed Windscreen', value: yacht.equipment?.fixedWindscreen },
       { label: 'Cockpit Table', value: yacht.equipment?.cockpitTable },
@@ -346,11 +362,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7">
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="machinery">Machinery</TabsTrigger>
+                        <TabsTrigger value="navigation">Navigation</TabsTrigger>
                         <TabsTrigger value="equipment">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
                         </TabsList>
@@ -425,6 +442,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         <TabsContent value="machinery" className="mt-6">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                                 {machinerySpecs.map(item => <SpecItem key={item.label} {...item} />)}
+                            </div>
+                        </TabsContent>
+
+                        <TabsContent value="navigation" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                {navigationSpecs.map(item => <SpecItem key={item.label} {...item} />)}
                             </div>
                         </TabsContent>
 

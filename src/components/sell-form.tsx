@@ -136,6 +136,21 @@ const formSchema = z.object({
     watermaker: z.string().optional(),
     extraInfo: z.string().optional(),
   }).optional(),
+  navigation: z.object({
+    compass: z.string().optional(),
+    depthSounder: z.string().optional(),
+    log: z.string().optional(),
+    windset: z.string().optional(),
+    vhf: z.string().optional(),
+    autopilot: z.string().optional(),
+    radar: z.string().optional(),
+    gps: z.string().optional(),
+    plotter: z.string().optional(),
+    navtex: z.string().optional(),
+    aisTransceiver: z.string().optional(),
+    navigationLights: z.string().optional(),
+    extraInfo: z.string().optional(),
+  }).optional(),
   equipment: z.object({
       fixedWindscreen: z.string().optional(),
       cockpitTable: z.string().optional(),
@@ -215,7 +230,7 @@ const steps = [
     fields: [
         'listingType', 'boatType', 'condition', 'make', 'model', 'year', 'length', 'price', 'location', 'title', 'description',
         'hullMaterial', 'transomShape', 'bowShape', 'keelType', 'rudderType', 'propellerType', 'sailRigging', 'fuelType', 'divisions', 
-        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'equipment', 'cabin',
+        'otherSpecifications', 'features', 'deck', 'accommodation', 'machinery', 'navigation', 'equipment', 'cabin',
         'saDisp', 'balDisp', 'dispLen', 'comfortRatio', 'capsizeScreeningFormula', 'sNum', 'hullSpeed', 'poundsPerInchImmersion',
         'loaM', 'lwlM', 'beamM', 'draftM', 'airDraftM', 'headroomM', 'country', 'designer', 'displacementT', 'ballastTonnes',
         'hullColor', 'hullShape', 'superstructureMaterial', 'deckMaterial', 'deckFinish', 'superstructureDeckFinish', 'cockpitDeckFinish',
@@ -263,6 +278,7 @@ export function SellForm() {
                 heads: [],
             },
             machinery: {},
+            navigation: {},
             equipment: {},
             condition: undefined,
             location: undefined,
@@ -1118,6 +1134,29 @@ export function SellForm() {
                                 </Card>
                                 <Card>
                                     <CardHeader>
+                                        <CardTitle>Navigation</CardTitle>
+                                        <CardDescription>Provide details about the navigation equipment.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <FormField control={form.control} name="navigation.compass" render={({ field }) => (<FormItem><FormLabel>Compass</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.depthSounder" render={({ field }) => (<FormItem><FormLabel>Depth Sounder</FormLabel><FormControl><Input placeholder="e.g., B&G" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.log" render={({ field }) => (<FormItem><FormLabel>Log</FormLabel><FormControl><Input placeholder="e.g., B&G" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.windset" render={({ field }) => (<FormItem><FormLabel>Windset</FormLabel><FormControl><Input placeholder="e.g., B&G" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.vhf" render={({ field }) => (<FormItem><FormLabel>VHF</FormLabel><FormControl><Input placeholder="e.g., Icom IC-M423G" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.autopilot" render={({ field }) => (<FormItem><FormLabel>Autopilot</FormLabel><FormControl><Input placeholder="e.g., B&G Hydro Pilot" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.radar" render={({ field }) => (<FormItem><FormLabel>Radar</FormLabel><FormControl><Input placeholder="e.g., B&G 4G" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.gps" render={({ field }) => (<FormItem><FormLabel>GPS</FormLabel><FormControl><Input placeholder="e.g., Furuno GP32" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.plotter" render={({ field }) => (<FormItem><FormLabel>Plotter</FormLabel><FormControl><Input placeholder="e.g., B&G 12'' Zeus Touch" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.navtex" render={({ field }) => (<FormItem><FormLabel>Navtex</FormLabel><FormControl><Input placeholder="e.g., ISC NAV6" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.aisTransceiver" render={({ field }) => (<FormItem><FormLabel>AIS Transceiver</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.navigationLights" render={({ field }) => (<FormItem><FormLabel>Navigation Lights</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="navigation.extraInfo" render={({ field }) => (<FormItem className="md:col-span-full"><FormLabel>Extra Info</FormLabel><FormControl><Textarea placeholder="Any other navigation details..." {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader>
                                         <CardTitle>Equipment</CardTitle>
                                         <CardDescription>Provide details about the equipment included with your yacht.</CardDescription>
                                     </CardHeader>
@@ -1150,7 +1189,6 @@ export function SellForm() {
                                         </div>
                                     </CardContent>
                                 </Card>
-
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Deck Features</CardTitle>
