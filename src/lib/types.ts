@@ -33,6 +33,58 @@ export type Yacht = {
       saloon?: string[];
       galley?: string[];
       heads?: string[];
+      
+      // New Accommodation fields
+      numberOfCabins?: number;
+      numberOfBerths?: number;
+      interiorMaterial?: string;
+      layout?: string;
+      floor?: string;
+      openCockpit?: boolean;
+      aftDeck?: boolean;
+      saloonHeadroom?: number;
+      heating?: string;
+      navigationCenter?: boolean;
+      chartTable?: boolean;
+
+      // Galley
+      countertop?: string;
+      sink?: string;
+      cooker?: string;
+      oven?: string;
+      microwave?: string;
+      fridge?: string;
+      freezer?: string;
+      hotWaterSystem?: string;
+      waterPressureSystem?: string;
+
+      // Owner's Cabin
+      ownersCabin?: string;
+      ownersCabinBedLength?: string;
+      ownersCabinWardrobe?: string;
+      ownersCabinBathroom?: string;
+      ownersCabinToilet?: string;
+      ownersCabinToiletSystem?: string;
+      ownersCabinWashBasin?: string;
+      ownersCabinShower?: string;
+
+      // Guest Cabin 1
+      guestCabin1?: string;
+      guestCabin1BedLength?: string;
+      guestCabin1Wardrobe?: string;
+
+      // Guest Cabin 2
+      guestCabin2?: string;
+      guestCabin2BedLength?: string;
+      guestCabin2Wardrobe?: string;
+
+      // Shared Bathroom
+      sharedBathroom?: string;
+      sharedToilet?: string;
+      sharedToiletSystem?: string;
+      sharedWashBasin?: string;
+      sharedShower?: string;
+      washingMachine?: string;
   };
   otherSpecifications?: string;
   saDisp?: number;

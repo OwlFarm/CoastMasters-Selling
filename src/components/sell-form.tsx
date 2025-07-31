@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -24,7 +25,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ListingPreview } from './listing-preview';
 import { Combobox } from './ui/combobox';
 import { TextEditor } from './ui/text-editor';
-import { Textarea } from './ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { InfoTooltip } from './homepage-yacht-filters';
 
@@ -61,6 +62,46 @@ const formSchema = z.object({
     saloon: z.array(z.string()).optional(),
     galley: z.array(z.string()).optional(),
     heads: z.array(z.string()).optional(),
+    numberOfCabins: z.preprocess((a) => a === '' ? undefined : parseInt(z.string().parse(a), 10), z.number().optional()),
+    numberOfBerths: z.preprocess((a) => a === '' ? undefined : parseInt(z.string().parse(a), 10), z.number().optional()),
+    interiorMaterial: z.string().optional(),
+    layout: z.string().optional(),
+    floor: z.string().optional(),
+    openCockpit: z.boolean().optional(),
+    aftDeck: z.boolean().optional(),
+    saloonHeadroom: z.preprocess((a) => a === '' ? undefined : parseFloat(z.string().parse(a)), z.number().optional()),
+    heating: z.string().optional(),
+    navigationCenter: z.boolean().optional(),
+    chartTable: z.boolean().optional(),
+    countertop: z.string().optional(),
+    sink: z.string().optional(),
+    cooker: z.string().optional(),
+    oven: z.string().optional(),
+    microwave: z.string().optional(),
+    fridge: z.string().optional(),
+    freezer: z.string().optional(),
+    hotWaterSystem: z.string().optional(),
+    waterPressureSystem: z.string().optional(),
+    ownersCabin: z.string().optional(),
+    ownersCabinBedLength: z.string().optional(),
+    ownersCabinWardrobe: z.string().optional(),
+    ownersCabinBathroom: z.string().optional(),
+    ownersCabinToilet: z.string().optional(),
+    ownersCabinToiletSystem: z.string().optional(),
+    ownersCabinWashBasin: z.string().optional(),
+    ownersCabinShower: z.string().optional(),
+    guestCabin1: z.string().optional(),
+    guestCabin1BedLength: z.string().optional(),
+    guestCabin1Wardrobe: z.string().optional(),
+    guestCabin2: z.string().optional(),
+    guestCabin2BedLength: z.string().optional(),
+    guestCabin2Wardrobe: z.string().optional(),
+    sharedBathroom: z.string().optional(),
+    sharedToilet: z.string().optional(),
+    sharedToiletSystem: z.string().optional(),
+    sharedWashBasin: z.string().optional(),
+    sharedShower: z.string().optional(),
+    washingMachine: z.string().optional(),
   }).optional(),
   heroImage: z.any().refine((file) => file instanceof File && file.size > 0, "Hero image is required."),
   galleryImages: z.array(z.any()).min(9, { message: 'At least 9 gallery images are required.' }).max(49, { message: 'You can upload a maximum of 49 images.' }),
@@ -876,145 +917,161 @@ export function SellForm() {
                                 <Card>
                                     <CardHeader>
                                         <CardTitle>Accommodation</CardTitle>
-                                        <CardDescription>Select all features included in the accommodation areas.</CardDescription>
+                                        <CardDescription>Provide details about the interior layout and features.</CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-6">
-                                        <FormField
-                                            control={form.control}
-                                            name="accommodation.cabins"
-                                            render={() => (
-                                                <FormItem>
-                                                    <FormLabel className="text-base font-semibold">Cabins</FormLabel>
-                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
-                                                        {metadata.cabinFeatureOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="accommodation.cabins"
-                                                                render={({ field }) => (
-                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => {
-                                                                                    const currentValue = field.value || [];
-                                                                                    return checked
-                                                                                        ? field.onChange([...currentValue, item.id])
-                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                                }}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="accommodation.saloon"
-                                            render={() => (
-                                                <FormItem>
-                                                    <FormLabel className="text-base font-semibold">Saloon</FormLabel>
-                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
-                                                        {metadata.saloonOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="accommodation.saloon"
-                                                                render={({ field }) => (
-                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => {
-                                                                                    const currentValue = field.value || [];
-                                                                                    return checked
-                                                                                        ? field.onChange([...currentValue, item.id])
-                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                                }}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="accommodation.galley"
-                                            render={() => (
-                                                <FormItem>
-                                                    <FormLabel className="text-base font-semibold">Galley</FormLabel>
-                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
-                                                        {metadata.galleyOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="accommodation.galley"
-                                                                render={({ field }) => (
-                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => {
-                                                                                    const currentValue = field.value || [];
-                                                                                    return checked
-                                                                                        ? field.onChange([...currentValue, item.id])
-                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                                }}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="accommodation.heads"
-                                            render={() => (
-                                                <FormItem>
-                                                    <FormLabel className="text-base font-semibold">Heads</FormLabel>
-                                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-2 md:grid-cols-3">
-                                                        {metadata.headsOptions.map((item) => (
-                                                            <FormField
-                                                                key={item.id}
-                                                                control={form.control}
-                                                                name="accommodation.heads"
-                                                                render={({ field }) => (
-                                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                                                                        <FormControl>
-                                                                            <Checkbox
-                                                                                checked={field.value?.includes(item.id)}
-                                                                                onCheckedChange={(checked) => {
-                                                                                    const currentValue = field.value || [];
-                                                                                    return checked
-                                                                                        ? field.onChange([...currentValue, item.id])
-                                                                                        : field.onChange(currentValue.filter((value) => value !== item.id));
-                                                                                }}
-                                                                            />
-                                                                        </FormControl>
-                                                                        <FormLabel className="font-normal">{item.label}</FormLabel>
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </FormItem>
-                                            )}
-                                        />
+                                        <div className="space-y-4 border-b pb-4">
+                                            <h4 className="text-base font-semibold">General</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                <FormField control={form.control} name="accommodation.numberOfCabins" render={({ field }) => (
+                                                    <FormItem><FormLabel>Cabins</FormLabel><FormControl><Input type="number" placeholder="e.g., 3" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.numberOfBerths" render={({ field }) => (
+                                                    <FormItem><FormLabel>Berths</FormLabel><FormControl><Input type="number" placeholder="e.g., 9" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.interiorMaterial" render={({ field }) => (
+                                                    <FormItem><FormLabel>Interior</FormLabel><FormControl><Input placeholder="e.g., teak" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.layout" render={({ field }) => (
+                                                    <FormItem><FormLabel>Layout</FormLabel><FormControl><Input placeholder="e.g., Classic | Warm" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.floor" render={({ field }) => (
+                                                    <FormItem><FormLabel>Floor</FormLabel><FormControl><Input placeholder="e.g., teak and holly" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.saloonHeadroom" render={({ field }) => (
+                                                    <FormItem><FormLabel>Saloon Headroom (m)</FormLabel><FormControl><Input type="number" placeholder="e.g., 1.95" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.heating" render={({ field }) => (
+                                                    <FormItem><FormLabel>Heating</FormLabel><FormControl><Input placeholder="e.g., 2x Webasto HL32" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
+                                                <FormField control={form.control} name="accommodation.openCockpit" render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-3 shadow-sm"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">Open Cockpit</FormLabel></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.aftDeck" render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-3 shadow-sm"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">Aft Deck</FormLabel></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.navigationCenter" render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-3 shadow-sm"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">Navigation Center</FormLabel></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.chartTable" render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md border p-3 shadow-sm"><FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl><FormLabel className="font-normal">Chart Table</FormLabel></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
+                                         <div className="space-y-4 border-b pb-4">
+                                            <h4 className="text-base font-semibold">Galley</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                <FormField control={form.control} name="accommodation.countertop" render={({ field }) => (
+                                                    <FormItem><FormLabel>Countertop</FormLabel><FormControl><Input placeholder="e.g., wood" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.sink" render={({ field }) => (
+                                                    <FormItem><FormLabel>Sink</FormLabel><FormControl><Input placeholder="e.g., stainless steel | Double" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.cooker" render={({ field }) => (
+                                                    <FormItem><FormLabel>Cooker</FormLabel><FormControl><Input placeholder="e.g., Eno | 2-burner" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.oven" render={({ field }) => (
+                                                    <FormItem><FormLabel>Oven</FormLabel><FormControl><Input placeholder="e.g., In cooker" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.microwave" render={({ field }) => (
+                                                    <FormItem><FormLabel>Microwave</FormLabel><FormControl><Input placeholder="e.g., Electrolux NF4014" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.fridge" render={({ field }) => (
+                                                    <FormItem><FormLabel>Fridge</FormLabel><FormControl><Input placeholder="e.g., Dometic CU55" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.freezer" render={({ field }) => (
+                                                    <FormItem><FormLabel>Freezer</FormLabel><FormControl><Input placeholder="e.g., Frigoboat" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.hotWaterSystem" render={({ field }) => (
+                                                    <FormItem><FormLabel>Hot Water</FormLabel><FormControl><Input placeholder="e.g., 220V + engine" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.waterPressureSystem" render={({ field }) => (
+                                                    <FormItem><FormLabel>Water Pressure</FormLabel><FormControl><Input placeholder="e.g., electrical" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4 border-b pb-4">
+                                            <h4 className="text-base font-semibold">Owner's Cabin</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                <FormField control={form.control} name="accommodation.ownersCabin" render={({ field }) => (
+                                                    <FormItem><FormLabel>Type</FormLabel><FormControl><Input placeholder="e.g., twin single" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinBedLength" render={({ field }) => (
+                                                    <FormItem><FormLabel>Bed Length (m)</FormLabel><FormControl><Input placeholder="e.g., 2,05" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinWardrobe" render={({ field }) => (
+                                                    <FormItem><FormLabel>Wardrobe</FormLabel><FormControl><Input placeholder="e.g., hanging and shelves" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.ownersCabinBathroom" render={({ field }) => (
+                                                    <FormItem><FormLabel>Bathroom</FormLabel><FormControl><Input placeholder="e.g., en suite" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinToilet" render={({ field }) => (
+                                                    <FormItem><FormLabel>Toilet</FormLabel><FormControl><Input placeholder="e.g., en suite" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinToiletSystem" render={({ field }) => (
+                                                    <FormItem><FormLabel>Toilet System</FormLabel><FormControl><Input placeholder="e.g., manual | Jabsco" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinWashBasin" render={({ field }) => (
+                                                    <FormItem><FormLabel>Wash Basin</FormLabel><FormControl><Input placeholder="e.g., in cabin" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.ownersCabinShower" render={({ field }) => (
+                                                    <FormItem><FormLabel>Shower</FormLabel><FormControl><Input placeholder="e.g., en suite" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
+                                         <div className="space-y-4 border-b pb-4">
+                                            <h4 className="text-base font-semibold">Guest Cabin 1</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                 <FormField control={form.control} name="accommodation.guestCabin1" render={({ field }) => (
+                                                    <FormItem><FormLabel>Type</FormLabel><FormControl><Input placeholder="e.g., v-bed" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.guestCabin1BedLength" render={({ field }) => (
+                                                    <FormItem><FormLabel>Bed Length (m)</FormLabel><FormControl><Input placeholder="e.g., 2,04" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.guestCabin1Wardrobe" render={({ field }) => (
+                                                    <FormItem><FormLabel>Wardrobe</FormLabel><FormControl><Input placeholder="e.g., hanging and shelves" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
+                                         <div className="space-y-4 border-b pb-4">
+                                            <h4 className="text-base font-semibold">Guest Cabin 2</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                 <FormField control={form.control} name="accommodation.guestCabin2" render={({ field }) => (
+                                                    <FormItem><FormLabel>Type</FormLabel><FormControl><Input placeholder="e.g., bunk bed" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.guestCabin2BedLength" render={({ field }) => (
+                                                    <FormItem><FormLabel>Bed Length (m)</FormLabel><FormControl><Input placeholder="e.g., 2,00" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.guestCabin2Wardrobe" render={({ field }) => (
+                                                    <FormItem><FormLabel>Wardrobe</FormLabel><FormControl><Input placeholder="e.g., hanging and shelves" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
+                                         <div className="space-y-4">
+                                            <h4 className="text-base font-semibold">Bathroom</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                 <FormField control={form.control} name="accommodation.sharedBathroom" render={({ field }) => (
+                                                    <FormItem><FormLabel>Bathroom</FormLabel><FormControl><Input placeholder="e.g., shared" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.sharedToilet" render={({ field }) => (
+                                                    <FormItem><FormLabel>Toilet</FormLabel><FormControl><Input placeholder="e.g., shared" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.sharedToiletSystem" render={({ field }) => (
+                                                    <FormItem><FormLabel>Toilet System</FormLabel><FormControl><Input placeholder="e.g., manual" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.sharedWashBasin" render={({ field }) => (
+                                                    <FormItem><FormLabel>Wash Basin</FormLabel><FormControl><Input placeholder="e.g., in bathroom" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                 <FormField control={form.control} name="accommodation.sharedShower" render={({ field }) => (
+                                                    <FormItem><FormLabel>Shower</FormLabel><FormControl><Input placeholder="e.g., shared" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                                <FormField control={form.control} name="accommodation.washingMachine" render={({ field }) => (
+                                                    <FormItem><FormLabel>Washing Machine</FormLabel><FormControl><Input placeholder="e.g., Kenny Compact" {...field} /></FormControl><FormMessage /></FormItem>
+                                                )} />
+                                            </div>
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </div>

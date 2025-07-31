@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import * as React from 'react';
@@ -48,6 +49,20 @@ const renderFeatureList = (ids: string[] | undefined, options: Option[]) => {
       ))}
     </ul>
   );
+};
+
+const SpecItem = ({ label, value }: { label: string; value?: string | number | null | boolean }) => {
+    if (value === null || value === undefined || value === '') return null;
+    let displayValue: React.ReactNode = value;
+    if (typeof value === 'boolean') {
+        displayValue = value ? "Yes" : "No";
+    }
+    return (
+        <div>
+            <p className="text-sm font-medium text-muted-foreground">{label}</p>
+            <p className="text-md font-semibold">{displayValue}</p>
+        </div>
+    );
 };
 
 export function ListingPreview({ data, metadata, heroImagePreview, galleryImagePreviews }: ListingPreviewProps) {
@@ -126,6 +141,64 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
     { label: 'Rudder Type', value: yacht.rudderTypeLabel },
     { label: 'Propeller Type', value: yacht.propellerTypeLabel },
   ].filter(spec => spec.value);
+
+  const accommodationGeneral = [
+    { label: 'Cabins', value: yacht.accommodation?.numberOfCabins },
+    { label: 'Berths', value: yacht.accommodation?.numberOfBerths },
+    { label: 'Interior', value: yacht.accommodation?.interiorMaterial },
+    { label: 'Layout', value: yacht.accommodation?.layout },
+    { label: 'Floor', value: yacht.accommodation?.floor },
+    { label: 'Saloon Headroom (m)', value: yacht.accommodation?.saloonHeadroom },
+    { label: 'Heating', value: yacht.accommodation?.heating },
+    { label: 'Open Cockpit', value: yacht.accommodation?.openCockpit },
+    { label: 'Aft Deck', value: yacht.accommodation?.aftDeck },
+    { label: 'Nav Center', value: yacht.accommodation?.navigationCenter },
+    { label: 'Chart Table', value: yacht.accommodation?.chartTable },
+  ];
+  
+  const accommodationGalley = [
+    { label: 'Countertop', value: yacht.accommodation?.countertop },
+    { label: 'Sink', value: yacht.accommodation?.sink },
+    { label: 'Cooker', value: yacht.accommodation?.cooker },
+    { label: 'Oven', value: yacht.accommodation?.oven },
+    { label: 'Microwave', value: yacht.accommodation?.microwave },
+    { label: 'Fridge', value: yacht.accommodation?.fridge },
+    { label: 'Freezer', value: yacht.accommodation?.freezer },
+    { label: 'Hot Water', value: yacht.accommodation?.hotWaterSystem },
+    { label: 'Water Pressure', value: yacht.accommodation?.waterPressureSystem },
+  ];
+
+  const accommodationOwnersCabin = [
+    { label: 'Type', value: yacht.accommodation?.ownersCabin },
+    { label: 'Bed Length (m)', value: yacht.accommodation?.ownersCabinBedLength },
+    { label: 'Wardrobe', value: yacht.accommodation?.ownersCabinWardrobe },
+    { label: 'Bathroom', value: yacht.accommodation?.ownersCabinBathroom },
+    { label: 'Toilet', value: yacht.accommodation?.ownersCabinToilet },
+    { label: 'Toilet System', value: yacht.accommodation?.ownersCabinToiletSystem },
+    { label: 'Wash Basin', value: yacht.accommodation?.ownersCabinWashBasin },
+    { label: 'Shower', value: yacht.accommodation?.ownersCabinShower },
+  ];
+
+  const accommodationGuestCabin1 = [
+    { label: 'Type', value: yacht.accommodation?.guestCabin1 },
+    { label: 'Bed Length (m)', value: yacht.accommodation?.guestCabin1BedLength },
+    { label: 'Wardrobe', value: yacht.accommodation?.guestCabin1Wardrobe },
+  ];
+
+  const accommodationGuestCabin2 = [
+    { label: 'Type', value: yacht.accommodation?.guestCabin2 },
+    { label: 'Bed Length (m)', value: yacht.accommodation?.guestCabin2BedLength },
+    { label: 'Wardrobe', value: yacht.accommodation?.guestCabin2Wardrobe },
+  ];
+
+  const accommodationBathroom = [
+    { label: 'Bathroom', value: yacht.accommodation?.sharedBathroom },
+    { label: 'Toilet', value: yacht.accommodation?.sharedToilet },
+    { label: 'Toilet System', value: yacht.accommodation?.sharedToiletSystem },
+    { label: 'Wash Basin', value: yacht.accommodation?.sharedWashBasin },
+    { label: 'Shower', value: yacht.accommodation?.sharedShower },
+    { label: 'Washing Machine', value: yacht.accommodation?.washingMachine },
+  ];
 
 
   return (
@@ -212,13 +285,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-6">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="specifications">Hull & Engine</TabsTrigger>
-                        <TabsTrigger value="usage">Division</TabsTrigger>
+                        <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="features">Equipment</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
-                        <TabsTrigger value="cabin">Cabin</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="general" className="mt-6">
@@ -249,8 +321,43 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         )}
                         </TabsContent>
 
-                        <TabsContent value="usage" className="mt-6">
-                        {renderFeatureList(yacht.divisions, metadata.divisions)}
+                        <TabsContent value="accommodation" className="mt-6 space-y-8">
+                             <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">General</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                    {accommodationGeneral.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">Galley</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                     {accommodationGalley.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
+                             <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">Owner's Cabin</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                     {accommodationOwnersCabin.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">Guest Cabin 1</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                     {accommodationGuestCabin1.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
+                             <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">Guest Cabin 2</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                     {accommodationGuestCabin2.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold border-b pb-2">Bathroom</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                     {accommodationBathroom.map(item => <SpecItem key={item.label} {...item} />)}
+                                </div>
+                            </div>
                         </TabsContent>
 
                         <TabsContent value="features" className="mt-6">
@@ -261,9 +368,6 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         {renderFeatureList(yacht.deck, metadata.deckOptions)}
                         </TabsContent>
 
-                        <TabsContent value="cabin" className="mt-6">
-                        {renderFeatureList(yacht.cabinFeatures, metadata.cabinOptions)}
-                        </TabsContent>
                     </Tabs>
                     </div>
                 </div>
