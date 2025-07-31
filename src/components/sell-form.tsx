@@ -1092,7 +1092,7 @@ export function SellForm() {
                                                     <FormItem><FormLabel>Bed Length (m)</FormLabel><FormControl><Input placeholder="e.g., 2,04" {...field} /></FormControl><FormMessage /></FormItem>
                                                 )} />
                                                 <FormField control={form.control} name="accommodation.guestCabin1Wardrobe" render={({ field }) => (
-                                                    <FormItem><FormLabel>Wardrobe</FormLabel><FormControl><Input placeholder="e.g., hanging and shelves" {...field} /></FormControl><FormMessage /></FormItem>
+                                                    <FormItem><FormLabel>Wardrobe</FormLabel><FormControl><Input placeholder="e.g., hanging and shelves" {...field} /></FormControl><FormMessage /></FormMessage>
                                                 )} />
                                             </div>
                                         </div>
@@ -1227,7 +1227,7 @@ export function SellForm() {
                                             <FormField control={form.control} name="equipment.fenders" render={({ field }) => (<FormItem><FormLabel>Fenders</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="equipment.mooringLines" render={({ field }) => (<FormItem><FormLabel>Mooring Lines</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                             <FormField control={form.control} name="equipment.radio" render={({ field }) => (<FormItem><FormLabel>Radio</FormLabel><FormControl><Input placeholder="e.g., Sony" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                                            <FormField control={form.control} name="equipment.cockpitSpeakers" render={({ field }) => (<FormItem><FormLabel>Cockpit Speakers</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                                            <FormField control={form.control} name="equipment.cockpitSpeakers" render={({ field }) => (<FormItem><FormLabel>Cockpit Speakers</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormMessage>)} />
                                             <FormField control={form.control} name="equipment.speakersInSalon" render={({ field }) => (<FormItem><FormLabel>Speakers in Salon</FormLabel><FormControl><Input placeholder="e.g., 2x Sony xplod" {...field} /></FormControl><FormMessage /></FormMessage>)} />
                                             <FormField control={form.control} name="equipment.fireExtinguisher" render={({ field }) => (<FormItem><FormLabel>Fire Extinguisher</FormLabel><FormControl><Input placeholder="e.g., yes" {...field} /></FormControl><FormMessage /></FormItem>)} />
                                         </div>
@@ -1284,6 +1284,7 @@ export function SellForm() {
                                                                     const file = e.target.files?.[0];
                                                                     if (file) {
                                                                         field.onChange(file);
+                                                                        if (heroImagePreview) URL.revokeObjectURL(heroImagePreview);
                                                                         setHeroImagePreview(URL.createObjectURL(file));
                                                                     }
                                                                 }}
@@ -1323,20 +1324,18 @@ export function SellForm() {
                                                                     
                                                                     field.onChange(limitedFiles);
 
-                                                                    const previews = limitedFiles.map(file => {
-                                                                        if (file instanceof File) {
-                                                                            return URL.createObjectURL(file);
-                                                                        }
-                                                                        return file; 
-                                                                    }).filter(p => typeof p === 'string');
-                                                                    
+                                                                    // Cleanup old previews before creating new ones
                                                                     galleryImagePreviews.forEach(url => {
                                                                         if (url.startsWith('blob:')) {
                                                                         URL.revokeObjectURL(url);
                                                                         }
                                                                     });
 
-                                                                    setGalleryImagePreviews(previews as string[]);
+                                                                    const newPreviews = limitedFiles.map(file => 
+                                                                        file instanceof File ? URL.createObjectURL(file) : file
+                                                                    ).filter((p): p is string => typeof p === 'string');
+                                                                    
+                                                                    setGalleryImagePreviews(newPreviews);
                                                                 }
                                                             }}
                                                             />
@@ -1355,16 +1354,15 @@ export function SellForm() {
                                                                         size="icon"
                                                                         className="absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full"
                                                                         onClick={() => {
-                                                                            const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+                                                                            const updatedFiles = (field.value || []).filter((_: any, i: number) => i !== index);
                                                                             field.onChange(updatedFiles);
 
-                                                                            const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
-                                                                            
                                                                             const urlToRevoke = galleryImagePreviews[index];
                                                                             if (urlToRevoke && urlToRevoke.startsWith('blob:')) {
                                                                                 URL.revokeObjectURL(urlToRevoke);
                                                                             }
-
+                                                                            
+                                                                            const updatedPreviews = galleryImagePreviews.filter((_: any, i: number) => i !== index);
                                                                             setGalleryImagePreviews(updatedPreviews);
                                                                         }}
                                                                     >
