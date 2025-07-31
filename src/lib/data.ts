@@ -103,6 +103,15 @@ export const priceValues = [
 
 export const boatTypes = [
   { id: 'sailing', label: 'Sailing' },
+  { id: 'monohull', label: 'Monohull' },
+  { id: 'multihull', label: 'Multihull' },
+  { id: 'expedition', label: 'Expedition' },
+  { id: 'ocean', label: 'Ocean' },
+  { id: 'off-shore', label: 'Off Shore' },
+  { id: 'in-shore', label: 'In Shore' },
+  { id: 'racing', label: 'Racing' },
+  { id: 'off-grid', label: 'Off Grid' },
+  { id: 'project', label: 'Project' },
 ];
 
 export const divisions = [

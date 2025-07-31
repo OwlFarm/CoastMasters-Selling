@@ -33,7 +33,7 @@ import { InfoTooltip } from './homepage-yacht-filters';
 const formSchema = z.object({
   title: z.string().min(5, { message: 'Title must be at least 5 characters.' }),
   listingType: z.string({ required_error: 'Please select a listing type.' }),
-  boatType: z.string().default('sailing'),
+  boatType: z.string({ required_error: 'Please select a boat type.' }),
   condition: z.string({ required_error: 'Please select the condition.' }),
   location: z.string({ required_error: 'Please select a location.' }),
   fuelType: z.string({ required_error: 'Please select a fuel type.' }),
@@ -291,7 +291,7 @@ export function SellForm() {
             heroImage: undefined,
             galleryImages: [],
             listingType: undefined,
-            boatType: 'sailing',
+            boatType: undefined,
             divisions: [],
             deck: [],
             cabin: [],
@@ -569,40 +569,6 @@ export function SellForm() {
                                                 <FormItem><FormControl><Input placeholder="e.g., For Sale: 2022 Beneteau Oceanis 46.1" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
                                         </div>
-                                         <FormField control={form.control} name="description" render={({ field }) => (
-                                            <FormItem>
-                                                <div className="flex items-center justify-between">
-                                                    <FormLabel>Description</FormLabel>
-                                                        <Button
-                                                            type="button"
-                                                            variant="outline"
-                                                            size="sm"
-                                                            disabled={isPolishPending || !field.value}
-                                                            onClick={() => {
-                                                                const formData = new FormData();
-                                                                formData.append('description', form.getValues('description'));
-                                                                polishFormAction(formData);
-                                                            }}
-                                                        >
-                                                            {isPolishPending ? (
-                                                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                                            ) : (
-                                                                <Sparkles className="mr-2 h-4 w-4" />
-                                                            )}
-                                                            Polish with AI
-                                                        </Button>
-                                                </div>
-                                                <FormControl>
-                                                    <TextEditor
-                                                        value={field.value}
-                                                        onChange={field.onChange}
-                                                        placeholder="Describe your yacht's condition, history, and unique features..."
-                                                    />
-                                                </FormControl>
-                                                <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )} />
                                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 pt-4 border-t">
                                             <FormField control={form.control} name="make" render={({ field }) => (
                                                 <FormItem><FormLabel>Builder</FormLabel>
@@ -727,6 +693,40 @@ export function SellForm() {
                                                 <FormItem><FormLabel>Outside Helm Position</FormLabel><FormControl><Input placeholder="e.g., mechanical" {...field} /></FormControl><FormMessage /></FormItem>
                                             )} />
                                         </div>
+                                         <FormField control={form.control} name="description" render={({ field }) => (
+                                            <FormItem>
+                                                <div className="flex items-center justify-between">
+                                                    <FormLabel>Description</FormLabel>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            disabled={isPolishPending || !field.value}
+                                                            onClick={() => {
+                                                                const formData = new FormData();
+                                                                formData.append('description', form.getValues('description'));
+                                                                polishFormAction(formData);
+                                                            }}
+                                                        >
+                                                            {isPolishPending ? (
+                                                                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                            ) : (
+                                                                <Sparkles className="mr-2 h-4 w-4" />
+                                                            )}
+                                                            Polish with AI
+                                                        </Button>
+                                                </div>
+                                                <FormControl>
+                                                    <TextEditor
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        placeholder="Describe your yacht's condition, history, and unique features..."
+                                                    />
+                                                </FormControl>
+                                                <FormDescription>For best results, describe what makes your yacht special. Include recent upgrades, maintenance history, and ideal uses.</FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
                                     </CardContent>
                                 </Card>
                                 <Card>
