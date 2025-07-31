@@ -141,7 +141,8 @@ export async function handleGenerateListingDetails(
     return { result: output };
   } catch (error) {
     console.error('Generate details failed:', error);
-    return { error: 'An error occurred while generating details. Please try again.' };
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { error: errorMessage };
   }
 }
 

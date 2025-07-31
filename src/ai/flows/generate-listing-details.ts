@@ -28,6 +28,7 @@ import {
   galleyOptions,
   headsOptions,
 } from '@/lib/data';
+import { genkit } from 'genkit';
 
 export async function generateListingDetails(input: GenerateListingDetailsInput): Promise<GenerateListingDetailsOutput> {
   return generateListingDetailsFlow(input);
@@ -111,8 +112,6 @@ For single-choice categories (like Hull Material), return only the one most like
 **Available Heads Features:**
 {{{headsOptions}}}
 
-**Example:** If the yacht is described as "perfect for long-distance ocean voyages", you should include "off-shore" in the \`detectedDivisions\` array. If the details mention "a fiberglass hull" and "GPS navigation", you should return "fiberglass" for \`detectedHullMaterial\` and include "gps" in the \`detectedFeatures\` array.
-
 Generate the final JSON output with all fields: \`title\`, \`description\`, and all \`detected...\` fields.`,
 });
 
@@ -141,7 +140,23 @@ const generateListingDetailsFlow = ai.defineFlow(
       headsOptions: formatOptionsForPrompt(headsOptions),
     };
 
-    const {output} = await prompt(promptData as any);
-    return output!;
+    let attempt = 0;
+    const maxAttempts = 3;
+
+    while (attempt < maxAttempts) {
+      attempt++;
+      try {
+        const {output} = await prompt(promptData as any);
+        if (output) {
+          return output; // Success
+        }
+        console.warn(`Attempt ${attempt}: AI returned null output.`);
+      } catch (error) {
+        console.error(`Attempt ${attempt} failed with error:`, error);
+      }
+    }
+
+    // If all attempts fail, throw a user-friendly error.
+    throw new Error('The AI failed to generate listing details after multiple attempts. Please try again later or fill in the details manually.');
   }
 );
