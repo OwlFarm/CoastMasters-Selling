@@ -463,7 +463,7 @@ const useImageManager = () => {
         }
       });
     };
-  }, []);
+  }, [heroImagePreview, galleryImagePreviews]);
 
   return {
     heroImagePreview,
