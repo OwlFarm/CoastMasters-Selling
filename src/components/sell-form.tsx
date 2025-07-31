@@ -44,28 +44,6 @@ const FORM_CONSTANTS = {
 } as const;
 
 // Utility functions
-const createNumberPreprocessor = (optional = false, positive = false) => 
-  z.preprocess(
-    (a) => {
-      if (a === '' || a === null || a === undefined) return optional ? undefined : 0;
-      const num = typeof a === 'string' ? parseFloat(a) : Number(a);
-      return isNaN(num) ? (optional ? undefined : 0) : num;
-    },
-    optional 
-      ? (positive ? z.number().positive({ message: 'Must be a positive number' }).optional() : z.number().optional())
-      : (positive ? z.number().positive({ message: 'Must be a positive number' }) : z.number())
-  );
-
-const createIntegerPreprocessor = (optional = false) =>
-  z.preprocess(
-    (a) => {
-      if (a === '' || a === null || a === undefined) return optional ? undefined : 0;
-      const num = typeof a === 'string' ? parseInt(a, 10) : Number(a);
-      return isNaN(num) ? (optional ? undefined : 0) : num;
-    },
-    optional ? z.number().int().optional() : z.number().int()
-  );
-
 const validateFile = (file: File): string | null => {
   if (!file) return 'File is required';
   if (file.size > FORM_CONSTANTS.MAX_FILE_SIZE) return 'File size must be less than 10MB';
@@ -94,12 +72,9 @@ const formSchema = z.object({
   sailRigging: z.string().optional(),
   make: z.string({ required_error: 'Please select or enter a builder.' }),
   model: z.string().min(1, { message: 'Model is required.' }),
-  year: createIntegerPreprocessor().refine(
-    val => val >= FORM_CONSTANTS.MIN_YEAR && val <= new Date().getFullYear() + 1,
-    'Invalid year'
-  ),
-  length: createNumberPreprocessor(false, true),
-  price: createNumberPreprocessor(false, true),
+  year: z.coerce.number().int().min(FORM_CONSTANTS.MIN_YEAR).max(new Date().getFullYear() + 1, 'Invalid year'),
+  length: z.coerce.number().positive({ message: 'Must be a positive number' }),
+  price: z.coerce.number().positive({ message: 'Must be a positive number' }),
   description: z.string()
     .min(FORM_CONSTANTS.MIN_DESCRIPTION_LENGTH, { 
       message: `Description must be at least ${FORM_CONSTANTS.MIN_DESCRIPTION_LENGTH} characters.` 
@@ -116,14 +91,14 @@ const formSchema = z.object({
     saloon: z.array(z.string()).optional(),
     galley: z.array(z.string()).optional(),
     heads: z.array(z.string()).optional(),
-    numberOfCabins: createIntegerPreprocessor(true),
-    numberOfBerths: createIntegerPreprocessor(true),
+    numberOfCabins: z.coerce.number().int().optional(),
+    numberOfBerths: z.coerce.number().int().optional(),
     interiorMaterial: z.string().optional(),
     layout: z.string().optional(),
     floor: z.string().optional(),
     openCockpit: z.boolean().optional(),
     aftDeck: z.boolean().optional(),
-    saloonHeadroom: createNumberPreprocessor(true),
+    saloonHeadroom: z.coerce.number().optional(),
     heating: z.string().optional(),
     navigationCenter: z.boolean().optional(),
     chartTable: z.boolean().optional(),
@@ -158,17 +133,17 @@ const formSchema = z.object({
     washingMachine: z.string().optional(),
   }).optional(),
   machinery: z.object({
-    numberOfEngines: createIntegerPreprocessor(true),
+    numberOfEngines: z.coerce.number().int().optional(),
     make: z.string().optional(),
     type: z.string().optional(),
-    hp: createNumberPreprocessor(true),
-    kw: createNumberPreprocessor(true),
+    hp: z.coerce.number().optional(),
+    kw: z.coerce.number().optional(),
     fuel: z.string().optional(),
-    yearInstalled: createIntegerPreprocessor(true),
+    yearInstalled: z.coerce.number().int().optional(),
     yearOfOverhaul: z.string().optional(),
-    maxSpeedKnots: createNumberPreprocessor(true),
-    cruisingSpeedKnots: createNumberPreprocessor(true),
-    consumptionLhr: createNumberPreprocessor(true),
+    maxSpeedKnots: z.coerce.number().optional(),
+    cruisingSpeedKnots: z.coerce.number().optional(),
+    consumptionLhr: z.coerce.number().optional(),
     engineCoolingSystem: z.string().optional(),
     drive: z.string().optional(),
     shaftSeal: z.string().optional(),
@@ -278,24 +253,24 @@ const formSchema = z.object({
       message: `Cannot exceed ${FORM_CONSTANTS.MAX_SPECIFICATIONS_LENGTH} characters.`
     })
     .optional(),
-  saDisp: createNumberPreprocessor(true),
-  balDisp: createNumberPreprocessor(true),
-  dispLen: createNumberPreprocessor(true),
-  comfortRatio: createNumberPreprocessor(true),
-  capsizeScreeningFormula: createNumberPreprocessor(true),
-  sNum: createNumberPreprocessor(true),
-  hullSpeed: createNumberPreprocessor(true),
-  poundsPerInchImmersion: createNumberPreprocessor(true),
-  loaM: createNumberPreprocessor(true),
-  lwlM: createNumberPreprocessor(true),
-  beamM: createNumberPreprocessor(true),
-  draftM: createNumberPreprocessor(true),
-  airDraftM: createNumberPreprocessor(true),
-  headroomM: createNumberPreprocessor(true),
+  saDisp: z.coerce.number().optional(),
+  balDisp: z.coerce.number().optional(),
+  dispLen: z.coerce.number().optional(),
+  comfortRatio: z.coerce.number().optional(),
+  capsizeScreeningFormula: z.coerce.number().optional(),
+  sNum: z.coerce.number().optional(),
+  hullSpeed: z.coerce.number().optional(),
+  poundsPerInchImmersion: z.coerce.number().optional(),
+  loaM: z.coerce.number().optional(),
+  lwlM: z.coerce.number().optional(),
+  beamM: z.coerce.number().optional(),
+  draftM: z.coerce.number().optional(),
+  airDraftM: z.coerce.number().optional(),
+  headroomM: z.coerce.number().optional(),
   country: z.string().optional(),
   designer: z.string().optional(),
-  displacementT: createNumberPreprocessor(true),
-  ballastTonnes: createNumberPreprocessor(true),
+  displacementT: z.coerce.number().optional(),
+  ballastTonnes: z.coerce.number().optional(),
   hullColor: z.string().optional(),
   hullShape: z.string().optional(),
   superstructureMaterial: z.string().optional(),
@@ -307,9 +282,9 @@ const formSchema = z.object({
   windowFrame: z.string().optional(),
   windowMaterial: z.string().optional(),
   deckhatch: z.string().optional(),
-  fuelTankLitre: createNumberPreprocessor(true),
+  fuelTankLitre: z.coerce.number().optional(),
   levelIndicatorFuel: z.string().optional(),
-  freshwaterTankLitre: createNumberPreprocessor(true),
+  freshwaterTankLitre: z.coerce.number().optional(),
   levelIndicatorFreshwater: z.string().optional(),
   wheelSteering: z.string().optional(),
   outsideHelmPosition: z.string().optional(),
