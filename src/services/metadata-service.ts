@@ -1,4 +1,6 @@
 
+'use server';
+
 import { cache } from 'react';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -68,7 +70,7 @@ export type Metadata = {
 let metadataCache: Metadata | null = null;
 
 // ****** DEVELOPMENT ONLY: Force re-initialization ******
-const FORCE_REINIT = true; 
+const FORCE_REINIT = false; 
 // ******************************************************
 
 async function initializeMetadata() {
