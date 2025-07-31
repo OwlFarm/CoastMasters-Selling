@@ -439,7 +439,7 @@ export function SellForm() {
     }
     
     return (
-      <div>
+        <div>
         {isPreview ? (
           <div>
             <div className="mb-8 flex justify-between items-center">
@@ -468,7 +468,7 @@ export function SellForm() {
                 List My Yacht
               </Button>
             </div>
-          </div>
+        </div>
         ) : (
           <Form {...form}>
             <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
