@@ -19,6 +19,11 @@ import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/act
 import { useActionState } from 'react';
 import { Textarea } from './ui/textarea';
 import { GeneralInformation } from './sell/general-information';
+import { Accommodation } from './sell/accommodation';
+import { Machinery } from '@/selling/machinery';
+import { Navigation } from '@/selling/navigation';
+import { Equipment } from '@/selling/equipment';
+import { Rigging } from '@/selling/rigging';
 
 const formSchema = z.object({
   title: z.string().optional(),
@@ -385,6 +390,13 @@ export function SellForm() {
             </Card>
 
             <GeneralInformation form={form} />
+            <Accommodation form={form} />
+            <Rigging />
+            <Machinery />
+            <Navigation />
+            <Equipment />
+            {/* Indication Ratios would go here */}
+
 
             <Card>
                 <CardHeader>
@@ -428,7 +440,7 @@ export function SellForm() {
                 <CardHeader>
                     <CardTitle>Upload Photos</CardTitle>
                     <CardDescription>High-quality photos are crucial for attracting buyers. The first image will be your main "hero" image.</CardDescription>
-                </CardHeader>
+                </Header>
                 <CardContent className="space-y-8">
                      <FormField
                         control={form.control}
