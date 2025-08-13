@@ -190,21 +190,23 @@ const formSchema = z.object({
     extraInfo: z.string().optional().nullable(),
   }).optional().nullable(),
 
+  // Navigation
   navigation: z.object({
-    compass: z.string().optional(),
-    depthSounder: z.string().optional(),
-    log: z.string().optional(),
-    windset: z.string().optional(),
-    vhf: z.string().optional(),
-    autopilot: z.string().optional(),
-    radar: z.string().optional(),
-    gps: z.string().optional(),
-    plotter: z.string().optional(),
-    navtex: z.string().optional(),
-    aisTransceiver: z.string().optional(),
-    navigationLights: z.string().optional(),
-    extraInfo: z.string().optional(),
-  }).optional(),
+    compass: z.string().optional().nullable(),
+    depthSounder: z.string().optional().nullable(),
+    log: z.string().optional().nullable(),
+    windset: z.string().optional().nullable(),
+    vhf: z.string().optional().nullable(),
+    autopilot: z.string().optional().nullable(),
+    radar: z.string().optional().nullable(),
+    gps: z.string().optional().nullable(),
+    plotter: z.string().optional().nullable(),
+    navtex: z.string().optional().nullable(),
+    aisTransceiver: z.string().optional().nullable(),
+    navigationLights: z.string().optional().nullable(),
+    extraInfo: z.string().optional().nullable(),
+  }).optional().nullable(),
+  
   equipment: z.object({
     fixedWindscreen: z.string().optional(),
     cockpitTable: z.string().optional(),
@@ -363,7 +365,7 @@ export function SellForm() {
               Back to Edit
             </Button>
             <h2 className="text-2xl font-bold">Listing Preview</h2>
-            <Button onClick={form.handleSubmit(onSubmit)}>Submit Listing</Button>
+            <Button onClick={() => form.handleSubmit(onSubmit)()}>Submit Listing</Button>
           </div>
           <ListingPreview
             data={form.getValues()}
