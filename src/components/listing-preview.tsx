@@ -396,10 +396,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         <TabsContent value="general" className="mt-6">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                                 {generalSpecs.map(spec => (
-                                <div key={spec.label}>
-                                    <p className="text-sm font-medium text-muted-foreground">{spec.label}</p>
-                                    <p className="text-md font-semibold">{spec.value}</p>
-                                </div>
+                                    spec.value ? <SpecItem key={spec.label} label={spec.label} value={spec.value} /> : null
                                 ))}
                             </div>
                             {yacht.otherSpecifications && (

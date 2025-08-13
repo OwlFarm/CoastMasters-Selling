@@ -377,7 +377,6 @@ export function SellForm() {
                   <FormField control={form.control} name="salesOffice" render={({ field }) => (<FormItem><FormLabel>Sales Office</FormLabel><FormControl><Input placeholder="e.g., De Valk Hindeloopen" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="status" render={({ field }) => (<FormItem><FormLabel>Status</FormLabel><FormControl><Input placeholder="e.g., For Sale" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="vat" render={({ field }) => (<FormItem><FormLabel>VAT</FormLabel><FormControl><Input placeholder="e.g., Paid" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
-
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <FormField control={form.control} name="price" render={({ field }) => ( <FormItem> <FormLabel>Asking Price (€)</FormLabel> <FormControl><Input type="number" placeholder="e.g., 275000" {...field} value={field.value ?? ''} /></FormControl> <FormMessage /> </FormItem> )} />
@@ -386,7 +385,7 @@ export function SellForm() {
             </Card>
 
             <GeneralInformation form={form} />
-            
+
             <Card>
                 <CardHeader>
                     <CardTitle>Description</CardTitle>
