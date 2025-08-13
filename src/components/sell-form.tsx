@@ -375,80 +375,21 @@ export function SellForm() {
           <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>Key Information</CardTitle>
-                <CardDescription>Start with the basics. You can also use our AI to help generate content.</CardDescription>
+                <CardTitle>Key Details</CardTitle>
+                <CardDescription>Provide a brief overview of the yacht. This information will be prominently displayed.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField control={form.control} name="make" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Make</FormLabel>
-                      <FormControl><Input placeholder="e.g., Beneteau" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="model" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Model</FormLabel>
-                      <FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="year" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Year</FormLabel>
-                      <FormControl><Input type="number" placeholder="YYYY" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="length" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Length (ft)</FormLabel>
-                      <FormControl><Input type="number" placeholder="Overall length in feet" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={form.control} name="price" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price (USD)</FormLabel>
-                      <FormControl><Input type="number" placeholder="Asking price" {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <FormField control={form.control} name="loaM" render={({ field }) => (<FormItem><FormLabel>Dimensions (LOA, Beam, Draft) (m)</FormLabel><FormControl><Input placeholder="e.g., 14.96 x 4.42 x 2.20" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="hullMaterial" render={({ field }) => (<FormItem><FormLabel>Material</FormLabel><FormControl><Input placeholder="e.g., GRP" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="year" render={({ field }) => (<FormItem><FormLabel>Built</FormLabel><FormControl><Input type="number" placeholder="e.g., 1990" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="machinery.make" render={({ field }) => (<FormItem><FormLabel>Engine(s)</FormLabel><FormControl><Input placeholder="e.g., Volvo Penta TMD41A" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                   <FormField control={form.control} name="machinery.hp" render={({ field }) => (<FormItem><FormLabel>HP / KW</FormLabel><FormControl><Input placeholder="e.g., 143 / 105.25" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="location" render={({ field }) => (<FormItem><FormLabel>Lying</FormLabel><FormControl><Input placeholder="e.g., at sales office" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
-                
-                <FormField control={form.control} name="title" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Listing Title</FormLabel>
-                    <FormControl><Input placeholder="e.g., Immaculate 2022 Beneteau Oceanis 46.1 For Sale" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-
-                <FormField control={form.control} name="description" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                        <TextEditor
-                            value={field.value}
-                            onChange={field.onChange}
-                            placeholder="Describe the yacht's history, features, condition, and recent upgrades..." 
-                        />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
-                
-                <div className="flex justify-end gap-2">
-                    <Button type="button" variant="outline" onClick={onGenerateDetails} disabled={isGenerating}>
-                        {isGenerating ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
-                        Generate Details with AI
-                    </Button>
-                    <Button type="button" variant="outline" onClick={onPolishDescription} disabled={isPolishing}>
-                        {isPolishing ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
-                        Polish Description
-                    </Button>
-                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <FormField control={form.control} name="price" render={({ field }) => ( <FormItem> <FormLabel>Asking Price (€)</FormLabel> <FormControl><Input type="number" placeholder="e.g., 275000" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                 </div>
               </CardContent>
             </Card>
 
@@ -620,3 +561,5 @@ export function SellForm() {
     </div>
   );
 }
+
+    
