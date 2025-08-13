@@ -595,5 +595,3 @@ export function SellForm() {
     </div>
   );
 }
-
-    
