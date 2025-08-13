@@ -132,7 +132,7 @@ const formSchema = z.object({
   navigation: z.any().optional(),
   equipment: z.any().optional(),
   rigging: z.any().optional(),
-});
+}).passthrough();
 
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -253,7 +253,7 @@ export function SellForm() {
         return;
     }
     if (currentStep > 0) {
-      setCurrentStep(step => step - 1);
+      setCurrentStep(step => step + 1);
     }
   };
 
