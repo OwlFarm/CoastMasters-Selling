@@ -17,28 +17,23 @@ import { Skeleton } from './ui/skeleton';
 import { ListingPreview } from './listing-preview';
 import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/actions';
 import { useActionState } from 'react';
-import { TextEditor } from './ui/text-editor';
+import { Textarea } from './ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 
-// Updated Zod schema to match the comprehensive Yacht type
 const formSchema = z.object({
-  title: z.string().min(5, 'Title must be at least 5 characters.'),
-  make: z.string().min(1, 'Make is required.'),
-  model: z.string().min(1, 'Model is required.'),
-  year: z.coerce.number().min(1900, 'Invalid year.').max(new Date().getFullYear() + 1, 'Invalid year.'),
-  length: z.coerce.number().positive('Length must be a positive number.'),
-  price: z.coerce.number().positive('Price must be a positive number.'),
-  description: z.string().min(10, 'Description is required.'),
+  title: z.string().optional(),
+  make: z.string().optional(),
+  model: z.string().optional(),
+  year: z.coerce.number().optional().nullable(),
+  length: z.coerce.number().optional().nullable(),
+  price: z.coerce.number().optional().nullable(),
+  description: z.string().optional(),
   heroImage: z.any().optional(),
   galleryImages: z.array(z.any()).optional(),
-  
-  // Key Information
   listingType: z.string().optional(),
   boatType: z.string().optional(),
   condition: z.string().optional(),
   location: z.string().optional(),
-
-  // Detailed Specifications
   fuelType: z.string().optional(),
   hullMaterial: z.string().optional(),
   transomShape: z.string().optional(),
@@ -51,8 +46,6 @@ const formSchema = z.object({
   divisions: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
   otherSpecifications: z.string().optional(),
-
-  // General Specs from Hallberg Rassy example
   loaM: z.coerce.number().optional().nullable(),
   lwlM: z.coerce.number().optional().nullable(),
   beamM: z.coerce.number().optional().nullable(),
@@ -80,8 +73,6 @@ const formSchema = z.object({
   levelIndicatorFreshwater: z.string().optional(),
   wheelSteering: z.string().optional(),
   outsideHelmPosition: z.string().optional(),
-
-  // Accommodation
   accommodation: z.object({
     numberOfCabins: z.coerce.number().optional().nullable(),
     numberOfBerths: z.coerce.number().optional().nullable(),
@@ -128,8 +119,6 @@ const formSchema = z.object({
     galley: z.array(z.string()).optional(),
     heads: z.array(z.string()).optional(),
   }).optional(),
-
-  // Machinery
   machinery: z.object({
     numberOfEngines: z.coerce.number().optional().nullable(),
     make: z.string().optional(),
@@ -163,7 +152,6 @@ const formSchema = z.object({
     watermaker: z.string().optional(),
     extraInfo: z.string().optional(),
   }).optional(),
-
   navigation: z.object({
     compass: z.string().optional(),
     depthSounder: z.string().optional(),
@@ -179,7 +167,6 @@ const formSchema = z.object({
     navigationLights: z.string().optional(),
     extraInfo: z.string().optional(),
   }).optional(),
-
   equipment: z.object({
     fixedWindscreen: z.string().optional(),
     cockpitTable: z.string().optional(),
@@ -206,7 +193,6 @@ const formSchema = z.object({
     speakersInSalon: z.string().optional(),
     fireExtinguisher: z.string().optional(),
   }).optional(),
-
   rigging: z.object({
     rigging: z.string().optional(),
     standingRigging: z.string().optional(),
@@ -231,6 +217,9 @@ const formSchema = z.object({
     multifunctionalWinches: z.string().optional(),
     spiPole: z.string().optional(),
   }).optional(),
+  status: z.string().optional(),
+  vat: z.string().optional(),
+  salesOffice: z.string().optional(),
 }).passthrough();
 
 
@@ -277,7 +266,6 @@ export function SellForm() {
       title: '',
       make: '',
       model: '',
-      year: new Date().getFullYear(),
       galleryImages: [],
       features: [],
       deck: [],
@@ -310,10 +298,10 @@ export function SellForm() {
   const onGenerateDetails = () => {
     const formData = new FormData();
     const values = form.getValues();
-    formData.append('make', values.make);
-    formData.append('model', values.model);
-    formData.append('year', String(values.year));
-    formData.append('length', String(values.length));
+    formData.append('make', values.make || '');
+    formData.append('model', values.model || '');
+    formData.append('year', String(values.year || ''));
+    formData.append('length', String(values.length || ''));
     formData.append('condition', values.condition || '');
     formData.append('boatType', values.boatType || '');
     (values.features || []).forEach(f => formData.append('features', f));
@@ -322,7 +310,7 @@ export function SellForm() {
   
   const onPolishDescription = () => {
       const formData = new FormData();
-      formData.append('description', form.getValues('description'));
+      formData.append('description', form.getValues('description') || '');
       polishAction(formData);
   };
 
@@ -373,7 +361,7 @@ export function SellForm() {
       ) : (
         <Form {...form}>
           <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
-            <Card>
+             <Card>
               <CardHeader>
                 <CardTitle>Key Details</CardTitle>
                 <CardDescription>Provide a brief overview of the yacht. This information will be prominently displayed.</CardDescription>
@@ -382,13 +370,17 @@ export function SellForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <FormField control={form.control} name="loaM" render={({ field }) => (<FormItem><FormLabel>Dimensions (LOA, Beam, Draft) (m)</FormLabel><FormControl><Input placeholder="e.g., 14.96 x 4.42 x 2.20" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="hullMaterial" render={({ field }) => (<FormItem><FormLabel>Material</FormLabel><FormControl><Input placeholder="e.g., GRP" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name="year" render={({ field }) => (<FormItem><FormLabel>Built</FormLabel><FormControl><Input type="number" placeholder="e.g., 1990" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="year" render={({ field }) => (<FormItem><FormLabel>Built</FormLabel><FormControl><Input type="number" placeholder="e.g., 1990" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="machinery.make" render={({ field }) => (<FormItem><FormLabel>Engine(s)</FormLabel><FormControl><Input placeholder="e.g., Volvo Penta TMD41A" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                    <FormField control={form.control} name="machinery.hp" render={({ field }) => (<FormItem><FormLabel>HP / KW</FormLabel><FormControl><Input placeholder="e.g., 143 / 105.25" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="location" render={({ field }) => (<FormItem><FormLabel>Lying</FormLabel><FormControl><Input placeholder="e.g., at sales office" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="salesOffice" render={({ field }) => (<FormItem><FormLabel>Sales Office</FormLabel><FormControl><Input placeholder="e.g., De Valk Hindeloopen" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="status" render={({ field }) => (<FormItem><FormLabel>Status</FormLabel><FormControl><Input placeholder="e.g., For Sale" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="vat" render={({ field }) => (<FormItem><FormLabel>VAT</FormLabel><FormControl><Input placeholder="e.g., Paid" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <FormField control={form.control} name="price" render={({ field }) => ( <FormItem> <FormLabel>Asking Price (€)</FormLabel> <FormControl><Input type="number" placeholder="e.g., 275000" {...field} /></FormControl> <FormMessage /> </FormItem> )} />
+                    <FormField control={form.control} name="price" render={({ field }) => ( <FormItem> <FormLabel>Asking Price (€)</FormLabel> <FormControl><Input type="number" placeholder="e.g., 275000" {...field} value={field.value ?? ''} /></FormControl> <FormMessage /> </FormItem> )} />
                  </div>
               </CardContent>
             </Card>
@@ -404,16 +396,20 @@ export function SellForm() {
                     <AccordionTrigger>Dimensions & Core Details</AccordionTrigger>
                     <AccordionContent className="pt-4">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <FormField control={form.control} name="model" render={({ field }) => (<FormItem><FormLabel>Model</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="boatType" render={({ field }) => (<FormItem><FormLabel>Type</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="loaM" render={({ field }) => (<FormItem><FormLabel>LOA (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="lwlM" render={({ field }) => (<FormItem><FormLabel>LWL (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="beamM" render={({ field }) => (<FormItem><FormLabel>Beam (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="draftM" render={({ field }) => (<FormItem><FormLabel>Draft (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="airDraftM" render={({ field }) => (<FormItem><FormLabel>Air Draft (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="headroomM" render={({ field }) => (<FormItem><FormLabel>Headroom (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="year" render={({ field }) => (<FormItem><FormLabel>Year Built</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="make" render={({ field }) => (<FormItem><FormLabel>Builder</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Country</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="designer" render={({ field }) => (<FormItem><FormLabel>Designer</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="displacementT" render={({ field }) => (<FormItem><FormLabel>Displacement (t)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="ballastTonnes" render={({ field }) => (<FormItem><FormLabel>Ballast (tonnes)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
-                         <FormField control={form.control} name="designer" render={({ field }) => (<FormItem><FormLabel>Designer</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Country</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -452,6 +448,44 @@ export function SellForm() {
                   </AccordionItem>
                 </Accordion>
               </CardContent>
+            </Card>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle>Description</CardTitle>
+                    <CardDescription>
+                        Write a detailed description of the yacht. You can also use the AI assistant to help you.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="e.g., A classic blue-water cruiser, well-maintained and ready for adventure..."
+                                        className="min-h-[200px]"
+                                        {...field}
+                                        value={field.value ?? ''}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex justify-end gap-2 mt-4">
+                        <Button type="button" variant="outline" onClick={onPolishDescription} disabled={isPolishing}>
+                            {isPolishing ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
+                            Polish with AI
+                        </Button>
+                        <Button type="button" variant="outline" onClick={onGenerateDetails} disabled={isGenerating}>
+                            {isGenerating ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
+                            Generate with AI
+                        </Button>
+                    </div>
+                </CardContent>
             </Card>
 
             <Card>
