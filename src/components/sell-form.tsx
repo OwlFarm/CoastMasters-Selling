@@ -24,6 +24,7 @@ import { Machinery } from '@/selling/machinery';
 import { Navigation } from '@/selling/navigation';
 import { Equipment } from '@/selling/equipment';
 import { Rigging } from '@/selling/rigging';
+import { IndicationRatios } from '@/selling/indication-ratios';
 
 const formSchema = z.object({
   title: z.string().optional(),
@@ -233,6 +234,17 @@ const formSchema = z.object({
     speakersInSalon: z.string().optional().nullable(),
     fireExtinguisher: z.string().optional().nullable(),
   }).optional().nullable(),
+
+  // Indication Ratios
+  saDisp: z.coerce.number().optional().nullable(),
+  balDisp: z.coerce.number().optional().nullable(),
+  dispLen: z.coerce.number().optional().nullable(),
+  comfortRatio: z.coerce.number().optional().nullable(),
+  capsizeScreeningFormula: z.coerce.number().optional().nullable(),
+  sNum: z.coerce.number().optional().nullable(),
+  hullSpeed: z.coerce.number().optional().nullable(),
+  poundsPerInchImmersion: z.coerce.number().optional().nullable(),
+
   status: z.string().optional(),
   vat: z.string().optional(),
   salesOffice: z.string().optional(),
@@ -349,7 +361,7 @@ export function SellForm() {
         });
       }
     });
-  }
+  };
 
 
   if (isLoading || !metadata) {
@@ -406,8 +418,7 @@ export function SellForm() {
             <Machinery />
             <Navigation />
             <Equipment />
-            {/* Indication Ratios would go here */}
-
+            <IndicationRatios />
 
             <Card>
                 <CardHeader>

@@ -225,7 +225,3 @@ export type Yacht = {
     spiPole?: string;
   };
 };
-
-
-
-

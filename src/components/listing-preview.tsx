@@ -299,6 +299,17 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
       { label: 'Spi-Pole', value: yacht.rigging?.spiPole },
   ];
 
+  const ratioSpecs = [
+    { label: 'S.A. / Displ.', value: yacht.saDisp },
+    { label: 'Bal. / Displ.', value: yacht.balDisp },
+    { label: 'Disp: / Len:', value: yacht.dispLen },
+    { label: 'Comfort Ratio', value: yacht.comfortRatio },
+    { label: 'Capsize Screening Formula', value: yacht.capsizeScreeningFormula },
+    { label: 'S#', value: yacht.sNum },
+    { label: 'Hull Speed (kn)', value: yacht.hullSpeed },
+    { label: 'Pounds/Inch Immersion', value: yacht.poundsPerInchImmersion },
+  ];
+
   return (
     <div className="bg-background rounded-lg border p-4 sm:p-6 md:p-8">
         <main className="flex-1">
@@ -383,7 +394,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     <div>
                     <h2 className="text-2xl font-semibold border-b pb-2 mb-6">Full Details</h2>
                     <Tabs defaultValue="general" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-7">
+                        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-8">
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="accommodation">Accommodation</TabsTrigger>
                         <TabsTrigger value="machinery">Machinery</TabsTrigger>
@@ -391,6 +402,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                         <TabsTrigger value="equipment">Equipment</TabsTrigger>
                         <TabsTrigger value="rigging">Rigging</TabsTrigger>
                         <TabsTrigger value="deck">Deck</TabsTrigger>
+                        <TabsTrigger value="ratios">Ratios</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="general" className="mt-6">
@@ -472,6 +484,12 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
 
                         <TabsContent value="deck" className="mt-6">
                         {renderFeatureList(yacht.deck, metadata.deckOptions)}
+                        </TabsContent>
+
+                        <TabsContent value="ratios" className="mt-6">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                {ratioSpecs.map(item => <SpecItem key={item.label} {...item} />)}
+                            </div>
                         </TabsContent>
 
                     </Tabs>
