@@ -31,10 +31,14 @@ const formSchema = z.object({
   description: z.string().min(10, 'Description is required.'),
   heroImage: z.any().optional(),
   galleryImages: z.array(z.any()).optional(),
+  
+  // Key Information
   listingType: z.string().optional(),
   boatType: z.string().optional(),
   condition: z.string().optional(),
   location: z.string().optional(),
+
+  // Detailed Specifications
   fuelType: z.string().optional(),
   hullMaterial: z.string().optional(),
   transomShape: z.string().optional(),
