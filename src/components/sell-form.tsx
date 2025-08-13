@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Upload, X, ArrowLeft, Eye, Image as ImageIcon } from 'lucide-react';
+import { Upload, X, ArrowLeft, Eye, Image as ImageIcon, Wand2, LoaderCircle } from 'lucide-react';
 import { getMetadata, type Metadata } from '@/services/metadata-service';
 import { Progress } from '@/components/ui/progress';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from './ui/skeleton';
 import { ListingPreview } from './listing-preview';
+import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/actions';
+import { useActionState } from 'react';
+import { TextEditor } from './ui/text-editor';
 
 // Simplified and robust schema to fix server-side rendering issues.
 const formSchema = z.object({
@@ -161,6 +164,9 @@ export function SellForm() {
   const [galleryImagePreviews, setGalleryImagePreviews] = React.useState<string[]>([]);
   const { toast } = useToast();
 
+  const [generateState, generateAction, isGenerating] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
+  const [polishState, polishAction, isPolishing] = useActionState(handlePolishDescription, { result: undefined, error: undefined });
+
   React.useEffect(() => {
     getMetadata().then(data => {
       setMetadata(data);
@@ -185,6 +191,48 @@ export function SellForm() {
     },
     mode: 'onChange',
   });
+
+  React.useEffect(() => {
+    if (generateState.result) {
+        form.setValue('title', generateState.result.title);
+        form.setValue('description', generateState.result.description);
+        // We can set all other detected fields here as well
+        toast({ title: 'Success', description: 'AI has populated the listing details.' });
+    }
+    if (generateState.error) {
+        toast({ variant: 'destructive', title: 'Error', description: generateState.error });
+    }
+  }, [generateState, form, toast]);
+
+  React.useEffect(() => {
+    if (polishState.result) {
+        form.setValue('description', polishState.result);
+        toast({ title: 'Success', description: 'AI has polished the description.' });
+    }
+    if (polishState.error) {
+        toast({ variant: 'destructive', title: 'Error', description: polishState.error });
+    }
+  }, [polishState, form, toast]);
+
+  const onGenerateDetails = () => {
+    const formData = new FormData();
+    const values = form.getValues();
+    formData.append('make', values.make);
+    formData.append('model', values.model);
+    formData.append('year', String(values.year));
+    formData.append('length', String(values.length));
+    formData.append('condition', values.condition || '');
+    formData.append('boatType', values.boatType || '');
+    (values.features || []).forEach(f => formData.append('features', f));
+    generateAction(formData);
+  };
+  
+  const onPolishDescription = () => {
+      const formData = new FormData();
+      formData.append('description', form.getValues('description'));
+      polishAction(formData);
+  };
+
 
   const next = async () => {
     const fields = STEPS[currentStep].fields;
@@ -264,44 +312,47 @@ export function SellForm() {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Yacht Details</CardTitle>
-                                <CardDescription>Start with the basics of your yacht.</CardDescription>
+                                <CardDescription>Start with the basics. You can also use our AI to help generate content.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                <FormField control={form.control} name="make" render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Make</FormLabel>
-                                        <FormControl><Input placeholder="e.g., Beneteau" {...field} /></FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
-                                <FormField control={form.control} name="model" render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Model</FormLabel>
-                                        <FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
-                                <FormField control={form.control} name="year" render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Year</FormLabel>
-                                        <FormControl><Input type="number" placeholder="YYYY" {...field} /></FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
-                                <FormField control={form.control} name="length" render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Length (ft)</FormLabel>
-                                        <FormControl><Input type="number" placeholder="Overall length in feet" {...field} /></FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
-                                <FormField control={form.control} name="price" render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Price (USD)</FormLabel>
-                                        <FormControl><Input type="number" placeholder="Asking price" {...field} /></FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )} />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <FormField control={form.control} name="make" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Make</FormLabel>
+                                            <FormControl><Input placeholder="e.g., Beneteau" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                    <FormField control={form.control} name="model" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Model</FormLabel>
+                                            <FormControl><Input placeholder="e.g., Oceanis 46.1" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                    <FormField control={form.control} name="year" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Year</FormLabel>
+                                            <FormControl><Input type="number" placeholder="YYYY" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                    <FormField control={form.control} name="length" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Length (ft)</FormLabel>
+                                            <FormControl><Input type="number" placeholder="Overall length in feet" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                     <FormField control={form.control} name="price" render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Price (USD)</FormLabel>
+                                            <FormControl><Input type="number" placeholder="Asking price" {...field} /></FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
+                                </div>
+                                
                                 <FormField control={form.control} name="title" render={({ field }) => (
                                   <FormItem>
                                     <FormLabel>Listing Title</FormLabel>
@@ -309,13 +360,32 @@ export function SellForm() {
                                     <FormMessage />
                                   </FormItem>
                                 )} />
-                                <FormField control={form.control} name="description" render={({ field }) => (
+
+                                 <FormField control={form.control} name="description" render={({ field }) => (
                                   <FormItem>
                                     <FormLabel>Description</FormLabel>
-                                    <FormControl><Textarea placeholder="Describe the yacht's history, features, condition, and recent upgrades..." {...field} /></FormControl>
+                                    <FormControl>
+                                        <TextEditor
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="Describe the yacht's history, features, condition, and recent upgrades..." 
+                                        />
+                                    </FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )} />
+                                
+                                <div className="flex justify-end gap-2">
+                                     <Button type="button" variant="outline" onClick={onGenerateDetails} disabled={isGenerating}>
+                                        {isGenerating ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
+                                        Generate Details with AI
+                                    </Button>
+                                    <Button type="button" variant="outline" onClick={onPolishDescription} disabled={isPolishing}>
+                                        {isPolishing ? <LoaderCircle className="animate-spin" /> : <Wand2 />}
+                                        Polish Description
+                                    </Button>
+                                </div>
+
                             </CardContent>
                         </Card>
                     )}
