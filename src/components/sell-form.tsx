@@ -20,18 +20,17 @@ import { Skeleton } from './ui/skeleton';
 import { ListingPreview } from './listing-preview';
 
 
-// Simplified schema to ensure stability
+// Simplified and robust schema to fix server-side rendering issues.
 const formSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   make: z.string().min(1, 'Make is required.'),
   model: z.string().min(1, 'Model is required.'),
-  year: z.coerce.number().min(1900, 'Invalid year.'),
+  year: z.coerce.number().min(1900, 'Invalid year.').max(new Date().getFullYear() + 1, 'Invalid year.'),
   length: z.coerce.number().positive('Length must be a positive number.'),
   price: z.coerce.number().positive('Price must be a positive number.'),
   description: z.string().min(10, 'Description is required.'),
   heroImage: z.any().optional(),
   galleryImages: z.array(z.any()).optional(),
-  // Adding other fields as optional to avoid validation errors during development
   listingType: z.string().optional(),
   boatType: z.string().optional(),
   condition: z.string().optional(),
@@ -47,13 +46,92 @@ const formSchema = z.object({
   features: z.array(z.string()).optional(),
   divisions: z.array(z.string()).optional(),
   deck: z.array(z.string()).optional(),
-  accommodation: z.any().optional(),
+  otherSpecifications: z.string().optional(),
+
+  // General Specs
+  loaM: z.coerce.number().optional(),
+  lwlM: z.coerce.number().optional(),
+  beamM: z.coerce.number().optional(),
+  draftM: z.coerce.number().optional(),
+  airDraftM: z.coerce.number().optional(),
+  headroomM: z.coerce.number().optional(),
+  country: z.string().optional(),
+  designer: z.string().optional(),
+  displacementT: z.coerce.number().optional(),
+  ballastTonnes: z.coerce.number().optional(),
+  hullColor: z.string().optional(),
+  hullShape: z.string().optional(),
+  superstructureMaterial: z.string().optional(),
+  deckMaterial: z.string().optional(),
+  deckFinish: z.string().optional(),
+  superstructureDeckFinish: z.string().optional(),
+  cockpitDeckFinish: z.string().optional(),
+  dorades: z.string().optional(),
+  windowFrame: z.string().optional(),
+  windowMaterial: z.string().optional(),
+  deckhatch: z.string().optional(),
+  fuelTankLitre: z.coerce.number().optional(),
+  levelIndicatorFuel: z.string().optional(),
+  freshwaterTankLitre: z.coerce.number().optional(),
+  levelIndicatorFreshwater: z.string().optional(),
+  wheelSteering: z.string().optional(),
+  outsideHelmPosition: z.string().optional(),
+
+  // Accommodation
+  accommodation: z.object({
+    numberOfCabins: z.coerce.number().optional(),
+    numberOfBerths: z.coerce.number().optional(),
+    interiorMaterial: z.string().optional(),
+    layout: z.string().optional(),
+    floor: z.string().optional(),
+    openCockpit: z.boolean().optional(),
+    aftDeck: z.boolean().optional(),
+    saloonHeadroom: z.coerce.number().optional(),
+    heating: z.string().optional(),
+    navigationCenter: z.boolean().optional(),
+    chartTable: z.boolean().optional(),
+    countertop: z.string().optional(),
+    sink: z.string().optional(),
+    cooker: z.string().optional(),
+    oven: z.string().optional(),
+    microwave: z.string().optional(),
+    fridge: z.string().optional(),
+    freezer: z.string().optional(),
+    hotWaterSystem: z.string().optional(),
+    waterPressureSystem: z.string().optional(),
+    ownersCabin: z.string().optional(),
+    ownersCabinBedLength: z.string().optional(),
+    ownersCabinWardrobe: z.string().optional(),
+    ownersCabinBathroom: z.string().optional(),
+    ownersCabinToilet: z.string().optional(),
+    ownersCabinToiletSystem: z.string().optional(),
+    ownersCabinWashBasin: z.string().optional(),
+    ownersCabinShower: z.string().optional(),
+    guestCabin1: z.string().optional(),
+    guestCabin1BedLength: z.string().optional(),
+    guestCabin1Wardrobe: z.string().optional(),
+    guestCabin2: z.string().optional(),
+    guestCabin2BedLength: z.string().optional(),
+    guestCabin2Wardrobe: z.string().optional(),
+    sharedBathroom: z.string().optional(),
+    sharedToilet: z.string().optional(),
+    sharedToiletSystem: z.string().optional(),
+    sharedWashBasin: z.string().optional(),
+    sharedShower: z.string().optional(),
+    washingMachine: z.string().optional(),
+    cabins: z.array(z.string()).optional(),
+    saloon: z.array(z.string()).optional(),
+    galley: z.array(z.string()).optional(),
+    heads: z.array(z.string()).optional(),
+  }).optional(),
+
+  // Machinery
   machinery: z.any().optional(),
   navigation: z.any().optional(),
   equipment: z.any().optional(),
   rigging: z.any().optional(),
-  otherSpecifications: z.string().optional(),
 });
+
 
 export type FormValues = z.infer<typeof formSchema>;
 
@@ -103,6 +181,8 @@ export function SellForm() {
       model: '',
       year: new Date().getFullYear(),
       galleryImages: [],
+      features: [],
+      deck: [],
     },
     mode: 'onChange',
   });
@@ -354,5 +434,4 @@ export function SellForm() {
     </div>
   );
 }
-
     
