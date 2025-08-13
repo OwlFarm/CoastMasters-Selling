@@ -19,8 +19,9 @@ import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/act
 import { useActionState } from 'react';
 import { TextEditor } from './ui/text-editor';
 import type { Yacht } from '@/lib/types';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 
-// Robust schema to handle various optional and numeric inputs.
+// Updated Zod schema to match the comprehensive Yacht type
 const formSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
   make: z.string().min(1, 'Make is required.'),
@@ -48,7 +49,7 @@ const formSchema = z.object({
   deck: z.array(z.string()).optional(),
   otherSpecifications: z.string().optional(),
 
-  // General Specs
+  // General Specs from Hallberg Rassy example
   loaM: z.coerce.number().optional().nullable(),
   lwlM: z.coerce.number().optional().nullable(),
   beamM: z.coerce.number().optional().nullable(),
@@ -218,7 +219,7 @@ const formSchema = z.object({
     cutterFurler: z.string().optional(),
     gennaker: z.string().optional(),
     spinnaker: z.string().optional(),
- reefingSystem: z.string().optional(),
+    reefingSystem: z.string().optional(),
     backstayAdjuster: z.string().optional(),
     primarySheetWinch: z.string().optional(),
     secondarySheetWinch: z.string().optional(),
@@ -369,7 +370,6 @@ export function SellForm() {
       ) : (
         <Form {...form}>
           <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
-            {/* Section 1: Basic Details */}
             <Card>
               <CardHeader>
                 <CardTitle>Yacht Details</CardTitle>
@@ -449,7 +449,67 @@ export function SellForm() {
               </CardContent>
             </Card>
 
-            {/* Section 2: Photos */}
+            <Card>
+              <CardHeader>
+                <CardTitle>General Specifications</CardTitle>
+                <CardDescription>Provide the main dimensions and details of the yacht.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="multiple" defaultValue={['dimensions', 'hull-details']}>
+                  <AccordionItem value="dimensions">
+                    <AccordionTrigger>Dimensions & Core Details</AccordionTrigger>
+                    <AccordionContent className="pt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <FormField control={form.control} name="loaM" render={({ field }) => (<FormItem><FormLabel>LOA (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="lwlM" render={({ field }) => (<FormItem><FormLabel>LWL (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="beamM" render={({ field }) => (<FormItem><FormLabel>Beam (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="draftM" render={({ field }) => (<FormItem><FormLabel>Draft (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="airDraftM" render={({ field }) => (<FormItem><FormLabel>Air Draft (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="headroomM" render={({ field }) => (<FormItem><FormLabel>Headroom (m)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="displacementT" render={({ field }) => (<FormItem><FormLabel>Displacement (t)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="ballastTonnes" render={({ field }) => (<FormItem><FormLabel>Ballast (tonnes)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                         <FormField control={form.control} name="designer" render={({ field }) => (<FormItem><FormLabel>Designer</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="country" render={({ field }) => (<FormItem><FormLabel>Country</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="hull-details">
+                     <AccordionTrigger>Hull, Deck & Keel</AccordionTrigger>
+                     <AccordionContent className="pt-4">
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <FormField control={form.control} name="hullMaterial" render={({ field }) => (<FormItem><FormLabel>Hull Material</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="hullColor" render={({ field }) => (<FormItem><FormLabel>Hull Colour</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="hullShape" render={({ field }) => (<FormItem><FormLabel>Hull Shape</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="keelType" render={({ field }) => (<FormItem><FormLabel>Keel Type</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="superstructureMaterial" render={({ field }) => (<FormItem><FormLabel>Superstructure Material</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="deckMaterial" render={({ field }) => (<FormItem><FormLabel>Deck Material</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="deckFinish" render={({ field }) => (<FormItem><FormLabel>Deck Finish</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="superstructureDeckFinish" render={({ field }) => (<FormItem><FormLabel>Superstructure Deck Finish</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="cockpitDeckFinish" render={({ field }) => (<FormItem><FormLabel>Cockpit Deck Finish</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                       </div>
+                     </AccordionContent>
+                  </AccordionItem>
+                   <AccordionItem value="other-general">
+                     <AccordionTrigger>Other General Details</AccordionTrigger>
+                     <AccordionContent className="pt-4">
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <FormField control={form.control} name="dorades" render={({ field }) => (<FormItem><FormLabel>Dorades</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="windowFrame" render={({ field }) => (<FormItem><FormLabel>Window Frame</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="windowMaterial" render={({ field }) => (<FormItem><FormLabel>Window Material</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="deckhatch" render={({ field }) => (<FormItem><FormLabel>Deckhatch</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="fuelTankLitre" render={({ field }) => (<FormItem><FormLabel>Fuel Tank (litre)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="levelIndicatorFuel" render={({ field }) => (<FormItem><FormLabel>Level Indicator (Fuel)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="freshwaterTankLitre" render={({ field }) => (<FormItem><FormLabel>Freshwater Tank (litre)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="levelIndicatorFreshwater" render={({ field }) => (<FormItem><FormLabel>Level Indicator (Freshwater)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="wheelSteering" render={({ field }) => (<FormItem><FormLabel>Wheel Steering</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                          <FormField control={form.control} name="outsideHelmPosition" render={({ field }) => (<FormItem><FormLabel>Outside Helm Position</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                       </div>
+                     </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+
             <Card>
                 <CardHeader>
                     <CardTitle>Upload Photos</CardTitle>
@@ -546,8 +606,6 @@ export function SellForm() {
                 </CardContent>
             </Card>
 
-            {/* TODO: Add more sections for Specifications, Accommodation etc. */}
-
             <div className="flex justify-end">
                 <Button type="button" size="lg" onClick={processForm}>
                     <Eye className="mr-2" /> Preview & Submit
@@ -559,3 +617,5 @@ export function SellForm() {
     </div>
   );
 }
+
+    
