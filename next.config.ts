@@ -24,6 +24,21 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  serverActions: {
+    bodySizeLimit: '2mb',
+    
+    // Allow more time for AI actions to complete
+    // @ts-ignore
+    default: {
+      maxDuration: 120,
+    },
+    experimental: {
+      maxDuration: 120,
+    },
+    test: {
+        maxDuration: 120,
+    }
+  },
 };
 
 export default nextConfig;
