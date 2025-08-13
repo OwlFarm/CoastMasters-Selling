@@ -60,7 +60,7 @@ const SpecItem = ({ label, value }: { label: string; value?: string | number | n
     return (
         <div>
             <p className="text-sm font-medium text-muted-foreground">{label}</p>
-            <p className="text-md font-semibold">{displayValue}</p>
+            <p className="text-md font-semibold">{String(displayValue)}</p>
         </div>
     );
 };
@@ -317,7 +317,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                     />
                 </div>
                 <div className="grid grid-cols-5 gap-4">
-                    {yacht.images.slice(0, 5).map((img, i) => (
+                    {yacht.images.map((img, i) => (
                         <div key={i} className="relative aspect-[3/2] w-full overflow-hidden rounded-md">
                             <Image
                             src={img}
@@ -362,7 +362,7 @@ export function ListingPreview({ data, metadata, heroImagePreview, galleryImageP
                             <Icon className="h-5 w-5 text-muted-foreground" />
                             <div>
                                 <p className="text-sm font-medium text-muted-foreground">{label}</p>
-                                <p className="text-md font-semibold">{value}</p>
+                                <p className="text-md font-semibold">{String(value)}</p>
                             </div>
                             </div>
                         ))}
