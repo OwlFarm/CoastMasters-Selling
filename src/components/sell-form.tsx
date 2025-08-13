@@ -31,7 +31,7 @@ const formSchema = z.object({
   description: z.string().min(10, 'Description is required.'),
   heroImage: z.any().optional(),
   galleryImages: z.array(z.any()).optional(),
-  // Adding other fields as optional strings/numbers to avoid validation errors
+  // Adding other fields as optional to avoid validation errors during development
   listingType: z.string().optional(),
   boatType: z.string().optional(),
   condition: z.string().optional(),
@@ -102,9 +102,6 @@ export function SellForm() {
       make: '',
       model: '',
       year: new Date().getFullYear(),
-      length: 0,
-      price: 0,
-      description: '',
       galleryImages: [],
     },
     mode: 'onChange',
