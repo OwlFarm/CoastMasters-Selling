@@ -19,7 +19,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from './ui/skeleton';
 import { ListingPreview } from './listing-preview';
 
-
 // Simplified and robust schema to fix server-side rendering issues.
 const formSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -49,16 +48,16 @@ const formSchema = z.object({
   otherSpecifications: z.string().optional(),
 
   // General Specs
-  loaM: z.coerce.number().optional(),
-  lwlM: z.coerce.number().optional(),
-  beamM: z.coerce.number().optional(),
-  draftM: z.coerce.number().optional(),
-  airDraftM: z.coerce.number().optional(),
-  headroomM: z.coerce.number().optional(),
+  loaM: z.coerce.number().optional().nullable(),
+  lwlM: z.coerce.number().optional().nullable(),
+  beamM: z.coerce.number().optional().nullable(),
+  draftM: z.coerce.number().optional().nullable(),
+  airDraftM: z.coerce.number().optional().nullable(),
+  headroomM: z.coerce.number().optional().nullable(),
   country: z.string().optional(),
   designer: z.string().optional(),
-  displacementT: z.coerce.number().optional(),
-  ballastTonnes: z.coerce.number().optional(),
+  displacementT: z.coerce.number().optional().nullable(),
+  ballastTonnes: z.coerce.number().optional().nullable(),
   hullColor: z.string().optional(),
   hullShape: z.string().optional(),
   superstructureMaterial: z.string().optional(),
@@ -70,23 +69,23 @@ const formSchema = z.object({
   windowFrame: z.string().optional(),
   windowMaterial: z.string().optional(),
   deckhatch: z.string().optional(),
-  fuelTankLitre: z.coerce.number().optional(),
+  fuelTankLitre: z.coerce.number().optional().nullable(),
   levelIndicatorFuel: z.string().optional(),
-  freshwaterTankLitre: z.coerce.number().optional(),
+  freshwaterTankLitre: z.coerce.number().optional().nullable(),
   levelIndicatorFreshwater: z.string().optional(),
   wheelSteering: z.string().optional(),
   outsideHelmPosition: z.string().optional(),
 
   // Accommodation
   accommodation: z.object({
-    numberOfCabins: z.coerce.number().optional(),
-    numberOfBerths: z.coerce.number().optional(),
+    numberOfCabins: z.coerce.number().optional().nullable(),
+    numberOfBerths: z.coerce.number().optional().nullable(),
     interiorMaterial: z.string().optional(),
     layout: z.string().optional(),
     floor: z.string().optional(),
     openCockpit: z.boolean().optional(),
     aftDeck: z.boolean().optional(),
-    saloonHeadroom: z.coerce.number().optional(),
+    saloonHeadroom: z.coerce.number().optional().nullable(),
     heating: z.string().optional(),
     navigationCenter: z.boolean().optional(),
     chartTable: z.boolean().optional(),
@@ -434,4 +433,5 @@ export function SellForm() {
     </div>
   );
 }
+
     
