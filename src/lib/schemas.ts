@@ -224,4 +224,4 @@ export const sellFormSchema = z.object({
   status: z.string().optional(),
   vat: z.string().optional(),
   salesOffice: z.string().optional(),
-}).passthrough();
+});

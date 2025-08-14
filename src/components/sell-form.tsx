@@ -60,7 +60,7 @@ export function SellForm({ metadata }: SellFormProps) {
 
   const [generateState, generateAction, isGenerating] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
   const [polishState, polishAction, isPolishing] = useActionState(handlePolishDescription, { result: undefined, error: undefined });
-  const [createState, createAction, isCreating] = useActionState(handleCreateListing, { message: undefined, errors: undefined });
+  const [createState, createAction, isCreating] = useActionState(handleCreateListing, { message: undefined, errors: undefined, newListingId: undefined });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(sellFormSchema),
@@ -250,8 +250,8 @@ export function SellForm({ metadata }: SellFormProps) {
               </CardContent>
             </Card>
 
-            <GeneralInformation form={form} />
-            <Accommodation form={form} />
+            <GeneralInformation form={form as any} />
+            <Accommodation form={form as any} />
             <Rigging />
             <Machinery />
             <Navigation />
