@@ -8,8 +8,9 @@ import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-
 import { z } from 'zod';
 import type { Yacht } from '@/lib/types';
 import { sellFormSchema } from '@/lib/schemas';
-import { db } from './firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db, storage } from './firebase';
+import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -125,6 +126,13 @@ type CreateListingState = {
     newListingId?: string;
 };
 
+async function uploadFile(file: File, path: string): Promise<string> {
+    const storageRef = ref(storage, path);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+}
+
 export async function handleCreateListing(
     prevState: CreateListingState,
     formData: FormData
@@ -144,15 +152,49 @@ export async function handleCreateListing(
             ...validatedFields.data,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
+            imageUrl: '',
+            images: [],
         });
         console.log('Document written with ID: ', docRef.id);
-        revalidatePath('/yachts'); // Invalidate cache for the listings page
+
+        let heroImageUrl = '';
+        const galleryImageUrls: string[] = [];
+        
+        const heroImageFile = formData.get('heroImage') as File | null;
+        if (heroImageFile) {
+            console.log('Uploading hero image...');
+            const path = `listings/${docRef.id}/${heroImageFile.name}`;
+            heroImageUrl = await uploadFile(heroImageFile, path);
+            console.log('Hero image uploaded to:', heroImageUrl);
+        }
+
+        const galleryImageFiles = formData.getAll('galleryImages') as File[];
+        if (galleryImageFiles.length > 0) {
+            console.log(`Uploading ${galleryImageFiles.length} gallery images...`);
+            for (const file of galleryImageFiles) {
+                const path = `listings/${docRef.id}/${file.name}`;
+                const url = await uploadFile(file, path);
+                galleryImageUrls.push(url);
+            }
+            console.log('Gallery images uploaded.');
+        }
+
+        // Update the document with image URLs
+        await updateDoc(doc(db, 'listings', docRef.id), {
+            imageUrl: heroImageUrl,
+            images: galleryImageUrls,
+            updatedAt: serverTimestamp(),
+        });
+        console.log('Document updated with image URLs.');
+
+
+        revalidatePath('/yachts');
         return { message: 'success', newListingId: docRef.id };
     } catch (e) {
         console.error('Error adding document: ', e);
+        const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
         return {
-            message: 'Failed to create listing. Please try again.',
+            message: `Failed to create listing: ${errorMessage}`,
         };
     }
 }
-

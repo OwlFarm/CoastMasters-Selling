@@ -142,16 +142,32 @@ export function SellForm({ metadata }: SellFormProps) {
       polishAction(formData);
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = () => {
+    const data = form.getValues();
     console.log('Submitting form data:', data);
+
     const formData = new FormData();
-    // We can't pass files through server actions directly in this way.
-    // For now, we'll exclude them from the submission data.
-    // We'll handle image uploads separately.
+    
+    // Append JSON data for all fields except files
     const dataToSubmit = { ...data };
     delete dataToSubmit.heroImage;
     delete dataToSubmit.galleryImages;
     formData.append('json_data', JSON.stringify(dataToSubmit));
+
+    // Append hero image file
+    if (data.heroImage instanceof File) {
+        formData.append('heroImage', data.heroImage);
+    }
+    
+    // Append gallery image files
+    if (data.galleryImages && Array.isArray(data.galleryImages)) {
+        data.galleryImages.forEach((file, index) => {
+            if (file instanceof File) {
+                formData.append(`galleryImages`, file);
+            }
+        });
+    }
+
     createAction(formData);
   };
   
@@ -180,7 +196,7 @@ export function SellForm({ metadata }: SellFormProps) {
               Back to Edit
             </Button>
             <h2 className="text-2xl font-bold">Listing Preview</h2>
-            <Button onClick={form.handleSubmit(onSubmit)} disabled={isCreating}>
+            <Button onClick={onSubmit} disabled={isCreating}>
               {isCreating && <LoaderCircle className="animate-spin mr-2" />}
               Submit Listing
             </Button>
