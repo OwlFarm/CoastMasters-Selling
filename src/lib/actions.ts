@@ -7,6 +7,11 @@ import { polishDescription } from '@/ai/flows/polish-description';
 import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
 import type { Yacht } from '@/lib/types';
+import { sellFormSchema } from '@/lib/schemas';
+import { db } from './firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 
 const searchSchema = z.object({
@@ -111,3 +116,43 @@ export async function handlePolishDescription(
     return { error: 'An error occurred while polishing the description. Please try again.' };
   }
 }
+
+
+// Form Submission Action
+type CreateListingState = {
+    errors?: z.ZodError<any>['formErrors']['fieldErrors'];
+    message?: string;
+    newListingId?: string;
+};
+
+export async function handleCreateListing(
+    prevState: CreateListingState,
+    formData: FormData
+): Promise<CreateListingState> {
+    const json_data = JSON.parse(formData.get('json_data') as string);
+    const validatedFields = sellFormSchema.safeParse(json_data);
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Validation failed. Please check your inputs.',
+        };
+    }
+
+    try {
+        const docRef = await addDoc(collection(db, 'listings'), {
+            ...validatedFields.data,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+        });
+        console.log('Document written with ID: ', docRef.id);
+        revalidatePath('/yachts'); // Invalidate cache for the listings page
+        return { message: 'success', newListingId: docRef.id };
+    } catch (e) {
+        console.error('Error adding document: ', e);
+        return {
+            message: 'Failed to create listing. Please try again.',
+        };
+    }
+}
+
