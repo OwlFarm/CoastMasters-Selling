@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Upload, X, Eye, Image as ImageIcon, Wand2, LoaderCircle } from 'lucide-react';
+import { Upload, X, Eye, Image as ImageIcon, Wand2, LoaderCircle, Sparkles, Binary } from 'lucide-react';
 import type { Metadata } from '@/services/metadata-service';
 import { useToast } from '@/hooks/use-toast';
 import { ListingPreview } from './listing-preview';
@@ -19,6 +19,7 @@ import { useActionState } from 'react';
 import { Textarea } from './ui/textarea';
 import dynamic from 'next/dynamic';
 import { Skeleton } from './ui/skeleton';
+import { Separator } from './ui/separator';
 
 const SectionSkeleton = () => (
   <Card>
@@ -377,6 +378,38 @@ export function SellForm({ metadata }: SellFormProps) {
       ) : (
         <Form {...form}>
           <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Pre-fill From a Source</CardTitle>
+                    <CardDescription>
+                        Quickly populate the form by migrating an existing listing or using a known boat model.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div>
+                        <Label htmlFor="migrate-url">Migrate Listing from URL</Label>
+                        <div className="flex gap-2 mt-2">
+                            <Input id="migrate-url" placeholder="Enter listing URL..." />
+                            <Button variant="secondary">
+                                <Binary className="mr-2" />
+                                Migrate
+                            </Button>
+                        </div>
+                    </div>
+                    <Separator />
+                     <div>
+                        <Label htmlFor="populate-model">Populate from Boat Model</Label>
+                        <div className="flex gap-2 mt-2">
+                            <Input id="populate-model" placeholder="e.g., Moody 54" />
+                            <Button variant="secondary">
+                                <Sparkles className="mr-2" />
+                                Populate
+                            </Button>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
              <Card>
               <CardHeader>
                 <CardTitle>Key Details</CardTitle>
@@ -553,3 +586,5 @@ export function SellForm({ metadata }: SellFormProps) {
     </div>
   );
 }
+
+    
