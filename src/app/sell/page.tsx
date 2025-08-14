@@ -2,8 +2,11 @@
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { SellForm } from '@/components/sell-form';
+import { getMetadata } from '@/services/metadata-service';
 
-export default function SellPage() {
+export default async function SellPage() {
+  const metadata = await getMetadata();
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header />
@@ -18,7 +21,7 @@ export default function SellPage() {
                 Fill out the details below to create a comprehensive and attractive listing for your yacht.
               </p>
             </div>
-            <SellForm />
+            <SellForm metadata={metadata} />
           </div>
         </div>
       </main>

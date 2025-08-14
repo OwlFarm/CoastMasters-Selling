@@ -11,20 +11,35 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Upload, X, Eye, Image as ImageIcon, Wand2, LoaderCircle } from 'lucide-react';
-import { getMetadata, type Metadata } from '@/services/metadata-service';
+import type { Metadata } from '@/services/metadata-service';
 import { useToast } from '@/hooks/use-toast';
-import { Skeleton } from './ui/skeleton';
 import { ListingPreview } from './listing-preview';
 import { handleGenerateListingDetails, handlePolishDescription } from '@/lib/actions';
 import { useActionState } from 'react';
 import { Textarea } from './ui/textarea';
-import { GeneralInformation } from '@/components/sell/general-information';
-import { Accommodation } from '@/components/sell/accommodation';
-import { Machinery } from '@/selling/machinery';
-import { Navigation } from '@/selling/navigation';
-import { Equipment } from '@/selling/equipment';
-import { Rigging } from '@/selling/rigging';
-import { IndicationRatios } from '@/selling/indication-ratios';
+import dynamic from 'next/dynamic';
+import { Skeleton } from './ui/skeleton';
+
+const SectionSkeleton = () => (
+  <Card>
+    <CardHeader>
+      <Skeleton className="h-7 w-1/3" />
+      <Skeleton className="h-4 w-2/3" />
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-10 w-full" />
+    </CardContent>
+  </Card>
+);
+
+const GeneralInformation = dynamic(() => import('@/components/sell/general-information').then(mod => mod.GeneralInformation), { loading: () => <SectionSkeleton /> });
+const Accommodation = dynamic(() => import('@/components/sell/accommodation').then(mod => mod.Accommodation), { loading: () => <SectionSkeleton /> });
+const Machinery = dynamic(() => import('@/selling/machinery').then(mod => mod.Machinery), { loading: () => <SectionSkeleton /> });
+const Navigation = dynamic(() => import('@/selling/navigation').then(mod => mod.Navigation), { loading: () => <SectionSkeleton /> });
+const Equipment = dynamic(() => import('@/selling/equipment').then(mod => mod.Equipment), { loading: () => <SectionSkeleton /> });
+const Rigging = dynamic(() => import('@/selling/rigging').then(mod => mod.Rigging), { loading: () => <SectionSkeleton /> });
+const IndicationRatios = dynamic(() => import('@/selling/indication-ratios').then(mod => mod.IndicationRatios), { loading: () => <SectionSkeleton /> });
+
 
 const formSchema = z.object({
   title: z.string().optional(),
@@ -253,22 +268,11 @@ const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
-const FormSkeleton = () => (
-    <Card>
-      <CardHeader>
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-4 w-3/4" />
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <Skeleton className="h-10 w-full" />
-        <Skeleton className="h-24 w-full" />
-      </CardContent>
-    </Card>
-);
+type SellFormProps = {
+  metadata: Metadata;
+};
 
-export function SellForm() {
-  const [metadata, setMetadata] = React.useState<Metadata | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+export function SellForm({ metadata }: SellFormProps) {
   const [isPreview, setIsPreview] = React.useState(false);
   const [heroImagePreview, setHeroImagePreview] = React.useState<string | null>(null);
   const [galleryImagePreviews, setGalleryImagePreviews] = React.useState<string[]>([]);
@@ -276,17 +280,6 @@ export function SellForm() {
 
   const [generateState, generateAction, isGenerating] = useActionState(handleGenerateListingDetails, { result: undefined, error: undefined });
   const [polishState, polishAction, isPolishing] = useActionState(handlePolishDescription, { result: undefined, error: undefined });
-
-  React.useEffect(() => {
-    getMetadata().then(data => {
-      setMetadata(data);
-      setIsLoading(false);
-    }).catch(err => {
-      console.error("Failed to load metadata", err);
-      setIsLoading(false);
-      toast({ variant: 'destructive', title: 'Error', description: 'Could not load form data.' });
-    })
-  }, [toast]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -363,11 +356,6 @@ export function SellForm() {
     });
   };
 
-
-  if (isLoading || !metadata) {
-    return <FormSkeleton />;
-  }
-
   return (
     <div className="space-y-8">
       {isPreview ? (
@@ -377,7 +365,7 @@ export function SellForm() {
               Back to Edit
             </Button>
             <h2 className="text-2xl font-bold">Listing Preview</h2>
-            <Button onClick={() => form.handleSubmit(onSubmit)()}>Submit Listing</Button>
+            <Button onClick={form.handleSubmit(onSubmit)}>Submit Listing</Button>
           </div>
           <ListingPreview
             data={form.getValues()}
