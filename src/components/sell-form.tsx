@@ -144,14 +144,13 @@ export function SellForm({ metadata }: SellFormProps) {
 
   const onSubmit = (data: FormValues) => {
     console.log('Submitting form data:', data);
+    const formData = new FormData();
     // We can't pass files through server actions directly in this way.
     // For now, we'll exclude them from the submission data.
     // We'll handle image uploads separately.
     const dataToSubmit = { ...data };
     delete dataToSubmit.heroImage;
     delete dataToSubmit.galleryImages;
-    
-    const formData = new FormData();
     formData.append('json_data', JSON.stringify(dataToSubmit));
     createAction(formData);
   };
@@ -404,4 +403,3 @@ export function SellForm({ metadata }: SellFormProps) {
     </div>
   );
 }
-

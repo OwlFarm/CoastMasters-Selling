@@ -220,6 +220,7 @@ export const sellFormSchema = z.object({
   hullSpeed: z.coerce.number().optional().nullable(),
   poundsPerInchImmersion: z.coerce.number().optional().nullable(),
 
+  // Added missing fields
   status: z.string().optional(),
   vat: z.string().optional(),
   salesOffice: z.string().optional(),
