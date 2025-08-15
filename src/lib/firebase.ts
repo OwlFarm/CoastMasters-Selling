@@ -1,8 +1,9 @@
 
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore, enableIndexedDbPersistence, connectFirestoreEmulator } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp, getApps, getApp } from "firebase/app"; // Ensure this exact import
+import { getStorage, connectStorageEmulator } from "firebase/storage"; // Import connectStorageEmulator
+import { getFirestore, enableIndexedDbPersistence, connectFirestoreEmulator } from "firebase/firestore"; // Import connectFirestoreEmulator
+// If you use other Firebase services with emulators, import their connect functions as well (e.g., connectAuthEmulator)
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -17,8 +18,19 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+// Get service instances
 const db = getFirestore(app);
 const storage = getStorage(app);
+// Get other service instances if you use them
+
+// Connect to emulators in development
+if (process.env.NODE_ENV === 'development') {
+  console.log('Connecting to Firebase emulators...');
+  connectFirestoreEmulator(db, 'localhost', 8080); // Connect to Firestore emulator
+  connectStorageEmulator(storage, 'localhost', 9199); // Connect to Storage emulator (default port 9199)
+  // Connect to other emulators you use (e.g., connectAuthEmulator(auth, 'http://localhost:9099');)
+}
 
 // Enable offline persistence only in the browser
 if (typeof window !== 'undefined') {
