@@ -53,9 +53,10 @@ const renderFeatureList = (ids: string[] | undefined, options: { id: string; lab
   );
 };
 
-export default async function YachtDetailPage({ params }: { params: { id: string } }) {
+export default async function YachtDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const yachts = await getFeaturedYachts();
-  const yacht = yachts.find(y => y.id === params.id);
+  const yacht = yachts.find(y => y.id === id);
 
   if (!yacht) {
     notFound();

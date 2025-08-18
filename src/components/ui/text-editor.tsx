@@ -5,9 +5,9 @@ import * as React from 'react';
 import { Bold, Italic, Strikethrough, List, ListOrdered } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Separator } from '@/components/ui/separator';
-import { Textarea, type TextareaProps } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 
-interface TextEditorProps extends Omit<TextareaProps, 'onChange'> {
+interface TextEditorProps extends Omit<React.ComponentProps<'textarea'>, 'onChange'> {
   value: string;
   onChange: (value: string) => void;
 }

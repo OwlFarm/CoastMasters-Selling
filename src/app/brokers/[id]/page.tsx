@@ -2,11 +2,12 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { notFound } from 'next/navigation';
 
-export default function BrokerProfilePage({ params }: { params: { id: string } }) {
-  // In a real app, you would fetch broker data based on params.id
+export default async function BrokerProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  // In a real app, you would fetch broker data based on id
   // For now, we just show a placeholder.
   
-  if (!params.id) {
+  if (!id) {
     notFound();
   }
 
@@ -19,7 +20,7 @@ export default function BrokerProfilePage({ params }: { params: { id: string } }
             Broker Profile Page
           </h1>
           <p className="mt-4 text-center text-lg text-muted-foreground">
-            Details for broker with ID: {params.id} will be displayed here.
+            Details for broker with ID: {id} will be displayed here.
           </p>
         </div>
       </main>

@@ -24,11 +24,14 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 // Get other service instances if you use them
 
-// Connect to emulators in development
-if (process.env.NODE_ENV === 'development') {
+// Connect to emulators only when explicitly enabled
+const useEmulators = process.env.NEXT_PUBLIC_USE_EMULATORS === 'true';
+if (useEmulators) {
   console.log('Connecting to Firebase emulators...');
-  connectFirestoreEmulator(db, 'localhost', 8080); // Connect to Firestore emulator
-  connectStorageEmulator(storage, 'localhost', 9199); // Connect to Storage emulator (default port 9199)
+  const firestorePort = Number(process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_FIRESTORE_PORT ?? '8080');
+  const storagePort = Number(process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_STORAGE_PORT ?? '9199');
+  connectFirestoreEmulator(db, 'localhost', firestorePort);
+  connectStorageEmulator(storage, 'localhost', storagePort);
   // Connect to other emulators you use (e.g., connectAuthEmulator(auth, 'http://localhost:9099');)
 }
 

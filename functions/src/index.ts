@@ -9,9 +9,10 @@
  */
 
 import * as functions from "firebase-functions";
+import type { Request, Response } from "express";
 
 exports.greetTheWorld = functions.https.onRequest(
-  (req: functions.Request, res: functions.Response) => {
+  (req: Request, res: Response) => {
     // Here we reference a user-provided parameter
     // (its value is provided by the user during installation)
     const consumerProvidedGreeting = process.env.GREETING;

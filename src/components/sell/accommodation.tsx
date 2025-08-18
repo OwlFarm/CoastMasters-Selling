@@ -32,19 +32,19 @@ export function Accommodation({ form }: { form: ReturnType<typeof useFormContext
                         <FormField control={form.control} name="accommodation.heating" render={({ field }) => (<FormItem><FormLabel>Heating</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                         <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm col-span-1">
                             <div className="space-y-0.5"><FormLabel>Open Cockpit</FormLabel></div>
-                            <FormField control={form.control} name="accommodation.openCockpit" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
+                            <FormField control={form.control} name="accommodation.openCockpit" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value ?? false} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
                         </div>
                         <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm col-span-1">
                             <div className="space-y-0.5"><FormLabel>Aft Deck</FormLabel></div>
-                            <FormField control={form.control} name="accommodation.aftDeck" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
+                            <FormField control={form.control} name="accommodation.aftDeck" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value ?? false} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
                         </div>
                          <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm col-span-1">
                             <div className="space-y-0.5"><FormLabel>Navigation Center</FormLabel></div>
-                            <FormField control={form.control} name="accommodation.navigationCenter" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
+                            <FormField control={form.control} name="accommodation.navigationCenter" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value ?? false} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
                         </div>
                          <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm col-span-1">
                             <div className="space-y-0.5"><FormLabel>Chart Table</FormLabel></div>
-                            <FormField control={form.control} name="accommodation.chartTable" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
+                            <FormField control={form.control} name="accommodation.chartTable" render={({ field }) => (<FormItem><FormControl><Switch checked={field.value ?? false} onCheckedChange={field.onChange} /></FormControl></FormItem>)} />
                         </div>
                     </div>
                 </AccordionContent>

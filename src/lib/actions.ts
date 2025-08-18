@@ -2,7 +2,8 @@
 'use server';
 
 import { smartSearch, type SmartSearchInput, type SmartSearchOutput } from '@/ai/flows/smart-search';
-import { generateListingDetails, type GenerateListingDetailsOutput } from '@/ai/flows/generate-listing-details';
+import { generateListingDetails } from '@/ai/flows/generate-listing-details';
+import type { GenerateListingDetailsOutput } from '@/ai/schemas/listing-details-schemas';
 import { polishDescription } from '@/ai/flows/polish-description';
 import { GenerateListingDetailsInputSchema } from '@/ai/schemas/listing-details-schemas';
 import { z } from 'zod';
