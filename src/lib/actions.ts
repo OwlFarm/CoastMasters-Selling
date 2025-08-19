@@ -14,6 +14,7 @@ import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/fi
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { MigrationService } from '@/services/migration-service';
 
 
 const searchSchema = z.object({
@@ -196,6 +197,57 @@ export async function handleCreateListing(
         const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
         return {
             message: `Failed to create listing: ${errorMessage}`,
+        };
+    }
+}
+
+// Migration Action
+type MigrationState = {
+    data?: any;
+    error?: string;
+    metadata?: {
+        sourceUrl: string;
+        scrapedAt: string;
+        confidence: number;
+        dataCompleteness: number;
+    };
+};
+
+export async function handleMigration(
+    prevState: MigrationState,
+    formData: FormData
+): Promise<MigrationState> {
+    const url = formData.get('url') as string;
+    
+    if (!url || !url.trim()) {
+        return {
+            error: 'Please provide a valid URL to migrate from.',
+        };
+    }
+
+    try {
+        console.log('🚀 Starting migration for URL:', url);
+        const result = await MigrationService.migrateFromUrl(url);
+        
+        if (result.success && result.data) {
+            console.log('✅ Migration successful, mapping data to form fields');
+            const mappedData = MigrationService.mapToFormFields(result.data);
+            
+            return {
+                data: mappedData,
+                metadata: result.metadata,
+            };
+        } else {
+            console.error('❌ Migration failed:', result.error);
+            return {
+                error: result.error || 'Migration failed. Please try again.',
+            };
+        }
+    } catch (error) {
+        console.error('❌ Migration action failed:', error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during migration.';
+        return {
+            error: errorMessage,
         };
     }
 }
