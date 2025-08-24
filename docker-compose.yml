@@ -3,21 +3,32 @@ services:
   coast-masters-app:
     build: .
     ports:
-      - "9002:9002"
+      - "9003:9002"  # Frontend app - stable port 9003
     environment:
-      - PYTHON_SCRAPER_URL=http://python-scraper:5000
+      - PYTHON_SCRAPER_URL=http://python-scraper:5001
+      - API_BASE_URL=http://localhost:5001  # Frontend will call this for API
+      - NEXT_PUBLIC_API_URL=http://localhost:5001  # Public API URL
     depends_on:
       - python-scraper
     volumes:
       - .:/app
       - /app/node_modules
+    networks:
+      - app-network
 
   python-scraper:
     build: ./python-scraper
     ports:
-      - "5000:5000"
+      - "5001:5001"  # Flask API - stable port 5001
     environment:
       - FLASK_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}  # OpenAI API key for AI extraction
     volumes:
       - ./python-scraper:/app
     restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

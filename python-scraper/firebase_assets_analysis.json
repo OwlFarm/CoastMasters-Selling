@@ -1,0 +1,365 @@
+{
+  "assets": {
+    "collections": {
+      "metadata": {
+        "document_count": 1,
+        "sample_documents": [
+          {
+            "id": "options",
+            "fields": [
+              "cabinFeatureOptions",
+              "hullMaterialOptions",
+              "keelTypeOptions",
+              "locationsByRegion",
+              "featureOptions",
+              "deckOptions",
+              "boatTypes",
+              "listingTypes",
+              "conditions",
+              "sailRiggingOptions",
+              "priceValues",
+              "saloonOptions",
+              "galleyOptions",
+              "propellerTypeOptions",
+              "transomShapeOptions",
+              "fuelTypes",
+              "bowShapeOptions",
+              "divisions",
+              "rudderTypeOptions",
+              "makes",
+              "headsOptions"
+            ]
+          }
+        ]
+      }
+    },
+    "storage_files": {
+      "total_files": 20,
+      "sample_files": [
+        {
+          "name": "boat_pdfs/11-meter_20250807_123913_792.pdf",
+          "size": 34636,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:42:01.430000+00:00"
+        },
+        {
+          "name": "boat_pdfs/110_20250807_122550_500.pdf",
+          "size": 34492,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:28:34.978000+00:00"
+        },
+        {
+          "name": "boat_pdfs/12-square-meter-sharpie_20250807_103546_521.pdf",
+          "size": 33524,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T10:38:28.033000+00:00"
+        },
+        {
+          "name": "boat_pdfs/125_20250807_110254_522.pdf",
+          "size": 33386,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T11:14:09.840000+00:00"
+        },
+        {
+          "name": "boat_pdfs/18-o-a-cruiser_20250807_123913_654.pdf",
+          "size": 32009,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:42:01.294000+00:00"
+        },
+        {
+          "name": "boat_pdfs/1d-35_20250807_122549_304.pdf",
+          "size": 35649,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:28:33.586000+00:00"
+        },
+        {
+          "name": "boat_pdfs/1d-48_20250807_122549_223.pdf",
+          "size": 35533,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:28:32.807000+00:00"
+        },
+        {
+          "name": "boat_pdfs/2-kronan_20250807_110129_589.pdf",
+          "size": 32437,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T11:13:33.915000+00:00"
+        },
+        {
+          "name": "boat_pdfs/210_20250807_122549_302.pdf",
+          "size": 34117,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:28:33.432000+00:00"
+        },
+        {
+          "name": "boat_pdfs/24-meter_20250807_122549_271.pdf",
+          "size": 33371,
+          "content_type": "application/pdf",
+          "created": "2025-08-07T12:28:32.922000+00:00"
+        }
+      ]
+    },
+    "metadata": {
+      "available_fields": [
+        "cabinFeatureOptions",
+        "hullMaterialOptions",
+        "keelTypeOptions",
+        "locationsByRegion",
+        "featureOptions",
+        "deckOptions",
+        "boatTypes",
+        "listingTypes",
+        "conditions",
+        "sailRiggingOptions",
+        "priceValues",
+        "saloonOptions",
+        "galleyOptions",
+        "propellerTypeOptions",
+        "transomShapeOptions",
+        "fuelTypes",
+        "bowShapeOptions",
+        "divisions",
+        "rudderTypeOptions",
+        "makes",
+        "headsOptions"
+      ],
+      "sample_data": {
+        "makes_count": 128,
+        "boat_types_count": 10,
+        "locations_count": 7
+      }
+    }
+  },
+  "rag_plan": {
+    "current_assets": {
+      "collections": {
+        "metadata": {
+          "document_count": 1,
+          "sample_documents": [
+            {
+              "id": "options",
+              "fields": [
+                "cabinFeatureOptions",
+                "hullMaterialOptions",
+                "keelTypeOptions",
+                "locationsByRegion",
+                "featureOptions",
+                "deckOptions",
+                "boatTypes",
+                "listingTypes",
+                "conditions",
+                "sailRiggingOptions",
+                "priceValues",
+                "saloonOptions",
+                "galleyOptions",
+                "propellerTypeOptions",
+                "transomShapeOptions",
+                "fuelTypes",
+                "bowShapeOptions",
+                "divisions",
+                "rudderTypeOptions",
+                "makes",
+                "headsOptions"
+              ]
+            }
+          ]
+        }
+      },
+      "storage_files": {
+        "total_files": 20,
+        "sample_files": [
+          {
+            "name": "boat_pdfs/11-meter_20250807_123913_792.pdf",
+            "size": 34636,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:42:01.430000+00:00"
+          },
+          {
+            "name": "boat_pdfs/110_20250807_122550_500.pdf",
+            "size": 34492,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:28:34.978000+00:00"
+          },
+          {
+            "name": "boat_pdfs/12-square-meter-sharpie_20250807_103546_521.pdf",
+            "size": 33524,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T10:38:28.033000+00:00"
+          },
+          {
+            "name": "boat_pdfs/125_20250807_110254_522.pdf",
+            "size": 33386,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T11:14:09.840000+00:00"
+          },
+          {
+            "name": "boat_pdfs/18-o-a-cruiser_20250807_123913_654.pdf",
+            "size": 32009,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:42:01.294000+00:00"
+          },
+          {
+            "name": "boat_pdfs/1d-35_20250807_122549_304.pdf",
+            "size": 35649,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:28:33.586000+00:00"
+          },
+          {
+            "name": "boat_pdfs/1d-48_20250807_122549_223.pdf",
+            "size": 35533,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:28:32.807000+00:00"
+          },
+          {
+            "name": "boat_pdfs/2-kronan_20250807_110129_589.pdf",
+            "size": 32437,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T11:13:33.915000+00:00"
+          },
+          {
+            "name": "boat_pdfs/210_20250807_122549_302.pdf",
+            "size": 34117,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:28:33.432000+00:00"
+          },
+          {
+            "name": "boat_pdfs/24-meter_20250807_122549_271.pdf",
+            "size": 33371,
+            "content_type": "application/pdf",
+            "created": "2025-08-07T12:28:32.922000+00:00"
+          }
+        ]
+      },
+      "metadata": {
+        "available_fields": [
+          "cabinFeatureOptions",
+          "hullMaterialOptions",
+          "keelTypeOptions",
+          "locationsByRegion",
+          "featureOptions",
+          "deckOptions",
+          "boatTypes",
+          "listingTypes",
+          "conditions",
+          "sailRiggingOptions",
+          "priceValues",
+          "saloonOptions",
+          "galleyOptions",
+          "propellerTypeOptions",
+          "transomShapeOptions",
+          "fuelTypes",
+          "bowShapeOptions",
+          "divisions",
+          "rudderTypeOptions",
+          "makes",
+          "headsOptions"
+        ],
+        "sample_data": {
+          "makes_count": 128,
+          "boat_types_count": 10,
+          "locations_count": 7
+        }
+      }
+    },
+    "pinecone_setup": {
+      "index_name": "coast-masters-yacht-rag",
+      "dimension": 1536,
+      "metric": "cosine",
+      "pod_type": "p1.x1"
+    },
+    "pdf_processing_pipeline": {
+      "step_1": "Extract PDFs from Firebase Storage",
+      "step_2": "Process with PDF parser (PyPDF2/pdfplumber)",
+      "step_3": "Chunk text into semantic segments",
+      "step_4": "Generate embeddings with OpenAI",
+      "step_5": "Store in Pinecone with metadata",
+      "step_6": "Create search and retrieval system"
+    },
+    "estimated_costs": {
+      "pinecone": "$0.10 per 1000 queries",
+      "openai_embeddings": "$0.0001 per 1K tokens",
+      "storage": "Minimal (Pinecone handles storage)"
+    },
+    "timeline": {
+      "week_1": "Setup Pinecone index and test with sample PDFs",
+      "week_2": "Process all 8000+ PDFs and create embeddings",
+      "week_3": "Integrate with broker API and test enhancement",
+      "week_4": "Optimize and launch"
+    }
+  },
+  "demo_results": {
+    "devalk": {
+      "success": true,
+      "data": {
+        "brand": "Sunseeker",
+        "model": "Predator 74",
+        "price": "\u20ac1,850,000",
+        "year": "2020",
+        "enhancement_sources": [
+          "broker"
+        ]
+      },
+      "completeness": {
+        "percentage": 36.4,
+        "filled_fields": 4,
+        "total_fields": 11,
+        "missing_required": [
+          "length"
+        ],
+        "missing_optional": [
+          "beam",
+          "draft",
+          "engine_type",
+          "cabins",
+          "berths",
+          "equipment"
+        ],
+        "sell_page_ready": false
+      },
+      "enhancement": {
+        "enhancement_sources": [
+          "broker"
+        ],
+        "note": "Clean Firebase mode. Ready for new Pinecone RAG system."
+      },
+      "sell_page_ready": false,
+      "processed_at": "2025-08-20T14:34:30.730908"
+    },
+    "simpson": {
+      "success": true,
+      "data": {
+        "brand": "Princess",
+        "model": "V78",
+        "price": "2,100,000",
+        "year": "2019",
+        "enhancement_sources": [
+          "broker"
+        ]
+      },
+      "completeness": {
+        "percentage": 36.4,
+        "filled_fields": 4,
+        "total_fields": 11,
+        "missing_required": [
+          "length"
+        ],
+        "missing_optional": [
+          "beam",
+          "draft",
+          "engine_type",
+          "cabins",
+          "berths",
+          "equipment"
+        ],
+        "sell_page_ready": false
+      },
+      "enhancement": {
+        "enhancement_sources": [
+          "broker"
+        ],
+        "note": "Clean Firebase mode. Ready for new Pinecone RAG system."
+      },
+      "sell_page_ready": false,
+      "processed_at": "2025-08-20T14:34:31.385643"
+    }
+  }
+}

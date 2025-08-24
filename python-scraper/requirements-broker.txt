@@ -1,0 +1,36 @@
+# Core Flask API
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Web scraping (existing requirements)
+selenium==4.15.0
+beautifulsoup4==4.12.2
+requests==2.31.0
+lxml==4.9.3
+
+# Enhanced broker API features
+cryptography==41.0.7  # For API key encryption
+PyJWT==2.8.0         # For JWT tokens (future auth)
+redis==5.0.1         # For caching and rate limiting
+psycopg2-binary==2.9.7  # For PostgreSQL (future database)
+
+# Data processing and validation
+marshmallow==3.20.1  # For API request/response validation
+cerberus==1.3.4      # For data schema validation
+
+# Monitoring and logging
+structlog==23.2.0    # For structured logging
+prometheus-client==0.19.0  # For metrics (future monitoring)
+
+# Development and testing
+pytest==7.4.3
+pytest-flask==1.3.0
+requests-mock==1.11.0
+
+# Documentation
+flask-restx==1.2.0   # For automatic API documentation (future)
+
+# Existing scraper dependencies
+webdriver-manager==4.0.1
+Pillow==10.0.1
+python-dotenv==1.0.0

@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  broker-api:
+    build: .
+    container_name: coastmasters-broker-api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      - .:/app
+    command: python app_enhanced.py
+    networks:
+      - broker-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Redis for caching broker data and API rate limiting
+  redis:
+    image: redis:alpine
+    container_name: coastmasters-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - broker-network
+    restart: unless-stopped
+
+  # Optional: PostgreSQL for persistent broker and listing storage
+  postgres:
+    image: postgres:13
+    container_name: coastmasters-postgres
+    environment:
+      POSTGRES_DB: broker_api
+      POSTGRES_USER: broker_user
+      POSTGRES_PASSWORD: broker_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - broker-network
+    restart: unless-stopped
+
+networks:
+  broker-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

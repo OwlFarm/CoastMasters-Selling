@@ -86,6 +86,10 @@ export interface ScrapedYachtData {
   photos?: string[];
   video?: string;
   virtualTour?: string;
+  
+  // Images from scraping
+  images?: string[];
+  heroImage?: string;
 }
 
 export interface MigrationResult {
@@ -194,35 +198,48 @@ export class MigrationService {
    * Stage 2: Map De Valk data to your form fields
    */
   static mapToFormFields(scrapedData: ScrapedYachtData): any {
-    console.log('🔄 Mapping De Valk data to form fields...');
+    console.log('🔄 Mapping scraped data to form fields with enhanced mapping...');
     
     try {
-      // Map to your actual form field names
+      // Enhanced field mapping with multiple source variations and intelligent parsing
       const mappedData = {
-        // Key Details
-        title: scrapedData.title || scrapedData.brand + ' ' + scrapedData.model,
-        brand: scrapedData.brand || '',
-        model: scrapedData.model || '',
-        year: scrapedData.year || '',
-        dimensions: `${scrapedData.length || ''} x ${scrapedData.beam || ''} x ${scrapedData.draft || ''}`,
-        material: scrapedData.hullMaterial || '',
-        engine: scrapedData.engineMake + ' ' + scrapedData.engineType || '',
-        hpKw: `${scrapedData.engineHP || ''} HP / ${scrapedData.engineKW || ''} KW`,
-        lying: scrapedData.location || '',
+        // Key Details with intelligent fallbacks
+        title: scrapedData.title || 
+               (scrapedData.brand && scrapedData.model ? `${scrapedData.brand} ${scrapedData.model}` : '') ||
+               scrapedData.builder || '',
         
-        // Additional fields based on your form structure
+        brand: scrapedData.brand || scrapedData.builder || '',
+        model: scrapedData.model || '',
+        
+        // Year with validation
+        year: this.parseYear(scrapedData.year),
+        
+        // Dimensions with intelligent parsing
+        dimensions: this.buildDimensionsString(scrapedData),
+        material: scrapedData.hullMaterial || '',
+        
+        // Engine with enhanced parsing
+        engine: this.buildEngineString(scrapedData),
+        hpKw: this.buildEnginePowerString(scrapedData),
+        
+        // Location with fallbacks
+        lying: scrapedData.location || scrapedData.country || '',
+        
+        // Description with multiple sources
         description: scrapedData.description || scrapedData.brokerComments || '',
-        price: scrapedData.price || '',
-        currency: scrapedData.currency || 'EUR',
+        
+        // Price with intelligent parsing
+        price: this.parsePrice(scrapedData.price),
+        currency: this.detectCurrency(scrapedData.price || scrapedData.currency),
         status: scrapedData.status || 'For Sale',
         vat: scrapedData.vat || '',
         
-        // Accommodation
-        cabins: scrapedData.cabins || '',
-        berths: scrapedData.berths || '',
+        // Accommodation with validation
+        cabins: this.parseNumber(scrapedData.cabins),
+        berths: this.parseNumber(scrapedData.berths),
         interior: scrapedData.interior || '',
         
-        // Equipment & Features
+        // Equipment & Features with enhanced extraction
         equipment: this.extractEquipmentList(scrapedData),
         features: this.extractFeaturesList(scrapedData)
       };
@@ -270,24 +287,175 @@ export class MigrationService {
   }
 
   /**
-   * Calculate confidence score for scraped data
+   * Calculate confidence score for scraped data with enhanced validation
    */
   private static calculateConfidence(data: ScrapedYachtData): number {
     let score = 0;
+    let validationIssues: string[] = [];
     
-    // Core fields (high weight)
-    if (data.brand) score += 25;
-    if (data.model) score += 25;
-    if (data.length) score += 20;
-    if (data.engineMake) score += 15;
-    if (data.price) score += 15;
+    // Core fields (high weight) with validation
+    if (data.brand && this.validateBrand(data.brand)) {
+      score += 25;
+    } else if (data.brand) {
+      score += 15;
+      validationIssues.push('Brand format may be incorrect');
+    }
     
-    // Additional fields (medium weight)
-    if (data.year) score += 10;
-    if (data.hullMaterial) score += 10;
-    if (data.cabins) score += 5;
-    if (data.berths) score += 5;
+    if (data.model && this.validateModel(data.model)) {
+      score += 25;
+    } else if (data.model) {
+      score += 15;
+      validationIssues.push('Model format may be incorrect');
+    }
+    
+    if (data.length && this.validateLength(data.length)) {
+      score += 20;
+    } else if (data.length) {
+      score += 10;
+      validationIssues.push('Length format may be incorrect');
+    }
+    
+    if (data.engineMake && this.validateEngine(data.engineMake)) {
+      score += 15;
+    } else if (data.engineMake) {
+      score += 8;
+      validationIssues.push('Engine format may be incorrect');
+    }
+    
+    if (data.price && this.validatePrice(data.price)) {
+      score += 15;
+    } else if (data.price) {
+      score += 8;
+      validationIssues.push('Price format may be incorrect');
+    }
+    
+    // Additional fields (medium weight) with validation
+    if (data.year && this.validateYear(data.year)) {
+      score += 10;
+    } else if (data.year) {
+      score += 5;
+      validationIssues.push('Year format may be incorrect');
+    }
+    
+    if (data.hullMaterial && this.validateHullMaterial(data.hullMaterial)) {
+      score += 10;
+    } else if (data.hullMaterial) {
+      score += 5;
+      validationIssues.push('Hull material format may be incorrect');
+    }
+    
+    if (data.cabins && this.validateNumber(data.cabins)) {
+      score += 5;
+    } else if (data.cabins) {
+      score += 2;
+      validationIssues.push('Cabins format may be incorrect');
+    }
+    
+    if (data.berths && this.validateNumber(data.berths)) {
+      score += 5;
+    } else if (data.berths) {
+      score += 2;
+      validationIssues.push('Berths format may be incorrect');
+    }
+    
+    // Bonus for images
+    if (data.images && data.images.length > 0) {
+      score += Math.min(data.images.length * 2, 10);
+    }
+    
+    // Store validation issues for debugging
+    if (validationIssues.length > 0) {
+      console.log('⚠️ Validation issues found:', validationIssues);
+    }
     
     return Math.min(score, 100);
+  }
+  
+  // Validation helper methods
+  private static validateBrand(brand: string): boolean {
+    return brand.length >= 2 && brand.length <= 50 && /^[a-zA-Z\s\-]+$/.test(brand);
+  }
+  
+  private static validateModel(model: string): boolean {
+    return model.length >= 1 && model.length <= 30 && /^[a-zA-Z0-9\s\-\.]+$/.test(model);
+  }
+  
+  private static validateLength(length: string): boolean {
+    const num = parseFloat(length);
+    return !isNaN(num) && num > 0 && num < 1000;
+  }
+  
+  private static validateEngine(engine: string): boolean {
+    return engine.length >= 3 && engine.length <= 100;
+  }
+  
+  private static validatePrice(price: string): boolean {
+    const num = parseInt(price.replace(/[^0-9]/g, ''));
+    return !isNaN(num) && num > 0 && num < 100000000;
+  }
+  
+  private static validateYear(year: string): boolean {
+    const num = parseInt(year);
+    return !isNaN(num) && num >= 1900 && num <= new Date().getFullYear() + 1;
+  }
+  
+  private static validateHullMaterial(material: string): boolean {
+    const validMaterials = ['GRP', 'Fiberglass', 'Steel', 'Aluminum', 'Wood', 'Composite'];
+    return validMaterials.some(valid => material.toLowerCase().includes(valid.toLowerCase()));
+  }
+  
+  private static validateNumber(value: string): boolean {
+    const num = parseInt(value);
+    return !isNaN(num) && num > 0 && num < 100;
+  }
+
+  // Helper methods for enhanced data parsing
+  private static parseYear(value: any): string | null {
+    if (!value) return null;
+    const year = parseInt(value.toString());
+    return (year >= 1900 && year <= new Date().getFullYear() + 1) ? year.toString() : null;
+  }
+  
+  private static buildDimensionsString(data: ScrapedYachtData): string {
+    const parts = [];
+    if (data.length) parts.push(data.length);
+    if (data.beam) parts.push(data.beam);
+    if (data.draft) parts.push(data.draft);
+    return parts.length > 0 ? parts.join(' x ') : '';
+  }
+  
+  private static buildEngineString(data: ScrapedYachtData): string {
+    const parts = [];
+    if (data.engineMake) parts.push(data.engineMake);
+    if (data.engineType) parts.push(data.engineType);
+    return parts.length > 0 ? parts.join(' ') : '';
+  }
+  
+  private static buildEnginePowerString(data: ScrapedYachtData): string {
+    const parts = [];
+    if (data.engineHP) parts.push(`${data.engineHP} HP`);
+    if (data.engineKW) parts.push(`${data.engineKW} KW`);
+    return parts.length > 0 ? parts.join(' / ') : '';
+  }
+  
+  private static parsePrice(value: any): string | null {
+    if (!value) return null;
+    const price = parseInt(value.toString().replace(/[^0-9]/g, ''));
+    return (price > 0 && price < 100000000) ? price.toString() : null;
+  }
+  
+  private static detectCurrency(priceValue: any): string {
+    if (!priceValue) return 'EUR';
+    const priceStr = priceValue.toString();
+    if (priceStr.includes('€') || priceStr.includes('EUR')) return 'EUR';
+    if (priceStr.includes('$') || priceStr.includes('USD')) return 'USD';
+    if (priceStr.includes('£') || priceStr.includes('GBP')) return 'GBP';
+    return 'EUR';
+  }
+  
+  private static parseNumber(value: any): string | null {
+    if (!value) return null;
+    const num = parseInt(value.toString());
+    return (num > 0 && num < 100) ? num.toString() : null;
   }
 }

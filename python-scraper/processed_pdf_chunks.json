@@ -1,0 +1,72 @@
+{
+  "processed_at": "2025-08-20T14:40:00.894567",
+  "total_chunks": 6,
+  "chunks": [
+    {
+      "id": "boat_pdfs_11-meter_20250807_123913_792.pdf_chunk_0",
+      "text": "--- PAGE 1 ---\n11 METER\nSailboat Specifications\nHull Type: Fin w/bulb & spade rudder\nRigging Type: Fractional Sloop\nLOA: 33.80 ft / 10.30 m\nLOD:\nLWL: 26.90 ft / 8.20 m\nS.A. (reported): 450.00 ft\u00b2 / 41.81 m\u00b2\nBeam: 8.20 ft / 2.50 m\nBeam WL:\nDisplacement: 3,527.00 lb / 1,600 kg\nBallast: 1,598.00 lb / 725 kg\nMax Draft: 5.90 ft / 1.80 m\nConstruction: FG w/core,Composite\nBallast Type: Lead\nFirst Built: 1990\n# Built: 350\nBuilder: Precision Boat Works\nDesigner: Ron Holland\nSailboat Calculations\nS.A. / Displ.: 31.16\nBal. / Displ.: 45.31\nDisp: / Len: 80.89\nComfort Ratio: 11.41\n\n--- PAGE 2 ---\nCapsize Screening Formula: 2.16\nS#: 6.48\nHull Speed: 6.95 kn\nPounds/Inch Immersion: 788.16 pounds/inch\nRig and Sail Particulars\nI:32.18 ft / 9.81 m\nJ:10.18 ft / 3.10 m\nP: 36.09 ft / 11.00 m\nE: 13.62 ft / 4.15 m\nSPL/TPS: 13.12 ft / 4.00 m\nISP: 41.01 ft / 12.50 m\nS.A. Fore: 163.80 ft\u00b2 / 15.22 m\u00b2\nS.A. Main: 245.77 ft\u00b2 / 22.83 m\u00b2\nS.A. Total (100% Fore + Main Triangles): 409.57 ft\u00b2 / 38.05 m\u00b2\nS.A./Displ. (calc.",
+      "metadata": {
+        "pdf_name": "boat_pdfs/11-meter_20250807_123913_792.pdf",
+        "chunk_index": 0,
+        "total_chunks": 2,
+        "pdf_size": 34636,
+        "processed_at": "2025-08-20T14:39:58.097924"
+      }
+    },
+    {
+      "id": "boat_pdfs_11-meter_20250807_123913_792.pdf_chunk_1",
+      "text": "m\nSPL/TPS: 13.12 ft / 4.00 m\nISP: 41.01 ft / 12.50 m\nS.A. Fore: 163.80 ft\u00b2 / 15.22 m\u00b2\nS.A. Main: 245.77 ft\u00b2 / 22.83 m\u00b2\nS.A. Total (100% Fore + Main Triangles): 409.57 ft\u00b2 / 38.05 m\u00b2\nS.A./Displ. (calc.): 28.36\nEst. Forestay Length: 33.75 ft / 10.29 m\nSailboat Organizations\nDesigner: Ron Holland\nBuilders: Precision Boat Works\nAssociations: 11 Meter One Design Assoc.\nProducts: M&B SHIPCANVAS CO.",
+      "metadata": {
+        "pdf_name": "boat_pdfs/11-meter_20250807_123913_792.pdf",
+        "chunk_index": 1,
+        "total_chunks": 2,
+        "pdf_size": 34636,
+        "processed_at": "2025-08-20T14:39:58.097941"
+      }
+    },
+    {
+      "id": "boat_pdfs_110_20250807_122550_500.pdf_chunk_0",
+      "text": "--- PAGE 1 ---\n110\nSailboat Specifications\nHull Type: Fin w/bulb & spade rudder\nRigging Type: Fractional Sloop\nLOA: 24.00 ft / 7.32 m\nLWL: 18.00 ft / 5.49 m\nS.A. (reported): 157.00 ft\u00b2 / 14.59 m\u00b2\nBeam: 4.17 ft / 1.27 m\nDisplacement: 910.00 lb / 413 kg\nBallast: 300.00 lb / 136 kg\nMax Draft: 3.00 ft / 0.91 m\nConstruction: Plywood or GRP\nBallast Type: Iron\nFirst Built: 1938\n# Built: 750\nBuilder:Cape Cod Shipbuilding Graves Yacht Yard (USA) Lawley\n(George Lawley & Son) Schock W.D.\nDesigner: Raymond Hunt (C.R. Hunt & Assoc.)\nSailboat Calculations\nS.A. / Displ.: 26.80\nBal. / Displ.: 32.97\nDisp: / Len: 69.66\nComfort Ratio: 10.58\nCapsize Screening Formula: 1.72\nS#:\n\n--- PAGE 2 ---\nHull Speed: 5.69 kn\nPounds/Inch Immersion: 268.20 pounds/inch\nSailboat Organizations\nDesigner: Raymond Hunt (C.R. Hunt & Assoc.)\nBuilders:Cape Cod Shipbuilding Graves Yacht Yard (USA) Lawley (George\nLawley & Son) Schock W.D.",
+      "metadata": {
+        "pdf_name": "boat_pdfs/110_20250807_122550_500.pdf",
+        "chunk_index": 0,
+        "total_chunks": 2,
+        "pdf_size": 34492,
+        "processed_at": "2025-08-20T14:39:59.432400"
+      }
+    },
+    {
+      "id": "boat_pdfs_110_20250807_122550_500.pdf_chunk_1",
+      "text": "ds/Inch Immersion: 268.20 pounds/inch\nSailboat Organizations\nDesigner: Raymond Hunt (C.R. Hunt & Assoc.)\nBuilders:Cape Cod Shipbuilding Graves Yacht Yard (USA) Lawley (George\nLawley & Son) Schock W.D.\nAssociations: International 110 Class Association\nAdditional Notes\nOriginally designed for plywood construction, many early 110's were built by indiviuals as well as\nother yards besides the ones listed here. Hunt launched the 110 production boats from Lawley\u2019s in\n1939\nSpinnaker: 100 sq. ft.",
+      "metadata": {
+        "pdf_name": "boat_pdfs/110_20250807_122550_500.pdf",
+        "chunk_index": 1,
+        "total_chunks": 2,
+        "pdf_size": 34492,
+        "processed_at": "2025-08-20T14:39:59.432417"
+      }
+    },
+    {
+      "id": "boat_pdfs_12-square-meter-sharpie_20250807_103546_521.pdf_chunk_0",
+      "text": "--- PAGE 1 ---\n12 SQUARE METER SHARPIE\nSailboat Specifications\nHull Type: Centerboard Dinghy\nRigging Type: Gunter\nLOA: 19.58 ft / 5.97 m\nLWL: 17.70 ft / 5.39 m\nS.A. (reported): 137.00 ft\u00b2 / 12.73 m\u00b2\nBeam: 4.70 ft / 1.43 m\nDisplacement: 510.00 lb / 231 kg\nMax Draft: 0.96 ft / 0.29 m\nMin Draft: 3.17 ft / 0.97 m\nConstruction: Wood\nFirst Built: 1931\nSailboat Calculations\nS.A. / Displ.: 34.39\nDisp: / Len: 41.06\nComfort Ratio: 5.48\nCapsize Screening Formula: 2.35\nS#:\nHull Speed: 5.64 kn\nPounds/Inch Immersion: 297.25 pounds/inch\nSailboat Organizations\nAssociations:Australian Lightweight Sharpie Association British Sharpie\nOwners Association\n\n--- PAGE 2 ---\nAdditional Notes\nSelected by Duetscher Segler Vergand in a competition held in 1931. Sailed in the Melborne\nOlympic Games of 1956. (The gold medal in this event was won by noted Australian sailor, Rolly\nTasker). Still raced in a number of fleets around the world (in some cases as variants of the original).",
+      "metadata": {
+        "pdf_name": "boat_pdfs/12-square-meter-sharpie_20250807_103546_521.pdf",
+        "chunk_index": 0,
+        "total_chunks": 2,
+        "pdf_size": 33524,
+        "processed_at": "2025-08-20T14:40:00.892858"
+      }
+    },
+    {
+      "id": "boat_pdfs_12-square-meter-sharpie_20250807_103546_521.pdf_chunk_1",
+      "text": "Olympic Games of 1956. (The gold medal in this event was won by noted Australian sailor, Rolly\nTasker). Still raced in a number of fleets around the world (in some cases as variants of the original).\nIn the UK it is the BRITISH SHARPIE or NORFOLK SHARPIE. In Australia called the\nHEAVYWEIGHT SHARPIE, and beginning in 1960, a modernized version called the AUSTRALIAN\nLIGHTWEIGHT SHARPIE.",
+      "metadata": {
+        "pdf_name": "boat_pdfs/12-square-meter-sharpie_20250807_103546_521.pdf",
+        "chunk_index": 1,
+        "total_chunks": 2,
+        "pdf_size": 33524,
+        "processed_at": "2025-08-20T14:40:00.892877"
+      }
+    }
+  ]
+}
