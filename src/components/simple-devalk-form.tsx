@@ -8,7 +8,23 @@ export default function SimpleDeValkForm() {
   const [devalkUrl, setDevalkUrl] = useState('');
   
   // Simple state for form fields
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(() => {
+    // Try to load saved data from localStorage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('devalk-form-data');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          console.log('📥 Loaded saved form data from localStorage:', parsed);
+          return parsed;
+        } catch (error) {
+          console.error('❌ Error parsing saved form data:', error);
+        }
+      }
+    }
+    
+    // Return default empty state if no saved data
+    return {
     // Key Details
     dimensions: '',
     material: '',
@@ -18,7 +34,7 @@ export default function SimpleDeValkForm() {
     askingPrice: '',
     // General Info
     model: '',
-    type: '',
+    yachtType: '',
     loaM: '',
     beamM: '',
     draftM: '',
@@ -179,6 +195,7 @@ export default function SimpleDeValkForm() {
     s: '',
     hullSpeed: '',
     poundsInchImmersion: '',
+  };
   });
 
   const handleMigration = async () => {
@@ -262,7 +279,7 @@ export default function SimpleDeValkForm() {
       console.log('🔍 generalInfo type:', typeof data.data.generalInfo);
       console.log('🔍 generalInfo keys:', Object.keys(data.data.generalInfo));
       newFormData.model = data.data.generalInfo.model || '';
-      newFormData.type = data.data.generalInfo.type || '';
+      newFormData.yachtType = data.data.generalInfo.type || '';
       newFormData.loaM = data.data.generalInfo.loaM || '';
       newFormData.beamM = data.data.generalInfo.beamM || '';
       newFormData.draftM = data.data.generalInfo.draftM || '';
@@ -653,7 +670,7 @@ export default function SimpleDeValkForm() {
     }
     
     // Update form state with a callback to ensure it's the latest
-    setFormData(prevData => {
+    setFormData((prevData: any) => {
       console.log('🔄 Previous form data:', prevData);
       console.log('🔄 New form data to set:', newFormData);
       return newFormData;
@@ -664,15 +681,152 @@ export default function SimpleDeValkForm() {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData((prev: any) => {
+      const newData = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Save to localStorage whenever form data changes
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('devalk-form-data', JSON.stringify(newData));
+          console.log('💾 Form data saved to localStorage');
+        } catch (error) {
+          console.error('❌ Error saving to localStorage:', error);
+        }
+      }
+      
+      return newData;
+    });
+  };
+
+  // Enhanced data export functions
+  const exportToJSON = () => {
+    const dataStr = JSON.stringify(formData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `devalk-yacht-${formData.model || 'data'}-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    console.log('✅ JSON file exported successfully!');
+    // You can enhance this with toast notifications later
+  };
+
+  const exportToCSV = () => {
+    // Convert form data to CSV format
+    const csvRows = [];
+    
+    // Add header row
+    const headers = Object.keys(formData);
+    csvRows.push(headers.join(','));
+    
+    // Add data row
+    const values = Object.values(formData);
+    csvRows.push(values.map(value => `"${value}"`).join(','));
+    
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `devalk-yacht-${formData.model || 'data'}-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    console.log('✅ CSV file exported successfully!');
+    // You can enhance this with toast notifications later
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      const dataStr = JSON.stringify(formData, null, 2);
+      await navigator.clipboard.writeText(dataStr);
+      // Show success feedback (you can enhance this with toast notifications)
+      console.log('✅ Data copied to clipboard successfully!');
+    } catch (err) {
+      console.error('❌ Failed to copy to clipboard:', err);
+    }
+  };
+
+  const clearLocalStorage = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem('devalk-form-data');
+        console.log('🗑️ localStorage cleared successfully');
+        // Reset form to empty state
+        setFormData({
+          // Key Details
+          dimensions: '', material: '', built: '', engines: '', hpKw: '', askingPrice: '',
+          // General Info
+          model: '', yachtType: '', loaM: '', beamM: '', draftM: '', yearBuilt: '', builder: '', country: '', designer: '', hullMaterial: '',
+          lwlM: '', airDraftM: '', headroomM: '', displacementT: '', ballastTonnes: '', hullColour: '', hullShape: '', keelType: '',
+          superstructureMaterial: '', deckMaterial: '', deckFinish: '', superstructureDeckFinish: '', cockpitDeckFinish: '',
+          // Accommodation
+          cabins: '', berths: '', interior: '', layout: '', floor: '', openCockpit: '', aftDeck: '', saloon: '', headroomSalonM: '',
+          heating: '', navigationCenter: '', chartTable: '', galley: '', countertop: '', sink: '', cooker: '', oven: '', microwave: '',
+          fridge: '', freezer: '', hotWaterSystem: '', waterPressureSystem: '', ownersCabin: '', bedLength: '', wardrobe: '',
+          bathroom: '', toilet: '', toiletSystem: '', washBasin: '', shower: '', guestCabin1: '', guestCabin2: '', washingMachine: '',
+          // Machinery
+          noOfEngines: '', make: '', type: '', hp: '', kw: '', fuel: '', yearInstalled: '', yearOfOverhaul: '', maximumSpeedKn: '',
+          cruisingSpeedKn: '', consumptionLhr: '', engineCoolingSystem: '', drive: '', shaftSeal: '', engineControls: '', gearbox: '',
+          bowthruster: '', propellerType: '', manualBilgePump: '', electricBilgePump: '', electricalInstallation: '', generator: '',
+          batteries: '', startBattery: '', serviceBattery: '', batteryMonitor: '', batteryCharger: '', solarPanel: '', shorepower: '',
+          watermaker: '',
+          // Navigation
+          compass: '', electricCompass: '', depthSounder: '', log: '', windset: '', repeater: '', vhf: '', vhfHandheld: '',
+          autopilot: '', rudderAngleIndicator: '', radar: '', plotterGps: '', electronicCharts: '', aisTransceiver: '', epirb: '',
+          navigationLights: '',
+          // Equipment
+          anchor: '', anchorChain: '', anchor2: '', windlass: '', deckWash: '', dinghy: '', outboard: '', davits: '', seaRailing: '',
+          pushpit: '', pulpit: '', lifebuoy: '', radarReflector: '', fenders: '', mooringLines: '', radio: '', cockpitSpeakers: '',
+          speakersInSalon: '', fireExtinguisher: '', fixedWindscreen: '', cockpitTable: '', bathingPlatform: '', boardingLadder: '',
+          deckShower: '',
+          // Rigging
+          rigging: '', standingRigging: '', brandMast: '', materialMast: '', spreaders: '', mainsail: '', stowayMast: '', cutterstay: '',
+          jib: '', genoa: '', genoaFurler: '', cutterFurler: '', gennaker: '', spinnaker: '', reefingSystem: '', backstayAdjuster: '',
+          primarySheetWinch: '', secondarySheetWinch: '', genoaSheetwinches: '', halyardWinches: '', multifunctionalWinches: '', spiPole: '',
+          // Indication Ratios
+          saDispl: '', balDispl: '', dispLen: '', comfortRatio: '', capsizeScreeningFormula: '', s: '', hullSpeed: '', poundsInchImmersion: '',
+        });
+      } catch (err) {
+        console.error('❌ Error clearing localStorage:', err);
+      }
+    }
+  };
+
+  const validateFormData = () => {
+    const filledFields = Object.values(formData).filter(value => value && value.toString().trim() !== '').length;
+    const totalFields = Object.keys(formData).length;
+    const completionPercentage = Math.round((filledFields / totalFields) * 100);
+    
+    return {
+      filledFields,
+      totalFields,
+      completionPercentage,
+      isValid: completionPercentage > 0
+    };
   };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Enhanced console logging with validation
+    const validation = validateFormData();
     console.log('🚀 De Valk Form Data Submitted:', formData);
+    console.log('📊 Form Validation Summary:');
+    console.log(`  - Filled Fields: ${validation.filledFields}/${validation.totalFields}`);
+    console.log(`  - Completion: ${validation.completionPercentage}%`);
+    console.log(`  - Valid for submission: ${validation.isValid ? '✅ Yes' : '❌ No'}`);
+    
+    // Show validation summary to user
+    if (validation.isValid) {
+      console.log('🎯 Form data is ready for processing!');
+      console.log('💡 Use export buttons to save your data.');
+    } else {
+      console.log('⚠️ Form has no data - consider filling some fields first.');
+    }
   };
 
   return (
@@ -808,10 +962,10 @@ export default function SimpleDeValkForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">TYPE</label>
                 <input 
                   type="text" 
-                  value={formData.type}
-                  onChange={(e) => handleInputChange('type', e.target.value)}
+                  value={formData.yachtType}
+                  onChange={(e) => handleInputChange('yachtType', e.target.value)}
                   placeholder="e.g., monohull sailing yacht" 
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  className="w-full px-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 />
               </div>
               <div>
@@ -2265,6 +2419,69 @@ export default function SimpleDeValkForm() {
                   placeholder="e.g., 2,621.21 pounds/inch" 
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 />
+              </div>
+            </div>
+          </div>
+
+          {/* Data Export Section */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">💾 Data Export & Management</h2>
+            
+            {/* Export Buttons */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <button
+                type="button"
+                onClick={exportToJSON}
+                className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+              >
+                📄 Export to JSON
+              </button>
+              
+              <button
+                type="button"
+                onClick={exportToCSV}
+                className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+              >
+                📊 Export to CSV
+              </button>
+              
+              <button
+                type="button"
+                onClick={copyToClipboard}
+                className="px-6 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors flex items-center justify-center gap-2"
+              >
+                📋 Copy to Clipboard
+              </button>
+              
+              <button
+                type="button"
+                onClick={clearLocalStorage}
+                className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+              >
+                🗑️ Clear Data
+              </button>
+            </div>
+            
+            {/* Data Summary */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">📊 Form Data Summary</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="font-medium text-gray-700">Total Fields:</span>
+                  <span className="ml-2 text-gray-900">{Object.keys(formData).length}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">Filled Fields:</span>
+                  <span className="ml-2 text-gray-900">{Object.values(formData).filter(value => value && value.toString().trim() !== '').length}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">Completion:</span>
+                  <span className="ml-2 text-gray-900">{Math.round((Object.values(formData).filter(value => value && value.toString().trim() !== '').length / Object.keys(formData).length) * 100)}%</span>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">Model:</span>
+                  <span className="ml-2 text-gray-900">{formData.model || 'Not specified'}</span>
+                </div>
               </div>
             </div>
           </div>

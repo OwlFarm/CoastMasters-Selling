@@ -1,4 +1,4 @@
-import DeValkAlignedSellForm from '@/components/sell-form-devalk-aligned';
+import SimpleDeValkForm from '@/components/simple-devalk-form';
 
 export default function DeValkAlignedTestPage() {
   return (
@@ -13,7 +13,7 @@ export default function DeValkAlignedTestPage() {
           </p>
         </div>
         
-        <DeValkAlignedSellForm />
+        <SimpleDeValkForm />
       </div>
     </div>
   );
