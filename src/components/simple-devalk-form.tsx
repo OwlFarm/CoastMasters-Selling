@@ -796,6 +796,56 @@ export default function SimpleDeValkForm() {
     }
   };
 
+  // Save yacht data to database
+  const saveToDatabase = async () => {
+    try {
+      console.log('💾 Saving yacht data to database...');
+      
+      // Validate required fields
+      if (!formData.model) {
+        alert('Model is required to save yacht data');
+        return;
+      }
+      
+      // Prepare data for API (add source URL if available)
+      const yachtData = {
+        ...formData,
+        sourceUrl: devalkUrl || null,
+      };
+      
+      const response = await fetch('/api/save-devalk-yacht', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(yachtData),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save yacht data');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert(`✅ Yacht "${formData.model}" saved successfully to database!\n\nYacht ID: ${result.yacht.id}\n\nYou can now view it in the yacht database.`);
+        console.log('🎉 Yacht saved to database:', result.yacht);
+        
+        // Optionally redirect to database view
+        if (confirm('Would you like to view the yacht database?')) {
+          window.location.href = '/yacht-database';
+        }
+      } else {
+        throw new Error(result.error || 'Failed to save yacht data');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error saving yacht to database:', error);
+      alert(`Failed to save yacht data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
   const validateFormData = () => {
     const filledFields = Object.values(formData).filter(value => value && value.toString().trim() !== '').length;
     const totalFields = Object.keys(formData).length;
@@ -2487,12 +2537,20 @@ export default function SimpleDeValkForm() {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-4">
             <button
               type="submit"
               className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               🚀 Submit De Valk Form
+            </button>
+            
+            <button
+              type="button"
+              onClick={saveToDatabase}
+              className="px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+            >
+              💾 Save to Database
             </button>
           </div>
         </form>

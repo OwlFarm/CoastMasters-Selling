@@ -53,3 +53,4 @@ firestore-debug.log
 *.pem
 *service*account*.json
 *Service*Account*.json
+/src/generated/prisma

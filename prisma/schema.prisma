@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// De Valk Yacht Data Model - Comprehensive Schema for All 143+ Fields
+model DeValkYacht {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Source URL and metadata
+  sourceUrl String?  // Original De Valk URL
+  scrapedAt DateTime @default(now())
+  
+  // 🔑 KEY DETAILS SECTION (10 fields)
+  dimensions   String?  // e.g., "16.72 x 4.85 x 2.28 (m)"
+  material     String?  // e.g., "GRP"
+  built        String?  // e.g., "2003"
+  engines      String?  // e.g., "1x Yanmar 4JH110"
+  hpKw         String?  // e.g., "110 hp / 80.96 kw"
+  lying        String?  // e.g., "South Spain"
+  salesOffice  String?  // e.g., "De Valk"
+  status       String?  // e.g., "For Sale"
+  vat          String?  // e.g., "Paid"
+  askingPrice  String?  // e.g., "€ 350,000"
+  
+  // 📋 GENERAL INFORMATION SECTION (23 fields)
+  model                    String?  // e.g., "MOODY 54"
+  yachtType               String?  // e.g., "Monohull sailing yacht"
+  loaM                    String?  // e.g., "16.72"
+  lwlM                    String?  // e.g., "14.50"
+  beamM                   String?  // e.g., "4.85"
+  draftM                  String?  // e.g., "2.28"
+  airDraftM               String?  // e.g., "22.50"
+  headroomM               String?  // e.g., "2.10"
+  yearBuilt               String?  // e.g., "2003"
+  builder                 String?  // e.g., "A. H. Moody & Son Ltd"
+  country                 String?  // e.g., "United Kingdom"
+  designer                String?  // e.g., "Bill Dixon"
+  displacementT           String?  // e.g., "22"
+  ballastTonnes           String?  // e.g., "8.5"
+  hullMaterial            String?  // e.g., "GRP"
+  hullColour              String?  // e.g., "White"
+  hullShape               String?  // e.g., "S-bilged"
+  keelType                String?  // e.g., "Fin keel"
+  superstructureMaterial  String?  // e.g., "GRP"
+  deckMaterial            String?  // e.g., "GRP"
+  deckFinish              String?  // e.g., "Teak"
+  superstructureDeckFinish String? // e.g., "Teak"
+  cockpitDeckFinish       String?  // e.g., "Teak"
+  
+  // 🏠 ACCOMMODATION SECTION (20 fields)
+  cabins                  String?  // e.g., "3"
+  berths                  String?  // e.g., "6"
+  interior                String?  // e.g., "Teak"
+  layout                  String?  // e.g., "Salon layout"
+  floor                   String?  // e.g., "Teak and holly"
+  openCockpit             String?  // e.g., "Yes"
+  aftDeck                 String?  // e.g., "Yes"
+  saloon                  String?  // e.g., "Yes"
+  headroomSalonM          String?  // e.g., "2.00"
+  heating                 String?  // e.g., "Webasto diesel heater"
+  navigationCenter        String?  // e.g., "Yes"
+  chartTable              String?  // e.g., "Yes"
+  galley                  String?  // e.g., "Yes"
+  countertop              String?  // e.g., "Wood"
+  sink                    String?  // e.g., "Stainless steel double"
+  cooker                  String?  // e.g., "Calor gas 4 burner"
+  oven                    String?  // e.g., "In cooker"
+  microwave               String?  // e.g., "Yes"
+  fridge                  String?  // e.g., "Dometic"
+  freezer                 String?  // e.g., "Yes"
+  hotWaterSystem          String?  // e.g., "220V + engine"
+  waterPressureSystem     String?  // e.g., "Electrical"
+  ownersCabin             String?  // e.g., "Twin single"
+  bedLength               String?  // e.g., "0.85x2.05 mtr. and 1.25x2.05 mtr."
+  wardrobe                String?  // e.g., "Hanging and shelves"
+  bathroom                String?  // e.g., "En suite"
+  toilet                  String?  // e.g., "En suite"
+  toiletSystem            String?  // e.g., "Manual | Jabsco"
+  washBasin               String?  // e.g., "Yes"
+  shower                  String?  // e.g., "Yes"
+  guestCabin1             String?  // e.g., "V-bed"
+  guestCabin2             String?  // e.g., "Bunk bed"
+  washingMachine          String?  // e.g., "Kenny Compact washingmachine"
+  
+  // ⚙️ MACHINERY SECTION (30 fields)
+  noOfEngines             String?  // e.g., "1"
+  make                    String?  // e.g., "Yanmar"
+  type                    String?  // e.g., "4JH110"
+  hp                      String?  // e.g., "110"
+  kw                      String?  // e.g., "80.96"
+  fuel                    String?  // e.g., "Diesel"
+  yearInstalled           String?  // e.g., "2021"
+  yearOfOverhaul          String?  // e.g., "2022"
+  maximumSpeedKn          String?  // e.g., "9.5"
+  cruisingSpeedKn         String?  // e.g., "7.5"
+  consumptionLhr          String?  // e.g., "8"
+  engineCoolingSystem     String?  // e.g., "Seawater"
+  drive                   String?  // e.g., "Shaft"
+  shaftSeal               String?  // e.g., "Yes"
+  engineControls          String?  // e.g., "Bowden cable"
+  gearbox                 String?  // e.g., "Mechanical"
+  bowthruster             String?  // e.g., "Electric 7 hp"
+  propellerType           String?  // e.g., "Fixed 3 blade"
+  manualBilgePump         String?  // e.g., "Yes"
+  electricBilgePump       String?  // e.g., "Yes"
+  electricalInstallation  String?  // e.g., "12V/24V/230V"
+  generator               String?  // e.g., "Westerbeke 8 kW"
+  batteries               String?  // e.g., "6 x 105Ah deep cycle"
+  startBattery            String?  // e.g., "1 x 105Ah"
+  serviceBattery          String?  // e.g., "5 x 105Ah"
+  batteryMonitor          String?  // e.g., "Yes"
+  batteryCharger          String?  // e.g., "Victron 60A"
+  solarPanel              String?  // e.g., "2 x 200W"
+  shorepower              String?  // e.g., "Yes"
+  watermaker              String?  // e.g., "Yes"
+  
+  // 🧭 NAVIGATION SECTION (16 fields)
+  compass                 String?  // e.g., "Plastimo"
+  electricCompass         String?  // e.g., "Raymarine"
+  depthSounder            String?  // e.g., "Raymarine ST60"
+  log                     String?  // e.g., "Raymarine ST60"
+  windset                 String?  // e.g., "Raymarine ST60"
+  repeater                String?  // e.g., "2 x Raymarine i70"
+  vhf                     String?  // e.g., "Standard Horizon Explorer"
+  vhfHandheld             String?  // e.g., "Standard Horizon"
+  autopilot               String?  // e.g., "Raymarine EV 400 (p70)"
+  rudderAngleIndicator    String?  // e.g., "Raymarine p70"
+  radar                   String?  // e.g., "Pathfinder RL 80C"
+  plotterGps              String?  // e.g., "Raymarine Axiom 9"
+  electronicCharts        String?  // e.g., "Navionics"
+  aisTransceiver          String?  // e.g., "Raymarine AIS 650"
+  epirb                   String?  // e.g., "RescueMe Ocean Signal"
+  navigationLights        String?  // e.g., "Yes"
+  
+  // 🛠️ EQUIPMENT SECTION (24 fields)
+  anchor                  String?  // e.g., "40 kg Rocna"
+  anchorChain             String?  // e.g., "80 m calibrated chain"
+  anchor2                 String?  // e.g., "Spare 34 kg CQR"
+  windlass                String?  // e.g., "Electrical Lofrans 1500W"
+  deckWash                String?  // e.g., "Yes"
+  dinghy                  String?  // e.g., "Avon 2.8m"
+  outboard                String?  // e.g., "Mariner F4 4hp 4 stroke"
+  davits                  String?  // e.g., "Stainless steel"
+  seaRailing              String?  // e.g., "Wire"
+  pushpit                 String?  // e.g., "With teak seats"
+  pulpit                  String?  // e.g., "Yes"
+  lifebuoy                String?  // e.g., "Yes"
+  radarReflector          String?  // e.g., "Yes"
+  fenders                 String?  // e.g., "Yes"
+  mooringLines            String?  // e.g., "Yes"
+  radio                   String?  // e.g., "Sony"
+  cockpitSpeakers         String?  // e.g., "2x Sony xplod"
+  speakersInSalon         String?  // e.g., "2x Sony xplod"
+  fireExtinguisher        String?  // e.g., "Yes"
+  fixedWindscreen         String?  // e.g., "Yes"
+  cockpitTable            String?  // e.g., "Yes"
+  bathingPlatform         String?  // e.g., "Stainless steel and teak"
+  boardingLadder          String?  // e.g., "Yes"
+  deckShower              String?  // e.g., "Yes"
+  
+  // ⛵ RIGGING SECTION (22 fields)
+  rigging                 String?  // e.g., "Sloop"
+  standingRigging         String?  // e.g., "Wire (2019)"
+  brandMast               String?  // e.g., "Seldén"
+  materialMast            String?  // e.g., "Aluminium"
+  spreaders               String?  // e.g., "3 sets"
+  mainsail                String?  // e.g., "Dracon Sabre Sails (04.2020)"
+  stowayMast              String?  // e.g., "Seldén electric"
+  cutterstay              String?  // e.g., "Yes"
+  jib                     String?  // e.g., "Dracon (03.2022)"
+  genoa                   String?  // e.g., "Dracon (03.2022)"
+  genoaFurler             String?  // e.g., "Selden Furlex 400S"
+  cutterFurler            String?  // e.g., "Selden Furlex 400S"
+  gennaker                String?  // e.g., "Yes"
+  spinnaker               String?  // e.g., "Yes"
+  reefingSystem           String?  // e.g., "Main in-mast furling"
+  backstayAdjuster        String?  // e.g., "Mechanical"
+  primarySheetWinch       String?  // e.g., "2 x Lewmar 64 ST 2 SP (electric)"
+  secondarySheetWinch     String?  // e.g., "2 x Lewmar 40 ST 2 SP"
+  genoaSheetwinches       String?  // e.g., "2 x Lewmar 64 ST 2 SP (electric)"
+  halyardWinches          String?  // e.g., "Lewmar 40 2 SP"
+  multifunctionalWinches  String?  // e.g., "Lewmar 48 ST 2 SP"
+  spiPole                 String?  // e.g., "Aluminium Selden"
+  
+  // 📊 INDICATION RATIOS SECTION (8 fields)
+  saDispl                 String?  // e.g., "16.59"
+  balDispl                String?  // e.g., "33.90"
+  dispLen                 String?  // e.g., "201.36"
+  comfortRatio            String?  // e.g., "35.33"
+  capsizeScreeningFormula String?  // e.g., "1.81"
+  s                       String?  // e.g., "2.64"
+  hullSpeed               String?  // e.g., "9.10 kn"
+  poundsInchImmersion     String?  // e.g., "2,621.21 pounds/inch"
+  
+  // Additional metadata
+  notes                   String?  // User notes or additional information
+  tags                    String?  // Comma-separated tags for categorization
+  isActive                Boolean  @default(true)  // Soft delete support
+}
