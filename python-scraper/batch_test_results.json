@@ -1,0 +1,26 @@
+{
+  "failed": 0,
+  "results": [
+    {
+      "fields_extracted": 212,
+      "filename": "batch_scraped_1_20250825_160545.json",
+      "status": "success",
+      "url": "https://www.devalk.nl/en/yachtbrokerage/811327/MOODY-54.html"
+    },
+    {
+      "fields_extracted": 187,
+      "filename": "batch_scraped_2_20250825_160545.json",
+      "status": "success",
+      "url": "https://www.devalk.nl/en/yachtbrokerage/810010/NAJAD-460.html"
+    },
+    {
+      "fields_extracted": 164,
+      "filename": "batch_scraped_3_20250825_160545.json",
+      "status": "success",
+      "url": "https://www.devalk.nl/en/yachtbrokerage/809602/HALLBERG-RASSY-49.html"
+    }
+  ],
+  "successful": 3,
+  "timestamp": "20250825_160545",
+  "total_urls": 3
+}

@@ -80,7 +80,7 @@ class YachtScraperService:
             time.sleep(3)  # Allow page to load
             
             # Get the page source after JavaScript execution
-            page_source = driver.page_source
+                page_source = driver.page_source
             soup = BeautifulSoup(page_source, 'html.parser')
             
             # Extract data using De Valk's exact field structure

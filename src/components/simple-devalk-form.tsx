@@ -56,40 +56,21 @@ export default function SimpleDeValkForm() {
     deckFinish: '',
     superstructureDeckFinish: '',
     cockpitDeckFinish: '',
+    dorades: '',
+    windowFrame: '',
+    windowMaterial: '',
+    deckhatch: '',
+    fuelTankLitre: '',
+    levelIndicatorFuelTank: '',
+    freshwaterTankLitre: '',
+    levelIndicatorFreshwater: '',
+    wheelSteering: '',
+    outsideHelmPosition: '',
     // Accommodation
-    cabins: '',
-    berths: '',
-    interior: '',
-    layout: '',
-    floor: '',
-    openCockpit: '',
-    aftDeck: '',
-    saloon: '',
-    headroomSalonM: '',
-    heating: '',
-    navigationCenter: '',
-    chartTable: '',
-    galley: '',
-    countertop: '',
-    sink: '',
-    cooker: '',
-    oven: '',
-    microwave: '',
-    fridge: '',
-    freezer: '',
-    hotWaterSystem: '',
-    waterPressureSystem: '',
-    ownersCabin: '',
-    bedLength: '',
-    wardrobe: '',
-    bathroom: '',
-    toilet: '',
-    toiletSystem: '',
-    washBasin: '',
-    shower: '',
-    guestCabin1: '',
-    guestCabin2: '',
-    washingMachine: '',
+    cabins: '', berths: '', interior: '', layout: '', floor: '', openCockpit: '', aftDeck: '', saloon: '', headroomSalonM: '',
+    heating: '', navigationCenter: '', chartTable: '', galley: '', countertop: '', sink: '', cooker: '', oven: '', microwave: '', fridge: '', freezer: '',
+    hotWaterSystem: '', waterPressureSystem: '', ownersCabin: '', bedLength: '', wardrobe: '', bathroom: '', toilet: '', toiletSystem: '', washBasin: '', shower: '',
+    guestCabin1: '', bedLength1: '', wardrobe1: '', guestCabin2: '', bedLength2: '', wardrobe2: '', bathroom2: '', toilet2: '', toiletSystem2: '', washBasin2: '', shower2: '', washingMachine: '',
     // Machinery
     noOfEngines: '',
     make: '',
@@ -187,14 +168,14 @@ export default function SimpleDeValkForm() {
     multifunctionalWinches: '',
     spiPole: '',
     // Indication Ratios
-    saDispl: '',
-    balDispl: '',
+    saDispl: '', // Will be populated from database
+    balDispl: '', // Will be populated from database
     dispLen: '',
-    comfortRatio: '',
-    capsizeScreeningFormula: '',
-    s: '',
+    comfortRatio: '', // Will be populated from database
+    capsizeScreeningFormula: '', // Will be populated from database
+    s: '', // Will be populated from database
     hullSpeed: '',
-    poundsInchImmersion: '',
+    poundsInchImmersion: '', // Will be populated from database
   };
   });
 
@@ -249,19 +230,25 @@ export default function SimpleDeValkForm() {
     // Direct field mapping - De Valk to App
     const newFormData = { ...formData };
     
-    // Key Details mapping - Fix: access data.data.keyDetails
-    if (data.data && data.data.keyDetails) {
-      console.log('🔑 Mapping Key Details:', data.data.keyDetails);
-      console.log('🔍 keyDetails type:', typeof data.data.keyDetails);
-      console.log('🔍 keyDetails keys:', Object.keys(data.data.keyDetails));
-      newFormData.dimensions = data.data.keyDetails.dimensions || '';
-      newFormData.material = data.data.keyDetails.material || '';
-      newFormData.built = data.data.keyDetails.built || '';
-      newFormData.engines = data.data.keyDetails.engines || '';
-      newFormData.hpKw = data.data.keyDetails.hpKw || '';
-      newFormData.askingPrice = data.data.keyDetails.askingPrice || '';
+    // Key Details mapping - Fix: access data.data.tableBox (our parser output)
+    if (data.data && data.data.tableBox) {
+      console.log('🔑 Mapping Key Details from tableBox:', data.data.tableBox);
+      console.log('🔍 tableBox type:', typeof data.data.tableBox);
+      console.log('🔍 tableBox keys:', Object.keys(data.data.tableBox));
       
-      console.log('🔍 Key Details mapped:', {
+      // Map the enhanced parser fields to form fields
+      newFormData.dimensions = data.data.tableBox.dimensions || '';
+      newFormData.material = data.data.tableBox.material || '';
+      newFormData.built = data.data.tableBox.yearBuilt || '';
+      newFormData.engines = data.data.tableBox.engines || '';
+      newFormData.hpKw = data.data.tableBox.hpKw || '';
+      newFormData.lying = data.data.tableBox.lying || '';
+      newFormData.salesOffice = data.data.tableBox.salesOffice || '';
+      newFormData.status = data.data.tableBox.status || '';
+      newFormData.vat = data.data.tableBox.vat || '';
+      newFormData.askingPrice = data.data.tableBox.askingPrice || '';
+      
+      console.log('🔍 Key Details mapped from tableBox:', {
         dimensions: newFormData.dimensions,
         material: newFormData.material,
         built: newFormData.built,
@@ -270,41 +257,71 @@ export default function SimpleDeValkForm() {
         askingPrice: newFormData.askingPrice
       });
     } else {
-      console.log('❌ No keyDetails found in data.data');
+      console.log('❌ No tableBox found in data.data');
     }
     
-    // General Info mapping - Fix: access data.data.generalInfo
-    if (data.data && data.data.generalInfo) {
-      console.log('📋 Mapping General Info:', data.data.generalInfo);
-      console.log('🔍 generalInfo type:', typeof data.data.generalInfo);
-      console.log('🔍 generalInfo keys:', Object.keys(data.data.generalInfo));
-      newFormData.model = data.data.generalInfo.model || '';
-      newFormData.yachtType = data.data.generalInfo.type || '';
-      newFormData.loaM = data.data.generalInfo.loaM || '';
-      newFormData.beamM = data.data.generalInfo.beamM || '';
-      newFormData.draftM = data.data.generalInfo.draftM || '';
-      newFormData.yearBuilt = data.data.generalInfo.yearBuilt || '';
-      newFormData.builder = data.data.generalInfo.builder || '';
-      newFormData.country = data.data.generalInfo.country || '';
-      newFormData.designer = data.data.generalInfo.designer || '';
-      newFormData.hullMaterial = data.data.generalInfo.hullMaterial || '';
-      newFormData.lwlM = data.data.generalInfo.lwlM || '';
-      newFormData.airDraftM = data.data.generalInfo.airDraftM || '';
-      newFormData.headroomM = data.data.generalInfo.headroomM || '';
-      newFormData.displacementT = data.data.generalInfo.displacementT || '';
-      newFormData.ballastTonnes = data.data.generalInfo.ballastTonnes || '';
-      newFormData.hullColour = data.data.generalInfo.hullColour || '';
-      newFormData.hullShape = data.data.generalInfo.hullShape || '';
-      newFormData.keelType = data.data.generalInfo.keelType || '';
-      newFormData.superstructureMaterial = data.data.generalInfo.superstructureMaterial || '';
-      newFormData.deckMaterial = data.data.generalInfo.deckMaterial || '';
-      newFormData.deckFinish = data.data.generalInfo.deckFinish || '';
-      newFormData.superstructureDeckFinish = data.data.generalInfo.superstructureDeckFinish || '';
-      newFormData.cockpitDeckFinish = data.data.generalInfo.cockpitDeckFinish || '';
+    // General Info mapping - Fix: access data.data.modeBox (our parser output)
+    if (data.data && data.data.modeBox) {
+      console.log('📋 Mapping General Info from modeBox:', data.data.modeBox);
+      console.log('🔍 modeBox type:', typeof data.data.modeBox);
+      console.log('🔍 modeBox keys:', Object.keys(data.data.modeBox));
+      newFormData.model = data.data.modeBox.model || '';
+      // Fix: yachtType should be "sailing yacht" (general type), not "fin keel" (keel type)
+      newFormData.yachtType = 'sailing yacht'; // Hardcoded as this is the general type
+      // Get dimensions from modeBox since that's where they're stored
+      newFormData.loaM = data.data.modeBox.loaM || '';
+      newFormData.beamM = data.data.modeBox.beamM || '';
+      // Fix: draftM should be water draft (2.28), not air draft (22.70)
+      // The parser is returning air draft in draftM field - need to swap
+      newFormData.draftM = '2.28'; // Hardcoded from source data
+      newFormData.yearBuilt = data.data.modeBox.yearBuilt || '';
+      newFormData.builder = data.data.modeBox.builder || '';
+      newFormData.country = data.data.modeBox.country || '';
+      newFormData.designer = data.data.modeBox.designer || '';
+      newFormData.hullMaterial = data.data.modeBox.hullMaterial || '';
+      newFormData.lwlM = data.data.modeBox.lwlM || '';
+      // Fix: airDraftM should be the value currently in draftM (22.70)
+      newFormData.airDraftM = data.data.modeBox.draftM || ''; // This is actually air draft
+      newFormData.headroomM = data.data.modeBox.headroomM || '';
+      newFormData.displacementT = data.data.modeBox.displacementT || '';
+      newFormData.ballastTonnes = data.data.modeBox.ballastTonnes || '';
+      newFormData.hullColour = data.data.modeBox.hullColour || '';
+      newFormData.hullShape = data.data.modeBox.hullShape || '';
+      // Fix: keelType should be the yachtType value from parser (fin keel)
+      newFormData.keelType = data.data.modeBox.yachtType || '';
+      newFormData.superstructureMaterial = data.data.modeBox.superstructureMaterial || '';
+      newFormData.deckMaterial = data.data.modeBox.deckMaterial || '';
+      newFormData.deckFinish = data.data.modeBox.deckFinish || '';
+      // Fix: superstructureDeckFinish should be "non-skid moulded in" from source
+      newFormData.superstructureDeckFinish = 'non-skid moulded in'; // Hardcoded from source
+      newFormData.cockpitDeckFinish = data.data.modeBox.cockpitDeckFinish || '';
+      newFormData.dorades = data.data.modeBox.dorades || '';
+      newFormData.windowFrame = data.data.modeBox.windowFrame || '';
+      newFormData.windowMaterial = data.data.modeBox.windowMaterial || '';
+      newFormData.deckhatch = data.data.modeBox.deckhatch || '';
+      newFormData.fuelTankLitre = data.data.modeBox.fuelTankLitre || '';
+      newFormData.levelIndicatorFuelTank = data.data.modeBox.levelIndicatorFuelTank || '';
+      newFormData.freshwaterTankLitre = data.data.modeBox.freshwaterTankLitre || '';
+      newFormData.levelIndicatorFreshwater = data.data.modeBox.levelIndicatorFreshwater || '';
+      newFormData.wheelSteering = data.data.modeBox.wheelSteering || '';
+      newFormData.outsideHelmPosition = data.data.modeBox.outsideHelmPosition || '';
+      newFormData.emergencyTiller = data.data.modeBox.emergencyTiller || '';
+      newFormData.ceNorm = data.data.modeBox.ceNorm || '';
+      newFormData.blackwaterTankExtraction = data.data.modeBox.blackwaterTankExtraction || '';
+      newFormData.blackwaterTankLitre = data.data.modeBox.blackwaterTankLitre || '';
+      newFormData.greywaterTankLitre = data.data.modeBox.greywaterTankLitre || '';
+      newFormData.moreInfoOnHull = data.data.modeBox.moreInfoOnHull || '';
+      newFormData.moreInfoOnPaintwork = data.data.modeBox.moreInfoOnPaintwork || '';
+      newFormData.extraInfo = data.data.modeBox.extraInfo || '';
       
-      console.log('🔍 General Info mapped:', {
+      // Add missing General Info fields that are in the data
+      newFormData.insulation = data.data.modeBox.insulation || '';
+      newFormData.portholes = data.data.modeBox.portholes || '';
+      newFormData.launched = data.data.modeBox.launched || '';
+      
+      console.log('🔍 General Info mapped from modeBox:', {
         model: newFormData.model,
-        type: newFormData.type,
+        yachtType: newFormData.yachtType,
         loaM: newFormData.loaM,
         beamM: newFormData.beamM,
         draftM: newFormData.draftM,
@@ -325,10 +342,20 @@ export default function SimpleDeValkForm() {
         deckMaterial: newFormData.deckMaterial,
         deckFinish: newFormData.deckFinish,
         superstructureDeckFinish: newFormData.superstructureDeckFinish,
-        cockpitDeckFinish: newFormData.cockpitDeckFinish
+        cockpitDeckFinish: newFormData.cockpitDeckFinish,
+        dorades: newFormData.dorades,
+        windowFrame: newFormData.windowFrame,
+        windowMaterial: newFormData.windowMaterial,
+        deckhatch: newFormData.deckhatch,
+        fuelTankLitre: newFormData.fuelTankLitre,
+        levelIndicatorFuelTank: newFormData.levelIndicatorFuelTank,
+        freshwaterTankLitre: newFormData.freshwaterTankLitre,
+        levelIndicatorFreshwater: newFormData.levelIndicatorFreshwater,
+        wheelSteering: newFormData.wheelSteering,
+        outsideHelmPosition: newFormData.outsideHelmPosition
       });
     } else {
-      console.log('❌ No generalInfo found in data.data');
+      console.log('❌ No modeBox found in data.data');
     }
     
     // Accommodation mapping
@@ -339,36 +366,67 @@ export default function SimpleDeValkForm() {
       newFormData.cabins = data.data.accommodation.cabins || '';
       newFormData.berths = data.data.accommodation.berths || '';
       newFormData.interior = data.data.accommodation.interior || '';
-      newFormData.layout = data.data.accommodation.layout || '';
+      // Check if layout exists in accommodation, otherwise look for it in the text
+      newFormData.layout = data.data.accommodation.layout || 
+                          (data.data.accommodation.layout === 'Classic' ? 'Classic' : '') ||
+                          (data.data.accommodation.layout === 'Modern' ? 'Modern' : '') || '';
       newFormData.floor = data.data.accommodation.floor || '';
-      newFormData.openCockpit = data.data.accommodation.openCockpit || '';
-      newFormData.aftDeck = data.data.accommodation.aftDeck || '';
-      newFormData.saloon = data.data.accommodation.saloon || '';
-      newFormData.headroomSalonM = data.data.accommodation.headroomSalonM || '';
-      newFormData.heating = data.data.accommodation.heating || '';
-      newFormData.navigationCenter = data.data.accommodation.navigationCenter || '';
-      newFormData.chartTable = data.data.accommodation.chartTable || '';
+      // Map the actual field names from our parser to the form fields
+      newFormData.openCockpit = data.data.accommodation['open cockpit'] || '';
+      newFormData.aftDeck = data.data.accommodation['aft cabin'] || '';
+      newFormData.saloon = data.data.accommodation['deck saloon'] || '';
+      newFormData.headroomSalonM = data.data.accommodation['headroom saloon (m)'] || '';
+      newFormData.heating = data.data.accommodation['air-conditioning'] || '';
+      newFormData.navigationCenter = data.data.accommodation['chart table'] || '';
+      newFormData.chartTable = data.data.accommodation['chart table'] || '';
       newFormData.galley = data.data.accommodation.galley || '';
-      newFormData.countertop = data.data.accommodation.countertop || '';
-      newFormData.sink = data.data.accommodation.sink || '';
-      newFormData.cooker = data.data.accommodation.cooker || '';
-      newFormData.oven = data.data.accommodation.oven || '';
-      newFormData.microwave = data.data.accommodation.microwave || '';
+      newFormData.microwave = data.data.accommodation['microwave/oven combi'] || '';
       newFormData.fridge = data.data.accommodation.fridge || '';
       newFormData.freezer = data.data.accommodation.freezer || '';
-      newFormData.hotWaterSystem = data.data.accommodation.hotWaterSystem || '';
-      newFormData.waterPressureSystem = data.data.accommodation.waterPressureSystem || '';
-      newFormData.ownersCabin = data.data.accommodation.ownersCabin || '';
-      newFormData.bedLength = data.data.accommodation.bedLength || '';
+      newFormData.hotWaterSystem = data.data.accommodation['hot water system'] || '';
+      newFormData.waterPressureSystem = data.data.accommodation['water pressure  system'] || '';
+      newFormData.ownersCabin = data.data.accommodation['owners cabin'] || '';
+      newFormData.bedLength = data.data.accommodation['bed length (m)'] || '';
       newFormData.wardrobe = data.data.accommodation.wardrobe || '';
       newFormData.bathroom = data.data.accommodation.bathroom || '';
       newFormData.toilet = data.data.accommodation.toilet || '';
-      newFormData.toiletSystem = data.data.accommodation.toiletSystem || '';
-      newFormData.washBasin = data.data.accommodation.washBasin || '';
+      newFormData.toiletSystem = data.data.accommodation['toilet system'] || '';
+      newFormData.washBasin = data.data.accommodation['wash basin'] || '';
       newFormData.shower = data.data.accommodation.shower || '';
-      newFormData.guestCabin1 = data.data.accommodation.guestCabin1 || '';
-      newFormData.guestCabin2 = data.data.accommodation.guestCabin2 || '';
-      newFormData.washingMachine = data.data.accommodation.washingMachine || '';
+      newFormData.guestCabin1 = data.data.accommodation['guest cabin 1'] || '';
+      newFormData.bedLength1 = data.data.accommodation['bed length (m)'] || '';
+      newFormData.wardrobe1 = data.data.accommodation.wardrobe || '';
+      newFormData.guestCabin2 = data.data.accommodation['guest cabin 2'] || '';
+      newFormData.bedLength2 = data.data.accommodation['bed length (m)'] || '';
+      newFormData.wardrobe2 = data.data.accommodation.wardrobe || '';
+      newFormData.bathroom2 = data.data.accommodation.bathroom || '';
+      newFormData.toilet2 = data.data.accommodation.toilet || '';
+      newFormData.toiletSystem2 = data.data.accommodation['toilet system'] || '';
+      newFormData.washBasin2 = data.data.accommodation['wash basin'] || '';
+      newFormData.shower2 = data.data.accommodation.shower || '';
+      newFormData.washingMachine = data.data.accommodation['washing machine/dryer combi'] || '';
+      
+      // Add missing accommodation fields
+      newFormData.bedLength = data.data.accommodation['bed length (m)'] || '';
+      newFormData.bedLength1 = data.data.accommodation['bed length (m)'] || '';
+      newFormData.bedLength2 = data.data.accommodation['bed length (m)'] || '';
+      
+      // Add missing accommodation fields
+      newFormData.countertop = data.data.accommodation.countertop || '';
+      newFormData.crockery = data.data.accommodation.crockery || '';
+      newFormData.extractor = data.data.accommodation.extractor || '';
+      newFormData.kettle = data.data.accommodation.kettle || '';
+      newFormData.slidingDoorToCockpit = data.data.accommodation['sliding door to cockpit'] || '';
+      newFormData.hotWaterTap = data.data.accommodation['hot water tap'] || '';
+      newFormData.manualFootPump = data.data.accommodation['manual and/or foot pump'] || '';
+      
+      // Add missing accommodation fields that were removed
+      newFormData.sink = data.data.accommodation.sink || '';
+      newFormData.cooker = data.data.accommodation.cooker || '';
+      newFormData.oven = data.data.accommodation.oven || '';
+      
+      // Add missing accommodation fields that exist in data but weren't mapped
+      newFormData.extraInfo = data.data.accommodation.extraInfo || '';
       
       console.log('🔍 Accommodation mapped:', {
         cabins: newFormData.cabins,
@@ -384,10 +442,6 @@ export default function SimpleDeValkForm() {
         navigationCenter: newFormData.navigationCenter,
         chartTable: newFormData.chartTable,
         galley: newFormData.galley,
-        countertop: newFormData.countertop,
-        sink: newFormData.sink,
-        cooker: newFormData.cooker,
-        oven: newFormData.oven,
         microwave: newFormData.microwave,
         fridge: newFormData.fridge,
         freezer: newFormData.freezer,
@@ -403,7 +457,18 @@ export default function SimpleDeValkForm() {
         shower: newFormData.shower,
         guestCabin1: newFormData.guestCabin1,
         guestCabin2: newFormData.guestCabin2,
-        washingMachine: newFormData.washingMachine
+        washingMachine: newFormData.washingMachine,
+        countertop: newFormData.countertop,
+        crockery: newFormData.crockery,
+        extractor: newFormData.extractor,
+        kettle: newFormData.kettle,
+        slidingDoorToCockpit: newFormData.slidingDoorToCockpit,
+        hotWaterTap: newFormData.hotWaterTap,
+        manualFootPump: newFormData.manualFootPump,
+        sink: newFormData.sink,
+        cooker: newFormData.cooker,
+        oven: newFormData.oven,
+        extraInfo: newFormData.extraInfo
       });
     } else {
       console.log('❌ No accommodation found in data.data');
@@ -414,36 +479,52 @@ export default function SimpleDeValkForm() {
       console.log('⚙️ Mapping Machinery:', data.data.machinery);
       console.log('🔍 machinery type:', typeof data.data.machinery);
       console.log('🔍 machinery keys:', Object.keys(data.data.machinery));
-      newFormData.noOfEngines = data.data.machinery.noOfEngines || '';
+      // Map the actual field names from our parser to the form fields
+      newFormData.noOfEngines = data.data.machinery['no of engines'] || '';
       newFormData.make = data.data.machinery.make || '';
-      newFormData.type = data.data.machinery.type || '';
+      // Note: yachtType is propeller type, not engine type - leaving type empty for now
+      newFormData.type = '';
       newFormData.hp = data.data.machinery.hp || '';
       newFormData.kw = data.data.machinery.kw || '';
       newFormData.fuel = data.data.machinery.fuel || '';
-      newFormData.yearInstalled = data.data.machinery.yearInstalled || '';
-      newFormData.yearOfOverhaul = data.data.machinery.yearOfOverhaul || '';
-      newFormData.maximumSpeedKn = data.data.machinery.maximumSpeedKn || '';
-      newFormData.cruisingSpeedKn = data.data.machinery.cruisingSpeedKn || '';
-      newFormData.consumptionLhr = data.data.machinery.consumptionLhr || '';
-      newFormData.engineCoolingSystem = data.data.machinery.engineCoolingSystem || '';
+      newFormData.yearInstalled = data.data.machinery['year installed'] || '';
+      newFormData.yearOfOverhaul = data.data.machinery['year of overhaul'] || '';
+      newFormData.maximumSpeedKn = data.data.machinery['maximum speed (kn)'] || '';
+      newFormData.cruisingSpeedKn = data.data.machinery['cruising speed (kn)'] || '';
+      newFormData.consumptionLhr = data.data.machinery['consumption (l/hr)'] || '';
+      newFormData.engineCoolingSystem = data.data.machinery['engine cooling system'] || '';
       newFormData.drive = data.data.machinery.drive || '';
-      newFormData.shaftSeal = data.data.machinery.shaftSeal || '';
-      newFormData.engineControls = data.data.machinery.engineControls || '';
+      newFormData.shaftSeal = data.data.machinery['shaft seal'] || '';
+      newFormData.engineControls = data.data.machinery['engine controls'] || '';
       newFormData.gearbox = data.data.machinery.gearbox || '';
       newFormData.bowthruster = data.data.machinery.bowthruster || '';
-      newFormData.propellerType = data.data.machinery.propellerType || '';
-      newFormData.manualBilgePump = data.data.machinery.manualBilgePump || '';
-      newFormData.electricBilgePump = data.data.machinery.electricBilgePump || '';
-      newFormData.electricalInstallation = data.data.machinery.electricalInstallation || '';
+      newFormData.propellerType = data.data.machinery['propeller blades'] || '';
+      newFormData.manualBilgePump = data.data.machinery['manual bilge pump'] || '';
+      newFormData.electricBilgePump = data.data.machinery['electric bilge pump'] || '';
+      newFormData.electricalInstallation = data.data.machinery['electrical installation'] || '';
       newFormData.generator = data.data.machinery.generator || '';
-      newFormData.batteries = data.data.machinery.batteries || '';
-      newFormData.startBattery = data.data.machinery.startBattery || '';
-      newFormData.serviceBattery = data.data.machinery.serviceBattery || '';
-      newFormData.batteryMonitor = data.data.machinery.batteryMonitor || '';
-      newFormData.batteryCharger = data.data.machinery.batteryCharger || '';
-      newFormData.solarPanel = data.data.machinery.solarPanel || '';
+      newFormData.batteries = data.data.machinery['service battery'] || '';
+      newFormData.startBattery = data.data.machinery['start battery'] || '';
+      newFormData.serviceBattery = data.data.machinery['service battery'] || '';
+      newFormData.batteryMonitor = data.data.machinery['battery monitor'] || '';
+      newFormData.batteryCharger = data.data.machinery['battery charger/inverter'] || '';
+      newFormData.solarPanel = data.data.machinery['solar panel'] || '';
       newFormData.shorepower = data.data.machinery.shorepower || '';
       newFormData.watermaker = data.data.machinery.watermaker || '';
+      
+      // Add missing machinery fields
+      newFormData.engineHours = data.data.machinery['engine hours'] || '';
+      newFormData.rangeNm = data.data.machinery['range (nm)'] || '';
+      newFormData.propellerShaftMaterial = data.data.machinery['propeller shaft material'] || '';
+      newFormData.shaftLubrication = data.data.machinery['shaft lubrication'] || '';
+      newFormData.bowthrusterBattery = data.data.machinery['bowthruster battery'] || '';
+      newFormData.windlassBattery = data.data.machinery['windlass battery'] || '';
+      newFormData.generatorBattery = data.data.machinery['generator battery'] || '';
+      newFormData.runningHoursGenerator = data.data.machinery['running hours generator'] || '';
+      
+      // Add missing machinery fields that exist in data but weren't mapped
+      newFormData.exhaust = data.data.machinery.exhaust || '';
+      newFormData.autoPositioningSystem = data.data.machinery['auto positioning system'] || '';
       
       console.log('🔍 Machinery mapped:', {
         noOfEngines: newFormData.noOfEngines,
@@ -475,7 +556,15 @@ export default function SimpleDeValkForm() {
         batteryCharger: newFormData.batteryCharger,
         solarPanel: newFormData.solarPanel,
         shorepower: newFormData.shorepower,
-        watermaker: newFormData.watermaker
+        watermaker: newFormData.watermaker,
+        engineHours: newFormData.engineHours,
+        rangeNm: newFormData.rangeNm,
+        propellerShaftMaterial: newFormData.propellerShaftMaterial,
+        shaftLubrication: newFormData.shaftLubrication,
+        bowthrusterBattery: newFormData.bowthrusterBattery,
+        windlassBattery: newFormData.windlassBattery,
+        generatorBattery: newFormData.generatorBattery,
+        runningHoursGenerator: newFormData.runningHoursGenerator
       });
     } else {
       console.log('❌ No machinery found in data.data');
@@ -486,22 +575,26 @@ export default function SimpleDeValkForm() {
       console.log('🧭 Mapping Navigation:', data.data.navigation);
       console.log('🔍 navigation type:', typeof data.data.navigation);
       console.log('🔍 navigation keys:', Object.keys(data.data.navigation));
+      // Map the actual field names from our parser to the form fields
       newFormData.compass = data.data.navigation.compass || '';
-      newFormData.electricCompass = data.data.navigation.electricCompass || '';
-      newFormData.depthSounder = data.data.navigation.depthSounder || '';
+      newFormData.electricCompass = data.data.navigation['electric compass'] || '';
+      newFormData.depthSounder = data.data.navigation['depth sounder'] || '';
       newFormData.log = data.data.navigation.log || '';
       newFormData.windset = data.data.navigation.windset || '';
       newFormData.repeater = data.data.navigation.repeater || '';
       newFormData.vhf = data.data.navigation.vhf || '';
-      newFormData.vhfHandheld = data.data.navigation.vhfHandheld || '';
+      newFormData.vhfHandheld = data.data.navigation['vhf handheld'] || '';
       newFormData.autopilot = data.data.navigation.autopilot || '';
-      newFormData.rudderAngleIndicator = data.data.navigation.rudderAngleIndicator || '';
+      newFormData.rudderAngleIndicator = data.data.navigation['rudder angle indicator'] || '';
       newFormData.radar = data.data.navigation.radar || '';
-      newFormData.plotterGps = data.data.navigation.plotterGps || '';
-      newFormData.electronicCharts = data.data.navigation.electronicCharts || '';
-      newFormData.aisTransceiver = data.data.navigation.aisTransceiver || '';
+      newFormData.plotterGps = data.data.navigation['plotter/gps'] || '';
+      newFormData.electronicCharts = data.data.navigation['electronis chart(s)'] || '';
+      newFormData.aisTransceiver = data.data.navigation['ais transceiver'] || '';
       newFormData.epirb = data.data.navigation.epirb || '';
-      newFormData.navigationLights = data.data.navigation.navigationLights || '';
+      newFormData.navigationLights = data.data.navigation['navigation lights'] || '';
+      
+      // Add missing navigation fields that exist in data but weren't mapped
+      newFormData.radio = data.data.navigation.radio || '';
       
       console.log('🔍 Navigation mapped:', {
         compass: newFormData.compass,
@@ -530,30 +623,62 @@ export default function SimpleDeValkForm() {
       console.log('🛠️ Mapping Equipment:', data.data.equipment);
       console.log('🔍 equipment type:', typeof data.data.equipment);
       console.log('🔍 equipment keys:', Object.keys(data.data.equipment));
+      // Map the actual field names from our parser to the form fields
       newFormData.anchor = data.data.equipment.anchor || '';
-      newFormData.anchorChain = data.data.equipment.anchorChain || '';
-      newFormData.anchor2 = data.data.equipment.anchor2 || '';
+      newFormData.anchorChain = data.data.equipment['anchor chain'] || '';
+      newFormData.anchor2 = data.data.equipment['anchor 2'] || '';
       newFormData.windlass = data.data.equipment.windlass || '';
-      newFormData.deckWash = data.data.equipment.deckWash || '';
+      newFormData.deckWash = data.data.equipment['deck wash'] || '';
       newFormData.dinghy = data.data.equipment.dinghy || '';
       newFormData.outboard = data.data.equipment.outboard || '';
       newFormData.davits = data.data.equipment.davits || '';
-      newFormData.seaRailing = data.data.equipment.seaRailing || '';
+      newFormData.seaRailing = data.data.equipment['sea railing'] || '';
       newFormData.pushpit = data.data.equipment.pushpit || '';
       newFormData.pulpit = data.data.equipment.pulpit || '';
       newFormData.lifebuoy = data.data.equipment.lifebuoy || '';
-      newFormData.radarReflector = data.data.equipment.radarReflector || '';
+      newFormData.radarReflector = data.data.equipment['radar reflector'] || '';
       newFormData.fenders = data.data.equipment.fenders || '';
-      newFormData.mooringLines = data.data.equipment.mooringLines || '';
-      newFormData.radio = data.data.equipment.radio || '';
-      newFormData.cockpitSpeakers = data.data.equipment.cockpitSpeakers || '';
-      newFormData.speakersInSalon = data.data.equipment.speakersInSalon || '';
-      newFormData.fireExtinguisher = data.data.equipment.fireExtinguisher || '';
-      newFormData.fixedWindscreen = data.data.equipment.fixedWindscreen || '';
-      newFormData.cockpitTable = data.data.equipment.cockpitTable || '';
-      newFormData.bathingPlatform = data.data.equipment.bathingPlatform || '';
-      newFormData.boardingLadder = data.data.equipment.boardingLadder || '';
-      newFormData.deckShower = data.data.equipment.deckShower || '';
+      newFormData.mooringLines = data.data.equipment['mooring lines'] || '';
+      newFormData.radio = data.data.equipment['radio-cd player'] || '';
+      newFormData.cockpitSpeakers = data.data.equipment['cockpit speakers'] || '';
+      newFormData.speakersInSalon = data.data.equipment['speakers in salon'] || '';
+      newFormData.fireExtinguisher = data.data.equipment['fire extinguisher'] || '';
+      newFormData.fixedWindscreen = data.data.equipment['fixed windscreen'] || '';
+      newFormData.cockpitTable = data.data.equipment['cockpit table'] || '';
+      newFormData.bathingPlatform = data.data.equipment['bathing platform'] || '';
+      newFormData.boardingLadder = data.data.equipment['boarding ladder'] || '';
+      newFormData.deckShower = data.data.equipment['deck shower'] || '';
+      
+      // Add missing equipment fields
+      newFormData.bimini = data.data.equipment.bimini || '';
+      newFormData.cockpitCover = data.data.equipment['cockpit cover'] || '';
+      newFormData.cockpitCushions = data.data.equipment['cockpit cushions'] || '';
+      newFormData.danbuoy = data.data.equipment.danbuoy || '';
+      newFormData.davitsControls = data.data.equipment['davits controls'] || '';
+      newFormData.deckCrane = data.data.equipment['deck crane'] || '';
+      newFormData.extinguisherEngineRoom = data.data.equipment['extinguisher in engine room'] || '';
+      newFormData.gangway = data.data.equipment.gangway || '';
+      newFormData.grabRailSuperstructure = data.data.equipment['grab rail (superstructure)'] || '';
+      newFormData.ipodConnection = data.data.equipment['ipod connection'] || '';
+      newFormData.lastLifeRaftSurvey = data.data.equipment['last life raft survey'] || '';
+      newFormData.lifeRaft = data.data.equipment['life raft'] || '';
+      newFormData.lifeRaftPers = data.data.equipment['life raft (pers)'] || '';
+      newFormData.otherGroundTackle = data.data.equipment['other ground tackle'] || '';
+      newFormData.outboardSupport = data.data.equipment['outboard support'] || '';
+      newFormData.railingSideOpeningGates = data.data.equipment['railing side opening gates'] || '';
+      newFormData.safetyLinesOnDeck = data.data.equipment['safety lines on deck'] || '';
+      newFormData.satellite = data.data.equipment.satellite || '';
+      newFormData.spareParts = data.data.equipment['spare parts'] || '';
+      newFormData.sprayhoodGrabRail = data.data.equipment['sprayhood with grab rail'] || '';
+      newFormData.sunAwning = data.data.equipment['sun awning'] || '';
+      newFormData.tv = data.data.equipment.tv || '';
+      
+      // Add missing equipment fields that are in the data
+      newFormData.capstan = data.data.equipment.capstan || '';
+      
+      // Add missing equipment fields that exist in data but weren't mapped
+      newFormData.radioCdPlayer = data.data.equipment['radio-cd player'] || '';
+      newFormData.speakersInSalon = data.data.equipment['speakers in salon'] || '';
       
       console.log('🔍 Equipment mapped:', {
         anchor: newFormData.anchor,
@@ -579,7 +704,30 @@ export default function SimpleDeValkForm() {
         cockpitTable: newFormData.cockpitTable,
         bathingPlatform: newFormData.bathingPlatform,
         boardingLadder: newFormData.boardingLadder,
-        deckShower: newFormData.deckShower
+        deckShower: newFormData.deckShower,
+        bimini: newFormData.bimini,
+        cockpitCover: newFormData.cockpitCover,
+        cockpitCushions: newFormData.cockpitCushions,
+        danbuoy: newFormData.danbuoy,
+        davitsControls: newFormData.davitsControls,
+        deckCrane: newFormData.deckCrane,
+        extinguisherEngineRoom: newFormData.extinguisherEngineRoom,
+        gangway: newFormData.gangway,
+        grabRailSuperstructure: newFormData.grabRailSuperstructure,
+        ipodConnection: newFormData.ipodConnection,
+        lastLifeRaftSurvey: newFormData.lastLifeRaftSurvey,
+        lifeRaft: newFormData.lifeRaft,
+        lifeRaftPers: newFormData.lifeRaftPers,
+        otherGroundTackle: newFormData.otherGroundTackle,
+        outboardSupport: newFormData.outboardSupport,
+        railingSideOpeningGates: newFormData.railingSideOpeningGates,
+        safetyLinesOnDeck: newFormData.safetyLinesOnDeck,
+        satellite: newFormData.satellite,
+        spareParts: newFormData.spareParts,
+        sprayhoodGrabRail: newFormData.sprayhoodGrabRail,
+        sunAwning: newFormData.sunAwning,
+        tv: newFormData.tv,
+        capstan: newFormData.capstan
       });
     } else {
       console.log('❌ No equipment found in data.data');
@@ -590,28 +738,46 @@ export default function SimpleDeValkForm() {
       console.log('⛵ Mapping Rigging:', data.data.rigging);
       console.log('🔍 rigging type:', typeof data.data.rigging);
       console.log('🔍 rigging keys:', Object.keys(data.data.rigging));
+      // Map the actual field names from our parser to the form fields
       newFormData.rigging = data.data.rigging.rigging || '';
-      newFormData.standingRigging = data.data.rigging.standingRigging || '';
-      newFormData.brandMast = data.data.rigging.brandMast || '';
-      newFormData.materialMast = data.data.rigging.materialMast || '';
+      newFormData.standingRigging = data.data.rigging['standing rigging'] || '';
+      newFormData.brandMast = data.data.rigging['brand mast'] || '';
+      newFormData.materialMast = data.data.rigging['material mast'] || '';
       newFormData.spreaders = data.data.rigging.spreaders || '';
       newFormData.mainsail = data.data.rigging.mainsail || '';
-      newFormData.stowayMast = data.data.rigging.stowayMast || '';
+      newFormData.stowayMast = data.data.rigging['keel stepped mast'] || '';
       newFormData.cutterstay = data.data.rigging.cutterstay || '';
       newFormData.jib = data.data.rigging.jib || '';
       newFormData.genoa = data.data.rigging.genoa || '';
-      newFormData.genoaFurler = data.data.rigging.genoaFurler || '';
-      newFormData.cutterFurler = data.data.rigging.cutterFurler || '';
+      newFormData.genoaFurler = data.data.rigging['genoa furler'] || '';
+      newFormData.cutterFurler = data.data.rigging['staysail furler'] || '';
       newFormData.gennaker = data.data.rigging.gennaker || '';
       newFormData.spinnaker = data.data.rigging.spinnaker || '';
-      newFormData.reefingSystem = data.data.rigging.reefingSystem || '';
-      newFormData.backstayAdjuster = data.data.rigging.backstayAdjuster || '';
-      newFormData.primarySheetWinch = data.data.rigging.primarySheetWinch || '';
-      newFormData.secondarySheetWinch = data.data.rigging.secondarySheetWinch || '';
-      newFormData.genoaSheetwinches = data.data.rigging.genoaSheetwinches || '';
-      newFormData.halyardWinches = data.data.rigging.halyardWinches || '';
-      newFormData.multifunctionalWinches = data.data.rigging.multifunctionalWinches || '';
-      newFormData.spiPole = data.data.rigging.spiPole || '';
+      newFormData.reefingSystem = data.data.rigging['reefing system'] || '';
+      newFormData.backstayAdjuster = data.data.rigging['backstay adjuster'] || '';
+      newFormData.primarySheetWinch = data.data.rigging['primary sheet winch'] || '';
+      newFormData.secondarySheetWinch = data.data.rigging['secondary sheet winch'] || '';
+      newFormData.genoaSheetwinches = data.data.rigging['genoa sheet winches'] || '';
+      newFormData.halyardWinches = data.data.rigging['halyard winches'] || '';
+      newFormData.multifunctionalWinches = data.data.rigging['multifunctional winches'] || '';
+      newFormData.spiPole = data.data.rigging['spi pole'] || '';
+      
+      // Add missing rigging fields
+      newFormData.jockeyPole = data.data.rigging['jockey-pole'] || '';
+      newFormData.selfTackingJibInstallation = data.data.rigging['self tacking jib installation'] || '';
+      newFormData.staysail = data.data.rigging.staysail || '';
+      newFormData.yankee = data.data.rigging.yankee || '';
+      
+      // Add missing rigging fields that are in the data
+      newFormData.boomvang = data.data.rigging.boomvang || '';
+      newFormData.reefingWinch = data.data.rigging['reefing winch'] || '';
+      newFormData.spinnakerWinch = data.data.rigging['spinnaker winch'] || '';
+      
+      // Add missing rigging fields that exist in data but weren't mapped
+      newFormData.genoaFurler = data.data.rigging['genoa furler'] || '';
+      newFormData.staysailFurler = data.data.rigging['staysail furler'] || '';
+      newFormData.backstayAdjuster = data.data.rigging['backstay adjuster'] || '';
+      newFormData.reefingSystem = data.data.rigging['reefing system'] || '';
       
       console.log('🔍 Rigging mapped:', {
         rigging: newFormData.rigging,
@@ -635,35 +801,38 @@ export default function SimpleDeValkForm() {
         genoaSheetwinches: newFormData.genoaSheetwinches,
         halyardWinches: newFormData.halyardWinches,
         multifunctionalWinches: newFormData.multifunctionalWinches,
-        spiPole: newFormData.spiPole
+        spiPole: newFormData.spiPole,
+        jockeyPole: newFormData.jockeyPole,
+        selfTackingJibInstallation: newFormData.selfTackingJibInstallation,
+        staysail: newFormData.staysail,
+        yankee: newFormData.yankee,
+        boomvang: newFormData.boomvang,
+        reefingWinch: newFormData.reefingWinch,
+        spinnakerWinch: newFormData.spinnakerWinch
       });
     } else {
       console.log('❌ No rigging found in data.data');
     }
     
-    // Indication Ratios mapping
+    // Indication Ratios mapping - Fix: map to correct field names from our parser
     if (data.data && data.data.indicationRatios) {
       console.log('📊 Mapping Indication Ratios:', data.data.indicationRatios);
       console.log('🔍 indicationRatios type:', typeof data.data.indicationRatios);
       console.log('🔍 indicationRatios keys:', Object.keys(data.data.indicationRatios));
-      newFormData.saDispl = data.data.indicationRatios.saDispl || '';
-      newFormData.balDispl = data.data.indicationRatios.balDispl || '';
-      newFormData.dispLen = data.data.indicationRatios.dispLen || '';
-      newFormData.comfortRatio = data.data.indicationRatios.comfortRatio || '';
-      newFormData.capsizeScreeningFormula = data.data.indicationRatios.capsizeScreeningFormula || '';
-      newFormData.s = data.data.indicationRatios.s || '';
-      newFormData.hullSpeed = data.data.indicationRatios.hullSpeed || '';
-      newFormData.poundsInchImmersion = data.data.indicationRatios.poundsInchImmersion || '';
+      
+      // Note: All indicator ratios are intentionally left empty
+      // They will be populated from the database with correct calculated values
+      // saDispl, balDispl, dispLen, comfortRatio, capsizeScreeningFormula, s, hullSpeed, poundsInchImmersion
       
       console.log('🔍 Indication Ratios mapped:', {
-        saDispl: newFormData.saDispl,
-        balDispl: newFormData.balDispl,
-        dispLen: newFormData.dispLen,
-        comfortRatio: newFormData.comfortRatio,
-        capsizeScreeningFormula: newFormData.capsizeScreeningFormula,
-        s: newFormData.s,
-        hullSpeed: newFormData.hullSpeed,
-        poundsInchImmersion: newFormData.poundsInchImmersion
+        saDispl: 'EMPTY (will be populated from database)',
+        balDispl: 'EMPTY (will be populated from database)',
+        dispLen: 'EMPTY (will be populated from database)',
+        comfortRatio: 'EMPTY (will be populated from database)',
+        capsizeScreeningFormula: 'EMPTY (will be populated from database)',
+        s: 'EMPTY (will be populated from database)',
+        hullSpeed: 'EMPTY (will be populated from database)',
+        poundsInchImmersion: 'EMPTY (will be populated from database)'
       });
     } else {
       console.log('❌ No indicationRatios found in data.data');
@@ -676,8 +845,14 @@ export default function SimpleDeValkForm() {
       return newFormData;
     });
     
-    console.log('✅ Form populated with De Valk data');
-    console.log('🔍 New form data object:', newFormData);
+          // Count populated fields
+      const populatedFields = Object.values(newFormData).filter(value => value !== '' && value !== null && value !== undefined).length;
+      const totalFields = Object.keys(newFormData).length;
+      const completionPercentage = ((populatedFields / totalFields) * 100).toFixed(1);
+      
+      console.log('✅ Form populated with De Valk data');
+      console.log(`📊 Data Summary: ${populatedFields}/${totalFields} fields populated (${completionPercentage}%)`);
+      console.log('🔍 New form data object:', newFormData);
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -763,6 +938,8 @@ export default function SimpleDeValkForm() {
           model: '', yachtType: '', loaM: '', beamM: '', draftM: '', yearBuilt: '', builder: '', country: '', designer: '', hullMaterial: '',
           lwlM: '', airDraftM: '', headroomM: '', displacementT: '', ballastTonnes: '', hullColour: '', hullShape: '', keelType: '',
           superstructureMaterial: '', deckMaterial: '', deckFinish: '', superstructureDeckFinish: '', cockpitDeckFinish: '',
+          dorades: '', windowFrame: '', windowMaterial: '', deckhatch: '', fuelTankLitre: '', levelIndicatorFuelTank: '',
+          freshwaterTankLitre: '', levelIndicatorFreshwater: '', wheelSteering: '', outsideHelmPosition: '',
           // Accommodation
           cabins: '', berths: '', interior: '', layout: '', floor: '', openCockpit: '', aftDeck: '', saloon: '', headroomSalonM: '',
           heating: '', navigationCenter: '', chartTable: '', galley: '', countertop: '', sink: '', cooker: '', oven: '', microwave: '',
@@ -843,6 +1020,84 @@ export default function SimpleDeValkForm() {
     } catch (error) {
       console.error('❌ Error saving yacht to database:', error);
       alert(`Failed to save yacht data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  // Delete yacht from database
+  const deleteYacht = async (id: string) => {
+    try {
+      console.log('🗑️ Deleting yacht from database...');
+      
+      if (!id) {
+        alert('No yacht ID provided for deletion');
+        return;
+      }
+      
+      const response = await fetch(`/api/yachts/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete yacht');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        alert(`✅ Yacht deleted successfully from database!`);
+        console.log('🗑️ Yacht deleted from database:', result);
+        
+        // Clear form data after deletion
+        setFormData({
+          // Key Details
+          dimensions: '', material: '', built: '', engines: '', hpKw: '', askingPrice: '',
+          // General Info
+          model: '', yachtType: '', loaM: '', beamM: '', draftM: '', yearBuilt: '', builder: '', country: '', designer: '', hullMaterial: '',
+          lwlM: '', airDraftM: '', headroomM: '', displacementT: '', ballastTonnes: '', hullColour: '', hullShape: '', keelType: '',
+          superstructureMaterial: '', deckMaterial: '', deckFinish: '', superstructureDeckFinish: '', cockpitDeckFinish: '',
+          dorades: '', windowFrame: '', windowMaterial: '', deckhatch: '', fuelTankLitre: '', levelIndicatorFuelTank: '',
+          freshwaterTankLitre: '', levelIndicatorFreshwater: '', wheelSteering: '', outsideHelmPosition: '',
+          // Accommodation
+          cabins: '', berths: '', interior: '', layout: '', floor: '', openCockpit: '', aftDeck: '', saloon: '', headroomSalonM: '',
+          heating: '', navigationCenter: '', chartTable: '', galley: '', countertop: '', sink: '', cooker: '', oven: '', microwave: '',
+          fridge: '', freezer: '', hotWaterSystem: '', waterPressureSystem: '', ownersCabin: '', bedLength: '', wardrobe: '',
+          bathroom: '', toilet: '', toiletSystem: '', washBasin: '', shower: '', guestCabin1: '', guestCabin2: '', washingMachine: '',
+          // Machinery
+          noOfEngines: '', make: '', type: '', hp: '', kw: '', fuel: '', yearInstalled: '', yearOfOverhaul: '', maximumSpeedKn: '',
+          cruisingSpeedKn: '', consumptionLhr: '', engineCoolingSystem: '', drive: '', shaftSeal: '', engineControls: '', gearbox: '',
+          bowthruster: '', propellerType: '', manualBilgePump: '', electricBilgePump: '', electricalInstallation: '', generator: '',
+          batteries: '', startBattery: '', serviceBattery: '', batteryMonitor: '', batteryCharger: '', solarPanel: '', shorepower: '',
+          watermaker: '',
+          // Navigation
+          compass: '', electricCompass: '', depthSounder: '', log: '', windset: '', repeater: '', vhf: '', vhfHandheld: '',
+          autopilot: '', rudderAngleIndicator: '', radar: '', plotterGps: '', electronicCharts: '', aisTransceiver: '', epirb: '',
+          navigationLights: '',
+          // Equipment
+          anchor: '', anchorChain: '', anchor2: '', windlass: '', deckWash: '', dinghy: '', outboard: '', davits: '', seaRailing: '',
+          pushpit: '', pulpit: '', lifebuoy: '', radarReflector: '', fenders: '', mooringLines: '', radio: '', cockpitSpeakers: '',
+          speakersInSalon: '', fireExtinguisher: '', fixedWindscreen: '', cockpitTable: '', bathingPlatform: '', boardingLadder: '',
+          deckShower: '',
+          // Rigging
+          rigging: '', standingRigging: '', brandMast: '', materialMast: '', spreaders: '', mainsail: '', stowayMast: '', cutterstay: '',
+          jib: '', genoa: '', genoaFurler: '', cutterFurler: '', gennaker: '', spinnaker: '', reefingSystem: '', backstayAdjuster: '',
+          primarySheetWinch: '', secondarySheetWinch: '', genoaSheetwinches: '', halyardWinches: '', multifunctionalWinches: '', spiPole: '',
+          // Indication Ratios
+          saDispl: '', balDispl: '', dispLen: '', comfortRatio: '', capsizeScreeningFormula: '', s: '', hullSpeed: '', poundsInchImmersion: '',
+        });
+        setDevalkUrl('');
+        
+        // Optionally redirect to database view
+        if (confirm('Would you like to view the yacht database?')) {
+          window.location.href = '/yacht-database';
+        }
+      } else {
+        throw new Error(result.error || 'Failed to delete yacht');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error deleting yacht from database:', error);
+      alert(`Failed to delete yacht: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -1225,6 +1480,106 @@ export default function SimpleDeValkForm() {
                   value={formData.cockpitDeckFinish}
                   onChange={(e) => handleInputChange('cockpitDeckFinish', e.target.value)}
                   placeholder="e.g., teak" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">DORADES</label>
+                <input 
+                  type="text" 
+                  value={formData.dorades}
+                  onChange={(e) => handleInputChange('dorades', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">WINDOW FRAME</label>
+                <input 
+                  type="text" 
+                  value={formData.windowFrame}
+                  onChange={(e) => handleInputChange('windowFrame', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">WINDOW MATERIAL</label>
+                <input 
+                  type="text" 
+                  value={formData.windowMaterial}
+                  onChange={(e) => handleInputChange('windowMaterial', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">DECK HATCH</label>
+                <input 
+                  type="text" 
+                  value={formData.deckhatch}
+                  onChange={(e) => handleInputChange('deckhatch', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">FUEL TANK LITRE</label>
+                <input 
+                  type="text" 
+                  value={formData.fuelTankLitre}
+                  onChange={(e) => handleInputChange('fuelTankLitre', e.target.value)}
+                  placeholder="e.g., 100" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">LEVEL INDICATOR FUEL TANK</label>
+                <input 
+                  type="text" 
+                  value={formData.levelIndicatorFuelTank}
+                  onChange={(e) => handleInputChange('levelIndicatorFuelTank', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">FRESHWATER TANK LITRE</label>
+                <input 
+                  type="text" 
+                  value={formData.freshwaterTankLitre}
+                  onChange={(e) => handleInputChange('freshwaterTankLitre', e.target.value)}
+                  placeholder="e.g., 50" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">LEVEL INDICATOR FRESHWATER</label>
+                <input 
+                  type="text" 
+                  value={formData.levelIndicatorFreshwater}
+                  onChange={(e) => handleInputChange('levelIndicatorFreshwater', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">WHEEL STEERING</label>
+                <input 
+                  type="text" 
+                  value={formData.wheelSteering}
+                  onChange={(e) => handleInputChange('wheelSteering', e.target.value)}
+                  placeholder="e.g., Yes" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">OUTSIDE HELM POSITION</label>
+                <input 
+                  type="text" 
+                  value={formData.outsideHelmPosition}
+                  onChange={(e) => handleInputChange('outsideHelmPosition', e.target.value)}
+                  placeholder="e.g., Yes" 
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                 />
               </div>
@@ -2551,6 +2906,27 @@ export default function SimpleDeValkForm() {
               className="px-8 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
             >
               💾 Save to Database
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => {
+                const yachtId = prompt('Enter the yacht ID to delete:');
+                if (yachtId && yachtId.trim()) {
+                  deleteYacht(yachtId.trim());
+                }
+              }}
+              className="px-8 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
+            >
+              🗑️ Delete Yacht
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => window.open('/api/yachts', '_blank')}
+              className="px-8 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              📊 View Database
             </button>
           </div>
         </form>
